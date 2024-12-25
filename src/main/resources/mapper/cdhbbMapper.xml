@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.efx.Science.dao.cdhbbMapper">
+  <resultMap id="BaseResultMap" type="com.efx.Science.model.cdhbb">
+    <id column="HBB001" jdbcType="INTEGER" property="hbb001" />
+    <result column="HBB002" jdbcType="VARCHAR" property="hbb002" />
+    <result column="HBB003" jdbcType="INTEGER" property="hbb003" />
+    <result column="HBB004" jdbcType="VARCHAR" property="hbb004" />
+    <result column="HBB005" jdbcType="VARCHAR" property="hbb005" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    HBB001, HBB002, HBB003, HBB004, HBB005
+  </sql>
+  <select id="selectByExample" parameterType="com.efx.Science.model.cdhbbExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cdhbb
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cdhbb
+    where HBB001 = #{hbb001,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from cdhbb
+    where HBB001 = #{hbb001,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.efx.Science.model.cdhbbExample">
+    delete from cdhbb
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.efx.Science.model.cdhbb">
+    insert into cdhbb (HBB001, HBB002, HBB003, 
+      HBB004, HBB005)
+    values (#{hbb001,jdbcType=INTEGER}, #{hbb002,jdbcType=VARCHAR}, #{hbb003,jdbcType=INTEGER}, 
+      #{hbb004,jdbcType=VARCHAR}, #{hbb005,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.efx.Science.model.cdhbb">
+    insert into cdhbb
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="hbb001 != null">
+        HBB001,
+      </if>
+      <if test="hbb002 != null">
+        HBB002,
+      </if>
+      <if test="hbb003 != null">
+        HBB003,
+      </if>
+      <if test="hbb004 != null">
+        HBB004,
+      </if>
+      <if test="hbb005 != null">
+        HBB005,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="hbb001 != null">
+        #{hbb001,jdbcType=INTEGER},
+      </if>
+      <if test="hbb002 != null">
+        #{hbb002,jdbcType=VARCHAR},
+      </if>
+      <if test="hbb003 != null">
+        #{hbb003,jdbcType=INTEGER},
+      </if>
+      <if test="hbb004 != null">
+        #{hbb004,jdbcType=VARCHAR},
+      </if>
+      <if test="hbb005 != null">
+        #{hbb005,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.efx.Science.model.cdhbbExample" resultType="java.lang.Long">
+    select count(*) from cdhbb
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update cdhbb
+    <set>
+      <if test="record.hbb001 != null">
+        HBB001 = #{record.hbb001,jdbcType=INTEGER},
+      </if>
+      <if test="record.hbb002 != null">
+        HBB002 = #{record.hbb002,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hbb003 != null">
+        HBB003 = #{record.hbb003,jdbcType=INTEGER},
+      </if>
+      <if test="record.hbb004 != null">
+        HBB004 = #{record.hbb004,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hbb005 != null">
+        HBB005 = #{record.hbb005,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update cdhbb
+    set HBB001 = #{record.hbb001,jdbcType=INTEGER},
+      HBB002 = #{record.hbb002,jdbcType=VARCHAR},
+      HBB003 = #{record.hbb003,jdbcType=INTEGER},
+      HBB004 = #{record.hbb004,jdbcType=VARCHAR},
+      HBB005 = #{record.hbb005,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.efx.Science.model.cdhbb">
+    update cdhbb
+    <set>
+      <if test="hbb002 != null">
+        HBB002 = #{hbb002,jdbcType=VARCHAR},
+      </if>
+      <if test="hbb003 != null">
+        HBB003 = #{hbb003,jdbcType=INTEGER},
+      </if>
+      <if test="hbb004 != null">
+        HBB004 = #{hbb004,jdbcType=VARCHAR},
+      </if>
+      <if test="hbb005 != null">
+        HBB005 = #{hbb005,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where HBB001 = #{hbb001,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.efx.Science.model.cdhbb">
+    update cdhbb
+    set HBB002 = #{hbb002,jdbcType=VARCHAR},
+      HBB003 = #{hbb003,jdbcType=INTEGER},
+      HBB004 = #{hbb004,jdbcType=VARCHAR},
+      HBB005 = #{hbb005,jdbcType=VARCHAR}
+    where HBB001 = #{hbb001,jdbcType=INTEGER}
+  </update>
+</mapper>

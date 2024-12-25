@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.efx.Science.dao.cdyhdMapper">
+  <resultMap id="BaseResultMap" type="com.efx.Science.model.cdyhd">
+    <id column="YHD001" jdbcType="VARCHAR" property="yhd001" />
+    <result column="YHD002" jdbcType="INTEGER" property="yhd002" />
+    <result column="YHD003" jdbcType="TIMESTAMP" property="yhd003" />
+    <result column="YHD004" jdbcType="CHAR" property="yhd004" />
+    <result column="YHD005" jdbcType="CHAR" property="yhd005" />
+    <result column="YHD006" jdbcType="CHAR" property="yhd006" />
+    <result column="YHD007" jdbcType="INTEGER" property="yhd007" />
+    <result column="YHD008" jdbcType="VARCHAR" property="yhd008" />
+    <result column="YHD009" jdbcType="VARCHAR" property="yhd009" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    YHD001, YHD002, YHD003, YHD004, YHD005, YHD006, YHD007, YHD008, YHD009
+  </sql>
+  <select id="selectByExample" parameterType="com.efx.Science.model.cdyhdExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cdyhd
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cdyhd
+    where YHD001 = #{yhd001,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from cdyhd
+    where YHD001 = #{yhd001,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.efx.Science.model.cdyhdExample">
+    delete from cdyhd
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.efx.Science.model.cdyhd">
+    insert into cdyhd (YHD001, YHD002, YHD003, 
+      YHD004, YHD005, YHD006, YHD007, 
+      YHD008, YHD009)
+    values (#{yhd001,jdbcType=VARCHAR}, #{yhd002,jdbcType=INTEGER}, #{yhd003,jdbcType=TIMESTAMP}, 
+      #{yhd004,jdbcType=CHAR}, #{yhd005,jdbcType=CHAR}, #{yhd006,jdbcType=CHAR}, #{yhd007,jdbcType=INTEGER}, 
+      #{yhd008,jdbcType=VARCHAR}, #{yhd009,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.efx.Science.model.cdyhd">
+    insert into cdyhd
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="yhd001 != null">
+        YHD001,
+      </if>
+      <if test="yhd002 != null">
+        YHD002,
+      </if>
+      <if test="yhd003 != null">
+        YHD003,
+      </if>
+      <if test="yhd004 != null">
+        YHD004,
+      </if>
+      <if test="yhd005 != null">
+        YHD005,
+      </if>
+      <if test="yhd006 != null">
+        YHD006,
+      </if>
+      <if test="yhd007 != null">
+        YHD007,
+      </if>
+      <if test="yhd008 != null">
+        YHD008,
+      </if>
+      <if test="yhd009 != null">
+        YHD009,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="yhd001 != null">
+        #{yhd001,jdbcType=VARCHAR},
+      </if>
+      <if test="yhd002 != null">
+        #{yhd002,jdbcType=INTEGER},
+      </if>
+      <if test="yhd003 != null">
+        #{yhd003,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yhd004 != null">
+        #{yhd004,jdbcType=CHAR},
+      </if>
+      <if test="yhd005 != null">
+        #{yhd005,jdbcType=CHAR},
+      </if>
+      <if test="yhd006 != null">
+        #{yhd006,jdbcType=CHAR},
+      </if>
+      <if test="yhd007 != null">
+        #{yhd007,jdbcType=INTEGER},
+      </if>
+      <if test="yhd008 != null">
+        #{yhd008,jdbcType=VARCHAR},
+      </if>
+      <if test="yhd009 != null">
+        #{yhd009,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.efx.Science.model.cdyhdExample" resultType="java.lang.Long">
+    select count(*) from cdyhd
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update cdyhd
+    <set>
+      <if test="record.yhd001 != null">
+        YHD001 = #{record.yhd001,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yhd002 != null">
+        YHD002 = #{record.yhd002,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhd003 != null">
+        YHD003 = #{record.yhd003,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.yhd004 != null">
+        YHD004 = #{record.yhd004,jdbcType=CHAR},
+      </if>
+      <if test="record.yhd005 != null">
+        YHD005 = #{record.yhd005,jdbcType=CHAR},
+      </if>
+      <if test="record.yhd006 != null">
+        YHD006 = #{record.yhd006,jdbcType=CHAR},
+      </if>
+      <if test="record.yhd007 != null">
+        YHD007 = #{record.yhd007,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhd008 != null">
+        YHD008 = #{record.yhd008,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yhd009 != null">
+        YHD009 = #{record.yhd009,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update cdyhd
+    set YHD001 = #{record.yhd001,jdbcType=VARCHAR},
+      YHD002 = #{record.yhd002,jdbcType=INTEGER},
+      YHD003 = #{record.yhd003,jdbcType=TIMESTAMP},
+      YHD004 = #{record.yhd004,jdbcType=CHAR},
+      YHD005 = #{record.yhd005,jdbcType=CHAR},
+      YHD006 = #{record.yhd006,jdbcType=CHAR},
+      YHD007 = #{record.yhd007,jdbcType=INTEGER},
+      YHD008 = #{record.yhd008,jdbcType=VARCHAR},
+      YHD009 = #{record.yhd009,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.efx.Science.model.cdyhd">
+    update cdyhd
+    <set>
+      <if test="yhd002 != null">
+        YHD002 = #{yhd002,jdbcType=INTEGER},
+      </if>
+      <if test="yhd003 != null">
+        YHD003 = #{yhd003,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yhd004 != null">
+        YHD004 = #{yhd004,jdbcType=CHAR},
+      </if>
+      <if test="yhd005 != null">
+        YHD005 = #{yhd005,jdbcType=CHAR},
+      </if>
+      <if test="yhd006 != null">
+        YHD006 = #{yhd006,jdbcType=CHAR},
+      </if>
+      <if test="yhd007 != null">
+        YHD007 = #{yhd007,jdbcType=INTEGER},
+      </if>
+      <if test="yhd008 != null">
+        YHD008 = #{yhd008,jdbcType=VARCHAR},
+      </if>
+      <if test="yhd009 != null">
+        YHD009 = #{yhd009,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where YHD001 = #{yhd001,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.efx.Science.model.cdyhd">
+    update cdyhd
+    set YHD002 = #{yhd002,jdbcType=INTEGER},
+      YHD003 = #{yhd003,jdbcType=TIMESTAMP},
+      YHD004 = #{yhd004,jdbcType=CHAR},
+      YHD005 = #{yhd005,jdbcType=CHAR},
+      YHD006 = #{yhd006,jdbcType=CHAR},
+      YHD007 = #{yhd007,jdbcType=INTEGER},
+      YHD008 = #{yhd008,jdbcType=VARCHAR},
+      YHD009 = #{yhd009,jdbcType=VARCHAR}
+    where YHD001 = #{yhd001,jdbcType=VARCHAR}
+  </update>
+</mapper>

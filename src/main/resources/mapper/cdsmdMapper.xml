@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.efx.Science.dao.cdsmdMapper">
+  <resultMap id="BaseResultMap" type="com.efx.Science.model.cdsmd">
+    <id column="SMD001" jdbcType="INTEGER" property="smd001" />
+    <result column="SMD002" jdbcType="CHAR" property="smd002" />
+    <result column="SMD003" jdbcType="VARCHAR" property="smd003" />
+    <result column="SMD004" jdbcType="VARCHAR" property="smd004" />
+    <result column="SMD005" jdbcType="VARCHAR" property="smd005" />
+    <result column="SMD006" jdbcType="VARCHAR" property="smd006" />
+    <result column="SMD007" jdbcType="VARCHAR" property="smd007" />
+    <result column="SMD008" jdbcType="TIMESTAMP" property="smd008" />
+    <result column="SMD009" jdbcType="INTEGER" property="smd009" />
+    <result column="SMD010" jdbcType="INTEGER" property="smd010" />
+    <result column="SMD011" jdbcType="INTEGER" property="smd011" />
+    <result column="SMD012" jdbcType="INTEGER" property="smd012" />
+    <result column="SMD013" jdbcType="INTEGER" property="smd013" />
+    <result column="SMD014" jdbcType="INTEGER" property="smd014" />
+    <result column="SMD015" jdbcType="INTEGER" property="smd015" />
+    <result column="SMD016" jdbcType="REAL" property="smd016" />
+    <result column="SMD017" jdbcType="VARCHAR" property="smd017" />
+    <result column="SMD018" jdbcType="VARCHAR" property="smd018" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    SMD001, SMD002, SMD003, SMD004, SMD005, SMD006, SMD007, SMD008, SMD009, SMD010, SMD011, 
+    SMD012, SMD013, SMD014, SMD015, SMD016, SMD017, SMD018
+  </sql>
+  <select id="selectByExample" parameterType="com.efx.Science.model.cdsmdExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cdsmd
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cdsmd
+    where SMD001 = #{smd001,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from cdsmd
+    where SMD001 = #{smd001,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.efx.Science.model.cdsmdExample">
+    delete from cdsmd
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.efx.Science.model.cdsmd">
+    insert into cdsmd (SMD001, SMD002, SMD003, 
+      SMD004, SMD005, SMD006, 
+      SMD007, SMD008, SMD009, 
+      SMD010, SMD011, SMD012, 
+      SMD013, SMD014, SMD015, 
+      SMD016, SMD017, SMD018
+      )
+    values (#{smd001,jdbcType=INTEGER}, #{smd002,jdbcType=CHAR}, #{smd003,jdbcType=VARCHAR}, 
+      #{smd004,jdbcType=VARCHAR}, #{smd005,jdbcType=VARCHAR}, #{smd006,jdbcType=VARCHAR}, 
+      #{smd007,jdbcType=VARCHAR}, #{smd008,jdbcType=TIMESTAMP}, #{smd009,jdbcType=INTEGER}, 
+      #{smd010,jdbcType=INTEGER}, #{smd011,jdbcType=INTEGER}, #{smd012,jdbcType=INTEGER}, 
+      #{smd013,jdbcType=INTEGER}, #{smd014,jdbcType=INTEGER}, #{smd015,jdbcType=INTEGER}, 
+      #{smd016,jdbcType=REAL}, #{smd017,jdbcType=VARCHAR}, #{smd018,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.efx.Science.model.cdsmd">
+    insert into cdsmd
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="smd001 != null">
+        SMD001,
+      </if>
+      <if test="smd002 != null">
+        SMD002,
+      </if>
+      <if test="smd003 != null">
+        SMD003,
+      </if>
+      <if test="smd004 != null">
+        SMD004,
+      </if>
+      <if test="smd005 != null">
+        SMD005,
+      </if>
+      <if test="smd006 != null">
+        SMD006,
+      </if>
+      <if test="smd007 != null">
+        SMD007,
+      </if>
+      <if test="smd008 != null">
+        SMD008,
+      </if>
+      <if test="smd009 != null">
+        SMD009,
+      </if>
+      <if test="smd010 != null">
+        SMD010,
+      </if>
+      <if test="smd011 != null">
+        SMD011,
+      </if>
+      <if test="smd012 != null">
+        SMD012,
+      </if>
+      <if test="smd013 != null">
+        SMD013,
+      </if>
+      <if test="smd014 != null">
+        SMD014,
+      </if>
+      <if test="smd015 != null">
+        SMD015,
+      </if>
+      <if test="smd016 != null">
+        SMD016,
+      </if>
+      <if test="smd017 != null">
+        SMD017,
+      </if>
+      <if test="smd018 != null">
+        SMD018,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="smd001 != null">
+        #{smd001,jdbcType=INTEGER},
+      </if>
+      <if test="smd002 != null">
+        #{smd002,jdbcType=CHAR},
+      </if>
+      <if test="smd003 != null">
+        #{smd003,jdbcType=VARCHAR},
+      </if>
+      <if test="smd004 != null">
+        #{smd004,jdbcType=VARCHAR},
+      </if>
+      <if test="smd005 != null">
+        #{smd005,jdbcType=VARCHAR},
+      </if>
+      <if test="smd006 != null">
+        #{smd006,jdbcType=VARCHAR},
+      </if>
+      <if test="smd007 != null">
+        #{smd007,jdbcType=VARCHAR},
+      </if>
+      <if test="smd008 != null">
+        #{smd008,jdbcType=TIMESTAMP},
+      </if>
+      <if test="smd009 != null">
+        #{smd009,jdbcType=INTEGER},
+      </if>
+      <if test="smd010 != null">
+        #{smd010,jdbcType=INTEGER},
+      </if>
+      <if test="smd011 != null">
+        #{smd011,jdbcType=INTEGER},
+      </if>
+      <if test="smd012 != null">
+        #{smd012,jdbcType=INTEGER},
+      </if>
+      <if test="smd013 != null">
+        #{smd013,jdbcType=INTEGER},
+      </if>
+      <if test="smd014 != null">
+        #{smd014,jdbcType=INTEGER},
+      </if>
+      <if test="smd015 != null">
+        #{smd015,jdbcType=INTEGER},
+      </if>
+      <if test="smd016 != null">
+        #{smd016,jdbcType=REAL},
+      </if>
+      <if test="smd017 != null">
+        #{smd017,jdbcType=VARCHAR},
+      </if>
+      <if test="smd018 != null">
+        #{smd018,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.efx.Science.model.cdsmdExample" resultType="java.lang.Long">
+    select count(*) from cdsmd
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update cdsmd
+    <set>
+      <if test="record.smd001 != null">
+        SMD001 = #{record.smd001,jdbcType=INTEGER},
+      </if>
+      <if test="record.smd002 != null">
+        SMD002 = #{record.smd002,jdbcType=CHAR},
+      </if>
+      <if test="record.smd003 != null">
+        SMD003 = #{record.smd003,jdbcType=VARCHAR},
+      </if>
+      <if test="record.smd004 != null">
+        SMD004 = #{record.smd004,jdbcType=VARCHAR},
+      </if>
+      <if test="record.smd005 != null">
+        SMD005 = #{record.smd005,jdbcType=VARCHAR},
+      </if>
+      <if test="record.smd006 != null">
+        SMD006 = #{record.smd006,jdbcType=VARCHAR},
+      </if>
+      <if test="record.smd007 != null">
+        SMD007 = #{record.smd007,jdbcType=VARCHAR},
+      </if>
+      <if test="record.smd008 != null">
+        SMD008 = #{record.smd008,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.smd009 != null">
+        SMD009 = #{record.smd009,jdbcType=INTEGER},
+      </if>
+      <if test="record.smd010 != null">
+        SMD010 = #{record.smd010,jdbcType=INTEGER},
+      </if>
+      <if test="record.smd011 != null">
+        SMD011 = #{record.smd011,jdbcType=INTEGER},
+      </if>
+      <if test="record.smd012 != null">
+        SMD012 = #{record.smd012,jdbcType=INTEGER},
+      </if>
+      <if test="record.smd013 != null">
+        SMD013 = #{record.smd013,jdbcType=INTEGER},
+      </if>
+      <if test="record.smd014 != null">
+        SMD014 = #{record.smd014,jdbcType=INTEGER},
+      </if>
+      <if test="record.smd015 != null">
+        SMD015 = #{record.smd015,jdbcType=INTEGER},
+      </if>
+      <if test="record.smd016 != null">
+        SMD016 = #{record.smd016,jdbcType=REAL},
+      </if>
+      <if test="record.smd017 != null">
+        SMD017 = #{record.smd017,jdbcType=VARCHAR},
+      </if>
+      <if test="record.smd018 != null">
+        SMD018 = #{record.smd018,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update cdsmd
+    set SMD001 = #{record.smd001,jdbcType=INTEGER},
+      SMD002 = #{record.smd002,jdbcType=CHAR},
+      SMD003 = #{record.smd003,jdbcType=VARCHAR},
+      SMD004 = #{record.smd004,jdbcType=VARCHAR},
+      SMD005 = #{record.smd005,jdbcType=VARCHAR},
+      SMD006 = #{record.smd006,jdbcType=VARCHAR},
+      SMD007 = #{record.smd007,jdbcType=VARCHAR},
+      SMD008 = #{record.smd008,jdbcType=TIMESTAMP},
+      SMD009 = #{record.smd009,jdbcType=INTEGER},
+      SMD010 = #{record.smd010,jdbcType=INTEGER},
+      SMD011 = #{record.smd011,jdbcType=INTEGER},
+      SMD012 = #{record.smd012,jdbcType=INTEGER},
+      SMD013 = #{record.smd013,jdbcType=INTEGER},
+      SMD014 = #{record.smd014,jdbcType=INTEGER},
+      SMD015 = #{record.smd015,jdbcType=INTEGER},
+      SMD016 = #{record.smd016,jdbcType=REAL},
+      SMD017 = #{record.smd017,jdbcType=VARCHAR},
+      SMD018 = #{record.smd018,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.efx.Science.model.cdsmd">
+    update cdsmd
+    <set>
+      <if test="smd002 != null">
+        SMD002 = #{smd002,jdbcType=CHAR},
+      </if>
+      <if test="smd003 != null">
+        SMD003 = #{smd003,jdbcType=VARCHAR},
+      </if>
+      <if test="smd004 != null">
+        SMD004 = #{smd004,jdbcType=VARCHAR},
+      </if>
+      <if test="smd005 != null">
+        SMD005 = #{smd005,jdbcType=VARCHAR},
+      </if>
+      <if test="smd006 != null">
+        SMD006 = #{smd006,jdbcType=VARCHAR},
+      </if>
+      <if test="smd007 != null">
+        SMD007 = #{smd007,jdbcType=VARCHAR},
+      </if>
+      <if test="smd008 != null">
+        SMD008 = #{smd008,jdbcType=TIMESTAMP},
+      </if>
+      <if test="smd009 != null">
+        SMD009 = #{smd009,jdbcType=INTEGER},
+      </if>
+      <if test="smd010 != null">
+        SMD010 = #{smd010,jdbcType=INTEGER},
+      </if>
+      <if test="smd011 != null">
+        SMD011 = #{smd011,jdbcType=INTEGER},
+      </if>
+      <if test="smd012 != null">
+        SMD012 = #{smd012,jdbcType=INTEGER},
+      </if>
+      <if test="smd013 != null">
+        SMD013 = #{smd013,jdbcType=INTEGER},
+      </if>
+      <if test="smd014 != null">
+        SMD014 = #{smd014,jdbcType=INTEGER},
+      </if>
+      <if test="smd015 != null">
+        SMD015 = #{smd015,jdbcType=INTEGER},
+      </if>
+      <if test="smd016 != null">
+        SMD016 = #{smd016,jdbcType=REAL},
+      </if>
+      <if test="smd017 != null">
+        SMD017 = #{smd017,jdbcType=VARCHAR},
+      </if>
+      <if test="smd018 != null">
+        SMD018 = #{smd018,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where SMD001 = #{smd001,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.efx.Science.model.cdsmd">
+    update cdsmd
+    set SMD002 = #{smd002,jdbcType=CHAR},
+      SMD003 = #{smd003,jdbcType=VARCHAR},
+      SMD004 = #{smd004,jdbcType=VARCHAR},
+      SMD005 = #{smd005,jdbcType=VARCHAR},
+      SMD006 = #{smd006,jdbcType=VARCHAR},
+      SMD007 = #{smd007,jdbcType=VARCHAR},
+      SMD008 = #{smd008,jdbcType=TIMESTAMP},
+      SMD009 = #{smd009,jdbcType=INTEGER},
+      SMD010 = #{smd010,jdbcType=INTEGER},
+      SMD011 = #{smd011,jdbcType=INTEGER},
+      SMD012 = #{smd012,jdbcType=INTEGER},
+      SMD013 = #{smd013,jdbcType=INTEGER},
+      SMD014 = #{smd014,jdbcType=INTEGER},
+      SMD015 = #{smd015,jdbcType=INTEGER},
+      SMD016 = #{smd016,jdbcType=REAL},
+      SMD017 = #{smd017,jdbcType=VARCHAR},
+      SMD018 = #{smd018,jdbcType=VARCHAR}
+    where SMD001 = #{smd001,jdbcType=INTEGER}
+  </update>
+</mapper>

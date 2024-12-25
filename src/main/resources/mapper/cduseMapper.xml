@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.efx.Science.dao.cduseMapper">
+  <resultMap id="BaseResultMap" type="com.efx.Science.model.cduse">
+    <id column="USE001" jdbcType="INTEGER" property="use001" />
+    <result column="USE002" jdbcType="VARCHAR" property="use002" />
+    <result column="USE003" jdbcType="VARCHAR" property="use003" />
+    <result column="USE004" jdbcType="VARCHAR" property="use004" />
+    <result column="USE005" jdbcType="VARCHAR" property="use005" />
+    <result column="USE006" jdbcType="VARCHAR" property="use006" />
+    <result column="USE007" jdbcType="VARCHAR" property="use007" />
+    <result column="USE008" jdbcType="VARCHAR" property="use008" />
+    <result column="USE009" jdbcType="CHAR" property="use009" />
+    <result column="USE010" jdbcType="TIMESTAMP" property="use010" />
+    <result column="USE011" jdbcType="INTEGER" property="use011" />
+    <result column="USE012" jdbcType="REAL" property="use012" />
+    <result column="USE013" jdbcType="VARCHAR" property="use013" />
+    <result column="USE014" jdbcType="VARCHAR" property="use014" />
+    <result column="USE015" jdbcType="VARCHAR" property="use015" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    USE001, USE002, USE003, USE004, USE005, USE006, USE007, USE008, USE009, USE010, USE011, 
+    USE012, USE013, USE014, USE015
+  </sql>
+  <select id="selectByExample" parameterType="com.efx.Science.model.cduseExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cduse
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cduse
+    where USE001 = #{use001,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from cduse
+    where USE001 = #{use001,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.efx.Science.model.cduseExample">
+    delete from cduse
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.efx.Science.model.cduse">
+    insert into cduse (USE001, USE002, USE003, 
+      USE004, USE005, USE006, 
+      USE007, USE008, USE009, 
+      USE010, USE011, USE012, 
+      USE013, USE014, USE015
+      )
+    values (#{use001,jdbcType=INTEGER}, #{use002,jdbcType=VARCHAR}, #{use003,jdbcType=VARCHAR}, 
+      #{use004,jdbcType=VARCHAR}, #{use005,jdbcType=VARCHAR}, #{use006,jdbcType=VARCHAR}, 
+      #{use007,jdbcType=VARCHAR}, #{use008,jdbcType=VARCHAR}, #{use009,jdbcType=CHAR}, 
+      #{use010,jdbcType=TIMESTAMP}, #{use011,jdbcType=INTEGER}, #{use012,jdbcType=REAL}, 
+      #{use013,jdbcType=VARCHAR}, #{use014,jdbcType=VARCHAR}, #{use015,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.efx.Science.model.cduse">
+    insert into cduse
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="use001 != null">
+        USE001,
+      </if>
+      <if test="use002 != null">
+        USE002,
+      </if>
+      <if test="use003 != null">
+        USE003,
+      </if>
+      <if test="use004 != null">
+        USE004,
+      </if>
+      <if test="use005 != null">
+        USE005,
+      </if>
+      <if test="use006 != null">
+        USE006,
+      </if>
+      <if test="use007 != null">
+        USE007,
+      </if>
+      <if test="use008 != null">
+        USE008,
+      </if>
+      <if test="use009 != null">
+        USE009,
+      </if>
+      <if test="use010 != null">
+        USE010,
+      </if>
+      <if test="use011 != null">
+        USE011,
+      </if>
+      <if test="use012 != null">
+        USE012,
+      </if>
+      <if test="use013 != null">
+        USE013,
+      </if>
+      <if test="use014 != null">
+        USE014,
+      </if>
+      <if test="use015 != null">
+        USE015,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="use001 != null">
+        #{use001,jdbcType=INTEGER},
+      </if>
+      <if test="use002 != null">
+        #{use002,jdbcType=VARCHAR},
+      </if>
+      <if test="use003 != null">
+        #{use003,jdbcType=VARCHAR},
+      </if>
+      <if test="use004 != null">
+        #{use004,jdbcType=VARCHAR},
+      </if>
+      <if test="use005 != null">
+        #{use005,jdbcType=VARCHAR},
+      </if>
+      <if test="use006 != null">
+        #{use006,jdbcType=VARCHAR},
+      </if>
+      <if test="use007 != null">
+        #{use007,jdbcType=VARCHAR},
+      </if>
+      <if test="use008 != null">
+        #{use008,jdbcType=VARCHAR},
+      </if>
+      <if test="use009 != null">
+        #{use009,jdbcType=CHAR},
+      </if>
+      <if test="use010 != null">
+        #{use010,jdbcType=TIMESTAMP},
+      </if>
+      <if test="use011 != null">
+        #{use011,jdbcType=INTEGER},
+      </if>
+      <if test="use012 != null">
+        #{use012,jdbcType=REAL},
+      </if>
+      <if test="use013 != null">
+        #{use013,jdbcType=VARCHAR},
+      </if>
+      <if test="use014 != null">
+        #{use014,jdbcType=VARCHAR},
+      </if>
+      <if test="use015 != null">
+        #{use015,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.efx.Science.model.cduseExample" resultType="java.lang.Long">
+    select count(*) from cduse
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update cduse
+    <set>
+      <if test="record.use001 != null">
+        USE001 = #{record.use001,jdbcType=INTEGER},
+      </if>
+      <if test="record.use002 != null">
+        USE002 = #{record.use002,jdbcType=VARCHAR},
+      </if>
+      <if test="record.use003 != null">
+        USE003 = #{record.use003,jdbcType=VARCHAR},
+      </if>
+      <if test="record.use004 != null">
+        USE004 = #{record.use004,jdbcType=VARCHAR},
+      </if>
+      <if test="record.use005 != null">
+        USE005 = #{record.use005,jdbcType=VARCHAR},
+      </if>
+      <if test="record.use006 != null">
+        USE006 = #{record.use006,jdbcType=VARCHAR},
+      </if>
+      <if test="record.use007 != null">
+        USE007 = #{record.use007,jdbcType=VARCHAR},
+      </if>
+      <if test="record.use008 != null">
+        USE008 = #{record.use008,jdbcType=VARCHAR},
+      </if>
+      <if test="record.use009 != null">
+        USE009 = #{record.use009,jdbcType=CHAR},
+      </if>
+      <if test="record.use010 != null">
+        USE010 = #{record.use010,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.use011 != null">
+        USE011 = #{record.use011,jdbcType=INTEGER},
+      </if>
+      <if test="record.use012 != null">
+        USE012 = #{record.use012,jdbcType=REAL},
+      </if>
+      <if test="record.use013 != null">
+        USE013 = #{record.use013,jdbcType=VARCHAR},
+      </if>
+      <if test="record.use014 != null">
+        USE014 = #{record.use014,jdbcType=VARCHAR},
+      </if>
+      <if test="record.use015 != null">
+        USE015 = #{record.use015,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update cduse
+    set USE001 = #{record.use001,jdbcType=INTEGER},
+      USE002 = #{record.use002,jdbcType=VARCHAR},
+      USE003 = #{record.use003,jdbcType=VARCHAR},
+      USE004 = #{record.use004,jdbcType=VARCHAR},
+      USE005 = #{record.use005,jdbcType=VARCHAR},
+      USE006 = #{record.use006,jdbcType=VARCHAR},
+      USE007 = #{record.use007,jdbcType=VARCHAR},
+      USE008 = #{record.use008,jdbcType=VARCHAR},
+      USE009 = #{record.use009,jdbcType=CHAR},
+      USE010 = #{record.use010,jdbcType=TIMESTAMP},
+      USE011 = #{record.use011,jdbcType=INTEGER},
+      USE012 = #{record.use012,jdbcType=REAL},
+      USE013 = #{record.use013,jdbcType=VARCHAR},
+      USE014 = #{record.use014,jdbcType=VARCHAR},
+      USE015 = #{record.use015,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.efx.Science.model.cduse">
+    update cduse
+    <set>
+      <if test="use002 != null">
+        USE002 = #{use002,jdbcType=VARCHAR},
+      </if>
+      <if test="use003 != null">
+        USE003 = #{use003,jdbcType=VARCHAR},
+      </if>
+      <if test="use004 != null">
+        USE004 = #{use004,jdbcType=VARCHAR},
+      </if>
+      <if test="use005 != null">
+        USE005 = #{use005,jdbcType=VARCHAR},
+      </if>
+      <if test="use006 != null">
+        USE006 = #{use006,jdbcType=VARCHAR},
+      </if>
+      <if test="use007 != null">
+        USE007 = #{use007,jdbcType=VARCHAR},
+      </if>
+      <if test="use008 != null">
+        USE008 = #{use008,jdbcType=VARCHAR},
+      </if>
+      <if test="use009 != null">
+        USE009 = #{use009,jdbcType=CHAR},
+      </if>
+      <if test="use010 != null">
+        USE010 = #{use010,jdbcType=TIMESTAMP},
+      </if>
+      <if test="use011 != null">
+        USE011 = #{use011,jdbcType=INTEGER},
+      </if>
+      <if test="use012 != null">
+        USE012 = #{use012,jdbcType=REAL},
+      </if>
+      <if test="use013 != null">
+        USE013 = #{use013,jdbcType=VARCHAR},
+      </if>
+      <if test="use014 != null">
+        USE014 = #{use014,jdbcType=VARCHAR},
+      </if>
+      <if test="use015 != null">
+        USE015 = #{use015,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where USE001 = #{use001,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.efx.Science.model.cduse">
+    update cduse
+    set USE002 = #{use002,jdbcType=VARCHAR},
+      USE003 = #{use003,jdbcType=VARCHAR},
+      USE004 = #{use004,jdbcType=VARCHAR},
+      USE005 = #{use005,jdbcType=VARCHAR},
+      USE006 = #{use006,jdbcType=VARCHAR},
+      USE007 = #{use007,jdbcType=VARCHAR},
+      USE008 = #{use008,jdbcType=VARCHAR},
+      USE009 = #{use009,jdbcType=CHAR},
+      USE010 = #{use010,jdbcType=TIMESTAMP},
+      USE011 = #{use011,jdbcType=INTEGER},
+      USE012 = #{use012,jdbcType=REAL},
+      USE013 = #{use013,jdbcType=VARCHAR},
+      USE014 = #{use014,jdbcType=VARCHAR},
+      USE015 = #{use015,jdbcType=VARCHAR}
+    where USE001 = #{use001,jdbcType=INTEGER}
+  </update>
+</mapper>

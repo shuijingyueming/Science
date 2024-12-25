@@ -1,0 +1,899 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.efx.Science.dao.cdyheMapper">
+  <resultMap id="BaseResultMap" type="com.efx.Science.model.cdyhe">
+    <id column="YHE001" jdbcType="INTEGER" property="yhe001" />
+    <result column="YHE002" jdbcType="INTEGER" property="yhe002" />
+    <result column="YHE003" jdbcType="INTEGER" property="yhe003" />
+    <result column="YHE004" jdbcType="INTEGER" property="yhe004" />
+    <result column="YHE005" jdbcType="INTEGER" property="yhe005" />
+    <result column="YHE006" jdbcType="CHAR" property="yhe006" />
+    <result column="YHE007" jdbcType="CHAR" property="yhe007" />
+    <result column="YHE008" jdbcType="TIMESTAMP" property="yhe008" />
+    <result column="YHE009" jdbcType="VARCHAR" property="yhe009" />
+    <result column="YHE010" jdbcType="INTEGER" property="yhe010" />
+    <result column="YHE011" jdbcType="REAL" property="yhe011" />
+    <result column="YHE012" jdbcType="REAL" property="yhe012" />
+    <result column="YHE013" jdbcType="REAL" property="yhe013" />
+    <result column="YHE014" jdbcType="REAL" property="yhe014" />
+    <result column="YHE015" jdbcType="INTEGER" property="yhe015" />
+    <result column="YHE016" jdbcType="INTEGER" property="yhe016" />
+    <result column="YHE017" jdbcType="INTEGER" property="yhe017" />
+    <result column="YHE018" jdbcType="REAL" property="yhe018" />
+    <result column="YHE019" jdbcType="REAL" property="yhe019" />
+    <result column="YHE020" jdbcType="TIMESTAMP" property="yhe020" />
+    <result column="YHE021" jdbcType="CHAR" property="yhe021" />
+    <result column="YHE022" jdbcType="CHAR" property="yhe022" />
+    <result column="YHE023" jdbcType="CHAR" property="yhe023" />
+    <result column="YHE024" jdbcType="CHAR" property="yhe024" />
+    <result column="YHE025" jdbcType="CHAR" property="yhe025" />
+    <result column="YHE026" jdbcType="CHAR" property="yhe026" />
+    <result column="YHE027" jdbcType="CHAR" property="yhe027" />
+    <result column="YHE028" jdbcType="CHAR" property="yhe028" />
+    <result column="YHE032" jdbcType="INTEGER" property="yhe032" />
+    <result column="YHE033" jdbcType="CHAR" property="yhe033" />
+    <result column="YHE034" jdbcType="CHAR" property="yhe034" />
+    <result column="YHE035" jdbcType="CHAR" property="yhe035" />
+    <result column="YHE036" jdbcType="CHAR" property="yhe036" />
+    <result column="YHE037" jdbcType="CHAR" property="yhe037" />
+    <result column="YHE038" jdbcType="CHAR" property="yhe038" />
+    <result column="YHE040" jdbcType="INTEGER" property="yhe040" />
+    <result column="YHE041" jdbcType="VARCHAR" property="yhe041" />
+    <result column="YHE042" jdbcType="VARCHAR" property="yhe042" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.efx.Science.model.cdyheWithBLOBs">
+    <result column="YHE029" jdbcType="LONGVARCHAR" property="yhe029" />
+    <result column="YHE030" jdbcType="LONGVARCHAR" property="yhe030" />
+    <result column="YHE031" jdbcType="LONGVARCHAR" property="yhe031" />
+    <result column="YHE039" jdbcType="LONGVARCHAR" property="yhe039" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    YHE001, YHE002, YHE003, YHE004, YHE005, YHE006, YHE007, YHE008, YHE009, YHE010, YHE011, 
+    YHE012, YHE013, YHE014, YHE015, YHE016, YHE017, YHE018, YHE019, YHE020, YHE021, YHE022, 
+    YHE023, YHE024, YHE025, YHE026, YHE027, YHE028, YHE032, YHE033, YHE034, YHE035, YHE036, 
+    YHE037, YHE038, YHE040, YHE041, YHE042
+  </sql>
+  <sql id="Blob_Column_List">
+    YHE029, YHE030, YHE031, YHE039
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.efx.Science.model.cdyheExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from cdyhe
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.efx.Science.model.cdyheExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cdyhe
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from cdyhe
+    where YHE001 = #{yhe001,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from cdyhe
+    where YHE001 = #{yhe001,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.efx.Science.model.cdyheExample">
+    delete from cdyhe
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.efx.Science.model.cdyheWithBLOBs">
+    insert into cdyhe (YHE001, YHE002, YHE003, 
+      YHE004, YHE005, YHE006, 
+      YHE007, YHE008, YHE009, 
+      YHE010, YHE011, YHE012, YHE013, 
+      YHE014, YHE015, YHE016, 
+      YHE017, YHE018, YHE019, YHE020, 
+      YHE021, YHE022, YHE023, YHE024, 
+      YHE025, YHE026, YHE027, YHE028, 
+      YHE032, YHE033, YHE034, YHE035, 
+      YHE036, YHE037, YHE038, YHE040, 
+      YHE041, YHE042, YHE029, 
+      YHE030, YHE031, YHE039
+      )
+    values (#{yhe001,jdbcType=INTEGER}, #{yhe002,jdbcType=INTEGER}, #{yhe003,jdbcType=INTEGER}, 
+      #{yhe004,jdbcType=INTEGER}, #{yhe005,jdbcType=INTEGER}, #{yhe006,jdbcType=CHAR}, 
+      #{yhe007,jdbcType=CHAR}, #{yhe008,jdbcType=TIMESTAMP}, #{yhe009,jdbcType=VARCHAR}, 
+      #{yhe010,jdbcType=INTEGER}, #{yhe011,jdbcType=REAL}, #{yhe012,jdbcType=REAL}, #{yhe013,jdbcType=REAL}, 
+      #{yhe014,jdbcType=REAL}, #{yhe015,jdbcType=INTEGER}, #{yhe016,jdbcType=INTEGER}, 
+      #{yhe017,jdbcType=INTEGER}, #{yhe018,jdbcType=REAL}, #{yhe019,jdbcType=REAL}, #{yhe020,jdbcType=TIMESTAMP}, 
+      #{yhe021,jdbcType=CHAR}, #{yhe022,jdbcType=CHAR}, #{yhe023,jdbcType=CHAR}, #{yhe024,jdbcType=CHAR}, 
+      #{yhe025,jdbcType=CHAR}, #{yhe026,jdbcType=CHAR}, #{yhe027,jdbcType=CHAR}, #{yhe028,jdbcType=CHAR}, 
+      #{yhe032,jdbcType=INTEGER}, #{yhe033,jdbcType=CHAR}, #{yhe034,jdbcType=CHAR}, #{yhe035,jdbcType=CHAR}, 
+      #{yhe036,jdbcType=CHAR}, #{yhe037,jdbcType=CHAR}, #{yhe038,jdbcType=CHAR}, #{yhe040,jdbcType=INTEGER}, 
+      #{yhe041,jdbcType=VARCHAR}, #{yhe042,jdbcType=VARCHAR}, #{yhe029,jdbcType=LONGVARCHAR}, 
+      #{yhe030,jdbcType=LONGVARCHAR}, #{yhe031,jdbcType=LONGVARCHAR}, #{yhe039,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.efx.Science.model.cdyheWithBLOBs">
+    insert into cdyhe
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="yhe001 != null">
+        YHE001,
+      </if>
+      <if test="yhe002 != null">
+        YHE002,
+      </if>
+      <if test="yhe003 != null">
+        YHE003,
+      </if>
+      <if test="yhe004 != null">
+        YHE004,
+      </if>
+      <if test="yhe005 != null">
+        YHE005,
+      </if>
+      <if test="yhe006 != null">
+        YHE006,
+      </if>
+      <if test="yhe007 != null">
+        YHE007,
+      </if>
+      <if test="yhe008 != null">
+        YHE008,
+      </if>
+      <if test="yhe009 != null">
+        YHE009,
+      </if>
+      <if test="yhe010 != null">
+        YHE010,
+      </if>
+      <if test="yhe011 != null">
+        YHE011,
+      </if>
+      <if test="yhe012 != null">
+        YHE012,
+      </if>
+      <if test="yhe013 != null">
+        YHE013,
+      </if>
+      <if test="yhe014 != null">
+        YHE014,
+      </if>
+      <if test="yhe015 != null">
+        YHE015,
+      </if>
+      <if test="yhe016 != null">
+        YHE016,
+      </if>
+      <if test="yhe017 != null">
+        YHE017,
+      </if>
+      <if test="yhe018 != null">
+        YHE018,
+      </if>
+      <if test="yhe019 != null">
+        YHE019,
+      </if>
+      <if test="yhe020 != null">
+        YHE020,
+      </if>
+      <if test="yhe021 != null">
+        YHE021,
+      </if>
+      <if test="yhe022 != null">
+        YHE022,
+      </if>
+      <if test="yhe023 != null">
+        YHE023,
+      </if>
+      <if test="yhe024 != null">
+        YHE024,
+      </if>
+      <if test="yhe025 != null">
+        YHE025,
+      </if>
+      <if test="yhe026 != null">
+        YHE026,
+      </if>
+      <if test="yhe027 != null">
+        YHE027,
+      </if>
+      <if test="yhe028 != null">
+        YHE028,
+      </if>
+      <if test="yhe032 != null">
+        YHE032,
+      </if>
+      <if test="yhe033 != null">
+        YHE033,
+      </if>
+      <if test="yhe034 != null">
+        YHE034,
+      </if>
+      <if test="yhe035 != null">
+        YHE035,
+      </if>
+      <if test="yhe036 != null">
+        YHE036,
+      </if>
+      <if test="yhe037 != null">
+        YHE037,
+      </if>
+      <if test="yhe038 != null">
+        YHE038,
+      </if>
+      <if test="yhe040 != null">
+        YHE040,
+      </if>
+      <if test="yhe041 != null">
+        YHE041,
+      </if>
+      <if test="yhe042 != null">
+        YHE042,
+      </if>
+      <if test="yhe029 != null">
+        YHE029,
+      </if>
+      <if test="yhe030 != null">
+        YHE030,
+      </if>
+      <if test="yhe031 != null">
+        YHE031,
+      </if>
+      <if test="yhe039 != null">
+        YHE039,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="yhe001 != null">
+        #{yhe001,jdbcType=INTEGER},
+      </if>
+      <if test="yhe002 != null">
+        #{yhe002,jdbcType=INTEGER},
+      </if>
+      <if test="yhe003 != null">
+        #{yhe003,jdbcType=INTEGER},
+      </if>
+      <if test="yhe004 != null">
+        #{yhe004,jdbcType=INTEGER},
+      </if>
+      <if test="yhe005 != null">
+        #{yhe005,jdbcType=INTEGER},
+      </if>
+      <if test="yhe006 != null">
+        #{yhe006,jdbcType=CHAR},
+      </if>
+      <if test="yhe007 != null">
+        #{yhe007,jdbcType=CHAR},
+      </if>
+      <if test="yhe008 != null">
+        #{yhe008,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yhe009 != null">
+        #{yhe009,jdbcType=VARCHAR},
+      </if>
+      <if test="yhe010 != null">
+        #{yhe010,jdbcType=INTEGER},
+      </if>
+      <if test="yhe011 != null">
+        #{yhe011,jdbcType=REAL},
+      </if>
+      <if test="yhe012 != null">
+        #{yhe012,jdbcType=REAL},
+      </if>
+      <if test="yhe013 != null">
+        #{yhe013,jdbcType=REAL},
+      </if>
+      <if test="yhe014 != null">
+        #{yhe014,jdbcType=REAL},
+      </if>
+      <if test="yhe015 != null">
+        #{yhe015,jdbcType=INTEGER},
+      </if>
+      <if test="yhe016 != null">
+        #{yhe016,jdbcType=INTEGER},
+      </if>
+      <if test="yhe017 != null">
+        #{yhe017,jdbcType=INTEGER},
+      </if>
+      <if test="yhe018 != null">
+        #{yhe018,jdbcType=REAL},
+      </if>
+      <if test="yhe019 != null">
+        #{yhe019,jdbcType=REAL},
+      </if>
+      <if test="yhe020 != null">
+        #{yhe020,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yhe021 != null">
+        #{yhe021,jdbcType=CHAR},
+      </if>
+      <if test="yhe022 != null">
+        #{yhe022,jdbcType=CHAR},
+      </if>
+      <if test="yhe023 != null">
+        #{yhe023,jdbcType=CHAR},
+      </if>
+      <if test="yhe024 != null">
+        #{yhe024,jdbcType=CHAR},
+      </if>
+      <if test="yhe025 != null">
+        #{yhe025,jdbcType=CHAR},
+      </if>
+      <if test="yhe026 != null">
+        #{yhe026,jdbcType=CHAR},
+      </if>
+      <if test="yhe027 != null">
+        #{yhe027,jdbcType=CHAR},
+      </if>
+      <if test="yhe028 != null">
+        #{yhe028,jdbcType=CHAR},
+      </if>
+      <if test="yhe032 != null">
+        #{yhe032,jdbcType=INTEGER},
+      </if>
+      <if test="yhe033 != null">
+        #{yhe033,jdbcType=CHAR},
+      </if>
+      <if test="yhe034 != null">
+        #{yhe034,jdbcType=CHAR},
+      </if>
+      <if test="yhe035 != null">
+        #{yhe035,jdbcType=CHAR},
+      </if>
+      <if test="yhe036 != null">
+        #{yhe036,jdbcType=CHAR},
+      </if>
+      <if test="yhe037 != null">
+        #{yhe037,jdbcType=CHAR},
+      </if>
+      <if test="yhe038 != null">
+        #{yhe038,jdbcType=CHAR},
+      </if>
+      <if test="yhe040 != null">
+        #{yhe040,jdbcType=INTEGER},
+      </if>
+      <if test="yhe041 != null">
+        #{yhe041,jdbcType=VARCHAR},
+      </if>
+      <if test="yhe042 != null">
+        #{yhe042,jdbcType=VARCHAR},
+      </if>
+      <if test="yhe029 != null">
+        #{yhe029,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="yhe030 != null">
+        #{yhe030,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="yhe031 != null">
+        #{yhe031,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="yhe039 != null">
+        #{yhe039,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.efx.Science.model.cdyheExample" resultType="java.lang.Long">
+    select count(*) from cdyhe
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update cdyhe
+    <set>
+      <if test="record.yhe001 != null">
+        YHE001 = #{record.yhe001,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhe002 != null">
+        YHE002 = #{record.yhe002,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhe003 != null">
+        YHE003 = #{record.yhe003,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhe004 != null">
+        YHE004 = #{record.yhe004,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhe005 != null">
+        YHE005 = #{record.yhe005,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhe006 != null">
+        YHE006 = #{record.yhe006,jdbcType=CHAR},
+      </if>
+      <if test="record.yhe007 != null">
+        YHE007 = #{record.yhe007,jdbcType=CHAR},
+      </if>
+      <if test="record.yhe008 != null">
+        YHE008 = #{record.yhe008,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.yhe009 != null">
+        YHE009 = #{record.yhe009,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yhe010 != null">
+        YHE010 = #{record.yhe010,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhe011 != null">
+        YHE011 = #{record.yhe011,jdbcType=REAL},
+      </if>
+      <if test="record.yhe012 != null">
+        YHE012 = #{record.yhe012,jdbcType=REAL},
+      </if>
+      <if test="record.yhe013 != null">
+        YHE013 = #{record.yhe013,jdbcType=REAL},
+      </if>
+      <if test="record.yhe014 != null">
+        YHE014 = #{record.yhe014,jdbcType=REAL},
+      </if>
+      <if test="record.yhe015 != null">
+        YHE015 = #{record.yhe015,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhe016 != null">
+        YHE016 = #{record.yhe016,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhe017 != null">
+        YHE017 = #{record.yhe017,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhe018 != null">
+        YHE018 = #{record.yhe018,jdbcType=REAL},
+      </if>
+      <if test="record.yhe019 != null">
+        YHE019 = #{record.yhe019,jdbcType=REAL},
+      </if>
+      <if test="record.yhe020 != null">
+        YHE020 = #{record.yhe020,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.yhe021 != null">
+        YHE021 = #{record.yhe021,jdbcType=CHAR},
+      </if>
+      <if test="record.yhe022 != null">
+        YHE022 = #{record.yhe022,jdbcType=CHAR},
+      </if>
+      <if test="record.yhe023 != null">
+        YHE023 = #{record.yhe023,jdbcType=CHAR},
+      </if>
+      <if test="record.yhe024 != null">
+        YHE024 = #{record.yhe024,jdbcType=CHAR},
+      </if>
+      <if test="record.yhe025 != null">
+        YHE025 = #{record.yhe025,jdbcType=CHAR},
+      </if>
+      <if test="record.yhe026 != null">
+        YHE026 = #{record.yhe026,jdbcType=CHAR},
+      </if>
+      <if test="record.yhe027 != null">
+        YHE027 = #{record.yhe027,jdbcType=CHAR},
+      </if>
+      <if test="record.yhe028 != null">
+        YHE028 = #{record.yhe028,jdbcType=CHAR},
+      </if>
+      <if test="record.yhe032 != null">
+        YHE032 = #{record.yhe032,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhe033 != null">
+        YHE033 = #{record.yhe033,jdbcType=CHAR},
+      </if>
+      <if test="record.yhe034 != null">
+        YHE034 = #{record.yhe034,jdbcType=CHAR},
+      </if>
+      <if test="record.yhe035 != null">
+        YHE035 = #{record.yhe035,jdbcType=CHAR},
+      </if>
+      <if test="record.yhe036 != null">
+        YHE036 = #{record.yhe036,jdbcType=CHAR},
+      </if>
+      <if test="record.yhe037 != null">
+        YHE037 = #{record.yhe037,jdbcType=CHAR},
+      </if>
+      <if test="record.yhe038 != null">
+        YHE038 = #{record.yhe038,jdbcType=CHAR},
+      </if>
+      <if test="record.yhe040 != null">
+        YHE040 = #{record.yhe040,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhe041 != null">
+        YHE041 = #{record.yhe041,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yhe042 != null">
+        YHE042 = #{record.yhe042,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yhe029 != null">
+        YHE029 = #{record.yhe029,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.yhe030 != null">
+        YHE030 = #{record.yhe030,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.yhe031 != null">
+        YHE031 = #{record.yhe031,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.yhe039 != null">
+        YHE039 = #{record.yhe039,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update cdyhe
+    set YHE001 = #{record.yhe001,jdbcType=INTEGER},
+      YHE002 = #{record.yhe002,jdbcType=INTEGER},
+      YHE003 = #{record.yhe003,jdbcType=INTEGER},
+      YHE004 = #{record.yhe004,jdbcType=INTEGER},
+      YHE005 = #{record.yhe005,jdbcType=INTEGER},
+      YHE006 = #{record.yhe006,jdbcType=CHAR},
+      YHE007 = #{record.yhe007,jdbcType=CHAR},
+      YHE008 = #{record.yhe008,jdbcType=TIMESTAMP},
+      YHE009 = #{record.yhe009,jdbcType=VARCHAR},
+      YHE010 = #{record.yhe010,jdbcType=INTEGER},
+      YHE011 = #{record.yhe011,jdbcType=REAL},
+      YHE012 = #{record.yhe012,jdbcType=REAL},
+      YHE013 = #{record.yhe013,jdbcType=REAL},
+      YHE014 = #{record.yhe014,jdbcType=REAL},
+      YHE015 = #{record.yhe015,jdbcType=INTEGER},
+      YHE016 = #{record.yhe016,jdbcType=INTEGER},
+      YHE017 = #{record.yhe017,jdbcType=INTEGER},
+      YHE018 = #{record.yhe018,jdbcType=REAL},
+      YHE019 = #{record.yhe019,jdbcType=REAL},
+      YHE020 = #{record.yhe020,jdbcType=TIMESTAMP},
+      YHE021 = #{record.yhe021,jdbcType=CHAR},
+      YHE022 = #{record.yhe022,jdbcType=CHAR},
+      YHE023 = #{record.yhe023,jdbcType=CHAR},
+      YHE024 = #{record.yhe024,jdbcType=CHAR},
+      YHE025 = #{record.yhe025,jdbcType=CHAR},
+      YHE026 = #{record.yhe026,jdbcType=CHAR},
+      YHE027 = #{record.yhe027,jdbcType=CHAR},
+      YHE028 = #{record.yhe028,jdbcType=CHAR},
+      YHE032 = #{record.yhe032,jdbcType=INTEGER},
+      YHE033 = #{record.yhe033,jdbcType=CHAR},
+      YHE034 = #{record.yhe034,jdbcType=CHAR},
+      YHE035 = #{record.yhe035,jdbcType=CHAR},
+      YHE036 = #{record.yhe036,jdbcType=CHAR},
+      YHE037 = #{record.yhe037,jdbcType=CHAR},
+      YHE038 = #{record.yhe038,jdbcType=CHAR},
+      YHE040 = #{record.yhe040,jdbcType=INTEGER},
+      YHE041 = #{record.yhe041,jdbcType=VARCHAR},
+      YHE042 = #{record.yhe042,jdbcType=VARCHAR},
+      YHE029 = #{record.yhe029,jdbcType=LONGVARCHAR},
+      YHE030 = #{record.yhe030,jdbcType=LONGVARCHAR},
+      YHE031 = #{record.yhe031,jdbcType=LONGVARCHAR},
+      YHE039 = #{record.yhe039,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update cdyhe
+    set YHE001 = #{record.yhe001,jdbcType=INTEGER},
+      YHE002 = #{record.yhe002,jdbcType=INTEGER},
+      YHE003 = #{record.yhe003,jdbcType=INTEGER},
+      YHE004 = #{record.yhe004,jdbcType=INTEGER},
+      YHE005 = #{record.yhe005,jdbcType=INTEGER},
+      YHE006 = #{record.yhe006,jdbcType=CHAR},
+      YHE007 = #{record.yhe007,jdbcType=CHAR},
+      YHE008 = #{record.yhe008,jdbcType=TIMESTAMP},
+      YHE009 = #{record.yhe009,jdbcType=VARCHAR},
+      YHE010 = #{record.yhe010,jdbcType=INTEGER},
+      YHE011 = #{record.yhe011,jdbcType=REAL},
+      YHE012 = #{record.yhe012,jdbcType=REAL},
+      YHE013 = #{record.yhe013,jdbcType=REAL},
+      YHE014 = #{record.yhe014,jdbcType=REAL},
+      YHE015 = #{record.yhe015,jdbcType=INTEGER},
+      YHE016 = #{record.yhe016,jdbcType=INTEGER},
+      YHE017 = #{record.yhe017,jdbcType=INTEGER},
+      YHE018 = #{record.yhe018,jdbcType=REAL},
+      YHE019 = #{record.yhe019,jdbcType=REAL},
+      YHE020 = #{record.yhe020,jdbcType=TIMESTAMP},
+      YHE021 = #{record.yhe021,jdbcType=CHAR},
+      YHE022 = #{record.yhe022,jdbcType=CHAR},
+      YHE023 = #{record.yhe023,jdbcType=CHAR},
+      YHE024 = #{record.yhe024,jdbcType=CHAR},
+      YHE025 = #{record.yhe025,jdbcType=CHAR},
+      YHE026 = #{record.yhe026,jdbcType=CHAR},
+      YHE027 = #{record.yhe027,jdbcType=CHAR},
+      YHE028 = #{record.yhe028,jdbcType=CHAR},
+      YHE032 = #{record.yhe032,jdbcType=INTEGER},
+      YHE033 = #{record.yhe033,jdbcType=CHAR},
+      YHE034 = #{record.yhe034,jdbcType=CHAR},
+      YHE035 = #{record.yhe035,jdbcType=CHAR},
+      YHE036 = #{record.yhe036,jdbcType=CHAR},
+      YHE037 = #{record.yhe037,jdbcType=CHAR},
+      YHE038 = #{record.yhe038,jdbcType=CHAR},
+      YHE040 = #{record.yhe040,jdbcType=INTEGER},
+      YHE041 = #{record.yhe041,jdbcType=VARCHAR},
+      YHE042 = #{record.yhe042,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.efx.Science.model.cdyheWithBLOBs">
+    update cdyhe
+    <set>
+      <if test="yhe002 != null">
+        YHE002 = #{yhe002,jdbcType=INTEGER},
+      </if>
+      <if test="yhe003 != null">
+        YHE003 = #{yhe003,jdbcType=INTEGER},
+      </if>
+      <if test="yhe004 != null">
+        YHE004 = #{yhe004,jdbcType=INTEGER},
+      </if>
+      <if test="yhe005 != null">
+        YHE005 = #{yhe005,jdbcType=INTEGER},
+      </if>
+      <if test="yhe006 != null">
+        YHE006 = #{yhe006,jdbcType=CHAR},
+      </if>
+      <if test="yhe007 != null">
+        YHE007 = #{yhe007,jdbcType=CHAR},
+      </if>
+      <if test="yhe008 != null">
+        YHE008 = #{yhe008,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yhe009 != null">
+        YHE009 = #{yhe009,jdbcType=VARCHAR},
+      </if>
+      <if test="yhe010 != null">
+        YHE010 = #{yhe010,jdbcType=INTEGER},
+      </if>
+      <if test="yhe011 != null">
+        YHE011 = #{yhe011,jdbcType=REAL},
+      </if>
+      <if test="yhe012 != null">
+        YHE012 = #{yhe012,jdbcType=REAL},
+      </if>
+      <if test="yhe013 != null">
+        YHE013 = #{yhe013,jdbcType=REAL},
+      </if>
+      <if test="yhe014 != null">
+        YHE014 = #{yhe014,jdbcType=REAL},
+      </if>
+      <if test="yhe015 != null">
+        YHE015 = #{yhe015,jdbcType=INTEGER},
+      </if>
+      <if test="yhe016 != null">
+        YHE016 = #{yhe016,jdbcType=INTEGER},
+      </if>
+      <if test="yhe017 != null">
+        YHE017 = #{yhe017,jdbcType=INTEGER},
+      </if>
+      <if test="yhe018 != null">
+        YHE018 = #{yhe018,jdbcType=REAL},
+      </if>
+      <if test="yhe019 != null">
+        YHE019 = #{yhe019,jdbcType=REAL},
+      </if>
+      <if test="yhe020 != null">
+        YHE020 = #{yhe020,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yhe021 != null">
+        YHE021 = #{yhe021,jdbcType=CHAR},
+      </if>
+      <if test="yhe022 != null">
+        YHE022 = #{yhe022,jdbcType=CHAR},
+      </if>
+      <if test="yhe023 != null">
+        YHE023 = #{yhe023,jdbcType=CHAR},
+      </if>
+      <if test="yhe024 != null">
+        YHE024 = #{yhe024,jdbcType=CHAR},
+      </if>
+      <if test="yhe025 != null">
+        YHE025 = #{yhe025,jdbcType=CHAR},
+      </if>
+      <if test="yhe026 != null">
+        YHE026 = #{yhe026,jdbcType=CHAR},
+      </if>
+      <if test="yhe027 != null">
+        YHE027 = #{yhe027,jdbcType=CHAR},
+      </if>
+      <if test="yhe028 != null">
+        YHE028 = #{yhe028,jdbcType=CHAR},
+      </if>
+      <if test="yhe032 != null">
+        YHE032 = #{yhe032,jdbcType=INTEGER},
+      </if>
+      <if test="yhe033 != null">
+        YHE033 = #{yhe033,jdbcType=CHAR},
+      </if>
+      <if test="yhe034 != null">
+        YHE034 = #{yhe034,jdbcType=CHAR},
+      </if>
+      <if test="yhe035 != null">
+        YHE035 = #{yhe035,jdbcType=CHAR},
+      </if>
+      <if test="yhe036 != null">
+        YHE036 = #{yhe036,jdbcType=CHAR},
+      </if>
+      <if test="yhe037 != null">
+        YHE037 = #{yhe037,jdbcType=CHAR},
+      </if>
+      <if test="yhe038 != null">
+        YHE038 = #{yhe038,jdbcType=CHAR},
+      </if>
+      <if test="yhe040 != null">
+        YHE040 = #{yhe040,jdbcType=INTEGER},
+      </if>
+      <if test="yhe041 != null">
+        YHE041 = #{yhe041,jdbcType=VARCHAR},
+      </if>
+      <if test="yhe042 != null">
+        YHE042 = #{yhe042,jdbcType=VARCHAR},
+      </if>
+      <if test="yhe029 != null">
+        YHE029 = #{yhe029,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="yhe030 != null">
+        YHE030 = #{yhe030,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="yhe031 != null">
+        YHE031 = #{yhe031,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="yhe039 != null">
+        YHE039 = #{yhe039,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where YHE001 = #{yhe001,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.efx.Science.model.cdyheWithBLOBs">
+    update cdyhe
+    set YHE002 = #{yhe002,jdbcType=INTEGER},
+      YHE003 = #{yhe003,jdbcType=INTEGER},
+      YHE004 = #{yhe004,jdbcType=INTEGER},
+      YHE005 = #{yhe005,jdbcType=INTEGER},
+      YHE006 = #{yhe006,jdbcType=CHAR},
+      YHE007 = #{yhe007,jdbcType=CHAR},
+      YHE008 = #{yhe008,jdbcType=TIMESTAMP},
+      YHE009 = #{yhe009,jdbcType=VARCHAR},
+      YHE010 = #{yhe010,jdbcType=INTEGER},
+      YHE011 = #{yhe011,jdbcType=REAL},
+      YHE012 = #{yhe012,jdbcType=REAL},
+      YHE013 = #{yhe013,jdbcType=REAL},
+      YHE014 = #{yhe014,jdbcType=REAL},
+      YHE015 = #{yhe015,jdbcType=INTEGER},
+      YHE016 = #{yhe016,jdbcType=INTEGER},
+      YHE017 = #{yhe017,jdbcType=INTEGER},
+      YHE018 = #{yhe018,jdbcType=REAL},
+      YHE019 = #{yhe019,jdbcType=REAL},
+      YHE020 = #{yhe020,jdbcType=TIMESTAMP},
+      YHE021 = #{yhe021,jdbcType=CHAR},
+      YHE022 = #{yhe022,jdbcType=CHAR},
+      YHE023 = #{yhe023,jdbcType=CHAR},
+      YHE024 = #{yhe024,jdbcType=CHAR},
+      YHE025 = #{yhe025,jdbcType=CHAR},
+      YHE026 = #{yhe026,jdbcType=CHAR},
+      YHE027 = #{yhe027,jdbcType=CHAR},
+      YHE028 = #{yhe028,jdbcType=CHAR},
+      YHE032 = #{yhe032,jdbcType=INTEGER},
+      YHE033 = #{yhe033,jdbcType=CHAR},
+      YHE034 = #{yhe034,jdbcType=CHAR},
+      YHE035 = #{yhe035,jdbcType=CHAR},
+      YHE036 = #{yhe036,jdbcType=CHAR},
+      YHE037 = #{yhe037,jdbcType=CHAR},
+      YHE038 = #{yhe038,jdbcType=CHAR},
+      YHE040 = #{yhe040,jdbcType=INTEGER},
+      YHE041 = #{yhe041,jdbcType=VARCHAR},
+      YHE042 = #{yhe042,jdbcType=VARCHAR},
+      YHE029 = #{yhe029,jdbcType=LONGVARCHAR},
+      YHE030 = #{yhe030,jdbcType=LONGVARCHAR},
+      YHE031 = #{yhe031,jdbcType=LONGVARCHAR},
+      YHE039 = #{yhe039,jdbcType=LONGVARCHAR}
+    where YHE001 = #{yhe001,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.efx.Science.model.cdyhe">
+    update cdyhe
+    set YHE002 = #{yhe002,jdbcType=INTEGER},
+      YHE003 = #{yhe003,jdbcType=INTEGER},
+      YHE004 = #{yhe004,jdbcType=INTEGER},
+      YHE005 = #{yhe005,jdbcType=INTEGER},
+      YHE006 = #{yhe006,jdbcType=CHAR},
+      YHE007 = #{yhe007,jdbcType=CHAR},
+      YHE008 = #{yhe008,jdbcType=TIMESTAMP},
+      YHE009 = #{yhe009,jdbcType=VARCHAR},
+      YHE010 = #{yhe010,jdbcType=INTEGER},
+      YHE011 = #{yhe011,jdbcType=REAL},
+      YHE012 = #{yhe012,jdbcType=REAL},
+      YHE013 = #{yhe013,jdbcType=REAL},
+      YHE014 = #{yhe014,jdbcType=REAL},
+      YHE015 = #{yhe015,jdbcType=INTEGER},
+      YHE016 = #{yhe016,jdbcType=INTEGER},
+      YHE017 = #{yhe017,jdbcType=INTEGER},
+      YHE018 = #{yhe018,jdbcType=REAL},
+      YHE019 = #{yhe019,jdbcType=REAL},
+      YHE020 = #{yhe020,jdbcType=TIMESTAMP},
+      YHE021 = #{yhe021,jdbcType=CHAR},
+      YHE022 = #{yhe022,jdbcType=CHAR},
+      YHE023 = #{yhe023,jdbcType=CHAR},
+      YHE024 = #{yhe024,jdbcType=CHAR},
+      YHE025 = #{yhe025,jdbcType=CHAR},
+      YHE026 = #{yhe026,jdbcType=CHAR},
+      YHE027 = #{yhe027,jdbcType=CHAR},
+      YHE028 = #{yhe028,jdbcType=CHAR},
+      YHE032 = #{yhe032,jdbcType=INTEGER},
+      YHE033 = #{yhe033,jdbcType=CHAR},
+      YHE034 = #{yhe034,jdbcType=CHAR},
+      YHE035 = #{yhe035,jdbcType=CHAR},
+      YHE036 = #{yhe036,jdbcType=CHAR},
+      YHE037 = #{yhe037,jdbcType=CHAR},
+      YHE038 = #{yhe038,jdbcType=CHAR},
+      YHE040 = #{yhe040,jdbcType=INTEGER},
+      YHE041 = #{yhe041,jdbcType=VARCHAR},
+      YHE042 = #{yhe042,jdbcType=VARCHAR}
+    where YHE001 = #{yhe001,jdbcType=INTEGER}
+  </update>
+</mapper>

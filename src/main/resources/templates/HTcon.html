@@ -1,0 +1,774 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <base th:href="${#request.getContextPath()}+'/'">
+    <title>后台管理系统</title>
+    <meta http-equiv="pragma" content="no-cache"/>
+    <meta http-equiv="cache-control" content="no-cache"/>
+    <meta http-equiv="expires" content="0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <!--表格css-->
+    <link rel="stylesheet" href="css/tables/datatables.min.css">
+    <link rel="stylesheet" href="css/tables/datatables-http.min.css">
+    <link rel="stylesheet" href="css/tables/jsgrid/jsgrid.css">
+    <link rel="stylesheet" href="css/tables/jsgrid/theme.css">
+    <link rel="stylesheet" href="css/tables/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="css/tables/jsgrid/demos.css">
+    <link rel="stylesheet" href="css/tables/jsgrid/jsgridui.css">
+
+    <link rel="stylesheet" type="text/css" href="css/materialdesignicons.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="js/bootstrap-multitabs/multitabs.min.css">
+    <link type="text/css" rel="stylesheet" href="js/jquery-tagsinput/jquery.tagsinput.min.css">
+    <link type="text/css" rel="stylesheet" href="js/webuploader/webuploader.css">
+    <link type="text/css" rel="stylesheet" href="js/magnific-popup/magnific-popup.min.css">
+    <link rel="stylesheet" type="text/css" href="css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.min.css">
+    <link rel="stylesheet" type="text/css" href="css/page.css">
+</head>
+<body>
+<div class="container-fluid">
+    <a id="addoredit_a" role="button" class="btn btn-primary" style="display:none;" data-bs-toggle="modal" data-bs-target="#editmode" >添加</a>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-search mb-3-5">
+                            <!--text input-->
+                            <div class="row g-3">
+                                <div class="col-auto">
+                                    <div class="row">
+                                        <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">一级分类</label>
+                                        <div class="col-auto">
+                                            <select id="onetype" class="form-select" >
+                                                <option value="0">选择一级分类</option>
+                                                <th:block th:each="item,stat:${usgList}">
+                                                    <option th:value="${item.usg001}" th:text="${item.usg002}"></option>
+                                                </th:block>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--select-->
+                                <div class="col-auto">
+                                    <div class="row">
+                                        <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">二级分类</label>
+                                        <div class="col-auto">
+                                            <select id="twotype" class="form-select"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--time-->
+                                <div class="col-auto">
+                                    <div class="row">
+                                        <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">三级分类</label>
+                                        <div class="col-auto input-group">
+                                            <select id="threetype" class="form-select"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--button-->
+                                <div class="col-auto">
+                                    <button type="button" onclick="serachcon()" class="btn btn-primary me-1">搜索</button>
+                                </div>
+                            </div>
+                    </div>
+                    <div id="wrapp" >
+                        <div class="jsgrid table-responsive" data-parent="#accordion">
+                            <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%;" id="sdcon" >
+                                <thead>
+                                <tr>
+                                    <th style="max-width:30px;">序号</th>
+                                    <th style="max-width:50px;">类型</th>
+                                    <th style="max-width:100px;">分类</th>
+                                    <th>内容</th>
+                                    <th style="max-width:100px;">外联地址</th>
+                                    <th style="max-width:120px;">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tablebody">
+                                <tr th:each="item,stat:${usdList}">
+                                    <td th:text="${stat.index+1}"></td>
+                                    <td th:text="${item.usd003=='A'?'视频':'图文'}"></td>
+                                    <td>
+                                        <span th:text="${item.usg!=null?item.usg.usg002:''}"></span>
+                                        <span th:text="${item.usc!=null?((item.usg!=null?' | ':'')+item.usc.usc002):''}"></span>
+                                        <span th:text="${item.usa!=null?((item.usc!=null?' | ':'')+item.usa.usa002):''}"></span>
+                                    </td>
+                                    <td>
+                                        <div th:if="${item.usd003=='A'}" class="typerow">
+                                            <video th:src="${'upload/cimg/'+item.usd005}" controls></video>
+                                        </div>
+                                        <div th:if="${item.usd003=='B'}" class="typerow">
+                                            <img th:src="${'upload/cimg/'+item.usd005}">
+                                            <span th:text="${item.usd004}"></span>
+                                        </div>
+                                    </td>
+                                    <td th:text="${item.usd007}"></td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="javascript:void(0);" th:onclick="epactic([[${item.usd001}]])" class="btn btn-table">附加内容</a>
+                                            <div class="ivu-divider-vertical"></div>
+                                            <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]],[[${item.usg.toString()}]],[[${item.usc!=null?item.usc.toString():''}]],[[${item.usa!=null?item.usa.toString():''}]])" class="btn btn-table"
+                                               data-bs-toggle="modal" data-bs-target="#editmode">编辑</a>
+                                            <div class="ivu-divider-vertical"></div>
+                                            <a href="javascript:void(0);" th:onclick="del([[${item.usd001}]])" class="btn btn-table">删除</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑分类模态框 -->
+    <div class="modal fade" id="editmode" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel"
+         aria-hidden="true" style="height:100%;background-color: #FFF;">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="editmodeLabel"><span id="ftype"></span>内容</h6>
+                    <button type="button" onclick="pagerefalsh()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <input type="hidden" id="fid" value=""/>
+                    <div class="modal-body">
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:0;padding-left:20px;">所属分类</label>
+                            <div class="col-xl-8 col-md-10 col-sm-10 form-check form-check-inline">
+                                <div class="col-xl-2 col-md-3 col-sm-10 form-check form-check-inline" style="padding-left:0;margin:5px 0;">
+                                    <select class="form-select" id="sonetype" name="sonetype">
+                                        <option value="0">选择一级分类</option>
+                                        <th:block th:each="item,stat:${usgList}">
+                                            <option th:value="${item.usg001}" th:text="${item.usg002}"></option>
+                                        </th:block>
+                                    </select>
+                                </div>
+                                <div class="col-xl-2 col-md-3 col-sm-10 form-check form-check-inline" style="padding-left:0;margin:5px 0;">
+                                    <select class="form-select" id="stwotype">
+                                        <option value="0">选择二级分类</option>
+                                    </select>
+                                </div>
+                                <div class="col-xl-2 col-md-3 col-sm-10 form-check form-check-inline" style="padding-left:0;margin:5px 0;">
+                                    <select class="form-select" id="sthreetype">
+                                        <option value="0">选择三级分类</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">内容类型</label>
+                            <div class="col-4 p-top-s">
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" id="statusOne" name="customRadioInline" class="form-check-input" value="B" checked>
+                                    <label class="form-check-label" for="statusOne">图文</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" id="statusTwo" name="customRadioInline" class="form-check-input" value="A">
+                                    <label class="form-check-label" for="statusTwo">视频</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:0;padding-left:20px;">外链地址</label>
+                            <div class="col-4">
+                                <textarea class="form-control" style="resize: none;"  rows="2" id="wurl" placeholder="请输入外链地址" ></textarea>
+                            </div>
+                            <div class="col-11 small" style="margin-left:10px;color:#0096FF;">外部链接设定后，前端将不显示下级类目和内容。</div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;" id="upimgtxt">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">文本内容</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <textarea class="form-control" style="resize: none;"  rows="3" id="wtxt" name="wtxt" placeholder="请输入文本内容" ></textarea>
+                            </div>
+                        </div>
+                        <div class="mb-3 col-md-12 position-relative" style="margin-top: 20px;padding-left: 8px;" id="upimgfile">
+                            <div class="js-upload-images" style="margin-top: 20px;">
+                                <div id="picker_more_pics" style="padding-right:0;padding-left:10px;">上传图片</div>
+                                <input type="hidden" id="more_pics" name="more_pics" data-multiple="false" data-size="20971520"
+                                       data-ext='jpg,jpeg,png'/>
+                                <ul id="file_list_more_pics" class="list-inline row lyear-uploads-pic mb-0" style="padding-right:0;padding-left:10px;">
+                                    <li class="col-10 col-sm-8 col-md-6 col-lg-5 list-images-item" >
+                                        <figure style="max-height: 400px;min-height: 300px;height: 100%;">
+                                            <img id="upfileimg" src="" />
+                                        </figure>
+                                    </li>
+                                </ul>
+                                <div class="col-11 small" style="margin-left:10px;color:#0096FF;">图片不超过10M，图片格式jpg,jpeg,png</div>
+                            </div>
+                        </div>
+                        <div class="mb-3 col-md-12 position-relative" id="upvadiofile" style="display:none;margin-top: 20px;padding-left: 8px;">
+                            <div class="form-check form-check-inline" style="padding-left: 10px;">
+                                <button type="button" class="btn btn-primary" onclick="uploadvadio()">上传视频</button>
+                            </div>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-5 form-check form-check-inline typerow_p" style="padding-left: 10px;">
+                                <figure style="max-height: 400px;min-height: 300px;height:100%;width:100%;display: flex;">
+                                    <input type="file" id="videoinput" accept="video/*" style="display:none;">
+                                    <video class="form-vadio" id="upfilevadio" src="" controls/>
+                                </figure>
+                            </div>
+                            <div class="col-11 small" style="margin-left:10px;color:#0096FF;">视频不超过100M，视频格式mp4</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="height:100px;">
+                        <button type="submit" class="btn btn-primary" id="edit-four">保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 垂直居中的图片模态框 -->
+    <div class="modal fade" id="picModalLive" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">图片预览</h6>
+                    <button type="button" class="btn-close" data-bs-target="#editmode" data-bs-toggle="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="" id="picyl" alt="图片位"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/popper.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<!-- 数字动态滚动增加效果 -->
+<script type="text/javascript" src="js/scroll-numbers.js"></script>
+<!--引入chart插件js-->
+<script type="text/javascript" src="js/main.min.js"></script>
+<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-multitabs/multitabs.min.js"></script>
+<script type="text/javascript" src="js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="js/index.min.js"></script>
+<!-- 表格JS -->
+<script type="text/javascript" src="static/tables/datatables.min.js"></script>
+<script type="text/javascript" src="static/tables/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="static/tables/jszip.min.js"></script>
+<script type="text/javascript" src="static/tables/pdfmake.min.js"></script>
+<script type="text/javascript" src="static/tables/vfs_fonts.js"></script>
+<script type="text/javascript" src="static/tables/buttons.html5.min.js"></script>
+<script type="text/javascript" src="static/tables/buttons.print.min.js"></script>
+<script type="text/javascript" src="static/tables/datatable.js"></script>
+<!--tags插件-->
+<script type="text/javascript" src="js/jquery-tagsinput/jquery.tagsinput.min.js"></script>
+<!--上传插件-->
+<script type="text/javascript" src="js/webuploader/webuploader.js"></script>
+<!--灯箱效果插件-->
+<script type="text/javascript" src="js/magnific-popup/magnific-popup.min.js"></script>
+<!--通知消息插件-->
+<script type="text/javascript" src="js/bootstrap-notify.min.js"></script>
+<!--引入标签插件js-->
+<script type="text/javascript" src="js/jquery-confirm/jquery-confirm.min.js"></script>
+<script type="text/javascript" src="js/main.min.js"></script>
+<!--引入下拉插件js-->
+<script type="text/javascript" src="js/bootstrap-select/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-select/i18n/defaults-zh_CN.min.js"></script>
+<script type="text/javascript" src="js/layer/layer.js"></script>
+<script type="text/javascript" src="js/layui/layui.js"></script>
+<!-- validate JS 验证-->
+<script type="text/javascript" src="assets/jquery-validate/jquery.validate.js"></script>
+<script type="text/javascript" src="assets/jquery-validate/validate-methods.js"></script>
+
+<script type="text/javascript">
+
+    var file_lastName="";
+    var filesize;
+    var layer = layui.layer;
+    var load_index;
+
+    function epactic(pid){
+        var form = document.createElement("form");//创建一个表单
+        form.setAttribute("method", "post");//设置form表单的method属性
+        form.setAttribute("action", "toHt/toHTfjcon");
+        form.setAttribute("target", "_self");
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", "id");
+        hiddenField.setAttribute("value", pid);
+        form.appendChild(hiddenField);
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+
+
+    //搜索
+    function serachcon(){
+            var formData = new FormData();
+            formData.append("oneid",$("#onetype").val());
+            formData.append("twoid",$("#twotype").val());
+            formData.append("threeid",$("#threetype").val());
+            $.ajax({
+                url: 'toHt/scrachcon', // 服务器端处理上传文件的URL
+                type: 'POST',
+                data: formData,
+                dataType:'json',
+                contentType: false, // 不设置内容类型
+                processData: false, // 不处理发送的数据
+                success: function (res) {
+                    var d = eval(res);
+                    $("#tablebody").empty();
+                    for(let i=0;i<d.usdList.length;i++){
+                        let html = "<tr>";
+                        html += "<td>"+(i+1)+"</td>";
+                        html += "<td>"+(d.usdList[i].usd003=="A"?'视频':'图文')+"</td>";
+                        html += "<td>"+(d.usdList[i].usg.usg002)+(d.usdList[i].usc!=null?(" | "+d.usdList[i].usc.usc002):"")+
+                            (d.usdList[i].usa!=null?(" | "+d.usdList[i].usa.usa002):"")+"</td>";
+                        if(d.usdList[i].usd003=="A"){
+                            html += "<td><div class=\"typerow\"><video src=\"upload/cimg/"+d.usdList[i].usd005+"\" controls></video></div></td>";
+                        }else{
+                            html += "<td><div class=\"typerow\"><img src=\"upload/cimg/"+d.usdList[i].usd005+"\" />" +
+                                "<span>"+d.usdList[i].usd004+"</span></div></td>";
+                        }
+                        html += "<td>"+d.usdList[i].usd007+"</td>";
+                        html += "<td><div class=\"btn-group btn-group-sm\">" +
+                            " <a href=\"javascript:void(0);\" onclick=\"editChild("+d.usdList[i].ued001+")\" class=\"btn btn-table\">附加内容</a>" +
+                            " <a href=\"javascript:void(0);\" onclick=\"edit('"+JSON.stringify(d.usdList[i]).toString().replaceAll("\"","").replaceAll(":","=")+
+                             "','"+JSON.stringify(d.usdList[i].usg).toString().replaceAll("\"","").replaceAll(":","=")+"','"+
+                            JSON.stringify(d.usdList[i].usc).toString().replaceAll("\"","").replaceAll(":","=")+
+                            "','"+JSON.stringify(d.usdList[i].usc).toString().replaceAll("\"","").replaceAll(":","=")+"')\" " +
+                            "class=\"btn btn-table\" data-bs-toggle=\"modal\" data-bs-target=\"#editmode\">编辑</a>"+
+                            "<div class=\"ivu-divider-vertical\"></div>" +
+                            "<a href=\"javascript:void(0);\" onclick=\"del("+d.usdList[i].ued001+")\"" +
+                            " class=\"btn btn-table\">删除</a>" +
+                            "</div></td>";
+                        html += "</tr>";
+                        $("#tablebody").append(html);
+                    }
+                    layer.close(load_index);
+                },
+                error: function () { console.log('提交失败'); }
+            });
+    }
+
+    //刷新页面
+    function pagerefalsh(){
+        location.reload();
+    }
+
+    function addY(){
+        $("#ftype").text("添加");
+    }
+
+    function uploadvadio(){
+        $("#videoinput").trigger('click');
+    }
+
+    function edit(obj,onet,twot,threet){
+        let json_onet = null;
+        let json_twot = null;
+        let json_threet = null;
+        let josnobj = null;
+        if(obj.indexOf("Hash")>0){
+            json_onet = striongTOjsonString(onet);
+            if(twot!='') json_twot = striongTOjsonString(twot);
+            if(threet!='') json_threet = striongTOjsonString(threet);
+            josnobj = striongTOjsonString(obj);
+        }else{
+            josnobj = jsStringTojsonString(obj);
+            json_onet = jsStringTojsonString(onet);
+            if(twot!=null&&twot!='') json_twot  = jsStringTojsonString(twot);
+            if(threet!=null&&threet!='') json_threet = jsStringTojsonString(threet);
+        }
+        $("#fid").val(josnobj.usd001);
+        $("#ftype").text("编辑");
+        //分类设定
+        $("#sonetype").val(json_onet.usg001).trigger('change');
+        if(json_twot!=null){
+            setTimeout(function(){
+                $("#stwotype").val(json_twot.usc001).trigger('change');
+                setTimeout(function () {
+                    if(josnobj.usd002!=null&&josnobj.usd002!=""){
+                        $("#sthreetype").val(json_threet.usa001);
+                    }else{
+                        $("#sthreetype").val(0);
+                    }
+                }, 500);
+            },500);
+        }
+        if(josnobj.usd003=="B"){
+            $("input[name='customRadioInline'][value='B']").prop("checked",true);
+            $("#upimgfile").css("display","block");
+            $("#upimgtxt").css("display","block");
+            $("#upvadiofile").css("display","none");
+            $("#wtxt").val(josnobj.usd004);
+            $("#wurl").val(josnobj.usd007);
+            $("#upfileimg").attr("src","upload/cimg/"+josnobj.usd005);
+        }else{
+            $("input[name='customRadioInline'][value='A']").prop("checked",true);
+            $("#wurl").val(josnobj.usd007);
+            $("#upimgfile").css("display","none");
+            $("#upimgtxt").css("display","none");
+            $("#upvadiofile").css("display","block");
+            $("#upfilevadio").attr("src","upload/cimg/"+josnobj.usd005);
+        }
+    }
+
+    function del(id){
+        if (confirm("您确定删除吗?")) {
+            load_index = layer.load(1);
+            var formData = new FormData();
+            formData.append("fid",id);
+            $.ajax({
+                url: 'toHt/delcon', // 服务器端处理上传文件的URL
+                type: 'POST',
+                data: formData,
+                dataType:'json',
+                contentType: false, // 不设置内容类型
+                processData: false, // 不处理发送的数据
+                success: function (res) {
+                    var d = eval(res);
+                    layer.msg("删除成功");
+                    setTimeout(function(){
+                        location.reload();
+                    },1000);
+                    layer.close(load_index);
+                },
+                error: function () { console.log('提交失败'); }
+            });
+        }
+    }
+
+    //一级分类监听
+    $("#onetype").on("change", function () {
+        $("#twotype").empty();
+        $("#threetype").empty();
+        if($("#onetype").val()>0){
+            load_index = layer.load(1);
+            $.ajax({
+                url: 'toHt/scrachcononeType?id='+$("#onetype").val(), // 服务器端处理上传文件的URL
+                type: 'POST',
+                data: {},
+                dataType:'json',
+                contentType: false, // 不设置内容类型
+                processData: false, // 不处理发送的数据
+                success: function (res) {
+                    var d = eval(res);
+                    let opt1 = $("<option></option>");
+                    opt1.val(0);
+                    opt1.text("选择二级分类");
+                    $("#twotype").append(opt1);
+                    for(let i=0;i<d.uscList.length;i++){
+                        let opt = $("<option></option>");
+                        opt.val(d.uscList[i].usc001);
+                        opt.text(d.uscList[i].usc002);
+                        $("#twotype").append(opt);
+                    }
+                    layer.close(load_index);
+                },
+                error: function () { console.log('提交失败'); }
+            });
+        }
+    });
+
+    //二级分类监听
+    $("#twotype").on("change", function () {
+        $("#threetype").empty();
+        if($("#twotype").val()>0){
+            load_index = layer.load(1);
+            $.ajax({
+                url: 'toHt/scrachcontwoType?id='+$("#twotype").val(), // 服务器端处理上传文件的URL
+                type: 'POST',
+                data: {},
+                dataType:'json',
+                contentType: false, // 不设置内容类型
+                processData: false, // 不处理发送的数据
+                success: function (res) {
+                    var d = eval(res);
+                    let opt1 = $("<option></option>");
+                    opt1.val(0);
+                    opt1.text("选择三级分类");
+                    $("#threetype").append(opt1);
+                    for(let i=0;i<d.usaList.length;i++){
+                        let opt = $("<option></option>");
+                        opt.val(d.usaList[i].usa001);
+                        opt.text(d.usaList[i].usa002);
+                        $("#threetype").append(opt);
+                    }
+                    layer.close(load_index);
+                },
+                error: function () { console.log('提交失败'); }
+            });
+        }
+    });
+
+
+    $("#sonetype").on("change", function () {
+        $("#stwotype").empty();
+        $("#sthreetype").empty();
+        let opt2 = $("<option></option>");
+        opt2.val(0);
+        opt2.text("选择二级分类");
+        $("#sthreetype").append(opt2);
+        if($("#sonetype").val()>0){
+            load_index = layer.load(1);
+            $.ajax({
+                url: 'toHt/scrachcononeType?id='+$("#sonetype").val(), // 服务器端处理上传文件的URL
+                type: 'POST',
+                data: {},
+                dataType:'json',
+                contentType: false, // 不设置内容类型
+                processData: false, // 不处理发送的数据
+                success: function (res) {
+                    var d = eval(res);
+                    let opt1 = $("<option></option>");
+                    opt1.val(0);
+                    opt1.text("选择二级分类");
+                    $("#stwotype").append(opt1);
+                    if(d.uscList!=null){
+                        for(let i=0;i<d.uscList.length;i++){
+                            let opt = $("<option></option>");
+                            opt.val(d.uscList[i].usc001);
+                            opt.text(d.uscList[i].usc002);
+                            $("#stwotype").append(opt);
+                        }
+                    }
+                    layer.close(load_index);
+                },
+                error: function () { console.log('提交失败'); }
+            });
+        }
+    });
+
+    //二级分类监听
+    $("#stwotype").on("change", function () {
+        $("#sthreetype").empty();
+        let opt1 = $("<option></option>");
+        opt1.val(0);
+        opt1.text("选择三级分类");
+        $("#sthreetype").append(opt1);
+        if($("#stwotype").val()>0){
+            load_index = layer.load(1);
+            $.ajax({
+                url: 'toHt/scrachcontwoType?id='+$("#stwotype").val(), // 服务器端处理上传文件的URL
+                type: 'POST',
+                data: {},
+                dataType:'json',
+                contentType: false, // 不设置内容类型
+                processData: false, // 不处理发送的数据
+                success: function (res) {
+                    var d = eval(res);
+                    if(d.usaList!=null){
+                        for(let i=0;i<d.usaList.length;i++){
+                            let opt = $("<option></option>");
+                            opt.val(d.usaList[i].usa001);
+                            opt.text(d.usaList[i].usa002);
+                            $("#sthreetype").append(opt);
+                        }
+
+                    }
+                    layer.close(load_index);
+                },
+                error: function () { console.log('提交失败'); }
+            });
+        }
+    });
+
+
+    $('#videoinput').on('change', function(){
+        var file = this.files[0]; // 获取文件对象
+        if (file) {
+            let fileName = file.name; // 获取文件名
+            file_lastName = fileName.split('.').pop(); // 获取后缀名
+            filesize = file.size/(1024*1024);
+            if(file_lastName!="mp4"){
+                showNotify('文件类型不正确，只允许上传后缀名为：mp4，请重新上传！', 'danger', 1500);
+                $("#videoinput").val("");
+                $("#upfilevadio").attr("src","");
+            }else if(filesize>100){
+                showNotify('文件不得超过100M，请重新上传！', 'danger', 1500);
+                $("#videoinput").val("");
+                $("#upfilevadio").attr("src","");
+            }else{
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $("#upfilevadio").attr("src",e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+    });
+    //  console.log($('.form-check-input:checked').val());
+    $('.form-check-input').on('change', function() {
+        let selectedValue = $(this).val();
+        if(selectedValue=="B"){
+            $("#upimgfile").css("display","block");
+            $("#upimgtxt").css("display","block");
+            $("#upvadiofile").css("display","none");
+        }else{
+            $("#upimgfile").css("display","none");
+            $("#upimgtxt").css("display","none");
+            $("#upvadiofile").css("display","block");
+        }
+    });
+
+    $.validator.addMethod("greaterThanselect", function(value, element) {
+        return parseInt(value) > 0;
+    }, "一级分类必须选择");
+
+    $("#uploadForm").validate({
+        errorPlacement: function(error, element) {
+            //替换错误显示位置，error表示错误信息
+            $(element).parent("div").parent("div").append(error);
+            $(element).parent("div").parent("div").find("label").addClass("col-12");
+            // $(element).parent("div").parent("div").find("label").attr("style","margin-left:5px;");
+        },
+        rules : {
+            sonetype: {greaterThanselect: true}
+        },
+        messages: {},
+        submitHandler: function(form) {
+            load_index = layer.load(1);
+            var formData = new FormData();
+            formData.append("fid",$("#fid").val().trim());
+            formData.append("sonetype",$("#sonetype").val());
+            formData.append("stwotype",$("#stwotype").val());
+            formData.append("sthreetype",$("#sthreetype").val());
+            formData.append("lx",$('.form-check-input:checked').val());//内容类型
+            formData.append("fext",file_lastName);
+            formData.append("wurl",$("#wurl").val());
+            if($('.form-check-input:checked').val()=="B"){
+                formData.append("wtxt",$("#wtxt").val());
+                formData.append("picfile",$("#upfileimg").attr("src"));
+            }else{
+                formData.append("picfile",$("#upfilevadio").attr("src"));
+            }
+            $.ajax({
+                url: 'toHt/savecon', // 服务器端处理上传文件的URL
+                type: 'POST',
+                data: formData,
+                dataType:'json',
+                contentType: false, // 不设置内容类型
+                processData: false, // 不处理发送的数据
+                success: function (res) {
+                    var d = eval(res);
+                    $("#fid").val(d.usd.usd001);
+                    if(d.usd.usd003=="B"){
+                        $("#upfileimg").attr("src","upload/cimg/"+d.usd.usd005);
+                    }else{
+                        $("#upfilevadio").attr("src","upload/cimg/"+d.usd.usd005);
+                    }
+                    layer.close(load_index);
+                    layer.msg(d.msg);
+                },
+                error: function () { console.log('提交失败'); }
+            });
+
+        }
+    });
+
+
+    // 图片上传(单张图片，多张图片)
+    $('.js-upload-image,.js-upload-images').each(function() {
+            var $input_file      = $(this).find('input'),
+                $input_file_name = $input_file.attr('name'),
+                $multiple        = $input_file.data('multiple'),  // 是否选择多个文件
+                $ext             = $input_file.data('ext'),       // 支持的文件后缀，示例以图片为例
+                $size            = $input_file.data('size');      // 支持最大的文件大小
+
+            var $file_list = $('#file_list_' + $input_file_name);
+            var ratio = window.devicePixelRatio || 1;
+            var thumbnailWidth = 640 * ratio;
+            var thumbnailHeight = 360 * ratio;
+            //此处不做自动上传
+            var uploader = WebUploader.create({
+                auto: false,
+                duplicate: true,
+                resize: true,
+                swf: 'js/webuploader/Uploader.swf',
+                server: '',//上传路径
+                pick: {
+                    id: '#picker_' + $input_file_name,
+                    multiple: $multiple
+                },
+                fileSingleSizeLimit: $size,
+                accept: {
+                    title: 'Images',
+                    extensions: $ext,
+                    mimeTypes: 'image/*'
+                }
+            });
+            uploader.on('fileQueued', function(file) {
+                $img = $("#upfileimg");
+                file_lastName = file.ext;
+                $input_file.val('');
+                uploader.makeThumb(file, function(error, src) {
+                    if (error) {
+                        $img.replaceWith('<span>不能预览</span>');
+                        return;
+                    }
+                    $img.attr('src', src);
+                }, thumbnailWidth, thumbnailHeight);
+            });
+
+            uploader.on('error', function(type) {
+                switch (type) {
+                    case 'Q_TYPE_DENIED':
+                        showNotify('文件类型不正确，只允许上传后缀名为：' + $ext + '，请重新上传！', 'danger', 1500);
+                        break;
+                    case 'F_EXCEED_SIZE':
+                        showNotify('文件不得超过' + ($size / 1024) + 'kb，请重新上传！', 'danger', 1500);
+                        break;
+                }
+            });
+
+            // 删除操作
+            $file_list.delegate('.btn-remove-pic', 'click', function() {
+                var id = $(this).data('id');
+                if (confirm("本操作将直接删除该图片，您确认删除吗?")) { // 可改为对话框插件
+                    //直接删除后台图片
+                    $(this).closest('.list-images-item').remove();
+                }
+            });
+
+        });
+
+
+    function striongTOjsonString(obj){
+        obj = obj.replace(/\s+/g,'');
+        obj = obj.substring(obj.indexOf("["));
+        obj = obj.replaceAll("[","{\"");
+        obj = obj.replaceAll("]","\"}");
+        obj = obj.replaceAll("=","\":\"");
+        obj = obj.replaceAll(",","\",\"");
+        return JSON.parse(obj);
+    }
+
+    function jsStringTojsonString(obj){
+        obj = obj.replaceAll("{","{\"");
+        obj = obj.replaceAll("}","\"}");
+        obj = obj.replaceAll("=","\":\"");
+        obj = obj.replaceAll(",","\",\"");
+        obj = obj.replaceAll("\"[","[");
+        obj = obj.replaceAll("]\"","]");
+        obj = obj.replaceAll("}\",\"{","},{");
+        obj = obj.replaceAll("http\":\"//","http://");
+        obj = obj.replaceAll(":\"{",":{");
+        obj = obj.replaceAll("}\"}","}}");
+        obj = obj.replaceAll("}\",","},");
+        return JSON.parse(obj);
+    }
+
+
+</script>
+</body>
+</html>

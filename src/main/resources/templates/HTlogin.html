@@ -1,0 +1,195 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <base th:href="${#request.getContextPath()}+'/'">
+    <title>系统登录</title>
+    <meta http-equiv="pragma" content="no-cache"/>
+    <meta http-equiv="cache-control" content="no-cache"/>
+    <meta http-equiv="expires" content="0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="stylesheet" type="text/css" href="css/materialdesignicons.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.min.css">
+    <script type="text/javascript" src="static/js/jsencrypt.min.js"></script>
+</head>
+<body class="bg-white overflow-x-hidden">
+<div class="row bg-white vh-100">
+    <div class="col-md-6 col-lg-7 col-xl-8 d-none d-md-block" style="background-image: url(images/login-bg-1.jpg); background-size: cover;">
+
+        <div class="d-flex vh-100">
+            <div class="p-5 align-self-end">
+                <img src="images/logo.png" alt="...">
+                <br><br><br>
+                <p class="text-white">基于Bootstrap v5.1.3的后台管理系统的HTML模板。</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-6 col-lg-5 col-xl-4 align-self-center">
+        <div class="p-5">
+            <div class="text-center">
+                <img alt="light year admin" src="images/logo-sidebar.png">
+            </div>
+            <p class="text-center text-muted"><small>请使用您的账号登录系统</small></p>
+            <form method="post" class="signin-form needs-validation" novalidate>
+                <div class="mb-3">
+<!--                    <label for="username">用户名</label>-->
+                    <input type="text" class="form-control" id="username" placeholder="请输入您的用户名" required>
+                </div>
+
+                <div class="mb-3">
+<!--                    <label for="password">密码</label>-->
+                    <input type="password" class="form-control" id="password" placeholder="请输入您的密码" required>
+                </div>
+                <div class="mb-3">
+                    <div class="row gy-1 gx-2 align-items-center">
+                        <div class="col-md-6">
+                            <input id="ycode" placeholder="验证码" type="text" class="form-control" required/>
+                        </div>
+                        <div class="col-md-6">
+                            <img class="img-thumbnail" style="max-height: 38px;" id="codeImg" alt="验证码" onclick="changeImg()"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3 d-grid" style="margin-top: 50px;">
+                    <button class="btn btn-primary" >立即登录</button>
+                </div>
+            </form>
+            <p class="text-center text-muted mt-3">Copyright © 2024 <a target="_blank" href="http://www.nbyfx.com">易飞迅</a>. All right reserved</p>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/popper.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/lyear-loading.js"></script>
+<script type="text/javascript" src="js/bootstrap-notify.min.js"></script>
+<script type="text/javascript">
+    var loader;
+    $(document).ajaxStart(function(){
+        $("button:submit").html('登录中...').attr("disabled", true);
+        loader = $('button:submit').lyearloading({
+            opacity: 0.3,
+            spinnerSize: 'nm'
+        });
+    }).ajaxStop(function(){
+        loader.destroy();
+        $("button:submit").html('立即登录').attr("disabled", false);
+    });
+
+    var encrypt = new JSEncrypt();
+    encrypt.setPublicKey("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDXajYcIi2XXwXoKgH0JWxh1rgUdPjgJFAvmNitLQseMIhiF1vO+kNLHGCImQKcHScC4/UL1HJSY0dHsiOn8q5ydWFIt7UwxUddiSP5rjAoASYR6K6WKCkpUsPOk3a2/hm6t0DEyje9bLMuUjaTpylFBzkNfY1rp3iOtwNJkUd2nQIDAQAB");
+    var regex = new RegExp('(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[^a-zA-Z0-9]).{8,20}');
+
+    $(function(){
+        //加载验证码
+        setTimeout(changeImg, 500);
+    });
+
+    $('.signin-form').on('submit', function(event) {
+        //验证
+        if ($(this)[0].checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+            $(this).addClass('was-validated');
+            return false;
+        }
+        let username = $("#username").val().trim();
+        let userpwd = $("#password").val().trim();
+        let ycode = $("#ycode").val().trim();
+        let params = {"username":encrypt.encrypt(username), "userpwd":encrypt.encrypt(userpwd), "ycode":ycode};
+
+        $.post("checkLogin", params, function(data) {
+            let dp = eval("("+data+")");
+            if(dp.res=="N"){
+                $.notify({
+                    message: '登录失败，错误原因：'+dp.msg,
+                },{
+                    type: 'danger',
+                    placement: {
+                        from: 'top',
+                        align: 'right'
+                    },
+                    z_index: 10800,
+                    delay: 1500,
+                    animate: {
+                        enter: 'animate__animated animate__shakeX',
+                        exit: 'animate__animated animate__fadeOutDown'
+                    }
+                });
+            }else{
+                $.notify({
+                    message: '登录成功，正在为您跳转',
+                },{
+                    type: 'success',
+                    placement: {
+                        from: 'top',
+                        align: 'right'
+                    },
+                    z_index: 10800,
+                    delay: 1500,
+                    animate: {
+                        enter: 'animate__animated animate__shakeX',
+                        exit: 'animate__animated animate__fadeOutDown'
+                    }
+                });
+                setTimeout(function () {
+                    location.href = 'toHt/toHTindex';
+                }, 1500);
+            }
+        }).fail(function () {
+            $.notify({
+                message: '服务器错误',
+            },{
+                type: 'danger',
+                placement: {
+                    from: 'top',
+                    align: 'right'
+                },
+                z_index: 10800,
+                delay: 1500,
+                animate: {
+                    enter: 'animate__animated animate__shakeX',
+                    exit: 'animate__animated animate__fadeOutDown'
+                }
+            });
+            $('#password').val('');
+            $('#ycode').val('');
+        });
+
+        return false;
+    });
+
+    function changeImg() {
+        var imgSrc = $("#codeImg");
+        imgSrc.attr("src", chgUrl("/code.do"));
+    }
+    $('#username').on('change', function () {
+        changeImg();
+    });
+
+
+    //加入时间戳，去缓存机制
+    function chgUrl(url) {
+        var timestamp = (new Date()).valueOf();
+        if ((url.indexOf("&") >= 0)) {
+            url = url + "&timestamp=" + timestamp + "&uname=" + $("#username").val().trim();
+        } else {
+            url = url + "?timestamp=" + timestamp + "&uname=" + $("#username").val().trim();
+        }
+        // console.log("url"+url)
+        return url;
+    }
+</script>
+</body>
+</html>

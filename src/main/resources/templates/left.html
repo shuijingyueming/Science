@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <base th:href="${#request.getContextPath()}+'/'">
+    <title>left</title>
+    <meta http-equiv="pragma" content="no-cache"/>
+    <meta http-equiv="cache-control" content="no-cache"/>
+    <meta http-equiv="expires" content="0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="stylesheet" type="text/css" href="css/materialdesignicons.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="js/bootstrap-multitabs/multitabs.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.min.css">
+
+</head>
+<body th:fragment="common_side">
+<aside class="lyear-layout-sidebar">
+    <!-- logo -->
+    <div id="logo" class="sidebar-header">
+        <img src="images/logo-sidebar.png" title="LightYear" alt="LightYear" />
+    </div>
+    <div class="lyear-layout-sidebar-info lyear-scroll">
+        <nav class="sidebar-main">
+            <ul class="nav-drawer">
+                <li class="nav-item active">
+                    <a class="multitabs" href="toHt/toHThome" id="default-page">
+                        <i class="mdi mdi-home-city-outline"></i>
+                        <span>首页轮播</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="multitabs" href="toHt/toHTmain" >
+                        <i class="mdi mdi-stove"></i>
+                        <span>分类管理</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="multitabs" href="toHt/toHTcon">
+                        <i class="mdi mdi-stove"></i>
+                        <span>内容管理</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="sidebar-footer position-absolute bottom-0">
+            <p class="copyright">
+                <span>Copyright &copy; 2024. </span>
+                <a target="_blank" href="http://www.nbefx.com">易飞迅</a>
+            </p>
+        </div>
+    </div>
+
+</aside>
+</body>
+</html>
+

@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.efx.Science.dao.cdyhgMapper">
+  <resultMap id="BaseResultMap" type="com.efx.Science.model.cdyhg">
+    <id column="YHG001" jdbcType="VARCHAR" property="yhg001" />
+    <result column="YHG002" jdbcType="VARCHAR" property="yhg002" />
+    <result column="YHG003" jdbcType="TIMESTAMP" property="yhg003" />
+    <result column="YHG004" jdbcType="VARCHAR" property="yhg004" />
+    <result column="YHG005" jdbcType="INTEGER" property="yhg005" />
+    <result column="YHG007" jdbcType="INTEGER" property="yhg007" />
+    <result column="YHG008" jdbcType="INTEGER" property="yhg008" />
+    <result column="YHG009" jdbcType="VARCHAR" property="yhg009" />
+    <result column="YHG010" jdbcType="VARCHAR" property="yhg010" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.efx.Science.model.cdyhg">
+    <result column="YHG006" jdbcType="LONGVARCHAR" property="yhg006" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    YHG001, YHG002, YHG003, YHG004, YHG005, YHG007, YHG008, YHG009, YHG010
+  </sql>
+  <sql id="Blob_Column_List">
+    YHG006
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.efx.Science.model.cdyhgExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from cdyhg
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.efx.Science.model.cdyhgExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cdyhg
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from cdyhg
+    where YHG001 = #{yhg001,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from cdyhg
+    where YHG001 = #{yhg001,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.efx.Science.model.cdyhgExample">
+    delete from cdyhg
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.efx.Science.model.cdyhg">
+    insert into cdyhg (YHG001, YHG002, YHG003, 
+      YHG004, YHG005, YHG007, 
+      YHG008, YHG009, YHG010, 
+      YHG006)
+    values (#{yhg001,jdbcType=VARCHAR}, #{yhg002,jdbcType=VARCHAR}, #{yhg003,jdbcType=TIMESTAMP}, 
+      #{yhg004,jdbcType=VARCHAR}, #{yhg005,jdbcType=INTEGER}, #{yhg007,jdbcType=INTEGER}, 
+      #{yhg008,jdbcType=INTEGER}, #{yhg009,jdbcType=VARCHAR}, #{yhg010,jdbcType=VARCHAR}, 
+      #{yhg006,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.efx.Science.model.cdyhg">
+    insert into cdyhg
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="yhg001 != null">
+        YHG001,
+      </if>
+      <if test="yhg002 != null">
+        YHG002,
+      </if>
+      <if test="yhg003 != null">
+        YHG003,
+      </if>
+      <if test="yhg004 != null">
+        YHG004,
+      </if>
+      <if test="yhg005 != null">
+        YHG005,
+      </if>
+      <if test="yhg007 != null">
+        YHG007,
+      </if>
+      <if test="yhg008 != null">
+        YHG008,
+      </if>
+      <if test="yhg009 != null">
+        YHG009,
+      </if>
+      <if test="yhg010 != null">
+        YHG010,
+      </if>
+      <if test="yhg006 != null">
+        YHG006,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="yhg001 != null">
+        #{yhg001,jdbcType=VARCHAR},
+      </if>
+      <if test="yhg002 != null">
+        #{yhg002,jdbcType=VARCHAR},
+      </if>
+      <if test="yhg003 != null">
+        #{yhg003,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yhg004 != null">
+        #{yhg004,jdbcType=VARCHAR},
+      </if>
+      <if test="yhg005 != null">
+        #{yhg005,jdbcType=INTEGER},
+      </if>
+      <if test="yhg007 != null">
+        #{yhg007,jdbcType=INTEGER},
+      </if>
+      <if test="yhg008 != null">
+        #{yhg008,jdbcType=INTEGER},
+      </if>
+      <if test="yhg009 != null">
+        #{yhg009,jdbcType=VARCHAR},
+      </if>
+      <if test="yhg010 != null">
+        #{yhg010,jdbcType=VARCHAR},
+      </if>
+      <if test="yhg006 != null">
+        #{yhg006,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.efx.Science.model.cdyhgExample" resultType="java.lang.Long">
+    select count(*) from cdyhg
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update cdyhg
+    <set>
+      <if test="record.yhg001 != null">
+        YHG001 = #{record.yhg001,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yhg002 != null">
+        YHG002 = #{record.yhg002,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yhg003 != null">
+        YHG003 = #{record.yhg003,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.yhg004 != null">
+        YHG004 = #{record.yhg004,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yhg005 != null">
+        YHG005 = #{record.yhg005,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhg007 != null">
+        YHG007 = #{record.yhg007,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhg008 != null">
+        YHG008 = #{record.yhg008,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhg009 != null">
+        YHG009 = #{record.yhg009,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yhg010 != null">
+        YHG010 = #{record.yhg010,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yhg006 != null">
+        YHG006 = #{record.yhg006,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update cdyhg
+    set YHG001 = #{record.yhg001,jdbcType=VARCHAR},
+      YHG002 = #{record.yhg002,jdbcType=VARCHAR},
+      YHG003 = #{record.yhg003,jdbcType=TIMESTAMP},
+      YHG004 = #{record.yhg004,jdbcType=VARCHAR},
+      YHG005 = #{record.yhg005,jdbcType=INTEGER},
+      YHG007 = #{record.yhg007,jdbcType=INTEGER},
+      YHG008 = #{record.yhg008,jdbcType=INTEGER},
+      YHG009 = #{record.yhg009,jdbcType=VARCHAR},
+      YHG010 = #{record.yhg010,jdbcType=VARCHAR},
+      YHG006 = #{record.yhg006,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update cdyhg
+    set YHG001 = #{record.yhg001,jdbcType=VARCHAR},
+      YHG002 = #{record.yhg002,jdbcType=VARCHAR},
+      YHG003 = #{record.yhg003,jdbcType=TIMESTAMP},
+      YHG004 = #{record.yhg004,jdbcType=VARCHAR},
+      YHG005 = #{record.yhg005,jdbcType=INTEGER},
+      YHG007 = #{record.yhg007,jdbcType=INTEGER},
+      YHG008 = #{record.yhg008,jdbcType=INTEGER},
+      YHG009 = #{record.yhg009,jdbcType=VARCHAR},
+      YHG010 = #{record.yhg010,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.efx.Science.model.cdyhg">
+    update cdyhg
+    <set>
+      <if test="yhg002 != null">
+        YHG002 = #{yhg002,jdbcType=VARCHAR},
+      </if>
+      <if test="yhg003 != null">
+        YHG003 = #{yhg003,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yhg004 != null">
+        YHG004 = #{yhg004,jdbcType=VARCHAR},
+      </if>
+      <if test="yhg005 != null">
+        YHG005 = #{yhg005,jdbcType=INTEGER},
+      </if>
+      <if test="yhg007 != null">
+        YHG007 = #{yhg007,jdbcType=INTEGER},
+      </if>
+      <if test="yhg008 != null">
+        YHG008 = #{yhg008,jdbcType=INTEGER},
+      </if>
+      <if test="yhg009 != null">
+        YHG009 = #{yhg009,jdbcType=VARCHAR},
+      </if>
+      <if test="yhg010 != null">
+        YHG010 = #{yhg010,jdbcType=VARCHAR},
+      </if>
+      <if test="yhg006 != null">
+        YHG006 = #{yhg006,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where YHG001 = #{yhg001,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.efx.Science.model.cdyhg">
+    update cdyhg
+    set YHG002 = #{yhg002,jdbcType=VARCHAR},
+      YHG003 = #{yhg003,jdbcType=TIMESTAMP},
+      YHG004 = #{yhg004,jdbcType=VARCHAR},
+      YHG005 = #{yhg005,jdbcType=INTEGER},
+      YHG007 = #{yhg007,jdbcType=INTEGER},
+      YHG008 = #{yhg008,jdbcType=INTEGER},
+      YHG009 = #{yhg009,jdbcType=VARCHAR},
+      YHG010 = #{yhg010,jdbcType=VARCHAR},
+      YHG006 = #{yhg006,jdbcType=LONGVARCHAR}
+    where YHG001 = #{yhg001,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.efx.Science.model.cdyhg">
+    update cdyhg
+    set YHG002 = #{yhg002,jdbcType=VARCHAR},
+      YHG003 = #{yhg003,jdbcType=TIMESTAMP},
+      YHG004 = #{yhg004,jdbcType=VARCHAR},
+      YHG005 = #{yhg005,jdbcType=INTEGER},
+      YHG007 = #{yhg007,jdbcType=INTEGER},
+      YHG008 = #{yhg008,jdbcType=INTEGER},
+      YHG009 = #{yhg009,jdbcType=VARCHAR},
+      YHG010 = #{yhg010,jdbcType=VARCHAR}
+    where YHG001 = #{yhg001,jdbcType=VARCHAR}
+  </update>
+</mapper>

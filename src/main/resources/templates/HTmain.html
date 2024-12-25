@@ -1,0 +1,475 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <base th:href="${#request.getContextPath()}+'/'">
+    <title>后台管理系统</title>
+    <meta http-equiv="pragma" content="no-cache"/>
+    <meta http-equiv="cache-control" content="no-cache"/>
+    <meta http-equiv="expires" content="0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="stylesheet" type="text/css" href="css/materialdesignicons.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="js/bootstrap-multitabs/multitabs.min.css">
+    <link type="text/css" rel="stylesheet" href="js/jquery-tagsinput/jquery.tagsinput.min.css">
+    <link type="text/css" rel="stylesheet" href="js/webuploader/webuploader.css">
+    <link type="text/css" rel="stylesheet" href="js/magnific-popup/magnific-popup.min.css">
+    <link rel="stylesheet" type="text/css" href="css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.min.css">
+    <link rel="stylesheet" type="text/css" href="css/page.css">
+</head>
+<body>
+<div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <header class="card-header">
+                        <a id="addoredit_a" role="button" onclick="addY('A',0)" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editmode" >添加一级分类</a>
+                    </header>
+                    <div class="card-body">
+                        <nav class="sidebar-main">
+                            <ul class="nav-drawer">
+                                <th:block th:each="item,stat:${usglist}">
+                                   <li th:class="${#lists.size(item.usclist)>0?'nav-item nav-item-has-subnav':''}">
+                                       <a href="javascript:void(0);" style="padding:0;" onclick="qhcz()">
+                                           <img class="typeimg" th:src="${'upload/pimg/'+item.usg004}" />
+                                           <div class="col-9 typerow">
+                                               <div th:text="${item.usg002}"></div>
+                                               <div th:text="${(item.usg006!=null&&!item.usg006.isEmpty())?item.usg006:'未设链接'}"></div>
+                                               <div class="typecol">
+                                                   <button type="button" class="btn btn-link" th:onclick="addY('B',[[${item.usg001}]])"
+                                                           data-bs-toggle="modal" data-bs-target="#editmode">
+                                                       <span class="mdi mdi-clipboard-plus-outline"></span>添加下级分类
+                                                   </button>
+                                                   <button data-bs-toggle="modal" data-bs-target="#editmode" type="button" class="btn btn-link"
+                                                      th:onclick="editonetype([[${item.toString()}]])">
+                                                       <span class="mdi mdi-clipboard-outline"></span>编辑
+                                                   </button>
+                                                   <button type="button" class="btn btn-link" th:onclick="deltype('A',[[${item.usg001}]])"><span class="mdi mdi-clipboard-remove-outline"></span>删除</button>
+                                               </div>
+                                               <!--一级下二级-->
+                                               <ul class="nav nav-subnav">
+                                                   <th:block th:each="item1,stat:${item.usclist}">
+                                                       <li>
+                                                           <img class="typeimg" style="width:140px;"  th:src="${'upload/fimg/'+item1.usc004}" />
+                                                           <div class="col-8 typerow">
+                                                               <div th:text="${item1.usc002}"></div>
+                                                               <div th:text="${(item1.usc006!=null&&!item1.usc006.isEmpty())?item1.usc006:'未设链接'}"></div>
+                                                               <div class="typecol">
+                                                                   <button type="button" class="btn btn-link" th:onclick="addY('C',[[${item1.usc001}]])"
+                                                                           data-bs-toggle="modal" data-bs-target="#editmode">
+                                                                       <span class="mdi mdi-clipboard-plus-outline"></span>添加下级分类
+                                                                   </button>
+                                                                   <button id="addoredit_b1" data-bs-toggle="modal" data-bs-target="#editmode" type="button" class="btn btn-link"
+                                                                           th:onclick="edittwotype([[${item1.toString()}]])">
+                                                                       <span class="mdi mdi-clipboard-outline"></span>编辑
+                                                                   </button>
+                                                                   <button type="button" class="btn btn-link" th:onclick="deltype('B',[[${item1.usc001}]])"><span class="mdi mdi-clipboard-remove-outline"></span>删除</button>
+                                                               </div>
+                                                               <!--二级下三级-->
+                                                               <ul class="nav nav-subnav threeul" style="display:block;">
+                                                                   <th:block th:each="item2,stat:${item1.usalist}">
+                                                                       <li>
+                                                                           <img class="typeimg" style="width:140px;" th:src="${'upload/mimg/'+item2.usa004}" />
+                                                                           <div class="col-7 typerow">
+                                                                               <div th:text="${item2.usa002}"></div>
+                                                                               <div th:text="${(item2.usa006!=null&&!item2.usa006.isEmpty())?item2.usa006:'未设链接'}"></div>
+                                                                               <div class="typecol">
+                                                                                   <button id="addoredit_c1" data-bs-toggle="modal" data-bs-target="#editmode" type="button" class="btn btn-link"
+                                                                                           th:onclick="editthreetype([[${item2.toString()}]])">
+                                                                                       <span class="mdi mdi-clipboard-outline"></span>编辑
+                                                                                   </button>
+                                                                                   <button type="button" class="btn btn-link" th:onclick="deltype('C',[[${item2.usa001}]])"><span class="mdi mdi-clipboard-remove-outline"></span>删除</button>
+                                                                               </div>
+                                                                           </div>
+                                                                       </li>
+                                                                   </th:block>
+                                                               </ul>
+                                                           </div>
+                                                       </li>
+                                                   </th:block>
+                                               </ul>
+                                           </div>
+                                       </a>
+                                   </li>
+                                </th:block>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- 编辑分类模态框 -->
+    <div class="modal fade" id="editmode" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="editmodeLabel"><span id="ftype"></span>分类</h6>
+                    <button type="button" onclick="pagerefalsh()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="uploadForm" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="row col-auto">
+                        <label class="col-auto col-form-label" style="padding-right:0;padding-left:20px;">分类名称</label>
+                        <div class="col-4">
+                            <input type="hidden" id="stype" value=""/>
+                            <input type="hidden" id="sid" value=""/>
+                            <input type="hidden" id="fid" value=""/>
+                            <input type="text" autofocus="true" class="form-control" name="fname" id="fname" placeholder="请输入分类名称" />
+                        </div>
+                    </div>
+                    <div class="row col-auto" style="margin-top: 20px;">
+                        <label class="col-auto col-form-label" style="padding-right:0;padding-left:20px;">外链地址</label>
+                        <div class="col-4">
+                            <textarea class="form-control" style="resize: none;"  rows="2" id="wurl" placeholder="请输入外链地址" ></textarea>
+                        </div>
+                        <div class="col-11 small" style="margin-left:10px;color:#0096FF;">外部链接设定后，前端将不显示下级类目和内容。</div>
+                    </div>
+                    <div class="row col-auto" style="margin-top: 20px;">
+                        <label class="col-auto col-form-label" style="padding-right:0;padding-left:20px;">是否启用</label>
+                        <div class="col-4">
+                            <div class="form-check form-switch" style="display: flex;align-items: center;justify-content: left;">
+                                <div style="margin-top:5px;margin-left: -30px;">关闭</div>
+                                <input class="form-check-input" style="margin-left: 10px;" type="checkbox" role="switch" id="isqy">
+                                <div style="margin-top:5px;margin-left: 10px;">开启</div>
+                            </div>
+
+                        </div>
+                        <div class="col-11 small" style="margin-left:10px;color:#0096FF;">关闭后，前端将不显示本类目及以下内容。</div>
+                    </div>
+                    <div class="mb-3 col-md-12 position-relative" style="margin-top: 20px;">
+                        <div class="js-upload-images">
+                            <div id="picker_more_pics" style="padding-right:0;padding-left:10px;">上传图片</div>
+                            <input type="hidden" id="more_pics" name="more_pics" data-multiple="false" data-size="2097152" data-ext='jpg,jpeg,png'/>
+                            <ul id="file_list_more_pics" class="list-inline row lyear-uploads-pic mb-0" style="padding-right:0;padding-left:10px;">
+                                <li class="col-6 col-sm-4 col-md-3 list-images-item" >
+                                    <figure>
+                                        <img id="upfileimg" src="" />
+<!--                                        <figcaption>-->
+<!--                                            <a class="btn btn-round btn-danger btn-remove-pic"><i class="mdi mdi-delete"></i></a>-->
+<!--                                        </figcaption>-->
+                                    </figure>
+                                </li>
+                            </ul>
+                            <div class="col-11 small" style="margin-left:10px;color:#0096FF;">图片像素320*180，图片格式jpg,jpeg,png</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="edit-four">保存</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 垂直居中的图片模态框 -->
+    <div class="modal fade" id="picModalLive" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">图片预览</h6>
+                    <button type="button" class="btn-close" data-bs-target="#editmode" data-bs-toggle="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="" id="picyl" alt="图片位"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/popper.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<!-- 数字动态滚动增加效果 -->
+<script type="text/javascript" src="js/scroll-numbers.js"></script>
+<!--引入chart插件js-->
+<script type="text/javascript" src="js/main.min.js"></script>
+<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-multitabs/multitabs.min.js"></script>
+<script type="text/javascript" src="js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="js/index.min.js"></script>
+<!-- 表格JS -->
+<script type="text/javascript" src="static/tables/datatables.min.js"></script>
+<script type="text/javascript" src="static/tables/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="static/tables/jszip.min.js"></script>
+<script type="text/javascript" src="static/tables/pdfmake.min.js"></script>
+<script type="text/javascript" src="static/tables/vfs_fonts.js"></script>
+<script type="text/javascript" src="static/tables/buttons.html5.min.js"></script>
+<script type="text/javascript" src="static/tables/buttons.print.min.js"></script>
+<script type="text/javascript" src="static/tables/datatable.js"></script>
+<!--tags插件-->
+<script type="text/javascript" src="js/jquery-tagsinput/jquery.tagsinput.min.js"></script>
+<!--上传插件-->
+<script type="text/javascript" src="js/webuploader/webuploader.js"></script>
+<!--灯箱效果插件-->
+<script type="text/javascript" src="js/magnific-popup/magnific-popup.min.js"></script>
+<!--通知消息插件-->
+<script type="text/javascript" src="js/bootstrap-notify.min.js"></script>
+<!--引入标签插件js-->
+<script type="text/javascript" src="js/jquery-confirm/jquery-confirm.min.js"></script>
+<script type="text/javascript" src="js/main.min.js"></script>
+<!--引入下拉插件js-->
+<script type="text/javascript" src="js/bootstrap-select/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-select/i18n/defaults-zh_CN.min.js"></script>
+<script type="text/javascript" src="js/layer/layer.js"></script>
+<script type="text/javascript" src="js/layui/layui.js"></script>
+<!-- validate JS 验证-->
+<script type="text/javascript" src="assets/jquery-validate/jquery.validate.js"></script>
+<script type="text/javascript" src="assets/jquery-validate/validate-methods.js"></script>
+<script type="text/javascript">
+
+    var layer = layui.layer;
+    var file_lastName = "";
+    var load_index;
+
+    //stype:"A"一级分类 “B”二级分类 “C”三级分类
+    //sid:上级分类ID
+    function addY(stype,sid){
+     $("#ftype").text("添加一级");
+     $("#stype").val(stype);
+     $("#sid").val(sid);
+   }
+
+   function showpic(){
+       $("#picyl").attr("src",$("#upfileimg").attr("src"));
+   }
+
+   //刷新页面
+   function pagerefalsh(){
+       location.reload();
+   }
+   //切换
+   function qhcz(){
+       $(".threeul").css("display","block");
+   }
+
+    //分类编辑
+    //stype:"A"一级分类 “B”二级分类 “C”三级分类
+   function editonetype(obj){
+       $("#stype").val("A");
+       let josnobj = striongTOjsonString(obj);
+           $("#fid").val(josnobj.usg001);
+           $("#fname").val(josnobj.usg002);
+           $("#isqy").prop("checked",josnobj.usg005=="Y"?true:false);
+           $("#upfileimg").attr("src","upload/pimg/"+josnobj.usg004);
+           $("#wurl").val(josnobj.usg006);
+   }
+    function edittwotype(obj){
+        $("#stype").val("B");
+        let josnobj = striongTOjsonString(obj);
+        $("#fid").val(josnobj.usc001);
+        $("#fname").val(josnobj.usc002);
+        $("#sid").val(josnobj.usc003);
+        $("#isqy").prop("checked",josnobj.usc005=="Y"?true:false);
+        $("#upfileimg").attr("src","upload/fimg/"+josnobj.usc004);
+        $("#wurl").val(josnobj.usc006);
+    }
+    function editthreetype(obj) {
+        $("#stype").val("C");
+        let josnobj = striongTOjsonString(obj);
+        $("#fid").val(josnobj.usa001);
+        $("#fname").val(josnobj.usa002);
+        $("#sid").val(josnobj.usa003);
+        $("#isqy").prop("checked", josnobj.usa005 == "Y" ? true : false);
+        $("#upfileimg").attr("src", "upload/mimg/" + josnobj.usa004);
+        $("#wurl").val(josnobj.usa006);
+    }
+
+    //一级分类删除
+   function deltype(stype,id){
+       if (confirm("删除操作将同时删除此分类下级分类及分类下所有内容，确定删除吗?")) {
+           load_index = layer.load(1);
+           var formData = new FormData();
+           formData.append("fid",id);
+           formData.append("stype",stype);
+           $.ajax({
+               url: 'toHt/delOneType', // 服务器端处理上传文件的URL
+               type: 'POST',
+               data: formData,
+               dataType:'json',
+               contentType: false, // 不设置内容类型
+               processData: false, // 不处理发送的数据
+               success: function (res) {
+                   var d = eval(res);
+                   layer.msg("删除成功");
+                   setTimeout(function(){
+                       location.reload();
+                   },1000);
+                   layer.close(load_index);
+               },
+               error: function () { console.log('提交失败'); }
+           });
+
+       }
+   }
+
+   function striongTOjsonString(obj){
+       obj = obj.replace(/\s+/g,'');
+       obj = obj.substring(obj.indexOf("["));
+       obj = obj.replaceAll("[","{\"");
+       obj = obj.replaceAll("]","\"}");
+       obj = obj.replaceAll("=","\":\"");
+       obj = obj.replaceAll(",","\",\"");
+       return JSON.parse(obj);
+   }
+
+    $(document).ready(function(){
+      //---------------------------
+        $("#uploadForm").validate({
+            errorPlacement: function(error, element) {
+                //替换错误显示位置，error表示错误信息
+                $(element).parent("div").append(error);
+                $(element).parent("div").find("label").attr("style","margin-left:5px;");
+            },
+            rules : { fname: { required : true, },},
+            messages: { fname: { required: "必须填写分类名称",},},
+            submitHandler: function(form) {
+                load_index = layer.load(1);
+                var formData = new FormData();
+                formData.append("stype",$("#stype").val().trim());
+                formData.append("sid",$("#sid").val().trim());
+                formData.append("fid",$("#fid").val().trim());
+                formData.append("fname",$("#fname").val().trim());
+                formData.append("fext",file_lastName);
+                formData.append("qy",$("#isqy").prop('checked')?"Y":"N");
+                formData.append("picfile",$("#upfileimg").attr("src"));
+                formData.append("wurl",$("#wurl").val().trim());
+                $.ajax({
+                    url: 'toHt/saveOneType', // 服务器端处理上传文件的URL
+                    type: 'POST',
+                    data: formData,
+                    dataType:'json',
+                    contentType: false, // 不设置内容类型
+                    processData: false, // 不处理发送的数据
+                    success: function (res) {
+                        var d = eval(res);
+                        if(d.stype=="A"){
+                            $("#fid").val(d.usg.usg001);
+                            $("#fname").val(d.usg.usg002);
+                            $("#isqy").prop("checked",d.usg.usg005=="Y"?true:false);
+                            $("#upfileimg").attr("src","upload/pimg/"+d.usg.usg004);
+                            $("#wurl").val(d.usg.usg006);
+                        }else if(d.stype=="B"){
+                            $("#fid").val(d.usc.usc001);
+                            $("#fname").val(d.usc.usc002);
+                            $("#isqy").prop("checked",d.usc.usc005=="Y"?true:false);
+                            $("#upfileimg").attr("src","upload/fimg/"+d.usc.usc004);
+                            $("#wurl").val(d.usc.usc006);
+                        }else if(d.stype=="C"){
+                            $("#fid").val(d.usa.usa001);
+                            $("#fname").val(d.usa.usa002);
+                            $("#isqy").prop("checked",d.usa.usa005=="Y"?true:false);
+                            $("#upfileimg").attr("src","upload/mimg/"+d.usa.usa004);
+                            $("#wurl").val(d.usa.usa006);
+                        }
+                        layer.close(load_index);
+                        layer.msg(d.msg);
+                    },
+                    error: function () { console.log('提交失败'); }
+                });
+            }
+        });
+        // 图片上传(单张图片，多张图片)
+        $('.js-upload-image,.js-upload-images').each(function() {
+            var $input_file      = $(this).find('input'),
+                $input_file_name = $input_file.attr('name'),
+                $multiple        = $input_file.data('multiple'),  // 是否选择多个文件
+                $ext             = $input_file.data('ext'),       // 支持的文件后缀，示例以图片为例
+                $size            = $input_file.data('size');      // 支持最大的文件大小
+
+            var $file_list = $('#file_list_' + $input_file_name);
+            var ratio = window.devicePixelRatio || 1;
+            var thumbnailWidth = 320 * ratio;
+            var thumbnailHeight = 180 * ratio;
+            //此处不做自动上传
+            var uploader = WebUploader.create({
+                auto: false,
+                duplicate: true,
+                resize: true,
+                swf: 'js/webuploader/Uploader.swf',
+                server: '',//上传路径
+                pick: {
+                    id: '#picker_' + $input_file_name,
+                    multiple: $multiple
+                },
+                fileSingleSizeLimit: $size,
+                accept: {
+                    title: 'Images',
+                    extensions: $ext,
+                    mimeTypes: 'image/*'
+                }
+            });
+
+            uploader.on('fileQueued', function(file) {
+                $img = $("#upfileimg");
+                file_lastName = file.ext;
+                $input_file.val('');
+                uploader.makeThumb(file, function(error, src) {
+                    if (error) {
+                        $img.replaceWith('<span>不能预览</span>');
+                        return;
+                    }
+                    $img.attr('src', src);
+                }, thumbnailWidth, thumbnailHeight);
+
+            });
+
+            uploader.on('error', function(type) {
+                switch (type) {
+                    case 'Q_TYPE_DENIED':
+                        //alert('图片类型不正确，只允许上传后缀名为：' + $ext + '，请重新上传！');
+                        showNotify('图片类型不正确，只允许上传后缀名为：' + $ext + '，请重新上传！', 'danger', 1500);
+                        break;
+                    case 'F_EXCEED_SIZE':
+                        //alert('图片不得超过' + ($size / 1024) + 'kb，请重新上传！');
+                        showNotify('图片不得超过' + ($size / 1024) + 'kb，请重新上传！', 'danger', 1500);
+                        break;
+                }
+            });
+
+            // 删除操作
+            $file_list.delegate('.btn-remove-pic', 'click', function() {
+                console.log($("#fid").val().trim());
+                console.log($("#stype").val().trim());
+                if (confirm("本操作将直接删除该图片，您确认删除吗?")) { // 可改为对话框插件
+                    //直接删除后台图片
+                    load_index = layer.load(1);
+                    var formData = new FormData();
+                    formData.append("stype",$("#stype").val().trim());
+                    formData.append("fid",$("#fid").val().trim());
+                    $.ajax({
+                        url: 'toHt/delOneTypePic', // 服务器端处理上传文件的URL
+                        type: 'POST',
+                        data: formData,
+                        dataType:'json',
+                        contentType: false, // 不设置内容类型
+                        processData: false, // 不处理发送的数据
+                        success: function (res) {
+                            layer.close(load_index);
+                            layer.msg("图片删除成功");
+                        },
+                        error: function () { console.log('删除失败'); }
+                    });
+                    $(this).closest('.list-images-item').remove();
+                }
+            });
+
+        });
+
+
+    });
+
+</script>
+</body>
+</html>
