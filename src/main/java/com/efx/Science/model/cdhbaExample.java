@@ -1903,6 +1903,436 @@ public class cdhbaExample {
             addCriterion("HBA028 not between", value1, value2, "hba028");
             return (Criteria) this;
         }
+
+        public Criteria andHba029IsNull() {
+            addCriterion("HBA029 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba029IsNotNull() {
+            addCriterion("HBA029 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba029EqualTo(Float value) {
+            addCriterion("HBA029 =", value, "hba029");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba029NotEqualTo(Float value) {
+            addCriterion("HBA029 <>", value, "hba029");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba029GreaterThan(Float value) {
+            addCriterion("HBA029 >", value, "hba029");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba029GreaterThanOrEqualTo(Float value) {
+            addCriterion("HBA029 >=", value, "hba029");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba029LessThan(Float value) {
+            addCriterion("HBA029 <", value, "hba029");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba029LessThanOrEqualTo(Float value) {
+            addCriterion("HBA029 <=", value, "hba029");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba029In(List<Float> values) {
+            addCriterion("HBA029 in", values, "hba029");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba029NotIn(List<Float> values) {
+            addCriterion("HBA029 not in", values, "hba029");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba029Between(Float value1, Float value2) {
+            addCriterion("HBA029 between", value1, value2, "hba029");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba029NotBetween(Float value1, Float value2) {
+            addCriterion("HBA029 not between", value1, value2, "hba029");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba030IsNull() {
+            addCriterion("HBA030 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba030IsNotNull() {
+            addCriterion("HBA030 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba030EqualTo(Float value) {
+            addCriterion("HBA030 =", value, "hba030");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba030NotEqualTo(Float value) {
+            addCriterion("HBA030 <>", value, "hba030");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba030GreaterThan(Float value) {
+            addCriterion("HBA030 >", value, "hba030");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba030GreaterThanOrEqualTo(Float value) {
+            addCriterion("HBA030 >=", value, "hba030");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba030LessThan(Float value) {
+            addCriterion("HBA030 <", value, "hba030");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba030LessThanOrEqualTo(Float value) {
+            addCriterion("HBA030 <=", value, "hba030");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba030In(List<Float> values) {
+            addCriterion("HBA030 in", values, "hba030");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba030NotIn(List<Float> values) {
+            addCriterion("HBA030 not in", values, "hba030");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba030Between(Float value1, Float value2) {
+            addCriterion("HBA030 between", value1, value2, "hba030");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba030NotBetween(Float value1, Float value2) {
+            addCriterion("HBA030 not between", value1, value2, "hba030");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba031IsNull() {
+            addCriterion("HBA031 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba031IsNotNull() {
+            addCriterion("HBA031 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba031EqualTo(Float value) {
+            addCriterion("HBA031 =", value, "hba031");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba031NotEqualTo(Float value) {
+            addCriterion("HBA031 <>", value, "hba031");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba031GreaterThan(Float value) {
+            addCriterion("HBA031 >", value, "hba031");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba031GreaterThanOrEqualTo(Float value) {
+            addCriterion("HBA031 >=", value, "hba031");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba031LessThan(Float value) {
+            addCriterion("HBA031 <", value, "hba031");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba031LessThanOrEqualTo(Float value) {
+            addCriterion("HBA031 <=", value, "hba031");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba031In(List<Float> values) {
+            addCriterion("HBA031 in", values, "hba031");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba031NotIn(List<Float> values) {
+            addCriterion("HBA031 not in", values, "hba031");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba031Between(Float value1, Float value2) {
+            addCriterion("HBA031 between", value1, value2, "hba031");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba031NotBetween(Float value1, Float value2) {
+            addCriterion("HBA031 not between", value1, value2, "hba031");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba032IsNull() {
+            addCriterion("HBA032 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba032IsNotNull() {
+            addCriterion("HBA032 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba032EqualTo(Float value) {
+            addCriterion("HBA032 =", value, "hba032");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba032NotEqualTo(Float value) {
+            addCriterion("HBA032 <>", value, "hba032");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba032GreaterThan(Float value) {
+            addCriterion("HBA032 >", value, "hba032");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba032GreaterThanOrEqualTo(Float value) {
+            addCriterion("HBA032 >=", value, "hba032");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba032LessThan(Float value) {
+            addCriterion("HBA032 <", value, "hba032");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba032LessThanOrEqualTo(Float value) {
+            addCriterion("HBA032 <=", value, "hba032");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba032In(List<Float> values) {
+            addCriterion("HBA032 in", values, "hba032");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba032NotIn(List<Float> values) {
+            addCriterion("HBA032 not in", values, "hba032");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba032Between(Float value1, Float value2) {
+            addCriterion("HBA032 between", value1, value2, "hba032");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba032NotBetween(Float value1, Float value2) {
+            addCriterion("HBA032 not between", value1, value2, "hba032");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba033IsNull() {
+            addCriterion("HBA033 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba033IsNotNull() {
+            addCriterion("HBA033 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba033EqualTo(Float value) {
+            addCriterion("HBA033 =", value, "hba033");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba033NotEqualTo(Float value) {
+            addCriterion("HBA033 <>", value, "hba033");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba033GreaterThan(Float value) {
+            addCriterion("HBA033 >", value, "hba033");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba033GreaterThanOrEqualTo(Float value) {
+            addCriterion("HBA033 >=", value, "hba033");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba033LessThan(Float value) {
+            addCriterion("HBA033 <", value, "hba033");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba033LessThanOrEqualTo(Float value) {
+            addCriterion("HBA033 <=", value, "hba033");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba033In(List<Float> values) {
+            addCriterion("HBA033 in", values, "hba033");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba033NotIn(List<Float> values) {
+            addCriterion("HBA033 not in", values, "hba033");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba033Between(Float value1, Float value2) {
+            addCriterion("HBA033 between", value1, value2, "hba033");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba033NotBetween(Float value1, Float value2) {
+            addCriterion("HBA033 not between", value1, value2, "hba033");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba034IsNull() {
+            addCriterion("HBA034 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba034IsNotNull() {
+            addCriterion("HBA034 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba034EqualTo(Integer value) {
+            addCriterion("HBA034 =", value, "hba034");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba034NotEqualTo(Integer value) {
+            addCriterion("HBA034 <>", value, "hba034");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba034GreaterThan(Integer value) {
+            addCriterion("HBA034 >", value, "hba034");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba034GreaterThanOrEqualTo(Integer value) {
+            addCriterion("HBA034 >=", value, "hba034");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba034LessThan(Integer value) {
+            addCriterion("HBA034 <", value, "hba034");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba034LessThanOrEqualTo(Integer value) {
+            addCriterion("HBA034 <=", value, "hba034");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba034In(List<Integer> values) {
+            addCriterion("HBA034 in", values, "hba034");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba034NotIn(List<Integer> values) {
+            addCriterion("HBA034 not in", values, "hba034");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba034Between(Integer value1, Integer value2) {
+            addCriterion("HBA034 between", value1, value2, "hba034");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba034NotBetween(Integer value1, Integer value2) {
+            addCriterion("HBA034 not between", value1, value2, "hba034");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba035IsNull() {
+            addCriterion("HBA035 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba035IsNotNull() {
+            addCriterion("HBA035 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba035EqualTo(String value) {
+            addCriterion("HBA035 =", value, "hba035");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba035NotEqualTo(String value) {
+            addCriterion("HBA035 <>", value, "hba035");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba035GreaterThan(String value) {
+            addCriterion("HBA035 >", value, "hba035");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba035GreaterThanOrEqualTo(String value) {
+            addCriterion("HBA035 >=", value, "hba035");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba035LessThan(String value) {
+            addCriterion("HBA035 <", value, "hba035");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba035LessThanOrEqualTo(String value) {
+            addCriterion("HBA035 <=", value, "hba035");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba035Like(String value) {
+            addCriterion("HBA035 like", value, "hba035");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba035NotLike(String value) {
+            addCriterion("HBA035 not like", value, "hba035");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba035In(List<String> values) {
+            addCriterion("HBA035 in", values, "hba035");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba035NotIn(List<String> values) {
+            addCriterion("HBA035 not in", values, "hba035");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba035Between(String value1, String value2) {
+            addCriterion("HBA035 between", value1, value2, "hba035");
+            return (Criteria) this;
+        }
+
+        public Criteria andHba035NotBetween(String value1, String value2) {
+            addCriterion("HBA035 not between", value1, value2, "hba035");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

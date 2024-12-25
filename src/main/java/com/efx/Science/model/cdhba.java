@@ -55,6 +55,20 @@ public class cdhba {
 
     private Float hba028;
 
+    private Float hba029;
+
+    private Float hba030;
+
+    private Float hba031;
+
+    private Float hba032;
+
+    private Float hba033;
+
+    private Integer hba034;
+
+    private String hba035;
+
     private String hba019;
 
     public Integer getHba001() {
@@ -273,6 +287,62 @@ public class cdhba {
         this.hba028 = hba028;
     }
 
+    public Float getHba029() {
+        return hba029;
+    }
+
+    public void setHba029(Float hba029) {
+        this.hba029 = hba029;
+    }
+
+    public Float getHba030() {
+        return hba030;
+    }
+
+    public void setHba030(Float hba030) {
+        this.hba030 = hba030;
+    }
+
+    public Float getHba031() {
+        return hba031;
+    }
+
+    public void setHba031(Float hba031) {
+        this.hba031 = hba031;
+    }
+
+    public Float getHba032() {
+        return hba032;
+    }
+
+    public void setHba032(Float hba032) {
+        this.hba032 = hba032;
+    }
+
+    public Float getHba033() {
+        return hba033;
+    }
+
+    public void setHba033(Float hba033) {
+        this.hba033 = hba033;
+    }
+
+    public Integer getHba034() {
+        return hba034;
+    }
+
+    public void setHba034(Integer hba034) {
+        this.hba034 = hba034;
+    }
+
+    public String getHba035() {
+        return hba035;
+    }
+
+    public void setHba035(String hba035) {
+        this.hba035 = hba035 == null ? null : hba035.trim();
+    }
+
     public String getHba019() {
         return hba019;
     }
@@ -314,6 +384,13 @@ public class cdhba {
         sb.append(", hba026=").append(hba026);
         sb.append(", hba027=").append(hba027);
         sb.append(", hba028=").append(hba028);
+        sb.append(", hba029=").append(hba029);
+        sb.append(", hba030=").append(hba030);
+        sb.append(", hba031=").append(hba031);
+        sb.append(", hba032=").append(hba032);
+        sb.append(", hba033=").append(hba033);
+        sb.append(", hba034=").append(hba034);
+        sb.append(", hba035=").append(hba035);
         sb.append(", hba019=").append(hba019);
         sb.append("]");
         return sb.toString();
