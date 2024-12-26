@@ -11,6 +11,417 @@
     <result column="YHD007" jdbcType="INTEGER" property="yhd007" />
     <result column="YHD008" jdbcType="VARCHAR" property="yhd008" />
     <result column="YHD009" jdbcType="VARCHAR" property="yhd009" />
+    <result column="YHD010" jdbcType="INTEGER" property="yhd010" />
+    <result column="YHD011" jdbcType="INTEGER" property="yhd011" />
+    <result column="YHD012" jdbcType="INTEGER" property="yhd012" />
+    <result column="YHD013" jdbcType="INTEGER" property="yhd013" />
+    <result column="YHD014" jdbcType="INTEGER" property="yhd014" />
+    <result column="YHD015" jdbcType="INTEGER" property="yhd015" />
+    <result column="YHD016" jdbcType="INTEGER" property="yhd016" />
+    <result column="YHD017" jdbcType="INTEGER" property="yhd017" />
+    <result column="YHD018" jdbcType="REAL" property="yhd018" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    YHD001, YHD002, YHD003, YHD004, YHD005, YHD006, YHD007, YHD008, YHD009, YHD010, YHD011, 
+    YHD012, YHD013, YHD014, YHD015, YHD016, YHD017, YHD018
+  </sql>
+  <select id="selectByExample" parameterType="com.efx.Science.model.cdyhdExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cdyhd
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cdyhd
+    where YHD001 = #{yhd001,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from cdyhd
+    where YHD001 = #{yhd001,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.efx.Science.model.cdyhdExample">
+    delete from cdyhd
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.efx.Science.model.cdyhd">
+    insert into cdyhd (YHD001, YHD002, YHD003, 
+      YHD004, YHD005, YHD006, YHD007, 
+      YHD008, YHD009, YHD010, 
+      YHD011, YHD012, YHD013, 
+      YHD014, YHD015, YHD016, 
+      YHD017, YHD018)
+    values (#{yhd001,jdbcType=VARCHAR}, #{yhd002,jdbcType=INTEGER}, #{yhd003,jdbcType=TIMESTAMP}, 
+      #{yhd004,jdbcType=CHAR}, #{yhd005,jdbcType=CHAR}, #{yhd006,jdbcType=CHAR}, #{yhd007,jdbcType=INTEGER}, 
+      #{yhd008,jdbcType=VARCHAR}, #{yhd009,jdbcType=VARCHAR}, #{yhd010,jdbcType=INTEGER}, 
+      #{yhd011,jdbcType=INTEGER}, #{yhd012,jdbcType=INTEGER}, #{yhd013,jdbcType=INTEGER}, 
+      #{yhd014,jdbcType=INTEGER}, #{yhd015,jdbcType=INTEGER}, #{yhd016,jdbcType=INTEGER}, 
+      #{yhd017,jdbcType=INTEGER}, #{yhd018,jdbcType=REAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.efx.Science.model.cdyhd">
+    insert into cdyhd
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="yhd001 != null">
+        YHD001,
+      </if>
+      <if test="yhd002 != null">
+        YHD002,
+      </if>
+      <if test="yhd003 != null">
+        YHD003,
+      </if>
+      <if test="yhd004 != null">
+        YHD004,
+      </if>
+      <if test="yhd005 != null">
+        YHD005,
+      </if>
+      <if test="yhd006 != null">
+        YHD006,
+      </if>
+      <if test="yhd007 != null">
+        YHD007,
+      </if>
+      <if test="yhd008 != null">
+        YHD008,
+      </if>
+      <if test="yhd009 != null">
+        YHD009,
+      </if>
+      <if test="yhd010 != null">
+        YHD010,
+      </if>
+      <if test="yhd011 != null">
+        YHD011,
+      </if>
+      <if test="yhd012 != null">
+        YHD012,
+      </if>
+      <if test="yhd013 != null">
+        YHD013,
+      </if>
+      <if test="yhd014 != null">
+        YHD014,
+      </if>
+      <if test="yhd015 != null">
+        YHD015,
+      </if>
+      <if test="yhd016 != null">
+        YHD016,
+      </if>
+      <if test="yhd017 != null">
+        YHD017,
+      </if>
+      <if test="yhd018 != null">
+        YHD018,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="yhd001 != null">
+        #{yhd001,jdbcType=VARCHAR},
+      </if>
+      <if test="yhd002 != null">
+        #{yhd002,jdbcType=INTEGER},
+      </if>
+      <if test="yhd003 != null">
+        #{yhd003,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yhd004 != null">
+        #{yhd004,jdbcType=CHAR},
+      </if>
+      <if test="yhd005 != null">
+        #{yhd005,jdbcType=CHAR},
+      </if>
+      <if test="yhd006 != null">
+        #{yhd006,jdbcType=CHAR},
+      </if>
+      <if test="yhd007 != null">
+        #{yhd007,jdbcType=INTEGER},
+      </if>
+      <if test="yhd008 != null">
+        #{yhd008,jdbcType=VARCHAR},
+      </if>
+      <if test="yhd009 != null">
+        #{yhd009,jdbcType=VARCHAR},
+      </if>
+      <if test="yhd010 != null">
+        #{yhd010,jdbcType=INTEGER},
+      </if>
+      <if test="yhd011 != null">
+        #{yhd011,jdbcType=INTEGER},
+      </if>
+      <if test="yhd012 != null">
+        #{yhd012,jdbcType=INTEGER},
+      </if>
+      <if test="yhd013 != null">
+        #{yhd013,jdbcType=INTEGER},
+      </if>
+      <if test="yhd014 != null">
+        #{yhd014,jdbcType=INTEGER},
+      </if>
+      <if test="yhd015 != null">
+        #{yhd015,jdbcType=INTEGER},
+      </if>
+      <if test="yhd016 != null">
+        #{yhd016,jdbcType=INTEGER},
+      </if>
+      <if test="yhd017 != null">
+        #{yhd017,jdbcType=INTEGER},
+      </if>
+      <if test="yhd018 != null">
+        #{yhd018,jdbcType=REAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.efx.Science.model.cdyhdExample" resultType="java.lang.Long">
+    select count(*) from cdyhd
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update cdyhd
+    <set>
+      <if test="record.yhd001 != null">
+        YHD001 = #{record.yhd001,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yhd002 != null">
+        YHD002 = #{record.yhd002,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhd003 != null">
+        YHD003 = #{record.yhd003,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.yhd004 != null">
+        YHD004 = #{record.yhd004,jdbcType=CHAR},
+      </if>
+      <if test="record.yhd005 != null">
+        YHD005 = #{record.yhd005,jdbcType=CHAR},
+      </if>
+      <if test="record.yhd006 != null">
+        YHD006 = #{record.yhd006,jdbcType=CHAR},
+      </if>
+      <if test="record.yhd007 != null">
+        YHD007 = #{record.yhd007,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhd008 != null">
+        YHD008 = #{record.yhd008,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yhd009 != null">
+        YHD009 = #{record.yhd009,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yhd010 != null">
+        YHD010 = #{record.yhd010,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhd011 != null">
+        YHD011 = #{record.yhd011,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhd012 != null">
+        YHD012 = #{record.yhd012,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhd013 != null">
+        YHD013 = #{record.yhd013,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhd014 != null">
+        YHD014 = #{record.yhd014,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhd015 != null">
+        YHD015 = #{record.yhd015,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhd016 != null">
+        YHD016 = #{record.yhd016,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhd017 != null">
+        YHD017 = #{record.yhd017,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhd018 != null">
+        YHD018 = #{record.yhd018,jdbcType=REAL},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update cdyhd
+    set YHD001 = #{record.yhd001,jdbcType=VARCHAR},
+      YHD002 = #{record.yhd002,jdbcType=INTEGER},
+      YHD003 = #{record.yhd003,jdbcType=TIMESTAMP},
+      YHD004 = #{record.yhd004,jdbcType=CHAR},
+      YHD005 = #{record.yhd005,jdbcType=CHAR},
+      YHD006 = #{record.yhd006,jdbcType=CHAR},
+      YHD007 = #{record.yhd007,jdbcType=INTEGER},
+      YHD008 = #{record.yhd008,jdbcType=VARCHAR},
+      YHD009 = #{record.yhd009,jdbcType=VARCHAR},
+      YHD010 = #{record.yhd010,jdbcType=INTEGER},
+      YHD011 = #{record.yhd011,jdbcType=INTEGER},
+      YHD012 = #{record.yhd012,jdbcType=INTEGER},
+      YHD013 = #{record.yhd013,jdbcType=INTEGER},
+      YHD014 = #{record.yhd014,jdbcType=INTEGER},
+      YHD015 = #{record.yhd015,jdbcType=INTEGER},
+      YHD016 = #{record.yhd016,jdbcType=INTEGER},
+      YHD017 = #{record.yhd017,jdbcType=INTEGER},
+      YHD018 = #{record.yhd018,jdbcType=REAL}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.efx.Science.model.cdyhd">
+    update cdyhd
+    <set>
+      <if test="yhd002 != null">
+        YHD002 = #{yhd002,jdbcType=INTEGER},
+      </if>
+      <if test="yhd003 != null">
+        YHD003 = #{yhd003,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yhd004 != null">
+        YHD004 = #{yhd004,jdbcType=CHAR},
+      </if>
+      <if test="yhd005 != null">
+        YHD005 = #{yhd005,jdbcType=CHAR},
+      </if>
+      <if test="yhd006 != null">
+        YHD006 = #{yhd006,jdbcType=CHAR},
+      </if>
+      <if test="yhd007 != null">
+        YHD007 = #{yhd007,jdbcType=INTEGER},
+      </if>
+      <if test="yhd008 != null">
+        YHD008 = #{yhd008,jdbcType=VARCHAR},
+      </if>
+      <if test="yhd009 != null">
+        YHD009 = #{yhd009,jdbcType=VARCHAR},
+      </if>
+      <if test="yhd010 != null">
+        YHD010 = #{yhd010,jdbcType=INTEGER},
+      </if>
+      <if test="yhd011 != null">
+        YHD011 = #{yhd011,jdbcType=INTEGER},
+      </if>
+      <if test="yhd012 != null">
+        YHD012 = #{yhd012,jdbcType=INTEGER},
+      </if>
+      <if test="yhd013 != null">
+        YHD013 = #{yhd013,jdbcType=INTEGER},
+      </if>
+      <if test="yhd014 != null">
+        YHD014 = #{yhd014,jdbcType=INTEGER},
+      </if>
+      <if test="yhd015 != null">
+        YHD015 = #{yhd015,jdbcType=INTEGER},
+      </if>
+      <if test="yhd016 != null">
+        YHD016 = #{yhd016,jdbcType=INTEGER},
+      </if>
+      <if test="yhd017 != null">
+        YHD017 = #{yhd017,jdbcType=INTEGER},
+      </if>
+      <if test="yhd018 != null">
+        YHD018 = #{yhd018,jdbcType=REAL},
+      </if>
+    </set>
+    where YHD001 = #{yhd001,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.efx.Science.model.cdyhd">
+    update cdyhd
+    set YHD002 = #{yhd002,jdbcType=INTEGER},
+      YHD003 = #{yhd003,jdbcType=TIMESTAMP},
+      YHD004 = #{yhd004,jdbcType=CHAR},
+      YHD005 = #{yhd005,jdbcType=CHAR},
+      YHD006 = #{yhd006,jdbcType=CHAR},
+      YHD007 = #{yhd007,jdbcType=INTEGER},
+      YHD008 = #{yhd008,jdbcType=VARCHAR},
+      YHD009 = #{yhd009,jdbcType=VARCHAR},
+      YHD010 = #{yhd010,jdbcType=INTEGER},
+      YHD011 = #{yhd011,jdbcType=INTEGER},
+      YHD012 = #{yhd012,jdbcType=INTEGER},
+      YHD013 = #{yhd013,jdbcType=INTEGER},
+      YHD014 = #{yhd014,jdbcType=INTEGER},
+      YHD015 = #{yhd015,jdbcType=INTEGER},
+      YHD016 = #{yhd016,jdbcType=INTEGER},
+      YHD017 = #{yhd017,jdbcType=INTEGER},
+      YHD018 = #{yhd018,jdbcType=REAL}
+    where YHD001 = #{yhd001,jdbcType=VARCHAR}
+  </update>
+  <resultMap id="BaseResultMap" type="com.efx.Science.model.cdyhd">
+    <id column="YHD001" jdbcType="VARCHAR" property="yhd001" />
+    <result column="YHD002" jdbcType="INTEGER" property="yhd002" />
+    <result column="YHD003" jdbcType="TIMESTAMP" property="yhd003" />
+    <result column="YHD004" jdbcType="CHAR" property="yhd004" />
+    <result column="YHD005" jdbcType="CHAR" property="yhd005" />
+    <result column="YHD006" jdbcType="CHAR" property="yhd006" />
+    <result column="YHD007" jdbcType="INTEGER" property="yhd007" />
+    <result column="YHD008" jdbcType="VARCHAR" property="yhd008" />
+    <result column="YHD009" jdbcType="VARCHAR" property="yhd009" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>

@@ -704,6 +704,546 @@ public class cdyhdExample {
             addCriterion("YHD009 not between", value1, value2, "yhd009");
             return (Criteria) this;
         }
+
+        public Criteria andYhd010IsNull() {
+            addCriterion("YHD010 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd010IsNotNull() {
+            addCriterion("YHD010 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd010EqualTo(Integer value) {
+            addCriterion("YHD010 =", value, "yhd010");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd010NotEqualTo(Integer value) {
+            addCriterion("YHD010 <>", value, "yhd010");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd010GreaterThan(Integer value) {
+            addCriterion("YHD010 >", value, "yhd010");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd010GreaterThanOrEqualTo(Integer value) {
+            addCriterion("YHD010 >=", value, "yhd010");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd010LessThan(Integer value) {
+            addCriterion("YHD010 <", value, "yhd010");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd010LessThanOrEqualTo(Integer value) {
+            addCriterion("YHD010 <=", value, "yhd010");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd010In(List<Integer> values) {
+            addCriterion("YHD010 in", values, "yhd010");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd010NotIn(List<Integer> values) {
+            addCriterion("YHD010 not in", values, "yhd010");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd010Between(Integer value1, Integer value2) {
+            addCriterion("YHD010 between", value1, value2, "yhd010");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd010NotBetween(Integer value1, Integer value2) {
+            addCriterion("YHD010 not between", value1, value2, "yhd010");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd011IsNull() {
+            addCriterion("YHD011 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd011IsNotNull() {
+            addCriterion("YHD011 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd011EqualTo(Integer value) {
+            addCriterion("YHD011 =", value, "yhd011");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd011NotEqualTo(Integer value) {
+            addCriterion("YHD011 <>", value, "yhd011");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd011GreaterThan(Integer value) {
+            addCriterion("YHD011 >", value, "yhd011");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd011GreaterThanOrEqualTo(Integer value) {
+            addCriterion("YHD011 >=", value, "yhd011");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd011LessThan(Integer value) {
+            addCriterion("YHD011 <", value, "yhd011");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd011LessThanOrEqualTo(Integer value) {
+            addCriterion("YHD011 <=", value, "yhd011");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd011In(List<Integer> values) {
+            addCriterion("YHD011 in", values, "yhd011");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd011NotIn(List<Integer> values) {
+            addCriterion("YHD011 not in", values, "yhd011");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd011Between(Integer value1, Integer value2) {
+            addCriterion("YHD011 between", value1, value2, "yhd011");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd011NotBetween(Integer value1, Integer value2) {
+            addCriterion("YHD011 not between", value1, value2, "yhd011");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd012IsNull() {
+            addCriterion("YHD012 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd012IsNotNull() {
+            addCriterion("YHD012 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd012EqualTo(Integer value) {
+            addCriterion("YHD012 =", value, "yhd012");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd012NotEqualTo(Integer value) {
+            addCriterion("YHD012 <>", value, "yhd012");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd012GreaterThan(Integer value) {
+            addCriterion("YHD012 >", value, "yhd012");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd012GreaterThanOrEqualTo(Integer value) {
+            addCriterion("YHD012 >=", value, "yhd012");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd012LessThan(Integer value) {
+            addCriterion("YHD012 <", value, "yhd012");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd012LessThanOrEqualTo(Integer value) {
+            addCriterion("YHD012 <=", value, "yhd012");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd012In(List<Integer> values) {
+            addCriterion("YHD012 in", values, "yhd012");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd012NotIn(List<Integer> values) {
+            addCriterion("YHD012 not in", values, "yhd012");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd012Between(Integer value1, Integer value2) {
+            addCriterion("YHD012 between", value1, value2, "yhd012");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd012NotBetween(Integer value1, Integer value2) {
+            addCriterion("YHD012 not between", value1, value2, "yhd012");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd013IsNull() {
+            addCriterion("YHD013 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd013IsNotNull() {
+            addCriterion("YHD013 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd013EqualTo(Integer value) {
+            addCriterion("YHD013 =", value, "yhd013");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd013NotEqualTo(Integer value) {
+            addCriterion("YHD013 <>", value, "yhd013");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd013GreaterThan(Integer value) {
+            addCriterion("YHD013 >", value, "yhd013");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd013GreaterThanOrEqualTo(Integer value) {
+            addCriterion("YHD013 >=", value, "yhd013");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd013LessThan(Integer value) {
+            addCriterion("YHD013 <", value, "yhd013");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd013LessThanOrEqualTo(Integer value) {
+            addCriterion("YHD013 <=", value, "yhd013");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd013In(List<Integer> values) {
+            addCriterion("YHD013 in", values, "yhd013");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd013NotIn(List<Integer> values) {
+            addCriterion("YHD013 not in", values, "yhd013");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd013Between(Integer value1, Integer value2) {
+            addCriterion("YHD013 between", value1, value2, "yhd013");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd013NotBetween(Integer value1, Integer value2) {
+            addCriterion("YHD013 not between", value1, value2, "yhd013");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd014IsNull() {
+            addCriterion("YHD014 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd014IsNotNull() {
+            addCriterion("YHD014 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd014EqualTo(Integer value) {
+            addCriterion("YHD014 =", value, "yhd014");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd014NotEqualTo(Integer value) {
+            addCriterion("YHD014 <>", value, "yhd014");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd014GreaterThan(Integer value) {
+            addCriterion("YHD014 >", value, "yhd014");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd014GreaterThanOrEqualTo(Integer value) {
+            addCriterion("YHD014 >=", value, "yhd014");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd014LessThan(Integer value) {
+            addCriterion("YHD014 <", value, "yhd014");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd014LessThanOrEqualTo(Integer value) {
+            addCriterion("YHD014 <=", value, "yhd014");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd014In(List<Integer> values) {
+            addCriterion("YHD014 in", values, "yhd014");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd014NotIn(List<Integer> values) {
+            addCriterion("YHD014 not in", values, "yhd014");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd014Between(Integer value1, Integer value2) {
+            addCriterion("YHD014 between", value1, value2, "yhd014");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd014NotBetween(Integer value1, Integer value2) {
+            addCriterion("YHD014 not between", value1, value2, "yhd014");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd015IsNull() {
+            addCriterion("YHD015 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd015IsNotNull() {
+            addCriterion("YHD015 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd015EqualTo(Integer value) {
+            addCriterion("YHD015 =", value, "yhd015");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd015NotEqualTo(Integer value) {
+            addCriterion("YHD015 <>", value, "yhd015");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd015GreaterThan(Integer value) {
+            addCriterion("YHD015 >", value, "yhd015");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd015GreaterThanOrEqualTo(Integer value) {
+            addCriterion("YHD015 >=", value, "yhd015");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd015LessThan(Integer value) {
+            addCriterion("YHD015 <", value, "yhd015");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd015LessThanOrEqualTo(Integer value) {
+            addCriterion("YHD015 <=", value, "yhd015");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd015In(List<Integer> values) {
+            addCriterion("YHD015 in", values, "yhd015");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd015NotIn(List<Integer> values) {
+            addCriterion("YHD015 not in", values, "yhd015");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd015Between(Integer value1, Integer value2) {
+            addCriterion("YHD015 between", value1, value2, "yhd015");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd015NotBetween(Integer value1, Integer value2) {
+            addCriterion("YHD015 not between", value1, value2, "yhd015");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd016IsNull() {
+            addCriterion("YHD016 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd016IsNotNull() {
+            addCriterion("YHD016 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd016EqualTo(Integer value) {
+            addCriterion("YHD016 =", value, "yhd016");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd016NotEqualTo(Integer value) {
+            addCriterion("YHD016 <>", value, "yhd016");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd016GreaterThan(Integer value) {
+            addCriterion("YHD016 >", value, "yhd016");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd016GreaterThanOrEqualTo(Integer value) {
+            addCriterion("YHD016 >=", value, "yhd016");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd016LessThan(Integer value) {
+            addCriterion("YHD016 <", value, "yhd016");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd016LessThanOrEqualTo(Integer value) {
+            addCriterion("YHD016 <=", value, "yhd016");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd016In(List<Integer> values) {
+            addCriterion("YHD016 in", values, "yhd016");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd016NotIn(List<Integer> values) {
+            addCriterion("YHD016 not in", values, "yhd016");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd016Between(Integer value1, Integer value2) {
+            addCriterion("YHD016 between", value1, value2, "yhd016");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd016NotBetween(Integer value1, Integer value2) {
+            addCriterion("YHD016 not between", value1, value2, "yhd016");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd017IsNull() {
+            addCriterion("YHD017 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd017IsNotNull() {
+            addCriterion("YHD017 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd017EqualTo(Integer value) {
+            addCriterion("YHD017 =", value, "yhd017");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd017NotEqualTo(Integer value) {
+            addCriterion("YHD017 <>", value, "yhd017");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd017GreaterThan(Integer value) {
+            addCriterion("YHD017 >", value, "yhd017");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd017GreaterThanOrEqualTo(Integer value) {
+            addCriterion("YHD017 >=", value, "yhd017");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd017LessThan(Integer value) {
+            addCriterion("YHD017 <", value, "yhd017");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd017LessThanOrEqualTo(Integer value) {
+            addCriterion("YHD017 <=", value, "yhd017");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd017In(List<Integer> values) {
+            addCriterion("YHD017 in", values, "yhd017");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd017NotIn(List<Integer> values) {
+            addCriterion("YHD017 not in", values, "yhd017");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd017Between(Integer value1, Integer value2) {
+            addCriterion("YHD017 between", value1, value2, "yhd017");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd017NotBetween(Integer value1, Integer value2) {
+            addCriterion("YHD017 not between", value1, value2, "yhd017");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd018IsNull() {
+            addCriterion("YHD018 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd018IsNotNull() {
+            addCriterion("YHD018 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd018EqualTo(Float value) {
+            addCriterion("YHD018 =", value, "yhd018");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd018NotEqualTo(Float value) {
+            addCriterion("YHD018 <>", value, "yhd018");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd018GreaterThan(Float value) {
+            addCriterion("YHD018 >", value, "yhd018");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd018GreaterThanOrEqualTo(Float value) {
+            addCriterion("YHD018 >=", value, "yhd018");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd018LessThan(Float value) {
+            addCriterion("YHD018 <", value, "yhd018");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd018LessThanOrEqualTo(Float value) {
+            addCriterion("YHD018 <=", value, "yhd018");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd018In(List<Float> values) {
+            addCriterion("YHD018 in", values, "yhd018");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd018NotIn(List<Float> values) {
+            addCriterion("YHD018 not in", values, "yhd018");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd018Between(Float value1, Float value2) {
+            addCriterion("YHD018 between", value1, value2, "yhd018");
+            return (Criteria) this;
+        }
+
+        public Criteria andYhd018NotBetween(Float value1, Float value2) {
+            addCriterion("YHD018 not between", value1, value2, "yhd018");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

@@ -21,6 +21,24 @@ public class cdyhd {
 
     private String yhd009;
 
+    private Integer yhd010;
+
+    private Integer yhd011;
+
+    private Integer yhd012;
+
+    private Integer yhd013;
+
+    private Integer yhd014;
+
+    private Integer yhd015;
+
+    private Integer yhd016;
+
+    private Integer yhd017;
+
+    private Float yhd018;
+
     public String getYhd001() {
         return yhd001;
     }
@@ -93,6 +111,78 @@ public class cdyhd {
         this.yhd009 = yhd009 == null ? null : yhd009.trim();
     }
 
+    public Integer getYhd010() {
+        return yhd010;
+    }
+
+    public void setYhd010(Integer yhd010) {
+        this.yhd010 = yhd010;
+    }
+
+    public Integer getYhd011() {
+        return yhd011;
+    }
+
+    public void setYhd011(Integer yhd011) {
+        this.yhd011 = yhd011;
+    }
+
+    public Integer getYhd012() {
+        return yhd012;
+    }
+
+    public void setYhd012(Integer yhd012) {
+        this.yhd012 = yhd012;
+    }
+
+    public Integer getYhd013() {
+        return yhd013;
+    }
+
+    public void setYhd013(Integer yhd013) {
+        this.yhd013 = yhd013;
+    }
+
+    public Integer getYhd014() {
+        return yhd014;
+    }
+
+    public void setYhd014(Integer yhd014) {
+        this.yhd014 = yhd014;
+    }
+
+    public Integer getYhd015() {
+        return yhd015;
+    }
+
+    public void setYhd015(Integer yhd015) {
+        this.yhd015 = yhd015;
+    }
+
+    public Integer getYhd016() {
+        return yhd016;
+    }
+
+    public void setYhd016(Integer yhd016) {
+        this.yhd016 = yhd016;
+    }
+
+    public Integer getYhd017() {
+        return yhd017;
+    }
+
+    public void setYhd017(Integer yhd017) {
+        this.yhd017 = yhd017;
+    }
+
+    public Float getYhd018() {
+        return yhd018;
+    }
+
+    public void setYhd018(Float yhd018) {
+        this.yhd018 = yhd018;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -108,6 +198,15 @@ public class cdyhd {
         sb.append(", yhd007=").append(yhd007);
         sb.append(", yhd008=").append(yhd008);
         sb.append(", yhd009=").append(yhd009);
+        sb.append(", yhd010=").append(yhd010);
+        sb.append(", yhd011=").append(yhd011);
+        sb.append(", yhd012=").append(yhd012);
+        sb.append(", yhd013=").append(yhd013);
+        sb.append(", yhd014=").append(yhd014);
+        sb.append(", yhd015=").append(yhd015);
+        sb.append(", yhd016=").append(yhd016);
+        sb.append(", yhd017=").append(yhd017);
+        sb.append(", yhd018=").append(yhd018);
         sb.append("]");
         return sb.toString();
     }
