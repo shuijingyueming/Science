@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="1c9d71b9-fba8-441f-81e4-9a18972a5c64" name="变更" comment="新提交">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/model/cdyhd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/model/cdyhd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/model/cdyhdExample.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/model/cdyhdExample.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/cdyhdMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/cdyhdMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Science.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Science.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/until/AesUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/until/AesUtil.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,21 +67,21 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;show.run.dashboard.notification&quot;: &quot;false&quot;,
     &quot;spring.configuration.checksum&quot;: &quot;35bf1210e6727959a7a88a00462db959&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\HxObject\src\main\resources\static\pagejs" />
-      <recent name="D:\HxObject\src\main\resources\static\upload\mimg" />
-      <recent name="D:\HxObject\src\main\resources\static\upload" />
-      <recent name="D:\HxObject\src\main\resources\static\js" />
+      <recent name="D:\Science\src\main\resources\static\pagejs" />
+      <recent name="D:\Science\src\main\resources\static\upload\mimg" />
+      <recent name="D:\Science\src\main\resources\static\upload" />
+      <recent name="D:\Science\src\main\resources\static\js" />
       <recent name="D:\IdeaProjects\demo\src\main\resources\templates" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\HxObject\src\main\resources\static\upload\pimg" />
+      <recent name="D:\Science\src\main\resources\static\upload\pimg" />
       <recent name="D:\template\template\src\main\resources\static\static\js" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -106,13 +104,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="HxObjectApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+    <configuration name="ScienceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <option name="ACTIVE_PROFILES" />
-      <module name="HxObject" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.efx.HxObject.HxObjectApplication" />
+      <module name="Science" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.efx.Science.ScienceApplication" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.efx.HxObject.*" />
+          <option name="PATTERN" value="com.efx.Science.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -122,7 +120,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Spring Boot.HxObjectApplication" />
+        <item itemvalue="Spring Boot.ScienceApplication" />
       </list>
     </recent_temporary>
   </component>
@@ -193,7 +191,9 @@
       <workItem from="1735096455572" duration="2783000" />
       <workItem from="1735106933789" duration="799000" />
       <workItem from="1735111879462" duration="247000" />
-      <workItem from="1735185307701" duration="684000" />
+      <workItem from="1735185307701" duration="760000" />
+      <workItem from="1735206286578" duration="1269000" />
+      <workItem from="1735262750346" duration="336000" />
     </task>
     <task id="LOCAL-00001" summary="新提交">
       <created>1730428025413</created>
@@ -216,7 +216,14 @@
       <option name="project" value="LOCAL" />
       <updated>1735112044373</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="新提交">
+      <created>1735195776037</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1735195776037</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
