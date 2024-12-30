@@ -5,11 +5,37 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1c9d71b9-fba8-441f-81e4-9a18972a5c64" name="变更" comment="新提交">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/model/cdyhd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/model/cdyhd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/model/cdyhdExample.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/model/cdyhdExample.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/cdyhdMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/cdyhdMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Science.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Science.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/controller/BaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/controller/BaseController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/controller/HTinfoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/controller/HTinfoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/controller/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/dao/cdhbaMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/dao/cdhbbMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/dao/cdhbbMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/dao/cdlogMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/dao/cdlogMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/dao/cdsmdMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/dao/cdsmdMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/dao/cduseMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/dao/cduseMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/dao/cdyhaMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/dao/cdyhaMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/dao/cdyheMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/dao/cdyheMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/model/cdhba.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/model/cdhbaExample.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/cdhbaMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/cdhbbMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/cdhbbMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/cdlogMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/cdlogMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/cdsmdMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/cdsmdMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/cduseMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/cduseMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/cdyhaMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/cdyhaMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/cdyhcMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/cdyhcMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/cdyheMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/cdyheMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/pagejs/htfy.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/pagejs/htfy.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/pagejs/pubjs.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/pagejs/pubjs.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/tables/dataTables.buttons.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/static/tables/dataTables.buttons.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/tables/datatable.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/static/tables/datatable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/HTFJcon.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/HTcon.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/HTmain.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/HTmain.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/left.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/left.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +51,9 @@
         <option value="HTML File" />
       </list>
     </option>
+  </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="origin/master" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -62,7 +91,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Science&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/IdeaProjects/Science/src/main/resources/templates&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -76,23 +105,25 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\IdeaProjects\Science\src\main\resources\templates" />
+      <recent name="D:\IdeaProjects\Science\src\main\resources\static\images" />
       <recent name="D:\HxObject\src\main\resources\static\pagejs" />
       <recent name="D:\HxObject\src\main\resources\static\upload\mimg" />
       <recent name="D:\HxObject\src\main\resources\static\upload" />
-      <recent name="D:\HxObject\src\main\resources\static\js" />
-      <recent name="D:\IdeaProjects\demo\src\main\resources\templates" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\HxObject\src\main\resources\static\upload\pimg" />
       <recent name="D:\template\template\src\main\resources\static\static\js" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.efx.Science.service.impl" />
+      <recent name="com.efx.Science.service" />
       <recent name="com.efx.quality.model" />
       <recent name="com.efx.quality.service" />
       <recent name="com.efx.quality.service.impl" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Spring Boot.ScienceApplication">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="template" />
       <method v="2">
@@ -120,8 +151,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ScienceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="Science" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.efx.Science.ScienceApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.efx.Science.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Spring Boot.ScienceApplication" />
         <item itemvalue="Spring Boot.HxObjectApplication" />
       </list>
     </recent_temporary>
@@ -194,6 +239,7 @@
       <workItem from="1735106933789" duration="799000" />
       <workItem from="1735111879462" duration="247000" />
       <workItem from="1735185307701" duration="684000" />
+      <workItem from="1735522241085" duration="17674000" />
     </task>
     <task id="LOCAL-00001" summary="新提交">
       <created>1730428025413</created>
@@ -216,7 +262,21 @@
       <option name="project" value="LOCAL" />
       <updated>1735112044373</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="wxm">
+      <created>1735262561711</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1735262561711</updated>
+    </task>
+    <task id="LOCAL-00005" summary="wxm">
+      <created>1735262662176</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1735262662176</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -238,6 +298,7 @@
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
     <MESSAGE value="新提交" />
-    <option name="LAST_COMMIT_MESSAGE" value="新提交" />
+    <MESSAGE value="wxm" />
+    <option name="LAST_COMMIT_MESSAGE" value="wxm" />
   </component>
 </project>

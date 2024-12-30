@@ -5,13 +5,11 @@
     <id column="YHC001" jdbcType="INTEGER" property="yhc001" />
     <result column="YHC002" jdbcType="INTEGER" property="yhc002" />
     <result column="YHC003" jdbcType="VARCHAR" property="yhc003" />
+    <result column="YHC004" jdbcType="LONGVARCHAR" property="yhc004" />
     <result column="YHC005" jdbcType="INTEGER" property="yhc005" />
     <result column="YHC006" jdbcType="TIMESTAMP" property="yhc006" />
     <result column="YHC007" jdbcType="VARCHAR" property="yhc007" />
     <result column="YHC008" jdbcType="VARCHAR" property="yhc008" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.efx.Science.model.cdyhc">
-    <result column="YHC004" jdbcType="LONGVARCHAR" property="yhc004" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -72,19 +70,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    YHC001, YHC002, YHC003, YHC005, YHC006, YHC007, YHC008
+    YHC001, YHC002, YHC004 ,YHC003, YHC005, YHC006, YHC007, YHC008
   </sql>
-  <sql id="Blob_Column_List">
-    YHC004
-  </sql>
-  <select id="selectByExampleWithBLOBs" parameterType="com.efx.Science.model.cdyhcExample" resultMap="ResultMapWithBLOBs">
+
+  <select id="selectByExampleWithBLOBs" parameterType="com.efx.Science.model.cdyhcExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from cdyhc
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -107,11 +101,9 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from cdyhc
     where YHC001 = #{yhc001,jdbcType=INTEGER}
   </select>

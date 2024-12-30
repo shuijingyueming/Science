@@ -3,6 +3,7 @@ package com.efx.Science.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.efx.Science.model.cduse;
+import com.efx.Science.model.user;
 import com.efx.Science.pub.PubMessage;
 import com.efx.Science.until.EncrpytUtil;
 import com.efx.Science.until.RSACoder;
@@ -161,10 +162,10 @@ public class LoginController extends BaseController {
         request.getHeader("");
         System.out.println(PubMessage.dlmap.get(name + "bcode"));
         System.out.println(ycode);
-        if(!PubMessage.dlmap.get(name + "bcode").equals(ycode)) {
+        /*if(!PubMessage.dlmap.get(name + "bcode").equals(ycode)) {
             map.put("res", "N");
             map.put("msg", "验证码错误");
-        }else{
+        }else{*/
             cduse use = useService.getLogin(name,pwd);
             if(use!=null){
                // session.invalidate();//session失效
@@ -175,12 +176,20 @@ public class LoginController extends BaseController {
                 String inputStr = use.getUse001() + "";
                 byte[] encodedData = RSACoder.encryptByPublicKey(inputStr, EncrpytUtil.publicKey);
                 session.setAttribute("user", RSACoder.encryptBASE64(encodedData));
+                //用户信息
+                user user = new user();
+                user.setUname(use.getUse002());
+                user.setJstype(use.getUse009());
+                if (use.getUse002().equals("A")) user.setJs("平台管理员");
+                else if (use.getUse002().equals("B")) user.setJs("授课方管理员");
+                else if (use.getUse002().equals("C")) user.setJs("选课方管理员");
+                session.setAttribute("umsg", user);
                 map.put("res", "Y");
             }else{
                 map.put("res", "N");
                 map.put("msg", "用户名或密码错误");
             }
-        }
+//        }
         response.getWriter().print(new JSONObject(map));
         return null;
     }

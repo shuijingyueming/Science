@@ -4,6 +4,7 @@ import com.efx.Science.model.cdlog;
 import com.efx.Science.model.cdlogExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
 
 public interface cdlogMapper {
     long countByExample(cdlogExample example);
@@ -33,4 +34,6 @@ public interface cdlogMapper {
     int updateByPrimaryKeyWithBLOBs(cdlog record);
 
     int updateByPrimaryKey(cdlog record);
+
+    List selectByExampleAndPage(cdlogExample example, RowBounds rowBounds);
 }

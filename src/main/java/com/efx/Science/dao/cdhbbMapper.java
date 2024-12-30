@@ -4,6 +4,7 @@ import com.efx.Science.model.cdhbb;
 import com.efx.Science.model.cdhbbExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
 
 public interface cdhbbMapper {
     long countByExample(cdhbbExample example);
@@ -27,4 +28,6 @@ public interface cdhbbMapper {
     int updateByPrimaryKeySelective(cdhbb record);
 
     int updateByPrimaryKey(cdhbb record);
+
+    List<cdhbb> selectByExampleAndPage(cdhbbExample example, RowBounds rowBounds);
 }

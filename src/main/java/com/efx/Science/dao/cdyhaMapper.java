@@ -4,6 +4,7 @@ import com.efx.Science.model.cdyha;
 import com.efx.Science.model.cdyhaExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
 
 public interface cdyhaMapper {
     long countByExample(cdyhaExample example);
@@ -27,4 +28,6 @@ public interface cdyhaMapper {
     int updateByPrimaryKeySelective(cdyha record);
 
     int updateByPrimaryKey(cdyha record);
+
+    List<cdyha> selectByExampleAndPage(cdyhaExample example, RowBounds rowBounds);
 }

@@ -36,70 +36,6 @@
                     <div class="card-body">
                         <nav class="sidebar-main">
                             <ul class="nav-drawer">
-                                <th:block th:each="item,stat:${usglist}">
-                                   <li th:class="${#lists.size(item.usclist)>0?'nav-item nav-item-has-subnav':''}">
-                                       <a href="javascript:void(0);" style="padding:0;" onclick="qhcz()">
-                                           <img class="typeimg" th:src="${'upload/pimg/'+item.usg004}" />
-                                           <div class="col-9 typerow">
-                                               <div th:text="${item.usg002}"></div>
-                                               <div th:text="${(item.usg006!=null&&!item.usg006.isEmpty())?item.usg006:'未设链接'}"></div>
-                                               <div class="typecol">
-                                                   <button type="button" class="btn btn-link" th:onclick="addY('B',[[${item.usg001}]])"
-                                                           data-bs-toggle="modal" data-bs-target="#editmode">
-                                                       <span class="mdi mdi-clipboard-plus-outline"></span>添加下级分类
-                                                   </button>
-                                                   <button data-bs-toggle="modal" data-bs-target="#editmode" type="button" class="btn btn-link"
-                                                      th:onclick="editonetype([[${item.toString()}]])">
-                                                       <span class="mdi mdi-clipboard-outline"></span>编辑
-                                                   </button>
-                                                   <button type="button" class="btn btn-link" th:onclick="deltype('A',[[${item.usg001}]])"><span class="mdi mdi-clipboard-remove-outline"></span>删除</button>
-                                               </div>
-                                               <!--一级下二级-->
-                                               <ul class="nav nav-subnav">
-                                                   <th:block th:each="item1,stat:${item.usclist}">
-                                                       <li>
-                                                           <img class="typeimg" style="width:140px;"  th:src="${'upload/fimg/'+item1.usc004}" />
-                                                           <div class="col-8 typerow">
-                                                               <div th:text="${item1.usc002}"></div>
-                                                               <div th:text="${(item1.usc006!=null&&!item1.usc006.isEmpty())?item1.usc006:'未设链接'}"></div>
-                                                               <div class="typecol">
-                                                                   <button type="button" class="btn btn-link" th:onclick="addY('C',[[${item1.usc001}]])"
-                                                                           data-bs-toggle="modal" data-bs-target="#editmode">
-                                                                       <span class="mdi mdi-clipboard-plus-outline"></span>添加下级分类
-                                                                   </button>
-                                                                   <button id="addoredit_b1" data-bs-toggle="modal" data-bs-target="#editmode" type="button" class="btn btn-link"
-                                                                           th:onclick="edittwotype([[${item1.toString()}]])">
-                                                                       <span class="mdi mdi-clipboard-outline"></span>编辑
-                                                                   </button>
-                                                                   <button type="button" class="btn btn-link" th:onclick="deltype('B',[[${item1.usc001}]])"><span class="mdi mdi-clipboard-remove-outline"></span>删除</button>
-                                                               </div>
-                                                               <!--二级下三级-->
-                                                               <ul class="nav nav-subnav threeul" style="display:block;">
-                                                                   <th:block th:each="item2,stat:${item1.usalist}">
-                                                                       <li>
-                                                                           <img class="typeimg" style="width:140px;" th:src="${'upload/mimg/'+item2.usa004}" />
-                                                                           <div class="col-7 typerow">
-                                                                               <div th:text="${item2.usa002}"></div>
-                                                                               <div th:text="${(item2.usa006!=null&&!item2.usa006.isEmpty())?item2.usa006:'未设链接'}"></div>
-                                                                               <div class="typecol">
-                                                                                   <button id="addoredit_c1" data-bs-toggle="modal" data-bs-target="#editmode" type="button" class="btn btn-link"
-                                                                                           th:onclick="editthreetype([[${item2.toString()}]])">
-                                                                                       <span class="mdi mdi-clipboard-outline"></span>编辑
-                                                                                   </button>
-                                                                                   <button type="button" class="btn btn-link" th:onclick="deltype('C',[[${item2.usa001}]])"><span class="mdi mdi-clipboard-remove-outline"></span>删除</button>
-                                                                               </div>
-                                                                           </div>
-                                                                       </li>
-                                                                   </th:block>
-                                                               </ul>
-                                                           </div>
-                                                       </li>
-                                                   </th:block>
-                                               </ul>
-                                           </div>
-                                       </a>
-                                   </li>
-                                </th:block>
                             </ul>
                         </nav>
                     </div>
@@ -120,9 +56,6 @@
                     <div class="row col-auto">
                         <label class="col-auto col-form-label" style="padding-right:0;padding-left:20px;">分类名称</label>
                         <div class="col-4">
-                            <input type="hidden" id="stype" value=""/>
-                            <input type="hidden" id="sid" value=""/>
-                            <input type="hidden" id="fid" value=""/>
                             <input type="text" autofocus="true" class="form-control" name="fname" id="fname" placeholder="请输入分类名称" />
                         </div>
                     </div>
@@ -259,11 +192,11 @@
    function editonetype(obj){
        $("#stype").val("A");
        let josnobj = striongTOjsonString(obj);
-           $("#fid").val(josnobj.usg001);
-           $("#fname").val(josnobj.usg002);
-           $("#isqy").prop("checked",josnobj.usg005=="Y"?true:false);
-           $("#upfileimg").attr("src","upload/pimg/"+josnobj.usg004);
-           $("#wurl").val(josnobj.usg006);
+           $("#fid").val(josnobj.yha001);
+           $("#fname").val(josnobj.yha002);
+           $("#isqy").prop("checked",josnobj.yha005=="Y"?true:false);
+           $("#upfileimg").attr("src","upload/pimg/"+josnobj.yha004);
+           $("#wurl").val(josnobj.yha006);
    }
     function edittwotype(obj){
         $("#stype").val("B");
@@ -355,11 +288,11 @@
                     success: function (res) {
                         var d = eval(res);
                         if(d.stype=="A"){
-                            $("#fid").val(d.usg.usg001);
-                            $("#fname").val(d.usg.usg002);
-                            $("#isqy").prop("checked",d.usg.usg005=="Y"?true:false);
-                            $("#upfileimg").attr("src","upload/pimg/"+d.usg.usg004);
-                            $("#wurl").val(d.usg.usg006);
+                            $("#fid").val(d.yha.yha001);
+                            $("#fname").val(d.yha.yha002);
+                            $("#isqy").prop("checked",d.yha.yha005=="Y"?true:false);
+                            $("#upfileimg").attr("src","upload/pimg/"+d.yha.yha004);
+                            $("#wurl").val(d.yha.yha006);
                         }else if(d.stype=="B"){
                             $("#fid").val(d.usc.usc001);
                             $("#fname").val(d.usc.usc002);

@@ -4,6 +4,7 @@ import com.efx.Science.model.cdsmd;
 import com.efx.Science.model.cdsmdExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
 
 public interface cdsmdMapper {
     long countByExample(cdsmdExample example);
@@ -27,4 +28,6 @@ public interface cdsmdMapper {
     int updateByPrimaryKeySelective(cdsmd record);
 
     int updateByPrimaryKey(cdsmd record);
+
+    List<cdsmd> selectByExampleAndPage(cdsmdExample example, RowBounds rowBounds);
 }

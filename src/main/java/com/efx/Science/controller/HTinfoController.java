@@ -3,6 +3,9 @@ package com.efx.Science.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.efx.Science.model.*;
+import com.efx.Science.until.EncrpytUtil;
+import com.efx.Science.until.ExcelExport;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -13,16 +16,12 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.TemplateEngine;
 
-import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.plaf.synth.SynthEditorPaneUI;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.*;
 
 
@@ -48,861 +47,635 @@ public class HTinfoController extends BaseController {
         return mav;
     }
 
-    //后台分类加载
-    @RequestMapping("/toHTmain")
-    public ModelAndView htMain(HttpServletRequest request, HttpServletResponse response) throws Exception{
+    //框架页面加载
+    @RequestMapping("/toHThome")
+    public ModelAndView toHTmain(HttpServletRequest request, HttpServletResponse response) throws Exception{
         HttpSession session = request.getSession();
         if(session.getAttribute("user")==null){
             SystemTZYM(response,"登录失效");
             return null;
         }
         ModelAndView mav = new ModelAndView();
-        mav.addObject("usglist",usgService.selectall());
         mav.setViewName("HTmain");
         return mav;
     }
 
-    //后台内容加载
-    @RequestMapping("/toHTcon")
-    public ModelAndView htCon(HttpServletRequest request, HttpServletResponse response) throws Exception{
+    /**
+     * 进入管理员管理页面
+     * othersql:登录名  othersql1:机构
+     * @return 用户页面
+     */
+    @RequestMapping("/staff")
+    public ModelAndView staff(HttpServletRequest request,HttpServletResponse response) throws Exception{
+        ModelAndView mav = new ModelAndView();
         HttpSession session = request.getSession();
+        int userid = 0;//后台登录用户ID
         if(session.getAttribute("user")==null){
             SystemTZYM(response,"登录失效");
             return null;
-        }
-        ModelAndView mav = new ModelAndView();
-        List<cdusd> cdusdList = usdService.selectall();
-        for(int i=0;i<cdusdList.size();i++){
-            cdusd usd = cdusdList.get(i);
-            if(usd.getUsd002()!=null) {
-                cdusa usa = usaService.selectByid(usd.getUsd002());
-                usd.setUsa(usa);
-                cdusc usc = uscService.selectByid(usa.getUsa003());
-                usd.setUsc(usc);
-                cdusg usg = usgService.selectByid(usc.getUsc003());
-                usd.setUsg(usg);
-            }
-            if(usd.getUsd006()!=null){
-                cdusc usc = uscService.selectByid(usd.getUsd006());
-                usd.setUsc(usc);
-                cdusg usg = usgService.selectByid(usc.getUsc003());
-                usd.setUsg(usg);
-            }
-            if(usd.getUsd008()!=null){
-                usd.setUsg(usgService.selectByid(usd.getUsd008()));
-            }
-            cdusdList.set(i,usd);
-        }
-        mav.addObject("usdList",cdusdList);
-        List<cdusg> usgList = usgService.selectall();
-        mav.addObject("usgList",usgList);
-        mav.setViewName("HTcon");
-        return mav;
-    }
-
-    //后台内容查询
-    @ResponseBody
-    @RequestMapping("/scrachcon")
-    public String scrachcon(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        HashMap result = new HashMap();
-        int oneid = Integer.parseInt(request.getParameter("oneid"));
-        int twoid = 0;
-        if(!request.getParameter("twoid").equals("null")) twoid = Integer.parseInt(request.getParameter("twoid"));
-        int threeid = 0;
-        if(!request.getParameter("threeid").equals("null")) threeid = Integer.parseInt(request.getParameter("threeid"));
-        if(threeid>0){
-            List<cdusd> usdList = usdService.selectForthreeType(threeid);
-            for(int i=0;i<usdList.size();i++){
-                cdusd usd = usdList.get(i);
-                cdusa usa = usaService.selectByid(usd.getUsd002());
-                usd.setUsa(usa);
-                cdusc usc = uscService.selectByid(usa.getUsa003());
-                usd.setUsc(usc);
-                cdusg usg = usgService.selectByid(usc.getUsc003());
-                usd.setUsg(usg);
-                usdList.set(i,usd);
-            }
-            result.put("usdList", usdList);
-        }else if(twoid>0) {
-            List<cdusd> usdList = new ArrayList<cdusd>();
-            usdList.addAll(usdService.selectFortwoType(twoid));
-            //获取二级类目下的所有三级类ID
-            List<cdusa> usaList = uscService.selectByid(twoid).getUsalist();
-            for(int i=0;i<usaList.size();i++){
-                usdList.addAll(usdService.selectForthreeType(usaList.get(i).getUsa001()));
-            }
-            for(int i=0;i<usdList.size();i++){
-                cdusd usd = usdList.get(i);
-                cdusc usc = uscService.selectByid(usd.getUsd006());
-                usd.setUsc(usc);
-                cdusg usg = usgService.selectByid(usc.getUsc003());
-                usd.setUsg(usg);
-                usdList.set(i,usd);
-            }
-            result.put("usdList",usdList);
-        } else if(oneid>0) {
-            List<cdusd> usdList = new ArrayList<cdusd>();
-            usdList.addAll(usdService.selectForoneType(oneid));
-            //获取一级类目下的所有二级类ID
-            List<cdusc> uscList = usgService.selectByid(oneid).getUsclist();
-            for(int i=0;i<uscList.size();i++){
-                usdList.addAll(usdService.selectFortwoType(uscList.get(i).getUsc001()));
-                List<cdusa> usaList = uscList.get(i).getUsalist();
-                for(int j=0;j<usaList.size();j++){
-                    usdList.addAll(usdService.selectForthreeType(usaList.get(j).getUsa001()));
-                }
-            }
-            for(int i=0;i<usdList.size();i++){
-                cdusd usd = usdList.get(i);
-                cdusg usg = usgService.selectByid(usd.getUsd002());
-                usd.setUsg(usg);
-                usdList.set(i,usd);
-            }
-            result.put("usdList",usdList);
         }else{
-            List<cdusd> cdusdList = usdService.selectall();
-            for(int i=0;i<cdusdList.size();i++){
-                cdusd usd = cdusdList.get(i);
-                if(usd.getUsd002()!=null) {
-                    cdusa usa = usaService.selectByid(usd.getUsd002());
-                    usd.setUsa(usa);
-                    cdusc usc = uscService.selectByid(usa.getUsa003());
-                    usd.setUsc(usc);
-                    cdusg usg = usgService.selectByid(usc.getUsc003());
-                    usd.setUsg(usg);
-                }
-                if(usd.getUsd006()!=null){
-                    cdusc usc = uscService.selectByid(usd.getUsd006());
-                    usd.setUsc(usc);
-                    cdusg usg = usgService.selectByid(usc.getUsc003());
-                    usd.setUsg(usg);
-                }
-                if(usd.getUsd008()!=null){
-                    usd.setUsg(usgService.selectByid(usd.getUsd008()));
-                }
-                cdusdList.set(i,usd);
+            userid = Decrypt(session.getAttribute("user").toString());
+            cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
+            mav.addObject("msg", request.getParameter("msg"));
+            PageBean pb = new PageBean();
+            if (request.getParameter("pages") != null && !request.getParameter("pages").isEmpty())
+                pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
+            else
+                pb.setCurrentPage(1);
+            if (request.getParameter("name") != null && !request.getParameter("name").isEmpty()) {
+                pb.setOthersql(request.getParameter("name"));
             }
-            result.put("usdList",cdusdList);
+            if (request.getParameter("phone") != null && !request.getParameter("phone").isEmpty()) {
+                pb.setOthersql6(request.getParameter("phone"));
+            }
+            if (request.getParameter("lx") != null && !request.getParameter("lx").isEmpty()) {
+                pb.setOthersql1(request.getParameter("lx"));
+            }
+            mav.addObject("pageobj", useService.selectPageBean(pb));
+            if(pb.getOthersql1().equals("B")){
+                mav.addObject("smdlist", smdService.getAll());
+            }else if(pb.getOthersql1().equals("C")){
+
+            }
         }
-        return JSON.toJSONString(result);
-    }
-
-    //查询一级对应下的二级
-    @ResponseBody
-    @RequestMapping("/scrachcononeType")
-    public String scrachcononeType(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        HashMap result = new HashMap();
-        int id = Integer.parseInt(request.getParameter("id"));
-        cdusg usg = usgService.selectByid(id);
-        result.put("uscList", usg.getUsclist());
-        return JSON.toJSONString(result);
-    }
-
-    //查询二级对应下的三级
-    @ResponseBody
-    @RequestMapping("/scrachcontwoType")
-    public String scrachcontwoType(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        HashMap result = new HashMap();
-        int id = Integer.parseInt(request.getParameter("id"));
-        cdusc usc = uscService.selectByid(id);
-        result.put("usaList", usc.getUsalist());
-        return JSON.toJSONString(result);
-    }
-
-    //后台首页加载
-    @RequestMapping("/toHThome")
-    public ModelAndView toHThome(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        HttpSession session = request.getSession();
-        if(session.getAttribute("user")==null){
-            SystemTZYM(response,"登录失效");
-            return null;
-        }
-        ModelAndView mav = new ModelAndView();
-        mav.addObject("usbList",usbService.selectall());
-        mav.setViewName("HThome");
+        mav.setViewName("staff");
         return mav;
     }
 
     /**
-     * ajax删除分类下的图片
-     * 2023-03-24
+     * 修改后台用户信息
      * 王新苗
-     * @param request
      */
     @ResponseBody
-    @RequestMapping(value = "/delOneTypePic",headers = "content-type=multipart/form-data")
-    public String delOneTypePic(HttpServletRequest request) throws Exception {
-        HashMap result = new HashMap();
+    @RequestMapping("/updateUseXx")
+    public ModelAndView updateUseXx(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        ModelAndView mav = new ModelAndView();
         HttpSession session = request.getSession();
-        String fid = request.getParameter("fid");
-        String stype = request.getParameter("stype");
-        if(fid!=null&&!fid.isEmpty()){
-            File file;
-            String filePath = this.getClass().getResource("/").getPath();
-            if(stype.equals("A")){
-               cdusg usg = usgService.selectByid(Integer.parseInt(fid));
-               file = new File(filePath+usg.getUsg004());
-               if(file.exists()) file.deleteOnExit();
-               usg.setUsg004("");
-               usgService.update(usg);
-            }else if(stype.equals("B")){
-                cdusc usc = uscService.selectByid(Integer.parseInt(fid));
-                file = new File(filePath+usc.getUsc004());
-                if(file.exists()) file.deleteOnExit();
-                usc.setUsc004("");
-                uscService.update(usc);
-            }else if(stype.equals("C")){
-                cdusa usa = usaService.selectByid(Integer.parseInt(fid));
-                file = new File(filePath+usa.getUsa004());
-                if(file.exists()) file.deleteOnExit();
-                usa.setUsa004("");
-                usaService.update(usa);
-            }
+        cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
+        String log = "修改管理员信息:";
+        if (user == null) {
+            mav.addObject("msg", "登录失效");
         }
-        result.put("msg", 0);
+        if (request.getParameter("truename") != null && StringUtils.isNotEmpty(request.getParameter("truename"))) {
+            log += "真实姓名：【" + user.getUse005() + "】修改为【" + request.getParameter("truename") + "】";
+            user.setUse005(request.getParameter("truename"));
+        }
+        if (request.getParameter("phone") != null && StringUtils.isNotEmpty(request.getParameter("phone"))) {
+            log += "电话：【" + user.getUse007() + "】修改为【" + request.getParameter("phone") + "】";
+            user.setUse007(request.getParameter("phone"));
+        }
+        boolean rows = useService.update(user);
+        if (rows) {
+            addLog(user.getUse002(), log);
+            mav.addObject("msg", "0");
+        } else{
+            mav.addObject("msg", "1");
+        }
+        mav.setViewName("redirect:/HTprofile");
+        return mav;
+    }
+
+    /**
+     * 删除用户
+     * 王新苗
+     * @param request
+     * @param response
+     */
+    @ResponseBody
+    @RequestMapping(value = "/resstaff",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    public String resyh(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        cduse use = useService.getByid(Integer.valueOf(request.getParameter("fid")));
+        use.setUse003(EncrpytUtil.getSHA256("123456"));
+        useService.update(use);
+        addLog(getUse(request).getUse002(),"重置了名字为：【" + use.getUse002()+ "】的密码");
+        result.put("msg","M");
         return JSON.toJSONString(result);
     }
 
     /**
-     * ajax保存一级分类
-     * 2023-03-24
+     * 删除用户
      * 王新苗
      * @param request
+     * @param response
      */
     @ResponseBody
-    @RequestMapping(value = "/saveOneType",headers = "content-type=multipart/form-data")
-    public String serachsqnf(HttpServletRequest request) throws Exception {
+    @RequestMapping(value = "/xgztstaff",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    public String xgztstaff(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HashMap result = new HashMap();
-        HttpSession session = request.getSession();
-        String date = sdf.format(new Date());
-        String stype = request.getParameter("stype");
-        String sid = request.getParameter("sid");
-        String fid = request.getParameter("fid");
-        String fname = request.getParameter("fname");
-        String fext = request.getParameter("fext");
-        String fileString = request.getParameter("picfile");
-        String qy = request.getParameter("qy");
-        String wurl = request.getParameter("wurl");
-        //如果分类ID不为空，标识是编辑
-        String filePath = this.getClass().getResource("/").getPath();
-        //一级分类操作
-        if(stype.equals("A")){
-            filePath = filePath.substring(1,filePath.length())+"static/upload/pimg/";
-            if(fid!=null&&!fid.isEmpty()){
-                cdusg usg = usgService.selectByid(Integer.parseInt(fid));
-                if(usg!=null){
-                    usg.setUsg002(fname);//分类名称
-                    usg.setUsg005(qy);//是否启用
-                    usg.setUsg006(wurl);
-                    if(fileString.indexOf("data:image/jpeg;base64,")>=0){
-                        //先删除原图片
-                        File oldFile = new File(filePath+usg.getUsg004());
-                        if(oldFile.exists()) oldFile.deleteOnExit();
-                        //加入新图片
-                        uploadpic_Base64(fileString,filePath+date+"."+fext,fext);
-                        usg.setUsg004(date+"."+fext);
-                    }
-                    usgService.update(usg);
-                    result.put("usg", usg);
-                    result.put("msg", "修改一级分类成功");
-                }
-            }else{
-                //新插入分类
-                cdusg usg = new cdusg();
-                usg.setUsg002(fname);//分类名称
-                usg.setUsg005(qy);//是否启用
-                usg.setUsg006(wurl);
-                if(fileString.indexOf("data:image/jpeg;base64,")>=0){
-                    //加入新图片
-                    uploadpic_Base64(fileString,filePath+date+"."+fext,fext);
-                    usg.setUsg004(date+"."+fext);
-                }
-                usg = usgService.insert(usg);
-                result.put("usg", usg);
-                result.put("msg", "添加一级分类成功");
-            }
-        }else if(stype.equals("B")){
-            filePath = filePath.substring(1,filePath.length())+"static/upload/fimg/";
-            if(fid!=null&&!fid.isEmpty()){
-                cdusc usc = uscService.selectByid(Integer.parseInt(fid));
-                if(usc!=null){
-                   usc.setUsc002(fname);
-                   usc.setUsc003(Integer.parseInt(sid));
-                   usc.setUsc005(qy);
-                   usc.setUsc006(wurl);
-                   System.out.println(fileString.indexOf("data:image/jpeg;base64,"));
-                    if(fileString.indexOf("data:image/jpeg;base64,")>=0){
-                        //先删除原图片
-                        File oldFile = new File(filePath+usc.getUsc004());
-                        if(oldFile.exists()) oldFile.deleteOnExit();
-                        //加入新图片
-                        uploadpic_Base64(fileString,filePath+date+"."+fext,fext);
-                        usc.setUsc004(date+"."+fext);
-                    }
-                    uscService.update(usc);
-                    result.put("usc", usc);
-                    result.put("msg", "修改二级分类成功");
-                }
-            }else{
-                //新插入二级分类
-                cdusc usc = new cdusc();
-                usc.setUsc002(fname);
-                usc.setUsc003(Integer.parseInt(sid));
-                usc.setUsc005(qy);
-                usc.setUsc006(wurl);
-                if(fileString.indexOf("data:image/jpeg;base64,")>=0){
-                    //加入新图片
-                    uploadpic_Base64(fileString,filePath+date+"."+fext,fext);
-                    usc.setUsc004(date+"."+fext);
-                }
-                usc = uscService.insert(usc);
-                result.put("usc", usc);
-                result.put("msg", "添加二级分类成功");
-            }
-        }else if(stype.equals("C")) {
-            filePath = filePath.substring(1,filePath.length())+"static/upload/mimg/";
-            if(fid!=null&&!fid.isEmpty()){
-                cdusa usa = usaService.selectByid(Integer.parseInt(fid));
-                if(usa!=null){
-                    usa.setUsa002(fname);
-                    usa.setUsa003(Integer.parseInt(sid));
-                    usa.setUsa005(qy);
-                    usa.setUsa006(wurl);
-                    if(fileString.indexOf("data:image/jpeg;base64,")>=0){
-                        //先删除原图片
-                        File oldFile = new File(filePath+usa.getUsa004());
-                        if(oldFile.exists()) oldFile.deleteOnExit();
-                        //加入新图片
-                        uploadpic_Base64(fileString,filePath+date+"."+fext,fext);
-                        usa.setUsa004(date+"."+fext);
-                    }
-                    usaService.update(usa);
-                    result.put("usa", usa);
-                    result.put("msg", "修改三级分类成功");
-                }
-            }else{
-                //新插入二级分类
-                cdusa usa = new cdusa();
-                usa.setUsa002(fname);
-                usa.setUsa003(Integer.parseInt(sid));
-                usa.setUsa005(qy);
-                usa.setUsa006(wurl);
-                if(fileString.indexOf("data:image/jpeg;base64,")>=0){
-                    //加入新图片
-                    uploadpic_Base64(fileString,filePath+date+"."+fext,fext);
-                    usa.setUsa004(date+"."+fext);
-                }
-                usa = usaService.insert(usa);
-                result.put("usa", usa);
-                result.put("msg", "添加三级分类成功");
-            }
-        }
-        result.put("stype", stype);
+        addLog(getUse(request).getUse002(),"修改了活动名称为：【" + request.getParameter("uname") + "】的状态");
+        cduse use = useService.getByid(Integer.valueOf(request.getParameter("fid")));
+        use.setUse013(request.getParameter("type"));
+        useService.update(use);
+        result.put("msg","0");
         return JSON.toJSONString(result);
     }
-
     /**
-     * ajax保存首页
-     * 2023-03-24
+     * 修改账户
      * 王新苗
      * @param request
+     * @param response
      */
     @ResponseBody
-    @RequestMapping(value = "/savehome",headers = "content-type=multipart/form-data")
-    public String savehome(HttpServletRequest request) throws Exception {
+    @RequestMapping(value = "/xgstaff")
+    public String xgstaff(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HashMap result = new HashMap();
         HttpSession session = request.getSession();
-        String date = sdf.format(new Date());
-        String fid = request.getParameter("fid");
-        String fext = request.getParameter("fext");
-        String fileString = request.getParameter("picfile");
-        String qy = request.getParameter("qy");
-        File vmfile;
-        String filePath = this.getClass().getResource("/").getPath();
-        filePath = filePath.substring(1,filePath.length())+"static/upload/simg/";
-       // System.out.println(fid);
-        if(fid!=null&&!fid.isEmpty()){
-           cdusb usb = usbService.selectById(Integer.parseInt(fid));
-           usb.setUsb003(qy);
-           if(fileString.indexOf("upload/simg/")<0){
-               //删除原图片或视频
-               vmfile = new File(filePath+usb.getUsb002());
-               if(vmfile.exists()) vmfile.deleteOnExit();
-               //加入新图片
-               if(qy.equals("Y")){
-                   uploadpic_Base64(fileString,filePath+date+"."+fext,fext);
-               }else{
-                   uploadvidao_Base64(fileString,filePath+date+"."+fext);
-               }
-               usb.setUsb002(date+"."+fext);
-           }
-            usbService.update(usb);
-            result.put("usb",usb);
-            result.put("msg","修改成功");
+        if (session.getAttribute("user") == null) {
+            SystemTZYM(response, "登录失效");
+            return null;
+        }
+        cduse item = new cduse();
+        //修改
+        item.setUse002(request.getParameter("t2"));
+        item.setUse004(request.getParameter("t4"));
+        item.setUse005(request.getParameter("t5"));
+        if(request.getParameter("t11")!=null&&request.getParameter("t11").isEmpty())item.setUse011(Integer.valueOf(request.getParameter("t11")));
+        if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()){
+            String log = "修改了名字为：【" + request.getParameter("t1") + "】的用户信息";
+            item.setUse001(Integer.valueOf((request.getParameter("fid"))));
+            addLog(getUse(request).getUse002(),log);
+            useService.update(item);
+            if(Decrypt(session.getAttribute("user").toString())==Integer.valueOf((request.getParameter("fid")))){
+                //用户信息
+                user user = new user();
+                user.setUname(item.getUse002());
+                user.setJstype(item.getUse006());
+                session.setAttribute("umsg", user);
+            }
+            result.put("msg", "U");
         }else{
-           // System.out.println(fileString);
-            cdusb usb = new cdusb();
-            usb.setUsb003(qy);
-            if(fileString.indexOf("upload/simg/")<0){
-                //加入新图片
-                if(qy.equals("Y")){
-                    uploadpic_Base64(fileString,filePath+date+"."+fext,fext);
-                }else{
-                    uploadvidao_Base64(fileString,filePath+date+"."+fext);
-                }
-                usb.setUsb002(date+"."+fext);
-            }
-            usb = usbService.insert(usb);
-            result.put("usb",usb);
-            result.put("msg","添加成功");
+            String log = "新增了名字为：【" + request.getParameter("t1")+ "】的用户信息";
+            item.setUse003(EncrpytUtil.getSHA256("123456"));
+            item.setUse009(request.getParameter("t9"));
+            item.setUse013("M");
+            addLog(getUse(request).getUse002(),log);
+            item = useService.insert(item);
+            result.put("msg", "I");
         }
+        result.put("d",item);
+        return JSON.toJSONString(result);
+    }
+
+    //后台分类加载
+    @RequestMapping("/tolevel")
+    public ModelAndView tolevel(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        HttpSession session = request.getSession();
+        ModelAndView mav = new ModelAndView();
+        int userid = 0;//后台登录用户ID
+        if(session.getAttribute("user")==null){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }else{
+            //导出模板
+            if (request.getParameter("type") != null && request.getParameter("type").equals("E")) {
+                String fpath = LoginController.class.getClass().getResource("/").getPath();
+                downloadLocal(fpath.substring(1,fpath.length())+"static/upload/level.xls", "层级导入模板.xls",response, request);
+                return null;
+            }
+            userid = Decrypt(session.getAttribute("user").toString());
+            cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
+            mav.addObject("msg",request.getParameter("msg") );
+            PageBean pb = new PageBean();
+            if (request.getParameter("pages") != null && !request.getParameter("pages").toString().isEmpty())
+                pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
+            else
+                pb.setCurrentPage(1);
+            if (request.getParameter("name") != null && !request.getParameter("name").toString().isEmpty()) {
+                pb.setOthersql(request.getParameter("name"));
+            }
+            mav.addObject("pageobj", yhaService.selectPageBean(pb));
+        }
+        mav.setViewName("HTlevel");
+        return mav;
+    }
+
+    /**
+     * 删除用户
+     * 王新苗
+     * @param request
+     * @param response
+     */
+    @ResponseBody
+    @RequestMapping(value = "/dellevel",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    public String dellevel(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        addLog(getUse(request).getUse002(),"删除了层级名称为：【" + request.getParameter("uname") + "】的状态");
+        yhaService.delete(Integer.parseInt(request.getParameter("fid")));
+        result.put("msg","D");
         return JSON.toJSONString(result);
     }
 
     /**
-     * ajax删除一级分类
-     * 2023-03-24
+     * 导入excel
      * 王新苗
-     * @param request
      */
     @ResponseBody
-    @RequestMapping(value = "/delOneType")
-    public String delsqnf(HttpServletRequest request) throws Exception {
-        HashMap result = new HashMap();
+    @RequestMapping(value = "/drlevel")
+    public String drlevel(HttpServletRequest request, HttpServletResponse response)throws Exception {
         HttpSession session = request.getSession();
-        String stype =  request.getParameter("stype");
-        String fid = request.getParameter("fid");
-        String filePath = this.getClass().getResource("/").getPath();
-        filePath = filePath.substring(1,filePath.length())+"static/upload/pimg/";
-        cdusd usd;
-        File file;
-        cdusa usa;
-        cdusc usc;
-        List<cdusc> usclist;
-        List<cdusa> usalist;
-        //删除一级分类及以下份类
-        if(stype.equals("A")){
-            cdusg usg = usgService.selectByid(Integer.parseInt(fid));
-            //删除一级分类下的内容
-            if(usg.getUsdlist()!=null){
-                for(int i=0;i<usg.getUsdlist().size();i++){
-                    usd = usg.getUsdlist().get(i);
-                    file = new File(filePath+usd.getUsd005());
-                    if(file.exists()) file.deleteOnExit();
-                    usdService.delete(usd.getUsd001());
-                }
-            }
-            //删除风雷下二级分类
-            usclist = usg.getUsclist();
-            if(usclist!=null){
-                for(int i=0;i<usclist.size();i++){
-                    usc = usclist.get(i);
-                    //删除二级类下文件
-                    if(usc.getUsdlist()!=null){
-                        for(int j=0;j<usc.getUsdlist().size();j++){
-                            usd = usc.getUsdlist().get(j);
-                            file = new File(filePath+usd.getUsd005());
-                            if(file.exists()) file.deleteOnExit();
-                            usdService.delete(usd.getUsd001());
-                        }
-                    }
-                    //删除此类别下的三级分类
-                    usalist = usc.getUsalist();
-                    if(usalist!=null){
-                        for(int j=0;j<usalist.size();j++){
-                            usa = usalist.get(j);
-                            //删除三级类下文件
-                            if(usa.getUsdlist()!=null){
-                                for(int k=0;k<usa.getUsdlist().size();k++){
-                                    usd = usa.getUsdlist().get(k);
-                                    file = new File(filePath+usd.getUsd005());
-                                    if(file.exists()) file.deleteOnExit();
-                                    usdService.delete(usd.getUsd001());
-                                }
-                            }
-                            //删除本级分类
-                            usaService.delete(usa.getUsa001());
-                        }
-                    }
-                    //删除本级分类
-                    uscService.delete(usc.getUsc001());
-                }
-            }
-            //删除本级分类
-            usgService.delete(usg.getUsg001());
-        }else if(stype.equals("B")){
-            usc = uscService.selectByid(Integer.parseInt(fid));
-            //删除二级类下文件
-            if(usc.getUsdlist()!=null){
-                for(int j=0;j<usc.getUsdlist().size();j++){
-                    usd = usc.getUsdlist().get(j);
-                    file = new File(filePath+usd.getUsd005());
-                    if(file.exists()) file.deleteOnExit();
-                    usdService.delete(usd.getUsd001());
-                }
-            }
-            //删除此类别下的三级分类
-            usalist = usc.getUsalist();
-            if(usalist!=null){
-                for(int j=0;j<usalist.size();j++){
-                    usa = usalist.get(j);
-                    //删除三级类下文件
-                    if(usa.getUsdlist()!=null){
-                        for(int k=0;k<usa.getUsdlist().size();k++){
-                            usd = usa.getUsdlist().get(k);
-                            file = new File(filePath+usd.getUsd005());
-                            if(file.exists()) file.deleteOnExit();
-                            usdService.delete(usd.getUsd001());
-                        }
-                    }
-                    //删除本级分类
-                    usaService.delete(usa.getUsa001());
-                }
-            }
-            //删除本级分类
-            uscService.delete(usc.getUsc001());
-        }else if(stype.equals("C")){
-            usa = usaService.selectByid(Integer.parseInt(fid));
-            //删除三级类下文件
-            if(usa.getUsdlist()!=null){
-                for(int k=0;k<usa.getUsdlist().size();k++){
-                    usd = usa.getUsdlist().get(k);
-                    file = new File(filePath+usd.getUsd005());
-                    if(file.exists()) file.deleteOnExit();
-                    usdService.delete(usd.getUsd001());
-                }
-            }
-            usaService.delete(usa.getUsa001());
+        if (session.getAttribute("user") == null) {
+            SystemTZYM(response, "登录失效");
+            return null;
         }
-        result.put("msg","Y");
-        return JSON.toJSONString(result);
+        try {
+            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+            MultipartFile file = multipartRequest.getFile("file");
+            InputStream in = file.getInputStream();
+            ExcelExport.getByExcellevel(in, file.getOriginalFilename(),yhaService);
+            addLog(getUse(request).getUse002(),"导入了层级信息");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "B";
+        }
+        return "A";
     }
 
     /**
-     * ajax删除一级分类
-     * 2023-03-24
+     * ajax保存内容
      * 王新苗
      * @param request
      */
     @ResponseBody
-    @RequestMapping(value = "/delhome")
-    public String delhome(HttpServletRequest request) throws Exception {
+    @RequestMapping(value = "/xglevel",headers = "content-type=multipart/form-data")
+    public String xglevel(HttpServletRequest request) throws Exception {
         HashMap result = new HashMap();
-        HttpSession session = request.getSession();
-        String fid = request.getParameter("fid");
-        String filePath = this.getClass().getResource("/").getPath();
-        filePath = filePath.substring(1,filePath.length())+"static/upload/simg/";
-        cdusb usb = usbService.selectById(Integer.parseInt(fid));
-        if(usb.getUsb002()!=null&&!usb.getUsb002().isEmpty()){
-            File file = new File(filePath+usb.getUsb002());
-            if(file.exists()) file.deleteOnExit();
+        cdyha item = new cdyha();
+        //修改
+        item.setYha002(request.getParameter("t2"));
+        item.setYha004(Integer.valueOf(request.getParameter("t4")));
+        item.setYha005(Float.valueOf(request.getParameter("t5")));
+        if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()){
+            String log = "修改了名字为：【" + request.getParameter("t3") + "】的层级信息";
+            item.setYha001(Integer.valueOf((request.getParameter("fid"))));
+            addLog(getUse(request).getUse002(),log);
+            yhaService.update(item);
+            result.put("msg","U");
+        }else{
+            item.setYha006(0);
+            String log = "新增了名字为：【" + request.getParameter("t3")+ "】的层级信息";
+            addLog(getUse(request).getUse002(),log);
+            item = yhaService.insert(item);
+            result.put("msg","I");
         }
-        usbService.delete(usb.getUsb001());
-        result.put("msg","Y");
+        result.put("d",item);
+        return JSON.toJSONString(result);
+    }
+
+    //后台分类加载
+    @RequestMapping("/tocourselx")
+    public ModelAndView tocourselx(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        HttpSession session = request.getSession();
+        ModelAndView mav = new ModelAndView();
+        int userid = 0;//后台登录用户ID
+        if(session.getAttribute("user")==null){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }else{
+            userid = Decrypt(session.getAttribute("user").toString());
+            cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
+            mav.addObject("msg",request.getParameter("msg") );
+            PageBean pb = new PageBean();
+            if (request.getParameter("pages") != null && !request.getParameter("pages").toString().isEmpty())
+                pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
+            else
+                pb.setCurrentPage(1);
+            if (request.getParameter("name") != null && !request.getParameter("name").toString().isEmpty()) {
+                pb.setOthersql(request.getParameter("name"));
+            }
+            mav.addObject("pageobj", hbbService.selectPageBean(pb));
+        }
+        mav.setViewName("HTcourselx");
+        return mav;
+    }
+
+    /**
+     * 删除用户
+     * 王新苗
+     * @param request
+     * @param response
+     */
+    @ResponseBody
+    @RequestMapping(value = "/delcourselx",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    public String delcourselx(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        addLog(getUse(request).getUse002(),"删除了课程分类名称为：【" + request.getParameter("uname") + "】的状态");
+        if(hbaService.countByflid(Integer.parseInt(request.getParameter("fid")))==0){
+            hbbService.delete(Integer.parseInt(request.getParameter("fid")));
+            result.put("msg","0");
+        }else{
+            result.put("msg","1");
+        }
         return JSON.toJSONString(result);
     }
 
     /**
      * ajax保存内容
-     * 2023-03-24
      * 王新苗
      * @param request
      */
     @ResponseBody
-    @RequestMapping(value = "/savecon",headers = "content-type=multipart/form-data")
-    public String savecon(HttpServletRequest request) throws Exception {
+    @RequestMapping(value = "/xgcourselx",headers = "content-type=multipart/form-data")
+    public String xgcourselx(HttpServletRequest request) throws Exception {
         HashMap result = new HashMap();
-        HttpSession session = request.getSession();
-        String date = sdf.format(new Date());
-        String filePath = this.getClass().getResource("/").getPath();
-        filePath = filePath.substring(1,filePath.length())+"static/upload/cimg/";
-        int fid = 0;
-        if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()) {
-            fid = Integer.parseInt(request.getParameter("fid"));
-        }
-        int sone = Integer.parseInt(request.getParameter("sonetype"));
-        int stwo = Integer.parseInt(request.getParameter("stwotype"));
-        int sthree = Integer.parseInt(request.getParameter("sthreetype"));
-        String lx = request.getParameter("lx");
-        String fext = request.getParameter("fext");
-        String wtxt = request.getParameter("wtxt");
-        String fileString = request.getParameter("picfile");
-        String wurl = request.getParameter("wurl");
-        cdusd usd;
-        File file;
-        if(fid>0){
-            //编辑
-            usd = usdService.selectByid(fid);
-            usd.setUsd003(lx);
-            usd.setUsd007(wurl);
-            if(lx.equals("B")){
-                usd.setUsd004(wtxt);
-                if(fileString.indexOf("upload/cimg/")<0){
-                    if(usd.getUsd005()!=null&&!usd.getUsd005().isEmpty()){
-                        file = new File(filePath+usd.getUsd005());
-                        if(file.exists()) file.deleteOnExit();
-                    }
-                    uploadpic_Base64(fileString,filePath+date+"."+fext,fext);
-                    usd.setUsd005(date+"."+fext);
-                }
-            }else{
-                usd.setUsd004(null);
-                if(fileString.indexOf("upload/cimg/")<0){
-                    if(usd.getUsd005()!=null&&!usd.getUsd005().isEmpty()){
-                        file = new File(filePath+usd.getUsd005());
-                        if(file.exists()) file.deleteOnExit();
-                    }
-                    uploadvidao_Base64(fileString,filePath+date+"."+fext);
-                    usd.setUsd005(date+"."+fext);
-                }
-            }
-            if(sthree>0) usd.setUsd002(sthree);
-            else if(stwo>0) usd.setUsd006(stwo);
-            else if(sone>0) usd.setUsd008(sone);
-            usdService.update(usd);
-            result.put("msg","修改成功");
+        cdhbb item = new cdhbb();
+        //修改
+        item.setHbb002(request.getParameter("t2"));
+        if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()){
+            String log = "修改了名字为：【" + request.getParameter("t3") + "】的课程分类信息";
+            item.setHbb001(Integer.valueOf((request.getParameter("fid"))));
+            addLog(getUse(request).getUse002(),log);
+            hbbService.update(item);
+            result.put("msg","U");
         }else{
-            usd = new cdusd();
-            usd.setUsd003(lx);
-            usd.setUsd007(wurl);
-            if(lx.equals("B")){
-                usd.setUsd004(wtxt);
-                if(fileString.indexOf("upload/cimg/")<0){
-                    uploadpic_Base64(fileString,filePath+date+"."+fext,fext);
-                    usd.setUsd005(date+"."+fext);
-                }
-            }else{
-                usd.setUsd004(null);
-                if(fileString.indexOf("upload/cimg/")<0){
-                    uploadvidao_Base64(fileString,filePath+date+"."+fext);
-                    usd.setUsd005(date+"."+fext);
-                }
-            }
-            if(sthree>0) usd.setUsd002(sthree);
-            else if(stwo>0) usd.setUsd006(stwo);
-            else if(sone>0) usd.setUsd008(sone);
-            usd = usdService.insert(usd);
-            result.put("msg","添加成功");
+            String log = "新增了名字为：【" + request.getParameter("t3")+ "】的课程分类信息";
+            addLog(getUse(request).getUse002(),log);
+            item = hbbService.insert(item);
+            result.put("msg","I");
         }
-        result.put("usd",usd);
+        result.put("d",item);
         return JSON.toJSONString(result);
     }
 
-    /**
-     * ajax删除内容
-     * 2023-03-24
-     * 王新苗
-     * @param request
-     */
-    @ResponseBody
-    @RequestMapping(value = "/delcon")
-    public String delcon(HttpServletRequest request) throws Exception {
-        HashMap result = new HashMap();
+    //后台分类加载
+    @RequestMapping("/tocourse")
+    public ModelAndView tocourse(HttpServletRequest request, HttpServletResponse response) throws Exception{
         HttpSession session = request.getSession();
-        String fid = request.getParameter("fid");
-        String filePath = this.getClass().getResource("/").getPath();
-        filePath = filePath.substring(1,filePath.length())+"static/upload/cimg/";
-        cdusd usd = usdService.selectByid(Integer.parseInt(fid));
-        if(usd.getUsd005()!=null&&!usd.getUsd005().isEmpty()){
-            File file = new File(filePath+usd.getUsd005());
-            if(file.exists()) file.deleteOnExit();
-        }
-        usdService.delete(usd.getUsd001());
-        result.put("msg","Y");
-        return JSON.toJSONString(result);
-    }
-
-
-    /**
-     * 前端加载一级分类
-     * @param request
-     * @param response
-     * @return
-     * @throws Exception
-     */
-    @ResponseBody
-    @RequestMapping("/qt_onetype")
-    public String qt_onetype(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        HashMap result = new HashMap();
-        List<cdusg> usgList = usgService.selectall_qt();
-        result.put("usgList",usgList);
-        return JSON.toJSONString(result);
-    }
-
-    /**
-     * 前端加载二级分类
-     * @param request
-     * @param response
-     * @return
-     * @throws Exception
-     */
-    @ResponseBody
-    @RequestMapping("/qt_twotype")
-    public String qt_twotype(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        HashMap result = new HashMap();
-        int usgid = Integer.parseInt(request.getParameter("usgid"));
-        List<cdusc> uscList = uscService.selectall_qt(usgid);
-        result.put("uscList",uscList);
-        return JSON.toJSONString(result);
-    }
-
-    /**
-     * 前端加载三级分类
-     * @param request
-     * @param response
-     * @return
-     * @throws Exception
-     */
-    @ResponseBody
-    @RequestMapping("/qt_threetype")
-    public String qt_threetype(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        HashMap result = new HashMap();
-        int uscid = Integer.parseInt(request.getParameter("uscid"));
-        List<cdusa> usaList = usaService.selectall_qt(uscid);
-        result.put("usaList",usaList);
-        return JSON.toJSONString(result);
-    }
-
-    /**
-     * 前端加载首页轮播
-     * @param request
-     * @param response
-     * @return
-     * @throws Exception
-     */
-    @ResponseBody
-    @RequestMapping("/qt_home")
-    public String qt_home(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        HashMap result = new HashMap();
-        List<cdusb> usbList = usbService.selectall_qt();
-        result.put("usbList",usbList);
-        return JSON.toJSONString(result);
-    }
-
-    //后台内容附加加载
-    @RequestMapping("/toHTfjcon")
-    public ModelAndView htfjCon(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        HttpSession session = request.getSession();
+        ModelAndView mav = new ModelAndView();
+        int userid = 0;//后台登录用户ID
         if(session.getAttribute("user")==null){
             SystemTZYM(response,"登录失效");
             return null;
+        }else{
+            userid = Decrypt(session.getAttribute("user").toString());
+            cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
+            mav.addObject("msg",request.getParameter("msg") );
+            PageBean pb = new PageBean();
+            if (request.getParameter("pages") != null && !request.getParameter("pages").toString().isEmpty())
+                pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
+            else
+                pb.setCurrentPage(1);
+            if (request.getParameter("name") != null && !request.getParameter("name").toString().isEmpty()) {
+                pb.setOthersql(request.getParameter("name"));
+            }
+            mav.addObject("pageobj", hbaService.selectPageBean(pb));
+            mav.addObject("smdlist", smdService.getAll());
+            mav.addObject("hbblist", hbbService.getAll());
         }
-        ModelAndView mav = new ModelAndView();
-        int id=0;
-        if(request.getParameter("id")!=null&&!request.getParameter("id").isEmpty()) id = Integer.parseInt(request.getParameter("id"));
-        else id = Integer.parseInt(session.getAttribute("conid").toString());
-        List<cdusf> usflist = usfService.selectForusdId(id);
-        mav.addObject("usflist",usflist);
-        session.setAttribute("conid",id);
-        mav.setViewName("HTFJcon");
+        mav.setViewName("HTcourse");
         return mav;
     }
 
-
     /**
-     * ajax删除内容
-     * 2023-03-24
+     * 删除用户
      * 王新苗
      * @param request
+     * @param response
      */
     @ResponseBody
-    @RequestMapping(value = "/delfjcon")
-    public String delfjcon(HttpServletRequest request) throws Exception {
+    @RequestMapping(value = "/xgztcourse",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    public String xgztcourse(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HashMap result = new HashMap();
-        HttpSession session = request.getSession();
-        String fid = request.getParameter("fid");
-        String filePath = this.getClass().getResource("/").getPath();
-        filePath = filePath.substring(1,filePath.length())+"static/upload/cimg/";
-        cdusf usf = usfService.selectByid(Integer.parseInt(fid));
-        if(usf.getUsf005()!=null&&!usf.getUsf005().isEmpty()){
-            File file = new File(filePath+usf.getUsf005());
-            if(file.exists()) file.deleteOnExit();
+        addLog(getUse(request).getUse002(),"修改了活动名称为：【" + request.getParameter("uname") + "】的状态");
+        cdhba hba=hbaService.getByid(Integer.valueOf(request.getParameter("fid")));
+        hba.setHba026(request.getParameter("type"));
+        hbaService.update(hba);
+        result.put("msg","0");
+        return JSON.toJSONString(result);
+    }
+
+    /**
+     * 删除用户
+     * 王新苗
+     * @param request
+     * @param response
+     */
+    @ResponseBody
+    @RequestMapping(value = "/delcourse",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    public String delcourse(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        addLog(getUse(request).getUse002(),"删除了课程分类名称为：【" + request.getParameter("uname") + "】的状态");
+        if(hbaService.countByflid(Integer.parseInt(request.getParameter("fid")))==0){
+            hbaService.delete(Integer.parseInt(request.getParameter("fid")));
+            result.put("msg","0");
+        }else{
+            result.put("msg","1");
         }
-        usfService.delete(usf.getUsf001());
-        result.put("msg","Y");
         return JSON.toJSONString(result);
     }
 
     /**
      * ajax保存内容
-     * 2023-03-24
      * 王新苗
      * @param request
      */
     @ResponseBody
-    @RequestMapping(value = "/savefjcon",headers = "content-type=multipart/form-data")
-    public String savefjcon(HttpServletRequest request) throws Exception {
+    @RequestMapping(value = "/xgcourse",headers = "content-type=multipart/form-data")
+    public String xgcourse(HttpServletRequest request) throws Exception {
         HashMap result = new HashMap();
-        HttpSession session = request.getSession();
-        String date = sdf.format(new Date());
-        String filePath = this.getClass().getResource("/").getPath();
-        filePath = filePath.substring(1,filePath.length())+"static/upload/cimg/";
-        int fid = 0;
-        if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()) {
-            fid = Integer.parseInt(request.getParameter("fid"));
+        cdhba item = new cdhba();
+        //修改
+        item.setHba002(request.getParameter("t2"));
+        item.setHba003(request.getParameter("t3"));
+        item.setHba004(request.getParameter("t4"));
+        item.setHba005(request.getParameter("t5"));
+        if(!request.getParameter("t6").isEmpty())item.setHba006(Float.valueOf(request.getParameter("t6")));
+        item.setHba007(request.getParameter("t7"));
+        item.setHba008(request.getParameter("t8"));
+        item.setHba009(request.getParameter("t9"));
+        item.setHba010(request.getParameter("t10"));
+        item.setHba011(request.getParameter("t11"));
+        if(!request.getParameter("t12").isEmpty())item.setHba012(Float.valueOf(request.getParameter("t12")));
+        if(!request.getParameter("t13").isEmpty())item.setHba013(Integer.valueOf(request.getParameter("t13")));
+        item.setHba014(request.getParameter("t14"));
+        item.setHba019(request.getParameter("t15"));
+        item.setHba018(request.getParameter("t16"));
+        item.setHba017(request.getParameter("t17"));
+        item.setHba019(request.getParameter("t19"));
+        Date date = new Date();
+        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
+        MultipartFile file = multipartHttpServletRequest.getFile("t20");
+        if(null!=file.getOriginalFilename()&&!file.getOriginalFilename().toString().isEmpty()){
+            String filename = sdf.format(date)+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+            item.setHba020(filename);
+            uploadpic("kcvideo/"+filename,file,"kcvideo/"+request.getParameter("tt20"));
         }
-        int conid = Integer.parseInt(request.getParameter("conid"));
-        String lx = request.getParameter("lx");
-        String fext = request.getParameter("fext");
-        String wtxt = request.getParameter("wtxt");
-        String fileString = request.getParameter("picfile");
-        String wurl = request.getParameter("wurl");
-        cdusf usf;
-        File file;
-        if(fid>0){
-            //编辑
-            usf = usfService.selectByid(fid);
-            usf.setUsf003(lx);
-            usf.setUsf007(wurl);
-            usf.setUsf002(conid);
-            if(lx.equals("B")){
-                usf.setUsf004(wtxt);
-                if(fileString.indexOf("upload/cimg/")<0){
-                    if(usf.getUsf005()!=null&&!usf.getUsf005().isEmpty()){
-                        file = new File(filePath+usf.getUsf005());
-                        if(file.exists()) file.deleteOnExit();
-                    }
-                    uploadpic_Base64(fileString,filePath+date+"."+fext,fext);
-                    usf.setUsf005(date+"."+fext);
-                }
-            }else{
-                usf.setUsf004(null);
-                if(fileString.indexOf("upload/cimg/")<0){
-                    if(usf.getUsf005()!=null&&!usf.getUsf005().isEmpty()){
-                        file = new File(filePath+usf.getUsf005());
-                        if(file.exists()) file.deleteOnExit();
-                    }
-                    uploadvidao_Base64(fileString,filePath+date+"."+fext);
-                    usf.setUsf005(date+"."+fext);
-                }
-            }
-            usfService.update(usf);
-            result.put("msg","修改成功");
+        if(!request.getParameter("t21").isEmpty())item.setHba021(Integer.valueOf(request.getParameter("t21")));
+        if(!request.getParameter("t22").isEmpty())item.setHba022(Integer.valueOf(request.getParameter("t22")));
+        if(!request.getParameter("t27").isEmpty())item.setHba027(Float.valueOf(request.getParameter("t27")));
+        if(!request.getParameter("t28").isEmpty())item.setHba028(Float.valueOf(request.getParameter("t28")));
+        if(!request.getParameter("t29").isEmpty())item.setHba029(Float.valueOf(request.getParameter("t29")));
+        if(!request.getParameter("t30").isEmpty())item.setHba030(Float.valueOf(request.getParameter("t30")));
+        if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()){
+            String log = "修改了名字为：【" + request.getParameter("t3") + "】的课程分类信息";
+            item.setHba001(Integer.valueOf((request.getParameter("fid"))));
+            addLog(getUse(request).getUse002(),log);
+            hbaService.update(item);
+            result.put("msg","U");
         }else{
-            usf = new cdusf();
-            usf.setUsf002(conid);
-            usf.setUsf003(lx);
-            usf.setUsf007(wurl);
-            if(lx.equals("B")){
-                usf.setUsf004(wtxt);
-                if(fileString.indexOf("upload/cimg/")<0){
-                    uploadpic_Base64(fileString,filePath+date+"."+fext,fext);
-                    usf.setUsf005(date+"."+fext);
-                }
-            }else{
-                usf.setUsf004(null);
-                if(fileString.indexOf("upload/cimg/")<0){
-                    uploadvidao_Base64(fileString,filePath+date+"."+fext);
-                    usf.setUsf005(date+"."+fext);
-                }
-            }
-            usf = usfService.insert(usf);
-            result.put("msg","添加成功");
+            item.setHba026("A");
+            String log = "新增了名字为：【" + request.getParameter("t3")+ "】的课程分类信息";
+            addLog(getUse(request).getUse002(),log);
+            item = hbaService.insert(item);
+            result.put("msg","I");
         }
-        result.put("usf",usf);
+        result.put("d",item);
         return JSON.toJSONString(result);
     }
 
+    //后台分类加载
+    @RequestMapping("/tocoursels")
+    public ModelAndView tocoursels(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        HttpSession session = request.getSession();
+        ModelAndView mav = new ModelAndView();
+        int userid = 0;//后台登录用户ID
+        if(session.getAttribute("user")==null){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }else{
+            userid = Decrypt(session.getAttribute("user").toString());
+            cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
+            System.out.println(request);
+            mav.addObject("yhclist", yhcService.getAll(request.getParameter("kcid"),request.getParameter("name1")));
+            mav.addObject("pages", request.getParameter("pages"));
+            mav.addObject("kcid", request.getParameter("kcid"));
+            mav.addObject("name", request.getParameter("name"));
+            mav.addObject("name1", request.getParameter("name1"));
+        }
+        mav.setViewName("HTcoursels");
+        return mav;
+    }
 
+    /**
+     * 删除用户
+     * 王新苗
+     * @param request
+     * @param response
+     */
+    @ResponseBody
+    @RequestMapping(value = "/delcoursels",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    public String delcoursels(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        addLog(getUse(request).getUse002(),"删除了课程分类名称为：【" + request.getParameter("uname") + "】的状态");
+        if(yheService.countBylsid(Integer.parseInt(request.getParameter("fid")))==0){
+            yhcService.delete(Integer.parseInt(request.getParameter("fid")));
+            result.put("msg","0");
+        }else{
+            result.put("msg","1");
+        }
+        return JSON.toJSONString(result);
+    }
 
+    /**
+     * ajax保存内容
+     * 王新苗
+     * @param request
+     */
+    @ResponseBody
+    @RequestMapping(value = "/xgcoursels",headers = "content-type=multipart/form-data")
+    public String xgcoursels(HttpServletRequest request) throws Exception {
+        HashMap result = new HashMap();
+        cdyhc item = new cdyhc();
+        //修改
+        item.setYhc003(request.getParameter("t3"));
+        item.setYhc004(request.getParameter("t4"));
+        if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()){
+            String log = "修改了名字为：【" + request.getParameter("t3") + "】的课程分类信息";
+            item.setYhc001(Integer.valueOf((request.getParameter("fid"))));
+            addLog(getUse(request).getUse002(),log);
+            yhcService.update(item);
+            result.put("msg","U");
+        }else{
+            item.setYhc002(Integer.valueOf(request.getParameter("kcid")));
+            String log = "新增了名字为：【" + request.getParameter("t3")+ "】的课程分类信息";
+            addLog(getUse(request).getUse002(),log);
+            item = yhcService.insert(item);
+            result.put("msg","I");
+        }
+        result.put("d",item);
+        return JSON.toJSONString(result);
+    }
+
+    /**
+     * 进入管理员管理页面
+     * othersql:登录名  othersql1:机构
+     * @return 用户页面
+     */
+    @RequestMapping("/toselect")
+    public ModelAndView toselect(HttpServletRequest request,HttpServletResponse response) throws Exception{
+        ModelAndView mav = new ModelAndView();
+        HttpSession session = request.getSession();
+        int userid = 0;//后台登录用户ID
+        if(session.getAttribute("user")==null){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }else{
+            userid = Decrypt(session.getAttribute("user").toString());
+            cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
+            mav.addObject("msg", request.getParameter("msg"));
+            PageBean pb = new PageBean();
+            if (request.getParameter("pages") != null && !request.getParameter("pages").isEmpty())
+                pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
+            else
+                pb.setCurrentPage(1);
+            if (request.getParameter("name") != null && !request.getParameter("name").isEmpty()) {
+                pb.setOthersql(request.getParameter("name"));
+            }
+            if (request.getParameter("phone") != null && !request.getParameter("phone").isEmpty()) {
+                pb.setOthersql6(request.getParameter("phone"));
+            }
+            if (request.getParameter("lx") != null && !request.getParameter("lx").isEmpty()) {
+                pb.setOthersql1(request.getParameter("lx"));
+            }
+            mav.addObject("pageobj", smdService.selectPageBean(pb));
+        }
+        mav.setViewName("HTselect");
+        return mav;
+    }
+    
+
+    /**
+     * 修改账户
+     * 王新苗
+     * @param request
+     * @param response
+     */
+    @ResponseBody
+    @RequestMapping(value = "/xgselect")
+    public String xgselect(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        HttpSession session = request.getSession();
+        if (session.getAttribute("user") == null) {
+            SystemTZYM(response, "登录失效");
+            return null;
+        }
+        cdsmd item = new cdsmd();
+        //修改
+        item.setSmd002(request.getParameter("t2"));
+        item.setSmd003(request.getParameter("t3"));
+        item.setSmd004(request.getParameter("t4"));
+        item.setSmd005(request.getParameter("t5"));
+        item.setSmd006(request.getParameter("t6"));
+        item.setSmd007(request.getParameter("t7"));
+        item.setSmd009(Integer.valueOf(request.getParameter("t9")));
+        item.setSmd010(Integer.valueOf(request.getParameter("t10")));
+        item.setSmd008(DATE.parse(request.getParameter("t8")));
+        if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()){
+            String log = "修改了名字为：【" + request.getParameter("t1") + "】的用户信息";
+            item.setSmd001(Integer.valueOf((request.getParameter("fid"))));
+            addLog(getUse(request).getUse002(),log);
+            smdService.update(item);
+            result.put("msg", "U");
+        }else{
+            String log = "新增了名字为：【" + request.getParameter("t1")+ "】的用户信息";
+            item.setSmd011(0);
+            item.setSmd012(0);
+            item.setSmd013(0);
+            addLog(getUse(request).getUse002(),log);
+            item = smdService.insert(item);
+            result.put("msg", "I");
+        }
+        result.put("d",item);
+        return JSON.toJSONString(result);
+    }
 }
