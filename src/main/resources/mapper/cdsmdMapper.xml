@@ -414,4 +414,18 @@
       SMD018 = #{smd018,jdbcType=VARCHAR}
     where SMD001 = #{smd001,jdbcType=INTEGER}
   </update>
+  <select id="selectByExampleAndPage" resultMap="BaseResultMap" parameterType="com.efx.Science.model.cdsmdExample" flushCache="true" useCache="false">
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cdsmd
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
 </mapper>

@@ -34,24 +34,50 @@
                 <li class="nav-item active">
                     <a class="multitabs" href="toHt/toHThome" id="default-page">
                         <i class="mdi mdi-home-city-outline"></i>
-                        <span>首页轮播</span>
+                        <span>后台首页</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="multitabs" href="toHt/toHTmain" >
-                        <i class="mdi mdi-stove"></i>
-                        <span>分类管理</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="multitabs" href="toHt/toHTcon">
-                        <i class="mdi mdi-stove"></i>
-                        <span>内容管理</span>
-                    </a>
-                </li>
+                <!--平台-->
+                <th:block th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">
+                    <li class="nav-item nav-item-has-subnav">
+                        <a >
+                            <i class="mdi mdi-stove"></i> <span>账户管理</span>
+                        </a>
+                        <ul class="nav nav-subnav">
+                            <li><a class="multitabs" href="toHt/staff?lx=A">平台账户管理</a></li>
+                            <li><a class="multitabs" href="toHt/staff?lx=B">授课账户管理</a></li>
+                            <li><a class="multitabs" href="toHt/staff?lx=C">选课账户管理</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item nav-item-has-subnav">
+                        <a >
+                            <i class="mdi mdi-stove"></i> <span>选课方管理</span>
+                        </a>
+                        <ul class="nav nav-subnav">
+                            <li><a class="multitabs" href="toHt/tolevel">选课方层级管理</a></li>
+                            <li><a class="multitabs" href="toHt/toselect">选课方管理</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item nav-item-has-subnav">
+                        <a >
+                            <i class="mdi mdi-stove"></i> <span>授课方管理</span>
+                        </a>
+                        <ul class="nav nav-subnav">
+                            <li><a class="multitabs" href="toHt/toselect">授课方管理</a></li>
+                            <li class="nav-item nav-item-has-subnav">
+                                <a >
+                                    <i class="mdi mdi-stove"></i> <span>课程管理</span>
+                                </a>
+                                <ul class="nav nav-subnav">
+                                    <li><a class="multitabs" href="toHt/tocourselx">课程分类管理</a></li>
+                                    <li><a class="multitabs" href="toHt/tocourse">课程管理</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </th:block>
             </ul>
         </nav>
-
         <div class="sidebar-footer position-absolute bottom-0">
             <p class="copyright">
                 <span>Copyright &copy; 2024. </span>
@@ -63,4 +89,5 @@
 </aside>
 </body>
 </html>
+
 

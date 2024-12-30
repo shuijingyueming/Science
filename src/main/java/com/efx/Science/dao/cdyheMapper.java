@@ -5,6 +5,7 @@ import com.efx.Science.model.cdyheExample;
 import com.efx.Science.model.cdyheWithBLOBs;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
 
 public interface cdyheMapper {
     long countByExample(cdyheExample example);
@@ -34,4 +35,6 @@ public interface cdyheMapper {
     int updateByPrimaryKeyWithBLOBs(cdyheWithBLOBs record);
 
     int updateByPrimaryKey(cdyhe record);
+
+    List<cdyhe> selectByExampleAndPage(cdyheExample example, RowBounds rowBounds);
 }

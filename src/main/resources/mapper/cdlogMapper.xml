@@ -5,11 +5,11 @@
     <id column="LOG001" jdbcType="VARCHAR" property="log001" />
     <result column="LOG002" jdbcType="VARCHAR" property="log002" />
     <result column="LOG003" jdbcType="TIMESTAMP" property="log003" />
+    <result column="LOG004" jdbcType="LONGVARCHAR" property="log004" />
     <result column="LOG005" jdbcType="VARCHAR" property="log005" />
     <result column="LOG006" jdbcType="VARCHAR" property="log006" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.efx.Science.model.cdlog">
-    <result column="LOG004" jdbcType="LONGVARCHAR" property="log004" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -106,7 +106,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
-    select 
+    select
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
@@ -124,10 +124,10 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.efx.Science.model.cdlog">
-    insert into cdlog (LOG001, LOG002, LOG003, 
+    insert into cdlog (LOG001, LOG002, LOG003,
       LOG005, LOG006, LOG004
       )
-    values (#{log001,jdbcType=VARCHAR}, #{log002,jdbcType=VARCHAR}, #{log003,jdbcType=TIMESTAMP}, 
+    values (#{log001,jdbcType=VARCHAR}, #{log002,jdbcType=VARCHAR}, #{log003,jdbcType=TIMESTAMP},
       #{log005,jdbcType=VARCHAR}, #{log006,jdbcType=VARCHAR}, #{log004,jdbcType=LONGVARCHAR}
       )
   </insert>
@@ -267,4 +267,18 @@
       LOG006 = #{log006,jdbcType=VARCHAR}
     where LOG001 = #{log001,jdbcType=VARCHAR}
   </update>
+  <select id="selectByExampleAndPage" resultMap="BaseResultMap" parameterType="com.efx.Science.model.cdlogExample" flushCache="true" useCache="false">
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cdlog
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
 </mapper>

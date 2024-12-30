@@ -6,23 +6,6 @@ document.addEventListener("error", function (e) {
 }, true /* 指定事件处理函数在捕获阶段执行 */);
 
 
-//提交表单
-function form_submit(url, method, params, target) {
-    var form = document.createElement("form");//创建一个表单
-    form.setAttribute("method", method);//设置form表单的method属性
-    form.setAttribute("action", url);
-    form.setAttribute("target", target);
-    for (var i = 0; i < params.length; i++) {
-        var hiddenField = document.createElement("input");
-        hiddenField.setAttribute("type", "hidden");
-        hiddenField.setAttribute("name", params[i][0]);
-        hiddenField.setAttribute("value", params[i][1]);
-        form.appendChild(hiddenField);
-    }
-    document.body.appendChild(form);
-    form.submit();
-}
-
 window.onload = function () {
     var params = window.location.search;
     if (params.indexOf("msg") >= 0) {

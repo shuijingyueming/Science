@@ -1,5 +1,6 @@
 package com.efx.Science.controller;
 
+import com.efx.Science.model.cdlog;
 import com.efx.Science.model.cduse;
 import com.efx.Science.pub.properConfig;
 import com.efx.Science.service.*;
@@ -32,19 +33,22 @@ public class BaseController {
     @Autowired
     protected CduseService useService;//用户信息
     @Autowired
-    protected CdusgService usgService;//一级分类
-    @Autowired
-    protected CduscService uscService;//二级分类
-    @Autowired
-    protected CdusaService usaService;//三级分类
-    @Autowired
-    protected CdusdService usdService;//内容
-    @Autowired
-    protected CdusbService usbService;//首页轮播
-
+    protected CdlogService logService;//用户信息
 
     @Autowired
-    protected CdusfService usfService;//内容附加
+    protected CdyhaService yhaService;
+    @Autowired
+    protected CdsmdService smdService;
+
+    @Autowired
+    protected CdhbbService hbbService;
+    @Autowired
+    protected CdhbaService hbaService;
+    @Autowired
+    protected CdyhcService yhcService;
+
+    @Autowired
+    protected CdyheService yheService;
 
     //静态公共时间格式对象 调用BaseController.DATE
     protected final static SimpleDateFormat DATE = new SimpleDateFormat("yyyy-MM-dd");
@@ -489,5 +493,14 @@ public class BaseController {
             e.printStackTrace();
         }
         //System.out.print("删除成功!\n");
+    }
+
+    protected void addLog(String username,String text){
+        cdlog log = new cdlog();
+        log.setLog001(UUID.randomUUID().toString().replaceAll("-", ""));
+        log.setLog002(username);
+        log.setLog003(new Date());
+        log.setLog004(text);
+        logService.insert(log);
     }
 }

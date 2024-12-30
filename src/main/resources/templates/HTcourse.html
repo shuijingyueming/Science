@@ -1,0 +1,677 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <base th:href="${#request.getContextPath()}+'/'">
+    <title>后台管理系统</title>
+    <meta http-equiv="pragma" content="no-cache"/>
+    <meta http-equiv="cache-control" content="no-cache"/>
+    <meta http-equiv="expires" content="0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <!--表格css-->
+    <link rel="stylesheet" href="css/tables/datatables.min.css">
+    <link rel="stylesheet" href="css/tables/datatables-http.min.css">
+    <link rel="stylesheet" href="css/tables/jsgrid/jsgrid.css">
+    <link rel="stylesheet" href="css/tables/jsgrid/theme.css">
+    <link rel="stylesheet" href="css/tables/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="css/tables/jsgrid/demos.css">
+    <link rel="stylesheet" href="css/tables/jsgrid/jsgridui.css">
+
+    <link rel="stylesheet" type="text/css" href="css/materialdesignicons.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="js/bootstrap-multitabs/multitabs.min.css">
+    <link type="text/css" rel="stylesheet" href="js/jquery-tagsinput/jquery.tagsinput.min.css">
+    <link type="text/css" rel="stylesheet" href="js/webuploader/webuploader.css">
+    <link type="text/css" rel="stylesheet" href="js/magnific-popup/magnific-popup.min.css">
+    <link rel="stylesheet" type="text/css" href="css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.min.css">
+    <link rel="stylesheet" type="text/css" href="css/page.css">
+    <!--引入下拉插件css-->
+    <link rel="stylesheet" type="text/css" href="js/bootstrap-select/bootstrap-select.min.css">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-search mb-2-5">
+                        <form class="search-form" method="post" role="form" action="toHt/tocourse">
+                            <input type="hidden" id="pages" name="pages" th:value="${pageobj.currentPage}"/>
+                            <input type="hidden" id="counts" name="counts" th:value="${pageobj.pageCount}"/>
+                            <!--text input-->
+                            <div class="row g-3">
+                                <div class="col-auto">
+                                    <div class="row">
+                                        <label class="col-auto col-form-label"
+                                               style="padding-right:0;padding-left:10px;">名称</label>
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" id="name" name="name" th:value="${pageobj.othersql}"
+                                                   placeholder="请输入名称"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--button-->
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-primary me-1">搜索</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div id="wrapp" >
+                        <div class="jsgrid table-responsive" data-parent="#accordion">
+                            <input type="file" id="file" name="file" style="display: none" onchange="daoru(this)"/>
+                            <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%;" id="courseexm" >
+                                <thead>
+                                <tr>
+                                    <th style="max-width:30px;">序号</th>
+                                    <th>课程名称</th>
+                                    <th>授课方</th>
+                                    <th>课程分类</th>
+                                    <th>联系人名称</th>
+                                    <th>联系人手机号</th>
+                                    <th>适合年龄段</th>
+                                    <th>课时总时长</th>
+                                    <th>每次课时</th>
+                                    <th>志愿者补贴金额</th>
+                                    <th>状态</th>
+                                    <th style="max-width:80px;">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tablebody">
+                                <tr th:each="item,stat:${pageobj.resultList}">
+                                    <td th:text="${stat.index+1}"></td>
+                                    <td th:text="${item.hba002}"></td>
+                                    <td th:text="${item.smd.smd003}"></td>
+                                    <td th:text="${item.hbb.hbb002}"></td>
+                                    <td th:text="${item.hba016}"></td>
+                                    <td th:text="${item.hba017}"></td>
+                                    <td th:text="${item.hba003}"></td>
+                                    <td th:text="${item.hba004}"></td>
+                                    <td th:text="${item.hba005}"></td>
+                                    <td th:text="${item.hba006}"></td>
+                                    <td th:text="${item.hba026=='B'?'正常':(item.hba026=='C'?'下架':(item.hba026=='A'?'审核':(item.hba026=='D'?'暂停':'')))}"></td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]])" class="btn btn-table"
+                                               data-bs-toggle="modal" data-bs-target="#editmode">编辑</a>
+                                            <div class="ivu-divider-vertical"></div>
+                                            <th:block th:if="${item.hba026=='A'||item.hba026=='B'}">
+                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.hba001}]],[[${item.hba002}]],[['C']])"  th:text="${item.hba026=='A'?'审核通过':'下架'}"></a>
+                                            </th:block>
+                                            <th:block th:if="${item.hba026=='C'||item.hba026=='D'}">
+                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.hba001}]],[[${item.hba002}]],[['B']])">正常</a>
+                                            </th:block>
+                                            <th:block th:if="${item.hba026=='B'}">
+                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.hba001}]],[[${item.hba002}]],[['D']])">暂停</a>
+                                            </th:block>
+                                            <a href="javascript:void(0);" th:onclick="tols([[${item.hba001}]])" class="btn btn-table"
+                                               data-bs-toggle="modal" data-bs-target="#">老师管理</a>
+                                            <div class="ivu-divider-vertical"></div>
+                                            <!--<a href="javascript:void(0);" th:onclick="del([[${item.hba001}]])" class="btn btn-table">删除</a>-->
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <ul class="pagination">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑分类模态框 -->
+    <div class="modal fade" id="editmode" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel"
+         aria-hidden="true" style="height:100%;background-color: #FFF;">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="editmodeLabel"><span id="ftype"></span></h6>
+                    <button type="button" onclick="pagerefalsh()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <input type="hidden" id="fid" value=""/>
+                    <div class="modal-body">
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">课程名称</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <input type="text" class="form-control" id="t2" name="t2" placeholder="请输入课程名称"/>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">授课方</label>
+                                <div class="form-controls">
+                                    <select id="t22" name="t22"  class="form-control selectpicker" data-live-search="true">
+                                        <option value="" selected>请选择</option>
+                                        <th:block th:each="item,stat:${smdlist}">
+                                            <option th:value="${item.smd001}" >[[${item.smd003}]]</option>
+                                        </th:block>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">课程分类</label>
+                                <div class="form-controls">
+                                    <select id="t21" name="t21"  class="form-control selectpicker" data-live-search="true">
+                                        <option value="" selected>请选择</option>
+                                        <th:block th:each="item,stat:${hbblist}">
+                                            <option th:value="${item.hbb001}" >[[${item.hbb002}]]</option>
+                                        </th:block>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">适合年龄段</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="text" class="form-control" id="t3" name="t3" placeholder="请输入适合年龄段"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">课时总时长</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="text" class="form-control" id="t4" name="t4" placeholder="请输入课时总时长"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">每次课时</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="text" class="form-control" id="t5" name="t5" placeholder="请输入每次课时"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">上下限人数建议</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <textarea class="form-control" style="resize: none;" rows="3" id="t8" name="t8"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">是否需要亲子</label>
+                            <div class="form-check form-switch" style="display: flex;align-items: center;justify-content: left;">
+                                <div style="margin-top:5px;margin-left: -30px;">是</div>
+                                <input class="form-check-input" style="margin-left: 10px;" type="checkbox" role="switch" id="t7">
+                                <div style="margin-top:5px;margin-left: 10px;">否</div>
+                            </div>
+                        </div>
+
+                         <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">最佳人数建议</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <textarea class="form-control" style="resize: none;" rows="3" id="t9" name="t9"></textarea>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">场地要求</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <textarea class="form-control" style="resize: none;" rows="3" id="t10" name="t10"></textarea>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">附加费产生条件</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <textarea class="form-control" style="resize: none;" rows="3" id="t11" name="t11"></textarea>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">附加材料费</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <input type="number" class="form-control" id="t12" name="t12" placeholder="请输入附加材料费"/>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">志愿者人数</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="number" class="form-control" id="t13" name="t13" placeholder="请输入志愿者人数"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">志愿者补贴金额</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="number" class="form-control" id="t6" name="t6" placeholder="请输入志愿者补贴金额"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">对志愿者要求</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <textarea class="form-control" style="resize: none;" rows="3" id="t14" name="t14"></textarea>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">送教地域限制</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <textarea class="form-control" style="resize: none;" rows="3" id="t15" name="t15"></textarea>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">联系人名称</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="text" class="form-control" id="t16" name="t16" placeholder="请输入联系人名称"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">联系人手机号</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="text" class="form-control" id="t17" name="t17" placeholder="请输入联系人手机号"/>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">课时费用10人以下</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="number" class="form-control" id="t27" name="t27" placeholder="请输入课时费用10人以下"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">课时费用11-20人</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="number" class="form-control" id="t28" name="t28" placeholder="请输入课时费用11-20人"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">课时费用21-30人</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="number" class="form-control" id="t29" name="t29" placeholder="请输入课时费用21-30人"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">课时费用31-45人</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="number" class="form-control" id="t30" name="t30" placeholder="请输入课时费用31-45人"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">课程内容描述</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <textarea class="form-control" style="resize: none;" rows="3" id="t19" name="t19"></textarea>
+                            </div>
+                        </div>
+                        <div class="mb-3 col-md-12 position-relative" id="upvadiofile" style="margin-top: 20px;padding-left: 8px;">
+                            <div class="form-check form-check-inline" style="padding-left: 10px;">
+                                <button type="button" class="btn btn-primary" onclick="uploadvadio()">上传视频</button>
+                            </div>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-5 form-check form-check-inline typerow_p" style="padding-left: 10px;">
+                                <figure style="max-height: 400px;min-height: 300px;height:100%;width:100%;display: flex;">
+                                    <input type="file" id="t20" accept="video/*" style="display:none;">
+                                    <video class="form-vadio" id="upfilevadio" src="" controls/>
+                                    <input id="tt20" name="tt20" type="hidden">
+                                </figure>
+                            </div>
+                            <div class="col-11 small" style="margin-left:10px;color:#0096FF;">视频不超过100M，视频格式mp4</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="height:100px;">
+                        <button type="submit" class="btn btn-primary" id="edit-four">保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/popper.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<!-- 数字动态滚动增加效果 -->
+<script type="text/javascript" src="js/scroll-numbers.js"></script>
+<!--引入chart插件js-->
+<script type="text/javascript" src="js/main.min.js"></script>
+<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-multitabs/multitabs.min.js"></script>
+<script type="text/javascript" src="js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="js/index.min.js"></script>
+<!--tags插件-->
+<script type="text/javascript" src="js/jquery-tagsinput/jquery.tagsinput.min.js"></script>
+<!--上传插件-->
+<script type="text/javascript" src="js/webuploader/webuploader.js"></script>
+<!--灯箱效果插件-->
+<script type="text/javascript" src="js/magnific-popup/magnific-popup.min.js"></script>
+<!--通知消息插件-->
+<script type="text/javascript" src="js/bootstrap-notify.min.js"></script>
+<!--引入标签插件js-->
+<script type="text/javascript" src="js/jquery-confirm/jquery-confirm.min.js"></script>
+<script type="text/javascript" src="js/main.min.js"></script>
+<!--引入下拉插件js-->
+<script type="text/javascript" src="js/bootstrap-select/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-select/i18n/defaults-zh_CN.min.js"></script>
+<script type="text/javascript" src="js/layer/layer.js"></script>
+<script type="text/javascript" src="js/layui/layui.js"></script>
+<!-- 表格JS -->
+<script type="text/javascript" src="static/tables/datatables.min.js"></script>
+<script type="text/javascript" src="static/tables/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="static/tables/jszip.min.js"></script>
+<script type="text/javascript" src="static/tables/pdfmake.min.js"></script>
+<script type="text/javascript" src="static/tables/vfs_fonts.js"></script>
+<script type="text/javascript" src="static/tables/buttons.html5.min.js"></script>
+<script type="text/javascript" src="static/tables/buttons.print.min.js"></script>
+<script type="text/javascript" src="static/tables/datatable.js"></script>
+<!-- 翻页-->
+<script type="text/javascript" src="pagejs/htfy.js"></script>
+<!-- validate JS 验证-->
+<script type="text/javascript" src="assets/jquery-validate/jquery.validate.js"></script>
+<script type="text/javascript" src="assets/jquery-validate/validate-methods.js"></script>
+
+<script type="text/javascript">
+
+    var file_lastName="";
+    var filesize;
+    var layer = layui.layer;
+    var load_index;
+
+    function gobackpage(){
+        window.history.back();
+    }
+
+    pdyes($("#pages").val(), $("#counts").val());
+
+    //翻页
+    function usefanye(pageindex){
+        var params = [
+            ["pages",pageindex],
+            ["name",$.trim($("#name").val())]];
+        form_submit("toHt/tocourse","post",params,"_self");
+    }
+
+    function tols(kcid){
+        var params = [
+            ["kcid",kcid],
+            ["pages",$("#pages").val()],
+            ["name", $("#name").val()]];
+        form_submit("toHt/tocoursels","post",params,"_self");
+    }
+
+    function xzmb(){
+        var params = [  ["type","E"],
+            ["pages",$("#pages").val()],
+            ["name", $("#name").val()]];
+        form_submit("toHt/tocourse","post",params,"_self");
+    }
+
+    function drcourse(){
+        $('#file').click();
+    }
+
+    function daoru(file){
+        var fileTypes = [ ".xlsx",".xls" ];
+        var filePath = file.value;
+        // 当括号里面的值为0、空字符、false 、null 、undefined的时候就相当于false
+        if (filePath) {
+            var isNext = false;
+            var fileEnd = filePath.substring(filePath.indexOf("."));
+            for (var i = 0; i < fileTypes.length; i++) {
+                if (fileTypes[i] == fileEnd) {
+                    isNext = true;
+                    break;
+                }
+            }
+            if(isNext == true){
+                daoruwj();
+                return;
+            }else{
+                layer.alert('只允许上传以.xlsx和.xls结尾的文件');
+                file.value = "";
+                return;
+            }
+        } else {
+            layer.alert('请选择文件');
+        }
+    }
+
+    function daoruwj() {
+        var formData = new FormData();
+        formData.append("file", document.getElementById("file").files[0]);
+        var index = layer.load(1, {
+            content: "导入中",
+            shade: [0.1, 'black'], //0.1透明度的白色背景
+            success: function (layero) {
+                layero.find('.layui-layer-content').css({
+                    'padding-top': '39px',
+                    'width': '60px'
+                });
+            }
+        });
+        $.ajax({
+            url: 'toHt/drcourse',
+            type: 'POST',
+            data: formData,
+            //async: false,                      //async 设置为 false，则所有的请求均为同步请求，在没有返回值之前，同步请求将锁住浏览器
+            cache: false,                      // 不缓存
+            processData: false,                // jQuery不要去处理发送的数据
+            contentType: false,                // jQuery不要去设置Content-Type请求头
+            dataType: 'text',
+            success: function (data) {
+                if (data == 'A') {
+                    var params = [
+                        ["pages", $("#pages").val()],
+                        ["name",$.trim($("#name").val())]];
+                    // layer.msg("导入成功", {time: 1000}, function () {
+                    form_submit("toHt/tocourse", "post", params, "_self");
+                    // });
+                } else if (data == 'B') {
+                    // layer.msg("导入失败");
+                    $("#file1").val("");
+                } else {
+                    deleteCookie('tab_list');
+                    deleteCookie('left_menu_father');
+                    deleteCookie('left_menu_son');
+                    var error = "登录失效";
+                    window.parent.location = 'login?error=' + error;
+                }
+            },
+            error: function () { layer.close(index); }
+        });
+    }
+    function xgzt(id,uname,type){
+        if (confirm("您确定修改吗?")) {
+            load_index = layer.load(1);
+            var formData = new FormData();
+            formData.append("fid",id);
+            formData.append("uname",uname);
+            formData.append("type",type);
+            $.ajax({
+                url: 'toHt/xgztcourse', // 服务器端处理上传文件的URL
+                type: 'POST',
+                data: formData,
+                dataType:'json',
+                contentType: false, // 不设置内容类型
+                processData: false, // 不处理发送的数据
+                success: function (res) {
+                    var d = eval(res);
+                    if(d.msg=="0"){
+                        layer.msg("修改成功");
+                        setTimeout(function(){
+                            location.reload();
+                        },1000);
+                        layer.close(load_index);
+                    }
+                },
+                error: function () { console.log('提交失败'); }
+            });
+        }
+    }
+
+    function del(id){
+        if (confirm("您确定删除吗?")) {
+            load_index = layer.load(1);
+            var formData = new FormData();
+            formData.append("fid",id);
+            $.ajax({
+                url: 'toHt/delcourse', // 服务器端处理上传文件的URL
+                type: 'POST',
+                data: formData,
+                dataType:'json',
+                contentType: false, // 不设置内容类型
+                processData: false, // 不处理发送的数据
+                success: function (res) {
+                    var d = eval(res);
+                    if(d.msg=="0"){
+                        layer.msg("删除成功");
+                        setTimeout(function(){
+                            location.reload();
+                        },1000);
+                        layer.close(load_index);
+                    }else{
+                        layer.msg("该分类下还有课程，无法删除");
+                    }
+                },
+                error: function () { console.log('提交失败'); }
+            });
+        }
+    }
+
+    function uploadvadio(){
+        $("#t20").trigger('click');
+    }
+
+    $('#t20').on('change', function(){
+        var file = this.files[0]; // 获取文件对象
+        if (file) {
+            let fileName = file.name; // 获取文件名
+            file_lastName = fileName.split('.').pop(); // 获取后缀名
+            filesize = file.size/(1024*1024);
+            if(file_lastName!="mp4"){
+                showNotify('文件类型不正确，只允许上传后缀名为：mp4，请重新上传！', 'danger', 1500);
+                $("#t20").val("");
+                $("#upfilevadio").attr("src","");
+            }else if(filesize>100){
+                showNotify('文件不得超过100M，请重新上传！', 'danger', 1500);
+                $("#t20").val("");
+                $("#upfilevadio").attr("src","");
+            }else{
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $("#upfilevadio").attr("src",e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+    });
+
+    //刷新页面
+    function pagerefalsh(){
+        location.reload();
+    }
+
+    function edit(obj){
+        if(obj!=null&&obj!=''){
+            let josnobj = null;
+            if(obj.indexOf("Hash")>0){
+                josnobj = striongTOjsonString(obj);
+            }else{
+                josnobj = jsStringTojsonString(obj);
+            }
+            $("#fid").val(josnobj.hba001);
+            $("#t2").val(josnobj.hba002);
+            $("#t3").val(josnobj.hba003);
+            $("#t4").val(josnobj.hba004);
+            $("#t5").val(josnobj.hba005);
+            $("#t6").val(josnobj.hba006);
+            $("#t7").prop("checked",josnobj.hba007=="Y"?true:false);
+            $("#t8").val(josnobj.hba008);
+            $("#t9").val(josnobj.hba009);
+            $("#t10").val(josnobj.hba010);
+            $("#t11").val(josnobj.hba011);
+            $("#t12").val(josnobj.hba012);
+            $("#t13").val(josnobj.hba013);
+            $("#t14").val(josnobj.hba014);
+            $("#t15").val(josnobj.hba015);
+            $("#t16").val(josnobj.hba016);
+            $("#t17").val(josnobj.hba017);
+            $("#t19").val(josnobj.hba019);
+            $("#t20").val(josnobj.hba020);
+            $("#tt20").val(josnobj.hba020);
+            $("#upfilevadio").attr("src","upload/kcvideo/"+josnobj.hba020);
+            $("#t21").val(josnobj.hba021);
+            $("#t22").val(josnobj.hba022);
+            $("#t27").val(josnobj.hba027);
+            $("#t28").val(josnobj.hba028);
+            $("#t29").val(josnobj.hba029);
+            $("#t30").val(josnobj.hba030);
+            $("#ftype").text("编辑");
+        }else{
+            $("#ftype").text("添加");
+        }
+    }
+    $("#uploadForm").validate({
+        errorPlacement: function(error, element) {
+            //替换错误显示位置，error表示错误信息
+            $(element).parent("div").parent("div").append(error);
+            $(element).parent("div").parent("div").find("label").addClass("col-12");
+            // $(element).parent("div").parent("div").find("label").attr("style","margin-left:5px;");
+        },
+        rules : {t2: { required : true, },t4: { required : true, },t5: { required : true, },},
+        messages: {},
+        submitHandler: function(form) {
+            load_index = layer.load(1);
+            var formData = new FormData();
+            formData.append("fid",$("#fid").val().trim());
+            formData.append("t2",$("#t2").val());
+            formData.append("t3",$("#t3").val());
+            formData.append("t4",$("#t4").val());
+            formData.append("t5",$("#t5").val());
+            formData.append("t6",$("#t6").val());
+            formData.append("t7",$("#t7").prop("checked")?"Y":"N");
+            formData.append("t8",$("#t8").val());
+            formData.append("t9",$("#t9").val());
+            formData.append("t10",$("#t10").val());
+            formData.append("t11",$("#t11").val());
+            formData.append("t12",$("#t12").val());
+            formData.append("t13",$("#t13").val());
+            formData.append("t14",$("#t14").val());
+            formData.append("t15",$("#t15").val());
+            formData.append("t16",$("#t16").val());
+            formData.append("t17",$("#t17").val());
+            formData.append("t19",$("#t19").val());
+            formData.append("t20",$("#t20").val());
+            formData.append("tt20", $("#tt20").val());
+            formData.append("t20", document.getElementById("t20").files[0]);
+            formData.append("t21",$("#t21").val());
+            formData.append("t22",$("#t22").val());
+            formData.append("t27",$("#t27").val());
+            formData.append("t28",$("#t28").val());
+            formData.append("t29",$("#t29").val());
+            formData.append("t30",$("#t30").val());
+            $.ajax({
+                url: 'toHt/xgcourse', // 服务器端处理上传文件的URL
+                type: 'POST',
+                data: formData,
+                dataType:'json',
+                contentType: false, // 不设置内容类型
+                processData: false, // 不处理发送的数据
+                success: function (res) {
+                    var d = eval(res.d);
+                    $("#fid").val(d.hba001);
+                    layer.close(load_index);
+                    layer.msg(d.msg);
+                },
+                error: function () { console.log('提交失败'); }
+            });
+
+        }
+    });
+</script>
+</body>
+</html>

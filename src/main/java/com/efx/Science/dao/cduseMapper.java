@@ -4,6 +4,7 @@ import com.efx.Science.model.cduse;
 import com.efx.Science.model.cduseExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
 
 public interface cduseMapper {
     long countByExample(cduseExample example);
@@ -27,4 +28,6 @@ public interface cduseMapper {
     int updateByPrimaryKeySelective(cduse record);
 
     int updateByPrimaryKey(cduse record);
+
+    List<cduse> selectByExampleAndPage(cduseExample example, RowBounds rowBounds);
 }

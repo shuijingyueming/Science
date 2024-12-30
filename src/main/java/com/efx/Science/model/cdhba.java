@@ -1,6 +1,26 @@
 package com.efx.Science.model;
 
 public class cdhba {
+
+    private cdsmd smd;
+    private cdhbb hbb;
+
+    public cdsmd getSmd() {
+        return smd;
+    }
+
+    public void setSmd(cdsmd smd) {
+        this.smd = smd;
+    }
+
+    public cdhbb getHbb() {
+        return hbb;
+    }
+
+    public void setHbb(cdhbb hbb) {
+        this.hbb = hbb;
+    }
+
     private Integer hba001;
 
     private String hba002;
