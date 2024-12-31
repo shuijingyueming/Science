@@ -20,7 +20,12 @@
     <link rel="stylesheet" type="text/css" href="css/animate.min.css">
     <link rel="stylesheet" type="text/css" href="js/bootstrap-multitabs/multitabs.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.min.css">
+  <style>
+      .nav-item-has-subnav>a:after {
+          font-size: 10px;
+      }
 
+  </style>
 </head>
 <body th:fragment="common_side">
 <aside class="lyear-layout-sidebar">
@@ -40,7 +45,7 @@
                 <!--平台-->
                 <th:block th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">
                     <li class="nav-item nav-item-has-subnav">
-                        <a >
+                        <a href="javascript:void(0)">
                             <i class="mdi mdi-stove"></i> <span>账户管理</span>
                         </a>
                         <ul class="nav nav-subnav">
@@ -50,7 +55,7 @@
                         </ul>
                     </li>
                     <li class="nav-item nav-item-has-subnav">
-                        <a >
+                        <a href="javascript:void(0)">
                             <i class="mdi mdi-stove"></i> <span>选课方管理</span>
                         </a>
                         <ul class="nav nav-subnav">
@@ -59,13 +64,13 @@
                         </ul>
                     </li>
                     <li class="nav-item nav-item-has-subnav">
-                        <a >
+                        <a href="javascript:void(0)">
                             <i class="mdi mdi-stove"></i> <span>授课方管理</span>
                         </a>
                         <ul class="nav nav-subnav">
                             <li><a class="multitabs" href="toHt/toselect">授课方管理</a></li>
                             <li class="nav-item nav-item-has-subnav">
-                                <a >
+                                <a href="javascript:void(0)">
                                     <i class="mdi mdi-stove"></i> <span>课程管理</span>
                                 </a>
                                 <ul class="nav nav-subnav">
