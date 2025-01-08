@@ -2,9 +2,12 @@ package com.efx.Science.controller;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.efx.Science.model.*;
 import com.efx.Science.until.EncrpytUtil;
 import com.efx.Science.until.ExcelExport;
+import com.google.gson.JsonArray;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -22,6 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -33,6 +38,8 @@ public class HTinfoController extends BaseController {
     private ServletContext servletContext;
     @Autowired
     private TemplateEngine templateEngine;
+
+    private DateFormat df = DateFormat.getDateInstance();
 
 //框架页面加载
     @RequestMapping("/toHTindex")
@@ -546,6 +553,494 @@ public class HTinfoController extends BaseController {
         return mav;
     }
 
+    //后台排课加载
+    @RequestMapping("/tocoursepk")
+    public ModelAndView tocoursepk(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        HttpSession session = request.getSession();
+        ModelAndView mav = new ModelAndView();
+        if(session.getAttribute("user")==null){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
+        int userid = 0;//后台登录用户ID
+        userid = Decrypt(session.getAttribute("user").toString());
+       // cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
+        int  kcid = Integer.parseInt(request.getParameter("kcid"));
+        cdhba hba = hbaService.getByid(kcid);
+        String pkyear = sdf2.format(new Date());
+        //获取课程的指定年份排课
+        if(request.getParameter("pkyear")!=null) pkyear = request.getParameter("pkyear");
+
+        mav.addObject("hba", hba);
+        mav.addObject("pages", request.getParameter("pages"));
+        mav.addObject("kcid", kcid);
+        mav.addObject("pkyear", pkyear);
+        mav.addObject("name", request.getParameter("name"));
+
+        mav.setViewName("HTcoursepk");
+        return mav;
+    }
+
+    /**
+     * 获取当月已排课记录
+     * 孙伟丰
+     * @param request
+     * @param response
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getcoursepk",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    public String getcoursepk(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        addLog(getUse(request).getUse002(),"提交保存年排课计划");
+        int kcid = Integer.parseInt(request.getParameter("kcid"));
+        String pkyear = request.getParameter("pkyear");
+        String pkmonth = request.getParameter("pkmonth");
+        //获取指定课程的指定月份的排课记录
+        List<cdyhd> list = yhdService.getrllist(pkyear+"-"+pkmonth,kcid);
+        if(list.size()>0){
+            result.put("msg", "Y");
+            result.put("list", list);
+        }else result.put("msg", "N");
+        return JSON.toJSONString(result);
+    }
+
+
+    /**
+     * 排课保存
+     * 孙伟丰
+     * @param request
+     * @param response
+     */
+    @ResponseBody
+    @RequestMapping(value = "/savecoursepk",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    public String savecoursepk(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        addLog(getUse(request).getUse002(),"提交保存年排课计划");
+        int kcid = Integer.parseInt(request.getParameter("kcid"));
+        int pkyear = Integer.parseInt(request.getParameter("pkyear"));
+        String ispk = request.getParameter("ispk");
+        JSONArray conditionlist = null;
+        JSONArray dayarrlist = null;
+        System.out.println(ispk);
+        System.out.println(kcid);
+        System.out.println(pkyear);
+       System.out.println(request.getParameter("condition"));
+        System.out.println(request.getParameter("dayarr"));
+        if(request.getParameter("condition")!=null) conditionlist = JSON.parseArray(request.getParameter("condition").toString());
+        if(request.getParameter("dayarr")!=null) dayarrlist = JSON.parseArray(request.getParameter("dayarr").toString());
+
+        boolean w0_a=false, w0_b=false, w0_c=false,w1_a=false, w1_b=false, w1_c=false,
+                w2_a=false, w2_b=false, w2_c=false,w3_a=false, w3_b=false, w3_c=false,
+                w4_a=false, w4_b=false, w4_c=false,w5_a=false, w5_b=false, w5_c=false,
+                w6_a=false, w6_b=false, w6_c=false;
+        List<timeBetween> dateArray = new ArrayList();
+        JSONObject week=null;
+        JSONArray datearr = null;
+        String wday="";
+        String[] wdayarr,wdayarr1;
+        ArrayList<cdyhd> saveTemp = new ArrayList<cdyhd>();
+        if(conditionlist!=null){
+            //先分析星期条件
+            for(int i=0;i<7;i++){
+                week = conditionlist.getJSONObject(i);
+                wday = week.getString("X");
+                wdayarr = wday.split("#");
+                wdayarr1 = wdayarr[0].split("|");
+                switch(i){
+                    case 0:
+                        w0_a = wdayarr1[0].equals("Y")?true:false;
+                        wdayarr1 = wdayarr[1].split("|");
+                        w0_b = wdayarr1[0].equals("Y")?true:false;
+                        wdayarr1 = wdayarr[2].split("|");
+                        w0_c = wdayarr1[0].equals("Y")?true:false;
+                        break;
+                    case 1:
+                        w1_a = wdayarr1[0].equals("Y")?true:false;
+                        wdayarr1 = wdayarr[1].split("|");
+                        w1_b = wdayarr1[0].equals("Y")?true:false;
+                        wdayarr1 = wdayarr[2].split("|");
+                        w1_c = wdayarr1[0].equals("Y")?true:false;
+                        break;
+                    case 2:
+                        w2_a = wdayarr1[0].equals("Y")?true:false;
+                        wdayarr1 = wdayarr[1].split("|");
+                        w2_b = wdayarr1[0].equals("Y")?true:false;
+                        wdayarr1 = wdayarr[2].split("|");
+                        w2_c = wdayarr1[0].equals("Y")?true:false;
+                        break;
+                    case 3:
+                        w3_a = wdayarr1[0].equals("Y")?true:false;
+                        wdayarr1 = wdayarr[1].split("|");
+                        w3_b = wdayarr1[0].equals("Y")?true:false;
+                        wdayarr1 = wdayarr[2].split("|");
+                        w3_c = wdayarr1[0].equals("Y")?true:false;
+                        break;
+                    case 4:
+                        w4_a = wdayarr1[0].equals("Y")?true:false;
+                        wdayarr1 = wdayarr[1].split("|");
+                        w4_b = wdayarr1[0].equals("Y")?true:false;
+                        wdayarr1 = wdayarr[2].split("|");
+                        w4_c = wdayarr1[0].equals("Y")?true:false;
+                        break;
+                    case 5:
+                        w5_a = wdayarr1[0].equals("Y")?true:false;
+                        wdayarr1 = wdayarr[1].split("|");
+                        w5_b = wdayarr1[0].equals("Y")?true:false;
+                        wdayarr1 = wdayarr[2].split("|");
+                        w5_c = wdayarr1[0].equals("Y")?true:false;
+                        break;
+                    case 6:
+                        w6_a = wdayarr1[0].equals("Y")?true:false;
+                        wdayarr1 = wdayarr[1].split("|");
+                        w6_b = wdayarr1[0].equals("Y")?true:false;
+                        wdayarr1 = wdayarr[2].split("|");
+                        w6_c = wdayarr1[0].equals("Y")?true:false;
+                        break;
+                }
+            }
+            //限制日期
+            if(conditionlist.size()>7){
+                week = conditionlist.getJSONObject(7);
+                datearr = week.getJSONArray("clist");
+                for(int i=0;i<datearr.size();i++){
+                    week = datearr.getJSONObject(i);
+                    wday = week.getString("T");
+                  //  System.out.println(wday);
+                    timeBetween tm = new timeBetween();
+                    wdayarr = wday.split("#");
+                    tm.setStartTime(LocalDate.parse(wdayarr[0]));
+                    tm.setEndTime(LocalDate.parse(wdayarr[1]));
+                    dateArray.add(tm);
+                }
+            }
+        }
+        //指定年度
+        Calendar calendar = Calendar.getInstance();
+        int month = calendar.get(Calendar.MONTH) + 1; //月份是从0开始的，所以需要+1
+        int day = calendar.get(Calendar.DAY_OF_MONTH); //当前日期
+        LocalDate startDate = LocalDate.of(pkyear, month, day);
+        LocalDate endDate = LocalDate.of(pkyear, 12, 31);
+        //判断排课Y：已排课，N：未排课 如果已排课并且星期条件不为空 则删除已排课记录
+        if(ispk.equals("Y")&&conditionlist!=null) yhdService.deletebykcid(kcid,pkyear);
+        //判断是否是已排课状态，同时条件为空 直接循环天修改集合，按天修改
+        if(ispk.equals("Y")&&conditionlist==null){
+            //如果按天修改的条件不为空，直接循环天修改集合，按天修改
+            if(dayarrlist!=null&&dayarrlist.size()>0){
+                for(int j=0;j<dayarrlist.size();j++){
+                  week = dayarrlist.getJSONObject(j);
+                  //判断操作类型D:删除 A:新添加 X:修改
+                  cdyhd yhd = null;
+                  if(week.getString("cz").equals("D")){
+                      yhd = yhdService.getByid(week.getString("id"));
+                      if(yhd!=null){
+                          if(week.getString("title").indexOf("上午")>=0){
+                              yhd.setYhd004("N");
+                          }else if(week.getString("title").indexOf("下午")>=0){
+                              yhd.setYhd005("N");
+                          }else if(week.getString("title").indexOf("晚上")>=0){
+                              yhd.setYhd006("N");
+                          }
+                      }
+                  }else if(week.getString("cz").equals("X")){
+                      yhd = yhdService.getByid(week.getString("id"));
+                      if(week.getString("title").indexOf("上午")>=0){
+                          //状态：Y：暂停打开 N：暂停关闭
+                          if(week.getString("zt").equals("Y")) yhd.setYhd004("M");
+                          else yhd.setYhd004("Y");
+                      }else if(week.getString("title").indexOf("下午")>=0){
+                          if(week.getString("zt").equals("Y")) yhd.setYhd005("M");
+                          else yhd.setYhd005("Y");
+                      }else if(week.getString("title").indexOf("晚上")>=0){
+                          if(week.getString("zt").equals("Y")) yhd.setYhd006("M");
+                          else yhd.setYhd006("Y");
+                      }
+                  }else if(week.getString("cz").equals("A")){
+                      //查找当天的排课记录
+                      yhd = yhdService.serachObject(week.getString("start"),kcid);
+                      if(yhd!=null){
+                          //已有保存，直接在上面记录
+                          if(week.getString("title").indexOf("上午")>=0) yhd.setYhd004("Y");
+                          else if(week.getString("title").indexOf("下午")>=0) yhd.setYhd005("Y");
+                          else if(week.getString("title").indexOf("晚上")>=0) yhd.setYhd006("Y");
+                          yhdService.update(yhd);
+                      }else{
+                          yhd = new cdyhd();
+                          yhd.setYhd001(UUID.randomUUID().toString().replaceAll("-",""));
+                          yhd.setYhd002(kcid);
+                          yhd.setYhd003(week.getDate("start"));
+                          if(week.getString("title").indexOf("上午")>=0) {
+                              yhd.setYhd004("Y");
+                              yhd.setYhd010(0);
+                          }else if(week.getString("title").indexOf("下午")>=0) {
+                              yhd.setYhd005("Y");
+                              yhd.setYhd012(0);
+                          }else if(week.getString("title").indexOf("晚上")>=0) {
+                              yhd.setYhd006("Y");
+                              yhd.setYhd014(0);
+                          }
+                          yhdService.insert(yhd);
+                      }
+                  }
+                  //判断预约Bean,如果上午下午晚上都是不可预约，直接删除Bean
+                   if(yhd!=null&&yhd.getYhd004().equals("N")&&yhd.getYhd005().equals("N")&&yhd.getYhd006().equals("N")){
+                       yhdService.delete(yhd.getYhd001());
+                   }
+                }
+            }
+        }else{
+            //重新按条件排课,本年度本田开始循环每天，依据条件进行排课保存
+            boolean isok = true,isdel=false;
+            String dateStr = "";
+            for(LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+                //System.out.println(date.getDayOfMonth());
+                //System.out.println(date.getDayOfWeek().getValue());
+                //System.out.println(date.getMonthValue());
+                //System.out.println(date.getYear());
+                dateStr = date.getYear()+"-"+
+                        (date.getMonthValue()>9?date.getMonthValue():("0"+date.getMonthValue()))+"-"+
+                        (date.getDayOfMonth()>9?date.getDayOfMonth():("0"+date.getDayOfMonth()));
+                isok = true;
+                for(int i=0;i<dateArray.size();i++){
+                    if(isDateWithinRange(date,dateArray.get(i).getStartTime(),dateArray.get(i).getEndTime())){
+                        isok = false;
+                        break;
+                    }
+                }
+                //不在限制范围内，接着判断周设定
+                cdyhd yhd=null;
+                if(isok){
+                    //判断当前周几，是否是设定的周排课状态 星期一是 1，星期日是 7
+                    switch(date.getDayOfWeek().getValue()){
+                        case 1:
+                            if(w1_a||w1_b||w1_c){
+                               yhd = new cdyhd();
+                               if(w1_a) yhd.setYhd004("Y");
+                               else yhd.setYhd004("N");
+                               if(w1_b) yhd.setYhd005("Y");
+                               else yhd.setYhd005("N");
+                               if(w1_c) yhd.setYhd006("Y");
+                               else yhd.setYhd006("N");
+                            }
+                            break;
+                        case 2:
+                            if(w2_a||w2_b||w2_c){
+                                yhd = new cdyhd();
+                                if(w2_a) yhd.setYhd004("Y");
+                                else yhd.setYhd004("N");
+                                if(w2_b) yhd.setYhd005("Y");
+                                else yhd.setYhd005("N");
+                                if(w2_c) yhd.setYhd006("Y");
+                                else yhd.setYhd006("N");
+                            }
+                            break;
+                        case 3:
+                            if(w3_a||w3_b||w3_c){
+                                yhd = new cdyhd();
+                                if(w3_a) yhd.setYhd004("Y");
+                                else yhd.setYhd004("N");
+                                if(w3_b) yhd.setYhd005("Y");
+                                else yhd.setYhd005("N");
+                                if(w3_c) yhd.setYhd006("Y");
+                                else yhd.setYhd006("N");
+                            }
+                            break;
+                        case 4:
+                            if(w4_a||w4_b||w4_c){
+                                yhd = new cdyhd();
+                                if(w4_a) yhd.setYhd004("Y");
+                                else yhd.setYhd004("N");
+                                if(w4_b) yhd.setYhd005("Y");
+                                else yhd.setYhd005("N");
+                                if(w4_c) yhd.setYhd006("Y");
+                                else yhd.setYhd006("N");
+                            }
+                            break;
+                        case 5:
+                            if(w5_a||w5_b||w5_c){
+                                yhd = new cdyhd();
+                                if(w5_a) yhd.setYhd004("Y");
+                                if(w5_b) yhd.setYhd005("Y");
+                                if(w5_c) yhd.setYhd006("Y");
+                            }
+                            break;
+                        case 6:
+                            if(w6_a||w6_b||w6_c){
+                                yhd = new cdyhd();
+                                if(w6_a) yhd.setYhd004("Y");
+                                else yhd.setYhd004("N");
+                                if(w6_b) yhd.setYhd005("Y");
+                                else yhd.setYhd005("N");
+                                if(w6_c) yhd.setYhd006("Y");
+                                else yhd.setYhd006("N");
+                            }
+                            break;
+                        case 7:
+                            if(w0_a||w0_b||w0_c){
+                                yhd = new cdyhd();
+                                if(w0_a) yhd.setYhd004("Y");
+                                else yhd.setYhd004("N");
+                                if(w0_b) yhd.setYhd005("Y");
+                                else yhd.setYhd005("N");
+                                if(w0_c) yhd.setYhd006("Y");
+                                else yhd.setYhd006("N");
+                            }
+                            break;
+                    }
+                    //如果预约日期不为空，则保存预约信息
+                    if(yhd!=null){
+                        //循环日期单天修改，是否有删除或暂停
+                        if(dayarrlist!=null){
+                            for(int p=0;p<dayarrlist.size();p++){
+                                week = dayarrlist.getJSONObject(p);
+                                if(week.getString("start").equals(dateStr)){
+                                    if(week.getString("title").indexOf("上午")>=0){
+                                        //产看操作，A:添加 D:删除 X：暂停
+                                        if(week.getString("cz").equals("D")) yhd.setYhd004("N");
+                                        else{
+                                            if(week.getString("zt").equals("Y")) yhd.setYhd004("M");
+                                            else yhd.setYhd004("Y");
+                                        }
+                                    }else if(week.getString("title").indexOf("下午")>=0){
+                                        //产看操作，A:添加 D:删除 X：暂停
+                                        if(week.getString("cz").equals("D")) yhd.setYhd005("N");
+                                        else{
+                                            if(week.getString("zt").equals("Y")) yhd.setYhd005("M");
+                                            else yhd.setYhd005("Y");
+                                        }
+                                    }else if(week.getString("title").indexOf("晚上")>=0){
+                                        //产看操作，A:添加 D:删除 X：暂停
+                                        if(week.getString("cz").equals("D")) yhd.setYhd006("N");
+                                        else{
+                                            if(week.getString("zt").equals("Y")) yhd.setYhd006("M");
+                                            else yhd.setYhd006("Y");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        //如果上下晚状态都是N不可预约，就不与保存
+                        if(yhd.getYhd004().equals("N")&&yhd.getYhd005().equals("N")&&yhd.getYhd006().equals("N")){
+
+                        }else{
+                            yhd.setYhd001(UUID.randomUUID().toString().replaceAll("-",""));
+                            yhd.setYhd002(kcid);
+                            yhd.setYhd003(df.parse(dateStr));
+                            yhd.setYhd010(0);
+                            yhd.setYhd012(0);
+                            yhd.setYhd014(0);
+                            yhdService.insert(yhd);
+                        }
+                    }
+                }
+                //单独循环单天条件，是否在限制周期内---不是---》检测是否在设定的周几内---不是---》
+                // ---》新添加到集合内，已被上下晚状态修改，最后到跳出年日期循环后，按集合保存saveTemp
+                if(dayarrlist!=null&&dayarrlist.size()>0){
+                    for(int m=0;m<dayarrlist.size();m++){
+                        week = dayarrlist.getJSONObject(m);
+                        isok = true;//默认为true，添加到集合
+                        //检测是否在限制周期内
+                        if(week.getString("start").equals(dateStr)){
+                            //检测是否在设定的周几内，循环
+                            switch(date.getDayOfWeek().getValue()){
+                                case 1:
+                                    if(w1_a||w1_b||w1_c) isok = false;break;
+                                case 2:
+                                    if(w2_a||w2_b||w2_c) isok = false;break;
+                                case 3:
+                                    if(w3_a||w3_b||w3_c) isok = false;break;
+                                case 4:
+                                    if(w4_a||w4_b||w4_c) isok = false;break;
+                                case 5:
+                                    if(w5_a||w5_b||w5_c) isok = false;break;
+                                case 6:
+                                    if(w6_a||w6_b||w6_c) isok = false;break;
+                                case 7:
+                                    if(w0_a||w0_b||w0_c) isok = false;break;
+                            }
+                           //产生预约信息，保存到集合
+                            if(isok){
+                                isdel = true;//这里借用标识是否是
+                                //循环已保存的集合，存在相同日期，直接取出修改
+                                for(int g=0;g<saveTemp.size();g++){
+                                    if(saveTemp.get(g).getYhd003().getTime()== df.parse(dateStr).getTime()){
+                                        cdyhd yhdtemp = saveTemp.get(g);
+                                        if(week.getString("title").indexOf("上午")>=0){
+                                            if(week.getString("cz").equals("D")) yhdtemp.setYhd004("N");
+                                            else{
+                                                if(week.getString("zt").equals("Y")) yhdtemp.setYhd004("M");
+                                                else yhdtemp.setYhd004("Y");
+                                            }
+                                        }else if(week.getString("title").indexOf("下午")>=0){
+                                            if(week.getString("cz").equals("D")) yhdtemp.setYhd005("N");
+                                            else{
+                                                if(week.getString("zt").equals("Y")) yhdtemp.setYhd005("M");
+                                                else yhdtemp.setYhd005("Y");
+                                            }
+                                        }else if(week.getString("title").indexOf("晚上")>=0){
+                                            if(week.getString("cz").equals("D")) yhdtemp.setYhd006("N");
+                                            else{
+                                                if(week.getString("zt").equals("Y")) yhdtemp.setYhd006("M");
+                                                else yhdtemp.setYhd006("Y");
+                                            }
+                                        }
+                                        saveTemp.set(g,yhdtemp);
+                                        isdel = false;
+                                    }
+                                }
+                                //没有在集合，就重新添加
+                                if(isdel){
+                                    cdyhd yhdtemp = new cdyhd();
+                                    yhdtemp.setYhd001(UUID.randomUUID().toString().replaceAll("-",""));
+                                    yhdtemp.setYhd002(kcid);
+                                    yhdtemp.setYhd003(df.parse(dateStr));
+                                    yhdtemp.setYhd004("N");
+                                    yhdtemp.setYhd005("N");
+                                    yhdtemp.setYhd006("N");
+                                    if(week.getString("title").indexOf("上午")>=0){
+                                        if(week.getString("cz").equals("D")) yhdtemp.setYhd004("N");
+                                        else{
+                                            if(week.getString("zt").equals("Y")) yhdtemp.setYhd004("M");
+                                            else yhdtemp.setYhd004("Y");
+                                        }
+                                    }else if(week.getString("title").indexOf("下午")>=0){
+                                        if(week.getString("cz").equals("D")) yhdtemp.setYhd005("N");
+                                        else{
+                                            if(week.getString("zt").equals("Y")) yhdtemp.setYhd005("M");
+                                            else yhdtemp.setYhd005("Y");
+                                        }
+                                    }else if(week.getString("title").indexOf("晚上")>=0){
+                                        if(week.getString("cz").equals("D")) yhdtemp.setYhd006("N");
+                                        else{
+                                            if(week.getString("zt").equals("Y")) yhdtemp.setYhd006("M");
+                                            else yhdtemp.setYhd006("Y");
+                                        }
+                                    }
+                                    yhdtemp.setYhd010(0);
+                                    yhdtemp.setYhd012(0);
+                                    yhdtemp.setYhd014(0);
+                                    saveTemp.add(yhdtemp);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            //全部结束后，需要循环单独日期设定的集合，删选保存
+            for(int j=0;j<saveTemp.size();j++){
+                cdyhd yhd = saveTemp.get(j);
+                //上下晚都不上课，就不必保存
+                if(yhd.getYhd004().equals("N")&&yhd.getYhd005().equals("N")&&yhd.getYhd006().equals("N")){
+                }else{
+                    System.out.println("---单日排课保存---");
+                    yhdService.insert(yhd);
+                }
+            }
+        }
+        result.put("msg", "Y");
+        return JSON.toJSONString(result);
+    }
+
+
     /**
      * 删除用户
      * 王新苗
@@ -678,4 +1173,6 @@ public class HTinfoController extends BaseController {
         result.put("d",item);
         return JSON.toJSONString(result);
     }
+
+
 }

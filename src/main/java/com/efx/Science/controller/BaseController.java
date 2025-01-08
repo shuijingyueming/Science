@@ -21,6 +21,7 @@ import java.io.*;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -49,6 +50,9 @@ public class BaseController {
 
     @Autowired
     protected CdyheService yheService;
+
+    @Autowired
+    protected CdyhdService yhdService;
 
     //静态公共时间格式对象 调用BaseController.DATE
     protected final static SimpleDateFormat DATE = new SimpleDateFormat("yyyy-MM-dd");
@@ -502,5 +506,19 @@ public class BaseController {
         log.setLog003(new Date());
         log.setLog004(text);
         logService.insert(log);
+    }
+
+    /*
+     * 日期是否在时间段内判断
+     * dateToCheck: 判断日期  startDate：开始日期  endDate：结束日期
+     */
+    public static boolean isDateWithinRange(LocalDate dateToCheck, LocalDate startDate, LocalDate endDate) {
+        // 确保开始日期不晚于结束日期
+        if (startDate.isAfter(endDate)) {
+            LocalDate temp = startDate;
+            startDate = endDate;
+            endDate = temp;
+        }
+        return !dateToCheck.isBefore(startDate) && !dateToCheck.isAfter(endDate);
     }
 }

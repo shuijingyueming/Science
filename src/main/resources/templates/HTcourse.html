@@ -83,7 +83,7 @@
                                     <th>每次课时</th>
                                     <th>志愿者补贴金额</th>
                                     <th>状态</th>
-                                    <th style="max-width:80px;">操作</th>
+                                    <th style="max-width:120px;">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody id="tablebody">
@@ -106,16 +106,22 @@
                                             <div class="ivu-divider-vertical"></div>
                                             <th:block th:if="${item.hba026=='A'||item.hba026=='B'}">
                                                 <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.hba001}]],[[${item.hba002}]],[['C']])"  th:text="${item.hba026=='A'?'审核通过':'下架'}"></a>
+                                                <div class="ivu-divider-vertical"></div>
                                             </th:block>
                                             <th:block th:if="${item.hba026=='C'||item.hba026=='D'}">
                                                 <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.hba001}]],[[${item.hba002}]],[['B']])">正常</a>
+                                                <div class="ivu-divider-vertical"></div>
                                             </th:block>
                                             <th:block th:if="${item.hba026=='B'}">
                                                 <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.hba001}]],[[${item.hba002}]],[['D']])">暂停</a>
+                                                <div class="ivu-divider-vertical"></div>
                                             </th:block>
                                             <a href="javascript:void(0);" th:onclick="tols([[${item.hba001}]])" class="btn btn-table"
                                                data-bs-toggle="modal" data-bs-target="#">老师管理</a>
                                             <div class="ivu-divider-vertical"></div>
+                                            <a href="javascript:void(0);" th:onclick="topk([[${item.hba001}]])" class="btn btn-table"
+                                               data-bs-toggle="modal" data-bs-target="#">排课</a>
+
                                             <!--<a href="javascript:void(0);" th:onclick="del([[${item.hba001}]])" class="btn btn-table">删除</a>-->
                                         </div>
                                     </td>
@@ -400,6 +406,12 @@
             ["pages",$("#pages").val()],
             ["name", $("#name").val()]];
         form_submit("toHt/tocoursels","post",params,"_self");
+    }
+
+    function topk(kcid){
+        var params = [
+            ["kcid",kcid],["pages",$("#pages").val()],["name", $("#name").val()]];
+        form_submit("toHt/tocoursepk","post",params,"_self");
     }
 
     function xzmb(){
