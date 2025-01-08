@@ -1,0 +1,847 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <base th:href="${#request.getContextPath()}+'/'">
+    <title>后台管理系统</title>
+    <meta http-equiv="pragma" content="no-cache"/>
+    <meta http-equiv="cache-control" content="no-cache"/>
+    <meta http-equiv="expires" content="0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <!--表格css-->
+    <link rel="stylesheet" type="text/css" href="css/materialdesignicons.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <!--日程插件-->
+    <link rel="stylesheet" type="text/css" href="js/fullcalendar/core/main.min.css">
+    <link rel="stylesheet" type="text/css" href='js/fullcalendar/daygrid/main.min.css' />
+    <link rel="stylesheet" type="text/css" href='js/fullcalendar/timegrid/main.min.css' />
+    <link rel="stylesheet" type="text/css" href='js/fullcalendar/list/main.min.css' />
+    <!--时间选择器css-->
+    <link rel="stylesheet" type="text/css" href="js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+    <!--日期选择器css-->
+    <link rel="stylesheet" type="text/css" href="js/bootstrap-datepicker/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.min.css">
+    <style>
+        td.fc-day.fc-past {
+            background-color: #FaFaFa;
+        }
+        .small-f1{
+            font-size: 12px;
+            color:#6a6a6a;
+        }
+    </style>
+</head>
+<body>
+<input type="hidden" id="pages" name="pages" th:value="${pages}"/>
+<input type="hidden" id="kcid" name="kcid" th:value="${kcid}"/>
+<input type="hidden" id="name" name="name" th:value="${name}"/>
+<input type="hidden" id="pkyear" name="pkyear" th:value="${pkyear}"/>
+<!---->
+<!--<input type="hidden" id="jdid" name="jdid" th:value="${jdid}"/>-->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <header class="card-header">
+                    <div class="card-title">
+                        【<span th:text="${hba.hba002}"></span>】排课
+                        <span class="small-f1">按年排课，已排课年份如需修改请单点某天，否则会删除全部已排课日程，并重新排课</span>
+                    </div>
+                </header>
+                <div class="card-body">
+                    <div class="card-search mb-2-5">
+                            <!--text input-->
+                            <div class="row g-3">
+                                <div class="col-auto">
+                                    <div class="row">
+                                        <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">排课年份</label>
+                                        <div class="col-auto">
+                                           <select class="form-control" id="pkny" lay-filter="jdid" required>
+                                               <option value="2025" th:selected="${pkyear=='2025'?true:false}">2025</option>
+                                               <option value="2026" th:selected="${pkyear=='2026'?true:false}">2026</option>
+                                               <option value="2027" th:selected="${pkyear=='2027'?true:false}">2027</option>
+                                               <option value="2028" th:selected="${pkyear=='2028'?true:false}">2028</option>
+                                           </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="button" class="btn btn-info me-1" onclick="pktj()">排课条件</button>
+                                </div>
+                                <!--button-->
+                                <div class="col-auto">
+                                    <button type="button" class="btn btn-primary me-1" onclick="pksubmit()">保存排课</button>
+                                </div>
+                            </div>
+                    </div>
+
+                    <div id="calendar" data-provide="fullcalendar"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- 编辑日程 -->
+<div class="modal fade" id="modal-event" tabindex="-1">
+    <div class="modal-dialog" style="max-width: 700px;">
+        <div class="modal-content">
+            <form action="#!" method="post" onsubmit="return false;" id="event_form">
+                <div class="modal-header">
+                    <h6 class="modal-title">日期条件设定</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <label>每周设定</label>
+                        <div class="form-check form-switch col-md-auto col-sm-3 col-4">
+                            <label class="form-check-label" style="font-weight: 600;color: #d33682;padding-right: 20px;">周日</label>
+                        </div>
+                        <div class="form-check form-switch col-md-auto col-sm-2 col-auto">
+                            <input type="checkbox" class="form-check-input" id="week0_a">
+                            <label class="form-check-label" for="week0_a">上午</label>
+                        </div>
+                        <div class="form-check form-switch col-md-auto col-sm-2 col-auto">
+                            <input type="checkbox" class="form-check-input" id="week0_b">
+                            <label class="form-check-label" for="week0_b">下午</label>
+                        </div>
+                        <div class="form-check form-switch col-md-auto col-sm-2 col-auto" >
+                            <input type="checkbox" class="form-check-input" id="week0_c">
+                            <label class="form-check-label" for="week0_c">晚上</label>
+                        </div>
+                        <div class="col-md-auto col-sm-auto col-0"></div>
+                        <div class="form-check form-switch col-md-auto col-sm-3 col-4">
+                            <label class="form-check-label"  style="font-weight: 600;color: #0a0a0a;padding-right: 20px;">周一</label>
+                        </div>
+                        <div class="form-check form-switch col-md-auto col-sm-2 col-auto">
+                            <input type="checkbox" class="form-check-input" id="week1_a">
+                            <label class="form-check-label" for="week1_a">上午</label>
+                        </div>
+                        <div class="form-check form-switch col-md-auto col-sm-2 col-auto">
+                            <input type="checkbox" class="form-check-input" id="week1_b">
+                            <label class="form-check-label" for="week1_b">下午</label>
+                        </div>
+                        <div class="form-check form-switch col-md-auto col-sm-2 col-auto">
+                            <input type="checkbox" class="form-check-input" id="week1_c">
+                            <label class="form-check-label" for="week1_c">晚上</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-check form-switch col-md-auto col-sm-3 col-4">
+                            <label class="form-check-label" style="font-weight: 600;color: #0a0a0a;padding-right: 20px;">周二</label>
+                        </div>
+                        <div class="form-check form-switch col-md-auto col-sm-2 col-auto">
+                            <input type="checkbox" class="form-check-input" id="week2_a">
+                            <label class="form-check-label" for="week2_a">上午</label>
+                        </div>
+                        <div class="form-check form-switch col-md-auto col-sm-2 col-auto">
+                            <input type="checkbox" class="form-check-input" id="week2_b">
+                            <label class="form-check-label" for="week2_b">下午</label>
+                        </div>
+                        <div class="form-check form-switch col-md-auto col-sm-2 col-auto" >
+                            <input type="checkbox" class="form-check-input" id="week2_c">
+                            <label class="form-check-label" for="week2_c">晚上</label>
+                        </div>
+                        <div class="col-md-auto col-sm-auto col-0"></div>
+                        <div class="form-check form-switch col-md-auto col-sm-3 col-4">
+                            <label class="form-check-label" style="font-weight: 600;color: #0a0a0a;padding-right: 20px;">周三</label>
+                        </div>
+                        <div class="form-check form-switch col-md-auto col-sm-2 col-auto">
+                            <input type="checkbox" class="form-check-input" id="week3_a">
+                            <label class="form-check-label" for="week3_a">上午</label>
+                        </div>
+                        <div class="form-check form-switch col-md-auto col-sm-2 col-auto">
+                            <input type="checkbox" class="form-check-input" id="week3_b">
+                            <label class="form-check-label" for="week3_b">下午</label>
+                        </div>
+                        <div class="form-check form-switch col-md-auto col-sm-2 col-auto">
+                            <input type="checkbox" class="form-check-input" id="week3_c">
+                            <label class="form-check-label" for="week3_c">晚上</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-check form-switch col-md-auto col-sm-3 col-4">
+                            <label class="form-check-label" style="font-weight: 600;color: #0a0a0a;padding-right: 20px;">周四</label>
+                        </div>
+                        <div class="form-check form-switch col-md-auto col-sm-2 col-auto">
+                            <input type="checkbox" class="form-check-input" id="week4_a">
+                            <label class="form-check-label" for="week4_a">上午</label>
+                        </div>
+                        <div class="form-check form-switch col-md-auto col-sm-2 col-auto">
+                            <input type="checkbox" class="form-check-input" id="week4_b">
+                            <label class="form-check-label" for="week4_b">下午</label>
+                        </div>
+                        <div class="form-check form-switch col-md-auto col-sm-2 col-auto" >
+                            <input type="checkbox" class="form-check-input" id="week4_c">
+                            <label class="form-check-label" for="week4_c">晚上</label>
+                        </div>
+                        <div class="col-md-auto col-sm-auto col-0"></div>
+                        <div class="form-check form-switch col-md-auto col-sm-3 col-4">
+                            <label class="form-check-label" style="font-weight: 600;color: #0a0a0a;padding-right: 20px;">周五</label>
+                        </div>
+                        <div class="form-check form-switch col-md-auto col-sm-2 col-auto">
+                            <input type="checkbox" class="form-check-input" id="week5_a">
+                            <label class="form-check-label" for="week5_a">上午</label>
+                        </div>
+                        <div class="form-check form-switch col-md-auto col-sm-2 col-auto">
+                            <input type="checkbox" class="form-check-input" id="week5_b">
+                            <label class="form-check-label" for="week5_b">下午</label>
+                        </div>
+                        <div class="form-check form-switch col-md-auto col-sm-2 col-auto">
+                            <input type="checkbox" class="form-check-input" id="week5_c">
+                            <label class="form-check-label" for="week5_c">晚上</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-check form-switch col-md-auto col-sm-3 col-4">
+                            <label class="form-check-label" style="font-weight: 600;color: #00d95a; padding-right: 20px;">周六</label>
+                        </div>
+                        <div class="form-check form-switch col-md-auto col-sm-2 col-auto">
+                            <input type="checkbox" class="form-check-input" id="week6_a">
+                            <label class="form-check-label" for="week6_a">上午</label>
+                        </div>
+                        <div class="form-check form-switch col-md-auto col-sm-2 col-auto">
+                            <input type="checkbox" class="form-check-input" id="week6_b">
+                            <label class="form-check-label" for="week6_b">下午</label>
+                        </div>
+                        <div class="form-check form-switch col-md-auto col-sm-2 col-auto" >
+                            <input type="checkbox" class="form-check-input" id="week6_c">
+                            <label class="form-check-label" for="week6_c">晚上</label>
+                        </div>
+                    </div>
+                    <div class="row mb-3" style="justify-content: center;">
+                        <button type="button" class="col-11 btn btn-info" onclick="addrq()">添加限制日期段</button>
+                    </div>
+                    <!--限制日期段  -->
+                    <div id="xzdate"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="saveEvent('X')">智能排课</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- end 编辑日程 -->
+<!-- 展示日程 -->
+<div class="modal fade" id="modal-view-event" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <input type="hidden" id="dayedit_time"/>
+                <h6 class="modal-title">【<span id="dayedit_d"></span>】 单天编辑</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-auto col-auto" style="display: flex;">
+                    <div class="form-check form-switch col-4">
+                      <input type="checkbox" class="form-check-input" id="dayedit_a"/>
+                      <label class="form-check-label" for="dayedit_a">上午</label>
+                    </div>
+                    <div class="form-check form-switch col-4">
+                        <input type="checkbox" class="form-check-input" id="dayedit_a_z"/>
+                        <label class="form-check-label" for="dayedit_a_z">暂停</label>
+                    </div>
+                    <span class="col-md-auto col-auto" id="dayedit_a_txt"></span>
+                </div>
+                <div class="col-md-auto col-auto" style="display: flex;">
+                    <div class="form-check form-switch col-4">
+                        <input type="checkbox" class="form-check-input" id="dayedit_b"/>
+                        <label class="form-check-label" for="dayedit_b">下午</label>
+                    </div>
+                    <div class="form-check form-switch col-4">
+                        <input type="checkbox" class="form-check-input" id="dayedit_b_z"/>
+                        <label class="form-check-label" for="dayedit_b_z">暂停</label>
+                    </div>
+                    <span class="col-md-auto col-auto" id="dayedit_b_txt"></span>
+                </div>
+                <div class="col-md-auto col-auto"  style="display: flex;">
+                    <div class="form-check form-switch col-4">
+                        <input type="checkbox" class="form-check-input" id="dayedit_c"/>
+                        <label class="form-check-label" for="dayedit_c">晚上</label>
+                    </div>
+                    <div class="form-check form-switch col-4">
+                        <input type="checkbox" class="form-check-input" id="dayedit_c_z"/>
+                        <label class="form-check-label" for="dayedit_c_z">暂停</label>
+                    </div>
+                    <span class="col-md-auto col-auto" id="dayedit_c_txt"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="day_save()">确认修改</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end 展示日程 -->
+
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/popper.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/layer/layer.js"></script>
+<script type="text/javascript" src="js/layui/layui.js"></script>
+<!--日期选择器js-->
+<script type="text/javascript" src="js/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js"></script>
+<!--时间日期选择器js-->
+<script type="text/javascript" src="js/momentjs/moment.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="js/momentjs/locale/zh-cn.min.js"></script>
+<!--日程插件-->
+<script type="text/javascript" src="js/fullcalendar/core/main.min.js"></script>
+<script type="text/javascript" src="js/fullcalendar/core/locales/zh-cn.js"></script>
+<script type="text/javascript" src="js/fullcalendar/interaction/main.min.js"></script>
+<script type="text/javascript" src="js/fullcalendar/daygrid/main.min.js"></script>
+<script type="text/javascript" src="js/fullcalendar/timegrid/main.min.js"></script>
+<script type="text/javascript" src="js/fullcalendar/list/main.min.js"></script>
+<script type="text/javascript" src="js/fullcalendar/rrule/main.min.js"></script>
+<script type="text/javascript" src="js/main.min.js"></script>
+<script type="text/javascript">
+
+    var check;
+    var today;
+    var condition=[];//条件保存
+    var dayarr =[];//单日修改编辑的保存
+    var arr = [];
+    var layer = layui.layer;
+    var load_index;
+    var ispk = false;//本月是否已排课
+
+
+    $(document).ready(function(){
+        //上月监听
+       $(".fc-prev-button").click(function(e){
+           if(ispk) getpkjl();
+           else saveEvent('P');
+       });
+       //下月监听
+       $(".fc-next-button").click(function(e){
+           if(ispk) getpkjl();
+           else saveEvent('P');
+       });
+       $(".fc-today-button").click(function(e){
+           if(ispk) getpkjl();
+           else saveEvent('P');
+       });
+
+        //获取当年当月的排课记录
+        getpkjl();
+    });
+
+    //获取当月的排课记录的方法
+    function getpkjl() {
+       // load_index = layer.load(1);
+        var formData = new FormData();
+        formData.append('kcid',$("#kcid").val());
+        formData.append('pkyear',$("#pkyear").val());
+        formData.append('pkmonth',formatDate(calendar.state.currentDate, 'MM'));
+        $.ajax({
+            url: 'toHt/getcoursepk',
+            type: 'POST',
+            data: formData,
+            async: false,                      //async 设置为 false，则所有的请求均为同步请求，在没有返回值之前，同步请求将锁住浏览器
+            cache: false,                      // 不缓存
+            processData: false,                // jQuery不要去处理发送的数据
+            contentType: false,                // jQuery不要去设置Content-Type请求头
+            dataType: 'json',
+            success: function (res) {
+                 var d = eval(res);
+                 if(d.msg=="N"){
+                     layer.msg('该月无排课记录！');
+                     ispk = false;
+                 }else{
+                     arr = [];
+                     calendar.removeAllEventSources();
+                     d = d.list;
+                     for(var i=0;i<d.length;i++){
+                         if(d[i].yhd004!="N") arr.push({id:d[i].yhd001,title:"上午 ("+d[i].yhd010+")",start:formatDate(d[i].yhd003, 'yyyy-MM-dd'),zt:(d[i].yhd004=="Y"?"N":"Y")});
+                         if(d[i].yhd005!="N") arr.push({id:d[i].yhd001,title:"下午 ("+d[i].yhd012+")",start:formatDate(d[i].yhd003, 'yyyy-MM-dd'),zt:(d[i].yhd005=="Y"?"N":"Y"),className: 'bg-purple'});
+                         if(d[i].yhd006!="N") arr.push({id:d[i].yhd001,title:"晚上 ("+d[i].yhd014+")",start:formatDate(d[i].yhd003, 'yyyy-MM-dd'),zt:(d[i].yhd006=="Y"?"N":"Y"),className: 'bg-danger'});
+                     }
+                     calendar.addEventSource(arr);
+                     calendar.refetchEvents();
+                     ispk = true;
+                 }
+                layer.close(load_index);
+            },
+            error: function () {
+                layer.close(load_index);
+            }
+        });
+
+    }
+
+    //智能排课
+    function saveEvent(cz) {
+         calendar.removeAllEventSources();
+        //先检测当前月份是否属于选择的年份
+        if($("#pkny").val()==formatDate(calendar.state.currentDate, 'yyyy')){
+            //如果是重新选择条件请清除元条件
+            arr = [];
+            //获取当前年份-月份
+            let date_z = formatDate(calendar.state.currentDate, 'yyyy-MM');
+            //获取当前月份的天数
+            let days =  new Date(formatDate(calendar.state.currentDate, 'yyyy'), formatDate(calendar.state.currentDate, 'MM'), 0).getDate();
+            //循环当月天数，将数据放入数组
+            let week;
+            let dateco = [];
+            let isdayok;
+            //获取当前条件
+            let week0_a = $("#week0_a").is(':checked');
+            let week0_b = $("#week0_b").is(':checked');
+            let week0_c = $("#week0_c").is(':checked');
+            let week1_a = $("#week1_a").is(':checked');
+            let week1_b = $("#week1_b").is(':checked');
+            let week1_c = $("#week1_c").is(':checked');
+            let week2_a = $("#week2_a").is(':checked');
+            let week2_b = $("#week2_b").is(':checked');
+            let week2_c = $("#week2_c").is(':checked');
+            let week3_a = $("#week3_a").is(':checked');
+            let week3_b = $("#week3_b").is(':checked');
+            let week3_c = $("#week3_c").is(':checked');
+            let week4_a = $("#week4_a").is(':checked');
+            let week4_b = $("#week4_b").is(':checked');
+            let week4_c = $("#week4_c").is(':checked');
+            let week5_a = $("#week5_a").is(':checked');
+            let week5_b = $("#week5_b").is(':checked');
+            let week5_c = $("#week5_c").is(':checked');
+            let week6_a = $("#week6_a").is(':checked');
+            let week6_b = $("#week6_b").is(':checked');
+            let week6_c = $("#week6_c").is(':checked');
+            if(cz==="X") {
+                condition = [];
+                condition.push({"X":(week0_a?"Y":"N")+"|N"+"#"+((week0_b)?"Y":"N")+"|N"+"#"+(week0_c?"Y":"N")+"|N"});
+                condition.push({"X":(week1_a?"Y":"N")+"|N"+"#"+((week1_b)?"Y":"N")+"|N"+"#"+(week1_c?"Y":"N")+"|N"});
+                condition.push({"X":(week2_a?"Y":"N")+"|N"+"#"+((week2_b)?"Y":"N")+"|N"+"#"+(week2_c?"Y":"N")+"|N"});
+                condition.push({"X":(week3_a?"Y":"N")+"|N"+"#"+((week3_b)?"Y":"N")+"|N"+"#"+(week3_c?"Y":"N")+"|N"});
+                condition.push({"X":(week4_a?"Y":"N")+"|N"+"#"+((week4_b)?"Y":"N")+"|N"+"#"+(week4_c?"Y":"N")+"|N"});
+                condition.push({"X":(week5_a?"Y":"N")+"|N"+"#"+((week5_b)?"Y":"N")+"|N"+"#"+(week5_c?"Y":"N")+"|N"});
+                condition.push({"X":(week6_a?"Y":"N")+"|N"+"#"+((week6_b)?"Y":"N")+"|N"+"#"+(week6_c?"Y":"N")+"|N"});
+                for(let j=0;j<$("#xzdate").find("input").length;j+=2){
+                    dateco.push({"T":$("#xzdate").find("input")[j].value+"#"+$("#xzdate").find("input")[j+1].value});
+                }
+                condition.push({"clist":dateco});
+            }
+            today = formatDate(new Date(), 'yyyy-MM-dd');
+            for (let i = 1; i <= days; i++) {
+                let day = date_z+"-"+(i>9?i:("0"+i));
+                check = formatDate(day, 'yyyy-MM-dd');
+                //当天之后的日期才排课
+                if(check >= today) {
+                    isdayok = true;
+                    //确认是否是被删选的日期
+                    for(let j=0;j<$("#xzdate").find("input").length;j+=2){
+                        if(isDateBetween(day,$($("#xzdate").find("input")[j]).val(),$($("#xzdate").find("input")[j+1]).val())){
+                            isdayok = false;break;
+                        }
+                    }
+                    if(isdayok){
+                        week = moment(day).format('dd');
+                        //判断是周几，是否有课
+                        switch(week){
+                            case '日':
+                                if(week0_a){arr.push({id:"A",title:"上午 (0)",start:day,zt:"N"});}
+                                if(week0_b){arr.push({id:"A",title:"下午 (0)",start:day,zt:"N",className: 'bg-purple'});}
+                                if(week0_c){arr.push({id:"A",title:"晚上 (0)",start:day,zt:"N",className: 'bg-danger'});}
+                                break;
+                            case '一':
+                                if(week1_a){arr.push({id:"A",title:"上午 (0)",start:day,zt:"N"});}
+                                if(week1_b){arr.push({id:"A",title:"下午 (0)",start:day,zt:"N",className: 'bg-purple'});}
+                                if(week1_c){arr.push({id:"A",title:"晚上 (0)",start:day,zt:"N",className: 'bg-danger'});}
+                                break;
+                            case '二':
+                                if(week2_a){arr.push({id:"A",title:"上午 (0)",start:day,zt:"N"});}
+                                if(week2_b){arr.push({id:"A",title:"下午 (0)",start:day,zt:"N",className: 'bg-purple'});}
+                                if(week2_c){arr.push({id:"A",title:"晚上 (0)",start:day,zt:"N",className: 'bg-danger'});}
+                                break;
+                            case '三':
+                                if(week3_a){arr.push({id:"A",title:"上午 (0)",start:day,zt:"N"});}
+                                if(week3_b){arr.push({id:"A",title:"下午 (0)",start:day,zt:"N",className: 'bg-purple'});}
+                                if(week3_c){arr.push({id:"A",title:"晚上 (0)",start:day,zt:"N",className: 'bg-danger'});}
+                                break;
+                            case '四':
+                                if(week4_a){arr.push({id:"A",title:"上午 (0)",start:day,zt:"N"});}
+                                if(week4_b){arr.push({id:"A",title:"下午 (0)",start:day,zt:"N",className: 'bg-purple'});}
+                                if(week4_c){arr.push({id:"A",title:"晚上 (0)",start:day,zt:"N",className: 'bg-danger'});}
+                                break;
+                            case '五':
+                                if(week5_a){arr.push({id:"A",title:"上午 (0)",start:day,zt:"N"});}
+                                if(week5_b){arr.push({id:"A",title:"下午 (0)",start:day,zt:"N",className: 'bg-purple'});}
+                                if(week5_c){arr.push({id:"A",title:"晚上 (0)",start:day,zt:"N",className: 'bg-danger'});}
+                                break;
+                            case '六':
+                                if(week6_a){arr.push({id:"A",title:"上午 (0)",start:day,zt:"N"});}
+                                if(week6_b){arr.push({id:"A",title:"下午 (0)",start:day,zt:"N",className: 'bg-purple'});}
+                                if(week6_c){arr.push({id:"A",title:"晚上 (0)",start:day,zt:"N",className: 'bg-danger'});}
+                                break;
+                        }
+                    }
+                    //循环单天条件，按条件潘科
+                    for(let j=0;j<dayarr.length;j++){
+                        //循当前设定日期集合
+                        isdayok = true;
+                        for(let k=0;k<arr.length;k++){
+                            if(dayarr[j].start===arr[k].start&&dayarr[j].title===arr[k].title){
+                                    //删除
+                                    if(dayarr[j].cz=="D") arr.splice(k,1);
+                                    else arr[k].zt = dayarr[j].zt;
+                                    isdayok = false;
+                                    break;
+                            }
+                        }
+                      //如果元集合不存在
+                      if(isdayok&&dayarr[j].cz=="A"){
+                          arr.push(dayarr[j]);
+                          if(arr[arr.length-1].title.indexOf("下午")>=0){
+                              arr[arr.length-1].className='bg-purple';
+                          }else if(arr[arr.length-1].title.indexOf("晚上")>=0){
+                              arr[arr.length-1].className='bg-danger';
+                          }
+                      }
+                    }
+                }
+            }
+            calendar.addEventSource(arr);
+            calendar.refetchEvents();
+        }else{
+            layer.alert('非设定年度，排课失败');
+        }
+        //  $('#event_form')[0].reset(); // 重置表单
+        $('#modal-event').modal('hide');
+    }
+
+    //单日点击修改
+    function editday(date){
+      $("#dayedit_time").val(date);
+      $("#dayedit_d").text(date+" "+moment(date).format('dddd'));
+      let sw="",xw="",ws="";
+      for(let i=0;i<arr.length;i++){
+          if(arr[i].start==date){
+              if(arr[i].title.indexOf("上午")>=0) sw = arr[i];
+              else if(arr[i].title.indexOf("下午")>=0) xw = arr[i];
+              else if(arr[i].title.indexOf("晚上")>=0) ws = arr[i];
+          }
+      }
+      if(sw!=""){
+          $("#dayedit_a").prop("checked",true);
+          $("#dayedit_a_z").prop("checked",sw.zt=="Y");
+          $("#dayedit_a_txt").text("预约 "+sw.title.replace("上午 ",""));
+      }else {
+          $("#dayedit_a").prop("checked",false);
+          $("#dayedit_a_z").prop("checked",false);
+          $("#dayedit_a_txt").text("");
+      }
+      if(xw!=""){
+          $("#dayedit_b").prop("checked",true);
+          $("#dayedit_b_z").prop("checked",xw.zt=='Y');
+          $("#dayedit_b_txt").text("预约 "+xw.title.replace("下午 ",""));
+      }else{
+          $("#dayedit_b").prop("checked",false);
+          $("#dayedit_b_z").prop("checked",false);
+          $("#dayedit_b_txt").text("");
+      }
+      if(ws!=""){
+          $("#dayedit_c").prop("checked",true);
+          $("#dayedit_c_z").prop("checked",ws.zt=='Y');
+          $("#dayedit_c_txt").text("预约 "+ws.title.replace("晚上 ",""));
+      }else {
+          $("#dayedit_c").prop("checked",false);
+          $("#dayedit_c_z").prop("checked",false);
+          $("#dayedit_c_txt").text("");
+      }
+      $('#modal-view-event').modal('show');
+    }
+
+    //单个日期设定保存
+    function day_save(){
+        let swtemp = true;
+        let xwtemp = true;
+        let wstemp = true;
+       //按日期获得预约数组内的数据
+        for(let i=0;i<arr.length;i++){
+            //有相同日期的
+            if(arr[i].start==$('#dayedit_time').val()){
+                if(arr[i].title.indexOf("上午")>=0){
+                    if(!$("#dayedit_a").prop("checked")) {
+                        //另外保存到条件内
+                        dayarr.push({id:arr[i].id,title:"上午 (0)",start:arr[i].start,cz:"D",zt:"N"});
+                        arr[i] = "";
+                    }else{
+                        if(arr[i].zt!=($("#dayedit_a_z").prop("checked")?"Y":"N")){
+                            dayarr.push({id:arr[i].id,title:"上午 (0)",start:arr[i].start,cz:"X",zt:($("#dayedit_a_z").prop("checked")?"Y":"N")});
+                            arr[i].zt = $("#dayedit_a_z").prop("checked")?"Y":"N";
+                        }
+                    }
+                    swtemp = false;
+                }else if(arr[i].title.indexOf("下午")>=0){
+                    if(!$("#dayedit_b").prop("checked")) {
+                        //另外保存到条件内
+                        dayarr.push({id:arr[i].id,title:"下午 (0)",start:arr[i].start,cz:"D",zt:"N"});
+                        arr[i] = "";
+                    }else {
+                        if(arr[i].zt!=($("#dayedit_b_z").prop("checked")?"Y":"N")){
+                            dayarr.push({id:arr[i].id,title:"下午 (0)",start:arr[i].start,cz:"X",zt:($("#dayedit_b_z").prop("checked")?"Y":"N")});
+                            arr[i].zt = $("#dayedit_b_z").prop("checked")?"Y":"N";
+                        }
+                    }
+                    xwtemp = false;
+                }else if(arr[i].title.indexOf("晚上")>=0){
+                    if(!$("#dayedit_c").prop("checked")) {
+                        //另外保存到条件内 cz操作为del
+                        dayarr.push({id:arr[i].id,title:"晚上 (0)",start:arr[i].start,cz:"D",zt:"N"});
+                        arr[i] = "";
+                    }else {
+                        if(arr[i].zt!=($("#dayedit_c_z").prop("checked")?"Y":"N")){
+                            dayarr.push({id:arr[i].id,title:"晚上 (0)",start:arr[i].start,cz:"X",zt:($("#dayedit_c_z").prop("checked")?"Y":"N")});
+                            arr[i].zt = $("#dayedit_c_z").prop("checked")?"Y":"N";
+                        }
+                    }
+                    wstemp = false;
+                }
+            }
+        }
+        //原数组不存在，则添加
+        if(swtemp&&$("#dayedit_a").prop("checked")) {
+            arr.push({id:"A",title:"上午 (0)",start:$('#dayedit_time').val(),zt:($("#dayedit_a_z").prop("checked")?"Y":"N")});
+            //另外保存到条件内 cz操作为add
+            dayarr.push({id:"A",title:"上午 (0)",start:$('#dayedit_time').val(),cz:"A",zt:($("#dayedit_a_z").prop("checked")?"Y":"N")});
+        }
+        if(xwtemp&&$("#dayedit_b").prop("checked")) {
+            arr.push({id:"A",title:"下午 (0)",start:$('#dayedit_time').val(),className: 'bg-purple',zt:($("#dayedit_b_z").prop("checked")?"Y":"N")});
+            dayarr.push({id:"A",title:"下午 (0)",start:$('#dayedit_time').val(),cz:"A",zt:($("#dayedit_b_z").prop("checked")?"Y":"N")});
+        }
+        if(wstemp&&$("#dayedit_c").prop("checked")) {
+            arr.push({id:"A",title:"晚上 (0)",start:$('#dayedit_time').val(),className: 'bg-danger',zt:($("#dayedit_c_z").prop("checked")?"Y":"N")});
+            dayarr.push({id:"A",title:"晚上 (0)",start:$('#dayedit_time').val(),cz:"A",zt:($("#dayedit_c_z").prop("checked")?"Y":"N")});
+        }
+        //移除空元素
+        arr = $.grep(arr, function(value) {
+            return value && value !== '';
+        });
+        calendar.removeAllEventSources();
+        calendar.addEventSource(arr);
+        calendar.refetchEvents();
+        //console.log(arr);
+        $('#modal-view-event').modal('hide');
+    }
+
+    function addrq(){
+       var html='';
+        html += '<div class="mb-3 input-group" data-provide="datepicker">';
+        html += '<input class="form-control" data-today-highlight="true" data-date-format="yyyy-mm-dd" type="text" placeholder="开始日期" data-autoclose="true" />';
+        html += '<span class="input-group-text">-</span>';
+        html += '<input class="form-control" data-today-highlight="true" data-date-format="yyyy-mm-dd" type="text" placeholder="结束日期" data-autoclose="true" />';
+        html += '</div>';
+        $("#xzdate").append(html);
+        // 日期选择器
+        jQuery("[data-provide = 'datepicker']").each(function() {
+            var options = {
+                language: 'zh-CN',  // 默认简体中文
+                multidateSeparator: ', ' // 默认多个日期用,分隔
+            }
+            options = $.extend( options, getDataOptions( $(this) ));
+            if ( $(this).prop("tagName") != 'INPUT' ) {
+                options.inputs = [$(this).find('input:first'), $(this).find('input:last')];
+            }
+            $(this).datepicker(options);
+        });
+    }
+
+    //提交保存
+    function pksubmit(){
+        if(condition.length>0||dayarr.length>0){
+             load_index = layer.load(1, {
+                content: "正在提交中",
+                shade: [0.1, 'black'], //0.1透明度的白色背景
+                success: function (layero) {
+                    layero.find('.layui-layer-content').css({
+                        'padding-top': '39px',
+                        'width': '60px'
+                    });
+                }
+            });
+             var formData = new FormData();
+             if(condition.length>0) formData.append('condition', JSON.stringify(condition));
+             if(dayarr.length>0) formData.append('dayarr', JSON.stringify(dayarr));
+             formData.append('kcid',$("#kcid").val());
+             formData.append('pkyear',$("#pkyear").val());
+             formData.append('ispk',ispk?"Y":"N");//是否是已排课修改
+            $.ajax({
+                url: 'toHt/savecoursepk',
+                type: 'POST',
+                data: formData,
+                async: false,                      //async 设置为 false，则所有的请求均为同步请求，在没有返回值之前，同步请求将锁住浏览器
+                cache: false,                      // 不缓存
+                processData: false,                // jQuery不要去处理发送的数据
+                contentType: false,                // jQuery不要去设置Content-Type请求头
+                dataType: 'json',
+                success: function (data) {
+                    var d = eval(data);
+                    //返回修改后，需要清空单日修改的数据
+                    dayarr=[];
+                    //layer.close(load_index);
+                    if(d.msg=="Y"){
+                        layer.msg("排课成功");
+                        //获取当前月的数据
+                        getpkjl();
+                    }
+                },
+                error: function () {
+                    layer.close(load_index);
+                    layer.msg("提交失败");
+                }
+            });
+        }else{
+            layer.msg("没有发现修改日期");
+        }
+
+    }
+
+    var calendarEl = document.getElementById('calendar');
+
+    // 定义时间点（避免时间变化导致示例不显示）
+    var thisDate     = new Date();
+    var thisFullYear = thisDate.getFullYear();
+    var thisMonth    = thisDate .getMonth() + 1;
+    if (thisMonth < 10) thisMonth = '0' + thisMonth;
+
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list', 'rrule' ],
+        //height: 'parent',
+        header: {
+            left: '',
+            center: 'title',
+            right:'today,prev,next'
+        },
+        buttonText: {
+            today:'今天',
+            prev:'上月',
+            next:'下月',
+            prevYear:'上一年',
+            nextYear:'下一年'
+        },
+        defaultView: 'dayGridMonth',
+        editable: true, // 确定是否可以修改日历上的事件。
+        eventLimit: true, // 当事件太多时允许“更多”链接
+        eventOverlap: false,
+        eventOrder:false,
+        events: [],
+        dateClick: function(date, jsEvent, view) {
+            check = formatDate(date.dateStr, 'yyyy-MM-dd');
+            today = formatDate(new Date(), 'yyyy-MM-dd');
+            if (check < today) {
+                // 这是一个过去的日期，取消选择或显示消息
+            } else {
+                // 这是一个有效的日期，执行你的逻辑
+                editday(formatDate(date.dateStr, 'yyyy-MM-dd'));
+            }
+        },
+        eventClick: function(date, jsEvent, view) {
+            check = formatDate(date.event.start, 'yyyy-MM-dd HH:mm:ss');
+            today = formatDate(new Date(), 'yyyy-MM-dd');
+            if (check < today) {
+                // 这是一个过去的日期，取消选择或显示消息
+            } else {
+                // 这是一个有效的日期，执行你的逻辑
+                editday(formatDate(date.event.start, 'yyyy-MM-dd'));
+            }
+        }
+    });
+
+    calendar.render();
+    calendar.setOption('locale', 'zh');
+
+     function pktj(){
+         if(ispk){
+             layer.confirm('使用排课筛选功能，将会删除您已排课的所有数据!',
+                 {title:"温馨提示",icon:0,closeBtn: 2,btn: ['取消','我要重新编']},
+                 function(index, layero){ layer.close(index); },
+                 function(index){
+                     $('#modal-event').modal('show');
+                 });
+         }else{
+             $('#modal-event').modal('show');
+         }
+     }
+
+
+
+    // 点击关闭按钮的处理
+    $('.close').click(function(){
+        if ($(this).parents('.modal').has('#event_form')) {
+            $('#event_form')[0].reset(); // 重置表单
+            $('#event_id').val('0'); // 重置为零
+        }
+    });
+    // 点击取消的处理
+    $('[data-dismiss]').click(function(){
+        if ($(this).parents('.modal').has('#event_form')) {
+            $('#event_form')[0].reset(); // 重置表单
+            $('#event_id').val('0'); // 重置为零
+        }
+    });
+    // 时间格式化
+    function formatDate(date = new Date(), fmt = 'yyyy-MM-dd HH:mm:ss') {
+        date = (typeof date === 'number' || typeof date === 'string') ? new Date(date) : date;
+
+        var o = {
+            'M+': date.getMonth() + 1, // 月份
+            'd+': date.getDate(), // 日
+            'h+': date.getHours() % 12 === 0 ? 12 : date.getHours() % 12, // 小时
+            'H+': date.getHours(), // 小时
+            'm+': date.getMinutes(), // 分
+            's+': date.getSeconds(), // 秒
+            'q+': Math.floor((date.getMonth() + 3) / 3), // 季度
+            'S': date.getMilliseconds() // 毫秒
+        };
+        var week = {
+            '0': '\u65e5',
+            '1': '\u4e00',
+            '2': '\u4e8c',
+            '3': '\u4e09',
+            '4': '\u56db',
+            '5': '\u4e94',
+            '6': '\u516d'
+        };
+
+        if (/(y+)/.test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length));
+        }
+
+        if (/(E+)/.test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, ((RegExp.$1.length > 1) ? (RegExp.$1.length > 2 ? '\u661f\u671f' : '\u5468') : '') + week[date.getDay() + '']);
+        }
+
+        for (var k in o) {
+            if (new RegExp('(' + k + ')').test(fmt)) {
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)));
+            }
+        }
+
+        return fmt;
+    }
+
+    // 判断当前日期是否在start和end日期之间
+    function isDateBetween(currentDate, start, end) {
+        // 将输入的日期转换为毫秒数
+        var currentMillis = new Date(currentDate+" 0:00:01").getTime();
+        var startMillis = new Date(start+" 0:00:00").getTime();
+        var endMillis = new Date(end+" 23:59:59").getTime();
+        return currentMillis >= startMillis && currentMillis <= endMillis;
+    }
+</script>
+</body>
+</html>
