@@ -60,6 +60,9 @@
                             <!--text input-->
                             <div class="row g-3">
                                 <div class="col-auto">
+                                    <button type="button" class="btn btn-info me-1" onclick="goback()">返回</button>
+                                </div>
+                                <div class="col-auto">
                                     <div class="row">
                                         <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">排课年份</label>
                                         <div class="col-auto">
@@ -339,6 +342,13 @@
         //获取当年当月的排课记录
         getpkjl();
     });
+
+    function goback(){
+        var params = [
+            ["pages",$("#pages").val()],
+            ["name", $("#name").val()]];
+        form_submit("toHt/tocourse","post",params,"_self");
+    }
 
     //获取当月的排课记录的方法
     function getpkjl() {
