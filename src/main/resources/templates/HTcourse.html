@@ -46,6 +46,7 @@
                         <form class="search-form" method="post" role="form" action="toHt/tocourse">
                             <input type="hidden" id="pages" name="pages" th:value="${pageobj.currentPage}"/>
                             <input type="hidden" id="counts" name="counts" th:value="${pageobj.pageCount}"/>
+                            <input type="hidden" id="jstype" name="jstype" th:value="${session.umsg.jstype}"/>
                             <!--text input-->
                             <div class="row g-3">
                                 <div class="col-auto">
@@ -55,6 +56,19 @@
                                         <div class="col-auto">
                                             <input type="text" class="form-control" id="name" name="name" th:value="${pageobj.othersql}"
                                                    placeholder="请输入名称"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto" th:style="${session.umsg.jstype=='B'?'display: none':''}">
+                                    <div class="row">
+                                        <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">授课方名称</label>
+                                        <div class="col-auto">
+                                            <select id="skid" name="skid"  class="form-control selectpicker" data-live-search="true">
+                                                <option value="" selected>请选择</option>
+                                                <th:block th:each="item,stat:${smdlist}">
+                                                    <option th:value="${item.smd001}"  th:selected="${pageobj.othersql1==#strings.toString(item.smd001)?true:false}">[[${item.smd003}]]</option>
+                                                </th:block>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -98,30 +112,34 @@
                                     <td th:text="${item.hba004}"></td>
                                     <td th:text="${item.hba005}"></td>
                                     <td th:text="${item.hba006}"></td>
-                                    <td th:text="${item.hba026=='B'?'正常':(item.hba026=='C'?'下架':(item.hba026=='A'?'审核':(item.hba026=='D'?'暂停':'')))}"></td>
+                                    <td th:text="${item.hba026=='B'?'正常':(item.hba026=='C'?'下架':(item.hba026=='A'?'待审核':(item.hba026=='E'?'驳回':'')))}"></td>
                                     <td>
                                         <div class="btn-group btn-group-sm">
-                                            <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]])" class="btn btn-table"
-                                               data-bs-toggle="modal" data-bs-target="#editmode">编辑</a>
-                                            <div class="ivu-divider-vertical"></div>
-                                            <th:block th:if="${item.hba026=='A'||item.hba026=='B'}">
-                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.hba001}]],[[${item.hba002}]],[['C']])"  th:text="${item.hba026=='A'?'审核通过':'下架'}"></a>
+                                            <th:block th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">
+                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.hba001}]],[[${item.hba002}]],[['C']])">审核通过</a>
+                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.hba001}]],[[${item.hba002}]],[['E']])">驳回</a>
+                                            </th:block>
+                                            <th:block th:if="${session.umsg.jstype=='B'}">
+                                                <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]])" class="btn btn-table"
+                                                   data-bs-toggle="modal" data-bs-target="#editmode">编辑</a>
+                                                <div class="ivu-divider-vertical"></div>
+                                                <th:block th:if="${item.hba026=='C'}">
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.hba001}]],[[${item.hba002}]],[['B']])">正常</a>
+                                                </th:block>
+                                                <th:block th:if="${item.hba026=='B'}">
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.hba001}]],[[${item.hba002}]],[['C']])">下架</a>
+                                                </th:block>
+                                                <a href="javascript:void(0);" th:onclick="tols([[${item.hba001}]])" class="btn btn-table"
+                                                   data-bs-toggle="modal" data-bs-target="#">老师管理</a>
+                                                <div class="ivu-divider-vertical"></div>
+                                                <a href="javascript:void(0);" th:onclick="topk([[${item.hba001}]])" class="btn btn-table"
+                                                   data-bs-toggle="modal" data-bs-target="#">排课</a>
+                                            </th:block>
+                                            <th:block th:if="${session.umsg.jstype=='C'}">
+                                                <a href="javascript:void(0);" th:onclick="toyy([[${item.hba001}]])" class="btn btn-table"
+                                                   data-bs-toggle="modal" data-bs-target="#">预约申请</a>
                                                 <div class="ivu-divider-vertical"></div>
                                             </th:block>
-                                            <th:block th:if="${item.hba026=='C'||item.hba026=='D'}">
-                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.hba001}]],[[${item.hba002}]],[['B']])">正常</a>
-                                                <div class="ivu-divider-vertical"></div>
-                                            </th:block>
-                                            <th:block th:if="${item.hba026=='B'}">
-                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.hba001}]],[[${item.hba002}]],[['D']])">暂停</a>
-                                                <div class="ivu-divider-vertical"></div>
-                                            </th:block>
-                                            <a href="javascript:void(0);" th:onclick="tols([[${item.hba001}]])" class="btn btn-table"
-                                               data-bs-toggle="modal" data-bs-target="#">老师管理</a>
-                                            <div class="ivu-divider-vertical"></div>
-                                            <a href="javascript:void(0);" th:onclick="topk([[${item.hba001}]])" class="btn btn-table"
-                                               data-bs-toggle="modal" data-bs-target="#">排课</a>
-
                                             <!--<a href="javascript:void(0);" th:onclick="del([[${item.hba001}]])" class="btn btn-table">删除</a>-->
                                         </div>
                                     </td>
@@ -136,6 +154,28 @@
             </div>
         </div>
     </div>
+    <!-- 编辑分类模态框 -->
+    <div class="modal fade" id="yymode" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel"
+         aria-hidden="true" style="height:100%;background-color: #FFF;">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="editmodeLabel1"><span id="ftype1"></span></h6>
+                    <button type="button" onclick="pagerefalsh()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="uploadForm1" enctype="multipart/form-data">
+                    <input type="hidden" id="fid1" value=""/>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer" style="height:100px;">
+                        <button type="submit" class="btn btn-primary" id="edit-four1">保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
     <!-- 编辑分类模态框 -->
     <div class="modal fade" id="editmode" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel"
@@ -145,6 +185,12 @@
                 <div class="modal-header">
                     <h6 class="modal-title" id="editmodeLabel"><span id="ftype"></span></h6>
                     <button type="button" onclick="pagerefalsh()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="row col-auto"  th:style="${session.umsg.jstype=='C'?'margin-top: 20px;':'margin-top: 20px;display: none'}">
+                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">驳回备注</label>
+                    <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                        <span id="bhbz"></span>
+                    </div>
                 </div>
                 <form id="uploadForm" enctype="multipart/form-data">
                     <input type="hidden" id="fid" value=""/>
@@ -156,13 +202,13 @@
                             </div>
                         </div>
                         <div class="row col-auto" style="margin-top: 20px;">
-                            <div class="col-md-3">
+                            <div class="col-md-3" th:style="${session.umsg.jstype=='B'?'display: none':''}">
                                 <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">授课方</label>
                                 <div class="form-controls">
                                     <select id="t22" name="t22"  class="form-control selectpicker" data-live-search="true">
                                         <option value="" selected>请选择</option>
                                         <th:block th:each="item,stat:${smdlist}">
-                                            <option th:value="${item.smd001}" >[[${item.smd003}]]</option>
+                                            <option th:value="${item.smd001}"  th:selected="${session.umsg.jstype=='B'&&pageobj.othersql1==#strings.toString(item.smd001)?true:false}">[[${item.smd003}]]</option>
                                         </th:block>
                                     </select>
                                 </div>
@@ -215,7 +261,7 @@
                             </div>
                         </div>
 
-                         <div class="row col-auto" style="margin-top: 20px;">
+                        <div class="row col-auto" style="margin-top: 20px;">
                             <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">最佳人数建议</label>
                             <div class="col-10 col-sm-8 col-md-6 col-lg-4">
                                 <textarea class="form-control" style="resize: none;" rows="3" id="t9" name="t9"></textarea>
@@ -313,15 +359,25 @@
                                 <textarea class="form-control" style="resize: none;" rows="3" id="t19" name="t19"></textarea>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="mb-3 col-md-12">
+                                <input id="tt24" name="tt24" type="hidden">
+                                <label for="t24" class="form-label">封面上传</label>
+                                <input class="form-control" type="file" id="t24" onchange="showpdtpgs()">
+                                <img alt="..." src="" id="shtp" onclick="$('#t24').click()"
+                                     class="form-control"
+                                     style="width:260px;height: 260px;border:1px solid rgb(229, 229, 229);"/>
+                            </div>
+                        </div>
                         <div class="mb-3 col-md-12 position-relative" id="upvadiofile" style="margin-top: 20px;padding-left: 8px;">
                             <div class="form-check form-check-inline" style="padding-left: 10px;">
                                 <button type="button" class="btn btn-primary" onclick="uploadvadio()">上传视频</button>
                             </div>
                             <div class="col-10 col-sm-8 col-md-6 col-lg-5 form-check form-check-inline typerow_p" style="padding-left: 10px;">
                                 <figure style="max-height: 400px;min-height: 300px;height:100%;width:100%;display: flex;">
+                                    <input id="tt20" name="tt20" type="hidden">
                                     <input type="file" id="t20" accept="video/*" style="display:none;">
                                     <video class="form-vadio" id="upfilevadio" src="" controls/>
-                                    <input id="tt20" name="tt20" type="hidden">
                                 </figure>
                             </div>
                             <div class="col-11 small" style="margin-left:10px;color:#0096FF;">视频不超过100M，视频格式mp4</div>
@@ -396,15 +452,24 @@
     function usefanye(pageindex){
         var params = [
             ["pages",pageindex],
-            ["name",$.trim($("#name").val())]];
+            ["name", $("#name").val()],["skid", $("#skid").val()],["skid", $("#skid").val()]];
         form_submit("toHt/tocourse","post",params,"_self");
     }
+
+    function toyy(kcid){
+        var params = [
+            ["kcid",kcid],
+            ["pages",$("#pages").val()],
+            ["name", $("#name").val()],["skid", $("#skid").val()]];
+        form_submit("toHt/tocourseyy","post",params,"_self");
+    }
+
 
     function tols(kcid){
         var params = [
             ["kcid",kcid],
             ["pages",$("#pages").val()],
-            ["name", $("#name").val()]];
+            ["name", $("#name").val()],["skid", $("#skid").val()]];
         form_submit("toHt/tocoursels","post",params,"_self");
     }
 
@@ -417,7 +482,7 @@
     function xzmb(){
         var params = [  ["type","E"],
             ["pages",$("#pages").val()],
-            ["name", $("#name").val()]];
+            ["name", $("#name").val()],["skid", $("#skid").val()]];
         form_submit("toHt/tocourse","post",params,"_self");
     }
 
@@ -477,7 +542,7 @@
                 if (data == 'A') {
                     var params = [
                         ["pages", $("#pages").val()],
-                        ["name",$.trim($("#name").val())]];
+                        ["name", $("#name").val()]];
                     // layer.msg("导入成功", {time: 1000}, function () {
                     form_submit("toHt/tocourse", "post", params, "_self");
                     // });
@@ -495,8 +560,40 @@
             error: function () { layer.close(index); }
         });
     }
+
     function xgzt(id,uname,type){
-        if (confirm("您确定修改吗?")) {
+        if(type=="E"){
+            var num = prompt("请输入驳回备注","");
+            if (num!="") {
+                load_index = layer.load(1);
+                var formData = new FormData();
+                formData.append("fid",id);
+                formData.append("uname",uname);
+                formData.append("type",type);
+                formData.append("t1",num);
+                $.ajax({
+                    url: 'toHt/xgztcourse', // 服务器端处理上传文件的URL
+                    type: 'POST',
+                    data: formData,
+                    dataType:'json',
+                    contentType: false, // 不设置内容类型
+                    processData: false, // 不处理发送的数据
+                    success: function (res) {
+                        var d = eval(res);
+                        if(d.msg=="0"){
+                            layer.msg("修改成功");
+                            setTimeout(function(){
+                                location.reload();
+                            },1000);
+                            layer.close(load_index);
+                        }
+                    },
+                    error: function () { console.log('提交失败'); }
+                });
+            }else{
+                xgzt(id,uname,type);
+            }
+        }else if (confirm("您确定修改吗?")) {
             load_index = layer.load(1);
             var formData = new FormData();
             formData.append("fid",id);
@@ -582,6 +679,39 @@
 
     });
 
+    //判断图片
+    function showpdtpgs(){
+        var filePath = ['.jpg','.png'];
+        var file = document.getElementById("t24").files[0];
+        if(file){
+            var filename = file.name;
+            var filejw = filename.substring(filename.lastIndexOf("."));
+            var pd = false;
+            for(var i=0;i<filePath.length;i++){
+                if(filejw==filePath[i]){
+                    var reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function(e) {
+                        var data = e.target.result;
+                        $("#shtp").attr("src",data);
+                    };
+                    pd =  true;
+                    return;
+                }
+            }
+            if(!pd){
+                file.value="";
+                $("#file").val("");
+                layer.msg("只能上传以.jpg、.png结尾的图片");
+                return;
+            }
+        }else{
+            if($("#id").val()==""){
+                $("#shtp").attr("src","");
+            }
+        }
+    }
+
     //刷新页面
     function pagerefalsh(){
         location.reload();
@@ -595,7 +725,11 @@
             }else{
                 josnobj = jsStringTojsonString(obj);
             }
+            console.log(josnobj)
             $("#fid").val(josnobj.hba001);
+            $("#bhbz").html(josnobj.hba025);
+            $("#t21").val(josnobj.hba021);
+            $("#t22").val(josnobj.hba022);
             $("#t2").val(josnobj.hba002);
             $("#t3").val(josnobj.hba003);
             $("#t4").val(josnobj.hba004);
@@ -613,15 +747,14 @@
             $("#t16").val(josnobj.hba016);
             $("#t17").val(josnobj.hba017);
             $("#t19").val(josnobj.hba019);
-            $("#t20").val(josnobj.hba020);
-            $("#tt20").val(josnobj.hba020);
-            $("#upfilevadio").attr("src","upload/kcvideo/"+josnobj.hba020);
-            $("#t21").val(josnobj.hba021);
-            $("#t22").val(josnobj.hba022);
+            $("#tt24").val(josnobj.hba024);
             $("#t27").val(josnobj.hba027);
             $("#t28").val(josnobj.hba028);
             $("#t29").val(josnobj.hba029);
+            $("#upfilevadio").attr("src","upload/kcvideo/"+josnobj.hba020);
+            $("#shtp").attr("src","upload/kcimg/"+josnobj.hba024);
             $("#t30").val(josnobj.hba030);
+
             $("#ftype").text("编辑");
         }else{
             $("#ftype").text("添加");
@@ -634,7 +767,7 @@
             $(element).parent("div").parent("div").find("label").addClass("col-12");
             // $(element).parent("div").parent("div").find("label").attr("style","margin-left:5px;");
         },
-        rules : {t2: { required : true, },t4: { required : true, },t5: { required : true, },},
+        rules : {t2: { required : true, },t4: { required : true, },t5: { required : true, },t21: { required : true, },t22: { required : true, },},
         messages: {},
         submitHandler: function(form) {
             load_index = layer.load(1);
@@ -662,6 +795,8 @@
             formData.append("t20", document.getElementById("t20").files[0]);
             formData.append("t21",$("#t21").val());
             formData.append("t22",$("#t22").val());
+            formData.append("tt24", $("#tt24").val());
+            formData.append("t24", document.getElementById("t24").files[0]);
             formData.append("t27",$("#t27").val());
             formData.append("t28",$("#t28").val());
             formData.append("t29",$("#t29").val());
@@ -677,7 +812,7 @@
                     var d = eval(res.d);
                     $("#fid").val(d.hba001);
                     layer.close(load_index);
-                    layer.msg(d.msg);
+                    layer.msg('提交成功');
                 },
                 error: function () { console.log('提交失败'); }
             });

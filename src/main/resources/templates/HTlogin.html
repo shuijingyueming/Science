@@ -65,17 +65,304 @@
                     <button class="btn btn-primary" >立即登录</button>
                 </div>
             </form>
+            <div class="mb-3 d-grid" style="margin-top: 50px;">
+                <button class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#editmode">授课方入驻</button>
+                <button class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#editmode1">选课方入驻</button>
+            </div>
             <p class="text-center text-muted mt-3">Copyright © 2024 <a target="_blank" href="http://www.nbyfx.com">易飞迅</a>. All right reserved</p>
         </div>
     </div>
+    <!-- 编辑分类模态框 -->
+    <div class="modal fade" id="editmode" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel"
+         aria-hidden="true" style="height:100%;background-color: #FFF;">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="editmodeLabel"><span id="ftype"></span></h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <div class="row col-auto" style="margin-top: 20px;">
+                        <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">账户名称</label>
+                        <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                            <input type="text" class="form-control" id="z2" name="z2" placeholder="请输入账户名称"/>
+                        </div>
+                    </div>
+                    <div class="row col-auto" style="margin-top: 20px;">
+                        <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">真实姓名</label>
+                        <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                            <input type="text" class="form-control" id="z4" name="z4" placeholder="请输入真实姓名"/>
+                        </div>
+                    </div>
+                    <div class="row col-auto" style="margin-top: 20px;">
+                        <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">联系手机</label>
+                        <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                            <input type="text" class="form-control" id="z5" name="z5" placeholder="请输入联系手机"/>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">身份类别</label>
+                            <div class="form-check">
+                                <div class="form-check form-check-inline">
+                                    <input  class="form-check-input" id="r31" name="t3" value="A" type="radio" checked>
+                                    <label for="r32" class="form-check-label">机构</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input  class="form-check-input" id="r32" name="t3" value="B" type="radio">
+                                    <label for="r32" class="form-check-label">个人</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" id="r33" name="t3" value="C" type="radio">
+                                    <label for="r33" class="form-check-label">专家</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">机构名称/个人单位</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <input type="text" class="form-control" id="t2" name="t2" placeholder="请输入机构名称/个人单位"/>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">年度场次限数</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <input type="number" class="form-control" id="t9" name="t9" placeholder="请输入年度场次限数"/>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">年度人次限数</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <input type="number" class="form-control" id="t10" name="t10" placeholder="请输入年度人次限数"/>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">上线日期</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <input type="date" class="form-control" id="t8" name="t8" placeholder="请输入上线日期"/>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">营业执照/身份证号</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <input type="number" class="form-control" id="t4" name="t4" placeholder="请输入营业执照/身份证号"/>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">开户行</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <input type="number" class="form-control" id="t5" name="t5" placeholder="请输入开户行"/>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">户名/银行卡号</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <input type="number" class="form-control" id="t6" name="t6" placeholder="请输入户名/银行卡号"/>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">账号/姓名</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <input type="number" class="form-control" id="t7" name="t7" placeholder="请输入账号/姓名"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="height:100px;">
+                        <button type="submit" class="btn btn-primary" id="edit-four">保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- 编辑分类模态框 -->
+    <div class="modal fade" id="editmode1" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel"
+         aria-hidden="true" style="height:100%;background-color: #FFF;">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="editmodeLabel1"><span id="ftype1"></span></h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="uploadForm1" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">账户名称</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <input type="text" class="form-control" id="zz2" name="z2" placeholder="请输入账户名称"/>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">真实姓名</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <input type="text" class="form-control" id="zz4" name="z4" placeholder="请输入真实姓名"/>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">联系手机</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <input type="text" class="form-control" id="zz5" name="z5" placeholder="请输入联系手机"/>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">层级</label>
+                                <div class="form-controls">
+                                    <select id="tt2" name="t2"  class="form-control selectpicker" data-live-search="true">
+                                        <option value="" selected>请选择</option>
+                                        <th:block th:each="item,stat:${yhalist}">
+                                            <option th:value="${item.yha001}" >[[${item.yha002}]]</option>
+                                        </th:block>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">单位名称</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <input type="text" class="form-control" id="tt4" name="t4" placeholder="请输入单位名称"/>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">单位地址</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <input type="text" class="form-control" id="tt5" name="t5" placeholder="请输入单位地址"/>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">联系人</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <input type="text" class="form-control" id="tt6" name="t6" placeholder="请输入联系人"/>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">联系电话</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <input type="text" class="form-control" id="tt7" name="t7" placeholder="请输入联系电话"/>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">上线日期</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <input type="date" class="form-control" id="tt11" name="t11" placeholder="请输入上线日期"/>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">场次总量</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <input type="text" class="form-control" id="tt16" name="t16" placeholder="请输入场次总量"/>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">交通补贴费用</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <input type="text" class="form-control" id="t1t7" name="t17" placeholder="请输入交通补贴费用"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="height:100px;">
+                        <button type="submit" class="btn btn-primary" id="edit-four1">保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/popper.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/lyear-loading.js"></script>
 <script type="text/javascript" src="js/bootstrap-notify.min.js"></script>
+<!-- validate JS 验证-->
+<script type="text/javascript" src="assets/jquery-validate/jquery.validate.js"></script>
+<script type="text/javascript" src="assets/jquery-validate/validate-methods.js"></script>
 <script type="text/javascript">
     var loader;
+
+    $("#uploadForm").validate({
+        errorPlacement: function(error, element) {
+            //替换错误显示位置，error表示错误信息
+            $(element).parent("div").parent("div").append(error);
+            $(element).parent("div").parent("div").find("label").addClass("col-12");
+            // $(element).parent("div").parent("div").find("label").attr("style","margin-left:5px;");
+        },
+        rules : {z2: { required : true, },z4: { required : true, },z5: { required : true, },t2: { required : true, },t4: { required : true, },t5: { required : true, },},
+        messages: {},
+        submitHandler: function(form) {
+            var formData = new FormData();
+            formData.append("z2",$("#z2").val());
+            formData.append("z4",$("#z4").val());
+            formData.append("z5",$("#z5").val());
+            formData.append("t2",$("input[name='t3']:checked").val());
+            formData.append("t3",$("#t2").val());
+            formData.append("t4",$("#t4").val());
+            formData.append("t5",$("#t5").val());
+            formData.append("t6",$("#t6").val());
+            formData.append("t7",$("#t7").val());
+            formData.append("t8",$("#t8").val());
+            formData.append("t9",$("#t9").val());
+            formData.append("t10",$("#t10").val());
+            $.ajax({
+                url: 'toHt/xgselect1', // 服务器端处理上传文件的URL
+                type: 'POST',
+                data: formData,
+                dataType:'json',
+                contentType: false, // 不设置内容类型
+                processData: false, // 不处理发送的数据
+                success: function (res) {
+                    var d = eval(res);
+                    setTimeout(function () {
+                        location.href = 'toHt/toHTindex';
+                    }, 1500);
+                },
+                error: function () { console.log('提交失败'); }
+            });
+
+        }
+    });
+
+    $("#uploadForm1").validate({
+        errorPlacement: function(error, element) {
+            //替换错误显示位置，error表示错误信息
+            $(element).parent("div").parent("div").append(error);
+            $(element).parent("div").parent("div").find("label").addClass("col-12");
+            // $(element).parent("div").parent("div").find("label").attr("style","margin-left:5px;");
+        },
+        rules : {z2: { required : true, },z4: { required : true, },z5: { required : true, },t2: { required : true, },t4: { required : true, },t5: { required : true, },},
+        messages: {},
+        submitHandler: function(form) {
+            var formData = new FormData();
+            formData.append("z2",$("#zz2").val());
+            formData.append("z4",$("#zz4").val());
+            formData.append("z5",$("#zz5").val());
+            formData.append("t2",$("#tt2").val());
+            formData.append("t4",$("#tt4").val());
+            formData.append("t5",$("#tt5").val());
+            formData.append("t6",$("#tt6").val());
+            formData.append("t7",$("#tt7").val());
+            formData.append("t11",$("#tt11").val());
+            formData.append("t16",$("#tt16").val());
+            formData.append("t17",$("#tt17").val());
+            $.ajax({
+                url: 'toHt/xgchose1', // 服务器端处理上传文件的URL
+                type: 'POST',
+                data: formData,
+                dataType:'json',
+                contentType: false, // 不设置内容类型
+                processData: false, // 不处理发送的数据
+                success: function (res) {
+                    var d = eval(res.d);
+                    setTimeout(function () {
+                        location.href = 'toHt/toHTindex';
+                    }, 1500);
+                },
+                error: function () { console.log('提交失败'); }
+            });
+
+        }
+    });
+
     $(document).ajaxStart(function(){
         $("button:submit").html('登录中...').attr("disabled", true);
         loader = $('button:submit').lyearloading({
@@ -174,10 +461,10 @@
         var imgSrc = $("#codeImg");
         imgSrc.attr("src", chgUrl("/code.do"));
     }
+
     $('#username').on('change', function () {
         changeImg();
     });
-
 
     //加入时间戳，去缓存机制
     function chgUrl(url) {
@@ -190,6 +477,7 @@
         // console.log("url"+url)
         return url;
     }
+
 </script>
 </body>
 </html>

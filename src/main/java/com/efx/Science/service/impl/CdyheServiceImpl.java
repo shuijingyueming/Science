@@ -35,7 +35,7 @@ public class CdyheServiceImpl implements CdyheService {
 
 
     @Override
-    public cdyhe getByid(Integer id) {
+    public cdyheWithBLOBs getByid(Integer id) {
         return yheMapper.selectByPrimaryKey(id);
     }
 
@@ -54,7 +54,7 @@ public class CdyheServiceImpl implements CdyheService {
     }
 
     @Override
-    public cdyhe insert(cdyheWithBLOBs yhe) {
+    public cdyheWithBLOBs insert(cdyheWithBLOBs yhe) {
         yheMapper.insertSelective(yhe);
         return yhe;
     }
@@ -92,7 +92,7 @@ public class CdyheServiceImpl implements CdyheService {
         //check page
         page = page<1 ? 1 : ((page>count)? count : page);
         //query
-        List<cdyhe> list = yheMapper.selectByExampleAndPage(example, new RowBounds((page-1)*size, size));
+        List<cdyheWithBLOBs> list = yheMapper.selectByExampleAndPage(example, new RowBounds((page-1)*size, size));
         //save to PageBean
         pageBean.setCurrentPage(page);
         pageBean.setPageCount(count);

@@ -14,13 +14,13 @@ import com.efx.Science.model.cdyheWithBLOBs;
  * @since 2023-03-15
  */
 public interface CdyheService extends IService<cdyhe> {
-    cdyhe getByid(Integer id);
+    cdyheWithBLOBs getByid(Integer id);
 
     PageBean selectPageBean(PageBean pb);
 
     boolean update(cdyheWithBLOBs yhe);
 
-    cdyhe insert(cdyheWithBLOBs yhe);
+    cdyheWithBLOBs insert(cdyheWithBLOBs yhe);
 
     cdyhe selectByName(String name);
 

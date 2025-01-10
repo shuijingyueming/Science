@@ -3,8 +3,6 @@ package com.efx.Science.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.efx.Science.model.PageBean;
 import com.efx.Science.model.cduse;
-import com.efx.Science.model.PageBean;
-import com.efx.Science.model.cduse;
 
 /**
  * <p>
@@ -26,6 +24,6 @@ public interface CduseService extends IService<cduse> {
 
     cduse insert(cduse use);
 
-    cduse selectByName(String name);
+    cduse selectByName(String name, Integer id);
 
 }

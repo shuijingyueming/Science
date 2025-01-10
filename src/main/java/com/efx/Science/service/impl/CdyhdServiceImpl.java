@@ -3,10 +3,9 @@ package com.efx.Science.service.impl;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.efx.Science.dao.cdyhdMapper;
-import com.efx.Science.model.cdsmdExample;
-import com.efx.Science.model.cdyhd;
-import com.efx.Science.model.cdyhdExample;
+import com.efx.Science.model.*;
 import com.efx.Science.service.CdyhdService;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -85,6 +84,35 @@ public class CdyhdServiceImpl implements CdyhdService {
             throw new RuntimeException(e);
         }
         yhdMapper.deleteByExample(e1);
+    }
+
+    @Override
+    public PageBean selectPageBean(PageBean pb) {
+        cdyhdExample e1 = new cdyhdExample();
+        cdyhdExample.Criteria c = e1.createCriteria();
+        if(pb.getOthersql()!=null) c.andYhd002EqualTo(Integer.valueOf(pb.getOthersql()));
+        e1.setOrderByClause("yhd001 desc");
+        return queryByPage(pb,e1);
+    }
+
+    public PageBean queryByPage(PageBean pageBean, cdyhdExample example) {
+        int page = (int) pageBean.getCurrentPage();
+        int size = pageBean.getPageSize();
+        //record sum
+        int sum = (int) yhdMapper.countByExample(example);
+        //page count
+        int count = sum%size==0 ? sum/size : sum/size+1;
+        //check page
+        page = page<1 ? 1 : ((page>count)? count : page);
+        //query
+        List<cdyhd> list = yhdMapper.selectByExampleAndPage(example, new RowBounds((page-1)*size, size));
+        //save to PageBean
+        pageBean.setCurrentPage(page);
+        pageBean.setPageCount(count);
+        pageBean.setRecordCount(sum);
+        pageBean.setResultList(list);
+        pageBean.setPageSize(size);
+        return pageBean;
     }
 
     @Override

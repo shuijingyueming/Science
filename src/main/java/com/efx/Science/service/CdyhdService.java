@@ -1,6 +1,7 @@
 package com.efx.Science.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.efx.Science.model.PageBean;
 import com.efx.Science.model.cdyhd;
 import java.util.List;
 
@@ -19,4 +20,6 @@ public interface CdyhdService extends IService<cdyhd> {
     List<cdyhd> getrllist(String date,int kcid);
 
     void deletebykcid(int kcid,int year);
+
+    PageBean selectPageBean(PageBean pb);
 }

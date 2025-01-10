@@ -43,7 +43,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-search mb-2-5">
-                        <form class="search-form" method="post" role="form" action="toHt/tostaff">
+                        <form class="search-form" method="post" role="form" action="toHt/staff">
                             <input type="hidden" id="pages" name="pages" th:value="${pageobj.currentPage}"/>
                             <input type="hidden" id="counts" name="counts" th:value="${pageobj.pageCount}"/>
                             <input type="hidden" id="lx" name="lx" th:value="${pageobj.othersql1}"/>
@@ -69,6 +69,32 @@
                                         </div>
                                     </div>
                                 </div>
+                                <th:block th:if="${pageobj.othersql1=='B'}">
+                                    <div class="row col-auto" style="margin-top: 20px;">
+                                        <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">授课方</label>
+                                        <div class="form-controls">
+                                            <select id="skid" name="skid"  class="form-control selectpicker" data-live-search="true">
+                                                <option value="" selected>请选择</option>
+                                                <th:block th:each="item,stat:${smdlist}">
+                                                    <option th:value="${item.smd001}"  th:selected="${#strings.toString(item.smd001)==pageobj.othersql5?true:false}">[[${item.smd003}]]</option>
+                                                </th:block>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </th:block>
+                                <th:block th:if="${pageobj.othersql1=='C'}">
+                                    <div class="row col-auto" style="margin-top: 20px;">
+                                        <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">选课方</label>
+                                        <div class="form-controls">
+                                            <select id="skid" name="skid"  class="form-control selectpicker" data-live-search="true">
+                                                <option value="" selected>请选择</option>
+                                                <th:block th:each="item,stat:${yhblist}">
+                                                    <option th:value="${item.yhb001}" th:selected="${#strings.toString(item.yhb001)==pageobj.othersql5?true:false}">[[${item.yhb004}]]</option>
+                                                </th:block>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </th:block>
                                 <!--button-->
                                 <div class="col-auto">
                                     <button type="submit" class="btn btn-primary me-1">搜索</button>
@@ -96,12 +122,12 @@
                                 <tbody id="tablebody">
                                     <tr th:each="item,stat:${pageobj.resultList}">
                                     <td th:text="${stat.index+1}"></td>
-                                        <td><img class="wimg" th:src="${item.use008!=null?'upload/tximg/'+item.use008:'upload/images/nopic.png'}" style='width:100px;height:auto;object-fit:cover;border:1px solid rgb(229, 229, 229);'></td>
+                                        <td><img class="wimg" th:src="${item.use008!=null?'upload/tximg/'+item.use008:'images/nopic.png'}" style='width:100px;height:auto;object-fit:cover;border:1px solid rgb(229, 229, 229);'></td>
                                         <td th:text="${item.use007}"></td>
                                         <td th:text="${item.use002}"></td>
                                         <td th:text="${item.use004}"></td>
                                         <td th:text="${item.use005}"></td>
-                                        <td th:text="${item.use013=='M'?'正常':(item.use013=='N'?'封号':(item.use013=='P'?'审核':''))}"></td>
+                                        <td th:text="${item.use013=='M'?'正常':(item.use013=='N'?'封号':(item.use013=='P'?'审核':(item.use013=='E'?'驳回':'')))}"></td>
                                         <td>
                                         <div class="btn-group btn-group-sm">
                                             <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]])" class="btn btn-table"
@@ -109,16 +135,16 @@
                                             <div class="ivu-divider-vertical"></div>
                                             <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="czmm([[${item.use001}]])">重置密码</a>
                                             <div class="ivu-divider-vertical"><!----></div>
-                                                <th:block th:if="${item.use013=='M'}">
-                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.use001}]],[[${item.use001}]],[['N']])">封号</a>
-                                                </th:block>
-                                                <th:block th:if="${item.use013=='N'}">
-                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.use001}]],[[${item.use001}]],[['M']])">正常</a>
-                                                </th:block>
-                                            <th:block th:if="${item.use013=='P'}">
-                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.use001}]],[[${item.use001}]],[['M']])">审核通过</a>
+                                            <th:block th:if="${item.use013=='M'}">
+                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.use001}]],[[${item.use004}]],[['N']])">封号</a>
                                             </th:block>
-                                          <!--  <a href="javascript:void(0);" th:onclick="del([[${item.use001}]])" class="btn btn-table">删除</a>-->
+                                            <th:block th:if="${item.use013=='N'}">
+                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.use001}]],[[${item.use004}]],[['M']])">正常</a>
+                                            </th:block>
+                                            <th:block th:if="${item.use013=='P'}">
+                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#xqmode" th:onclick="tosh([[${item.toString()}]],[[${pageobj.othersql1=='B'?item.smd.toString():item.yhb.toString()}]],[[${pageobj.othersql1=='B'?'':item.yhb.yha.yha002}]])">审核通过</a>
+                                            </th:block>
+                                            <!--  <a href="javascript:void(0);" th:onclick="del([[${item.use001}]])" class="btn btn-table">删除</a>-->
                                         </div>
                                     </td>
                                 </tr>
@@ -132,7 +158,27 @@
             </div>
         </div>
     </div>
+    <!-- 详情模态框 -->
+    <div class="modal fade" id="xqmode" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="xqmodeLabel">查看详情</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div>
+                    <div class="modal-body">
 
+                    </div>
+                    <div class="modal-footer" style="height:100px;">
+                        <button type="button" class="btn btn-primary" id="shtg">通过</button>
+                        <button type="button" class="btn btn-primary" id="shbh">驳回</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
     <!-- 编辑分类模态框 -->
     <div class="modal fade" id="editmode" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel"
          aria-hidden="true" style="height:100%;background-color: #FFF;">
@@ -164,26 +210,26 @@
                             </div>
                         </div>
                         <th:block th:if="${pageobj.othersql1=='B'}">
-                        <div class="row col-auto" style="margin-top: 20px;">
+                        <div class="row col-auto" th:style="${session.umsg.jstype=='B'?'margin-top: 20px;display:none':'margin-top: 20px;'}">
                                 <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">授课方</label>
                                 <div class="form-controls">
                                     <select id="t11" name="t11"  class="form-control selectpicker" data-live-search="true">
                                         <option value="" selected>请选择</option>
                                         <th:block th:each="item,stat:${smdlist}">
-                                            <option th:value="${item.smd001}" >[[${item.smd003}]]</option>
+                                            <option th:value="${item.smd001}"  th:selected="${session.umsg.jstype=='B'&&#strings.toString(item.smd001)==pageobj.othersql5?true:false}">[[${item.smd003}]]</option>
                                         </th:block>
                                     </select>
                                 </div>
                         </div>
                         </th:block>
                         <th:block th:if="${pageobj.othersql1=='C'}">
-                        <div class="row col-auto" style="margin-top: 20px;">
+                        <div class="row col-auto" th:style="${session.umsg.jstype=='C'?'margin-top: 20px;display:none':'margin-top: 20px;'}">
                             <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">选课方</label>
                             <div class="form-controls">
                                 <select id="t11" name="t11"  class="form-control selectpicker" data-live-search="true">
                                     <option value="" selected>请选择</option>
-                                    <th:block th:each="item,stat:${smdlist}">
-                                        <option th:value="${item.smd001}" >[[${item.smd003}]]</option>
+                                    <th:block th:each="item,stat:${yhblist}">
+                                        <option th:value="${item.yhb001}" th:selected="${session.umsg.jstype=='C'&&#strings.toString(item.yhb001)==pageobj.othersql5?true:false}">[[${item.yhb004}]]</option>
                                     </th:block>
                                 </select>
                             </div>
@@ -260,17 +306,118 @@
         var params = [
             ["pages",pageindex],
             ["name",$.trim($("#name").val())]];
-        form_submit("toHt/tostaff","post",params,"_self");
+        form_submit("toHt/staff","post",params,"_self");
     }
     function xzmb(){
         var params = [  ["type","E"],
             ["pages",$("#pages").val()],
             ["name", $("#name").val()]];
-        form_submit("toHt/tostaff","post",params,"_self");
+        form_submit("toHt/staff","post",params,"_self");
+    }
+
+
+    //详情
+    function tosh(obj,obj1,name){
+        var item = null;
+        if(obj.indexOf("Hash")>0){
+            item = striongTOjsonString(obj);
+        }else{
+            item = jsStringTojsonString(obj);
+        }
+        var item1 = null;
+        if(obj.indexOf("Hash")>0){
+            item1 = striongTOjsonString(obj1);
+        }else{
+            item1 = jsStringTojsonString(obj1);
+        }
+        $("#xqmode").find(".modal-body").empty();
+        let html="";
+        if($("#lx").val()=="B"){
+            html+= "<div class='row'><div class='col-md-6'>";
+            html+= "<div class='form-group'><label class='layui-form-label'>身份类别：</label>";
+            html+=  '<span class="jspan">'+(item1.smd002=="A"?"机构":(item1.smd002=="B"?"个人":(item1.smd002=="C"?"专家":"")))+"</div></div></div>";
+            html+= "</div></div></div>";
+            html+= "<div class='row'><div class='col-md-6'>";
+            html+= "<div class='form-group'><label class='layui-form-label'>机构名称/个人单位：</label>";
+            html+=  '<span class="jspan">'+item1.smd003+"</div></div></div>";
+            html+= "</div></div></div>";
+            html+= "<div class='row'><div class='col-md-6'>";
+            html+= "<div class='form-group'><label class='layui-form-label'>营业执照/身份证号：</label>";
+            html+=  '<span class="jspan">'+item1.smd004+"</div></div></div>";
+            html+= "</div></div></div>";
+            html+= "<div class='row'><div class='col-md-6'>";
+            html+= "<div class='form-group'><label class='layui-form-label'>开户行：</label>";
+            html+=  '<span class="jspan">'+item1.smd005+"</div></div></div>";
+            html+= "</div></div></div>";
+            html+= "<div class='row'><div class='col-md-6'>";
+            html+= "<div class='form-group'><label class='layui-form-label'>户名/银行卡号：</label>";
+            html+=  '<span class="jspan">'+item1.smd006+"</div></div></div>";
+            html+= "</div></div></div>";
+            html+= "<div class='row'><div class='col-md-6'>";
+            html+= "<div class='form-group'><label class='layui-form-label'>账号/姓名：</label>";
+            html+=  '<span class="jspan">'+item1.smd007+"</div></div></div>";
+            html+= "</div></div></div>";
+        }else{
+            html+= "<div class='row'><div class='col-md-6'>";
+            html+= "<div class='form-group'><label class='layui-form-label'>层级名称：</label>";
+            html+=  '<span class="jspan">'+name+"</div></div></div>";
+            html+= "</div></div></div>";
+            html+= "<div class='row'><div class='col-md-6'>";
+            html+= "<div class='form-group'><label class='layui-form-label'>单位名称：</label>";
+            html+=  '<span class="jspan">'+item1.yhb004+"</div></div></div>";
+            html+= "</div></div></div>";
+            html+= "<div class='row'><div class='col-md-6'>";
+            html+= "<div class='form-group'><label class='layui-form-label'>单位地址：</label>";
+            html+=  '<span class="jspan">'+item1.yhb005+"</div></div></div>";
+            html+= "</div></div></div>";
+            html+= "<div class='row'><div class='col-md-6'>";
+            html+= "<div class='form-group'><label class='layui-form-label'>联系人：</label>";
+            html+=  '<span class="jspan">'+item1.yhb006+"</div></div></div>";
+            html+= "</div></div></div>";
+            html+= "<div class='row'><div class='col-md-6'>";
+            html+= "<div class='form-group'><label class='layui-form-label'>联系电话：</label>";
+            html+=  '<span class="jspan">'+item1.yhb007+"</div></div></div>";
+            html+= "</div></div></div>";
+        }
+
+        $("#shtg").attr("onclick","xgzt('"+item.use001+"','"+item.use004+"','M')")
+        $("#shbh").attr("onclick","xgzt('"+item.use001+"','"+item.use004+"','E')")
+        $("#xqmode").find(".modal-body").append(html);
     }
 
     function xgzt(id,uname,type){
-        if (confirm("您确定修改吗?")) {
+        if(type=="E"){
+            var num = prompt("请输入驳回备注","");
+            if (num!="") {
+                load_index = layer.load(1);
+                var formData = new FormData();
+                formData.append("fid",id);
+                formData.append("uname",uname);
+                formData.append("type",type);
+                formData.append("t1",num);
+                $.ajax({
+                    url: 'toHt/xgztstaff', // 服务器端处理上传文件的URL
+                    type: 'POST',
+                    data: formData,
+                    dataType:'json',
+                    contentType: false, // 不设置内容类型
+                    processData: false, // 不处理发送的数据
+                    success: function (res) {
+                        var d = eval(res);
+                        if(d.msg=="0"){
+                            layer.msg("修改成功");
+                            setTimeout(function(){
+                                location.reload();
+                            },1000);
+                            layer.close(load_index);
+                        }
+                    },
+                    error: function () { console.log('提交失败'); }
+                });
+            }else{
+                xgzt(id,uname,type);
+            }
+        }else if (confirm("您确定修改吗?")) {
             load_index = layer.load(1);
             var formData = new FormData();
             formData.append("fid",id);
@@ -356,7 +503,7 @@
                         ["pages", $("#pages").val()],
                         ["name",$.trim($("#name").val())]];
                     // layer.msg("导入成功", {time: 1000}, function () {
-                    form_submit("toHt/tostaff", "post", params, "_self");
+                    form_submit("toHt/staff", "post", params, "_self");
                     // });
                 } else if (data == 'B') {
                     // layer.msg("导入失败");

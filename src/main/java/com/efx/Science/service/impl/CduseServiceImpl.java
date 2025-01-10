@@ -35,7 +35,7 @@ public class CduseServiceImpl implements CduseService {
         Criteria c = cx.createCriteria();
         c.andUse002EqualTo(name);
         c.andUse003EqualTo(pwd);
-        c.andUse013EqualTo("M");
+        c.andUse013NotEqualTo("N");
         List<cduse> uselist = useMapper.selectByExample(cx);
         return uselist.size() > 0 ? uselist.get(0) : null;
     }
@@ -69,10 +69,11 @@ public class CduseServiceImpl implements CduseService {
 
 
     @Override
-    public cduse selectByName(String name) {
+    public cduse selectByName(String name, Integer id) {
         cduseExample e1 = new cduseExample();
         Criteria c = e1.createCriteria();
         c.andUse002EqualTo(name);
+        if (id != null) c.andUse011EqualTo(id);
         List<cduse> list = useMapper.selectByExample(e1);
         return list.size() > 0 ? list.get(0) : null;
     }
@@ -87,7 +88,8 @@ public class CduseServiceImpl implements CduseService {
         //check page
         page = page < 1 ? 1 : ((page > count) ? count : page);
         //query
-        List<cduse> list = useMapper.selectByExampleAndPage(example, new RowBounds((page - 1) * size, size));
+        List<cduse> list = pageBean.getOthersql1().equals("A")?useMapper.selectByExampleAndPage(example, new RowBounds((page - 1) * size, size)):
+                (pageBean.getOthersql1().equals("B")?useMapper.selectByExampleAndPage1(example, new RowBounds((page - 1) * size, size)):useMapper.selectByExampleAndPage2(example, new RowBounds((page - 1) * size, size)));
         //save to PageBean
         pageBean.setCurrentPage(page);
         pageBean.setPageCount(count);

@@ -6,7 +6,7 @@
     <meta http-equiv="pragma" content="no-cache"/>
     <meta http-equiv="cache-control" content="no-cache"/>
     <meta http-equiv="expires" content="0"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, yher-scalable=no"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="keywords" content="">
     <meta name="description" content="">
@@ -33,6 +33,12 @@
     <link rel="stylesheet" type="text/css" href="css/animate.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.min.css">
     <link rel="stylesheet" type="text/css" href="css/page.css">
+    <!--日期选择器css-->
+    <link rel="stylesheet" type="text/css" href="js/bootstrap-datepicker/bootstrap-datepicker3.min.css">
+    <!--时间日期选择器css-->
+    <link rel="stylesheet" type="text/css" href="js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+    <!--引入下拉插件css-->
+    <link rel="stylesheet" type="text/css" href="js/bootstrap-select/bootstrap-select.min.css">
 </head>
 <body>
 <div class="container-fluid">
@@ -41,7 +47,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-search mb-2-5">
-                        <form class="search-form" method="post" role="form" action="toHt/tolevel">
+                        <form class="search-form" method="post" role="form" action="toHt/toselection">
                             <input type="hidden" id="pages" name="pages" th:value="${pageobj.currentPage}"/>
                             <input type="hidden" id="counts" name="counts" th:value="${pageobj.pageCount}"/>
                             <!--text input-->
@@ -63,37 +69,52 @@
                             </div>
                         </form>
                     </div>
-
                     <div id="wrapp" >
                         <div class="jsgrid table-responsive" data-parent="#accordion">
                             <input type="file" id="file" name="file" style="display: none" onchange="daoru(this)"/>
-                            <input type="file" id="file1" name="file1" style="display: none" onchange="daoru1(this)"/>
-                            <input type="hidden" id="cjid" name="cjid" />
-                            <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%;" id="levelexm" >
+                            <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%;" id="selectionexm" >
                                 <thead>
                                 <tr>
                                     <th style="max-width:30px;">序号</th>
-                                    <th>层级名称</th>
-                                    <th>场次总量</th>
-                                    <th>场次余量</th>
-                                    <th>交通补贴费用</th>
+                                    <th>选课方名称</th>
+                                    <th>授课方名称</th>
+                                    <th>课程名称</th>
+                                    <th>老师名称</th>
+                                    <th>授课地点</th>
+                                    <th>授课日期</th>
+                                    <th>授课结束日期</th>
+                                    <th>状态</th>
                                     <th style="max-width:80px;">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody id="tablebody">
-                                    <tr th:each="item,stat:${pageobj.resultList}">
+                                <tr th:each="item,stat:${pageobj.resultList}">
                                     <td th:text="${stat.index+1}"></td>
-                                    <td th:text="${item.yha002}"></td>
-                                    <td th:text="${item.yha004}"></td>
-                                    <td th:text="${item.yha006}"></td>
-                                    <td th:text="${item.yha005}"></td>
+                                    <td th:text="${item.smd.smd003}"></td>
+                                    <td th:text="${item.yhb.yhb004}"></td>
+                                    <td th:text="${item.hba.hba002}"></td>
+                                    <td th:text="${item.yhc!=null?item.yhc.yhc002:''}"></td>
+                                    <td th:text="${item.yhe009}"></td>
+                                    <td th:text="${#dates.format(item.yhe008,'yyyy-MM-dd')}"></td>
+                                    <td th:text="${#dates.format(item.yhe020,'yyyy-MM-dd')}"></td>
+                                    <td th:text="${item.yhe007=='A'?'选课方预约':(item.yhe007=='B'?'授课方退回':(item.yhe007=='C'?'授课方接受':(item.yhe007=='D'?'选课方取消预约 ':(item.yhe007=='E'?'已完结已传资料':(item.yhe007=='F'?'已完结未传资料':'')))))}"></td>
                                     <td>
                                         <div class="btn-group btn-group-sm">
                                             <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]])" class="btn btn-table"
                                                data-bs-toggle="modal" data-bs-target="#editmode">编辑</a>
                                             <div class="ivu-divider-vertical"></div>
-                                            <a href="javascript:void(0);" th:onclick="del([[${item.yha001}]])" class="btn btn-table">删除</a>
-                                            <a href="javascript:void(0);" th:onclick="drchose([[${item.yha001}]])" class="btn btn-table">导入选课方</a>
+                                            <th:block th:if="${session.umsg.jstype=='B'}">
+                                            <th:block th:if="${item.yhe007=='A'}">
+                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['C']])">接受</a>
+                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['B']])">退回</a>
+                                            </th:block>
+                                            </th:block>
+                                            <th:block th:if="${session.umsg.jstype=='C'}">
+                                            <th:block th:if="${item.yhe007!='D'&&item.yhe007!='E'&&item.yhe007!='F'}">
+                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.yhe001}]],[[${item.yhe004}]],[['D']])">取消预约</a>
+                                            </th:block>
+                                            </th:block>
+                                            <!-- <a href="javascript:void(0);" th:onclick="del([[${item.yhe001}]])" class="btn btn-table">删除</a>-->
                                         </div>
                                     </td>
                                 </tr>
@@ -121,21 +142,69 @@
                     <input type="hidden" id="fid" value=""/>
                     <div class="modal-body">
                         <div class="row col-auto" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">层级名称</label>
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">内容科学性</label>
+                            <div class="form-check">
+                                <div class="form-check form-check-inline">
+                                    <input  class="form-check-input" id="r31" name="t3" value="A" type="radio" checked>
+                                    <label for="r32" class="form-check-label">机构</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input  class="form-check-input" id="r32" name="t3" value="B" type="radio">
+                                    <label for="r32" class="form-check-label">个人</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" id="r33" name="t3" value="C" type="radio">
+                                    <label for="r33" class="form-check-label">专家</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">机构名称/个人单位</label>
                             <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                <input type="text" class="form-control" id="t2" name="t2" placeholder="请输入层级名称"/>
+                                <input type="text" class="form-control" id="t2" name="t2" placeholder="请输入机构名称/个人单位"/>
                             </div>
                         </div>
                         <div class="row col-auto" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">场次总量</label>
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">年度场次限数</label>
                             <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                <input type="number" class="form-control" id="t4" name="t4" placeholder="请输入场次总量"/>
+                                <input type="number" class="form-control" id="t9" name="t9" placeholder="请输入年度场次限数"/>
                             </div>
                         </div>
                         <div class="row col-auto" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">交通补贴费用</label>
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">年度人次限数</label>
                             <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                <input type="number" class="form-control" id="t5" name="t5" placeholder="请输入交通补贴费用"/>
+                                <input type="number" class="form-control" id="t10" name="t10" placeholder="请输入年度人次限数"/>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">上线日期</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <input type="date" class="form-control" id="t8" name="t8" placeholder="请输入上线日期"/>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">营业执照/身份证号</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <input type="number" class="form-control" id="t4" name="t4" placeholder="请输入营业执照/身份证号"/>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">开户行</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <input type="number" class="form-control" id="t5" name="t5" placeholder="请输入开户行"/>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                        <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">户名/银行卡号</label>
+                        <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                            <input type="number" class="form-control" id="t6" name="t6" placeholder="请输入户名/银行卡号"/>
+                        </div>
+                    </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">账号/姓名</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <input type="number" class="form-control" id="t7" name="t7" placeholder="请输入账号/姓名"/>
                             </div>
                         </div>
                     </div>
@@ -205,178 +274,20 @@
     pdyes($("#pages").val(), $("#counts").val());
 
     //翻页
-    function usefanye(pageindex){
+    function yhefanye(pageindex){
         var params = [
             ["pages",pageindex],
             ["name",$.trim($("#name").val())]];
-        form_submit("toHt/tolevel","post",params,"_self");
-    }
-    function xzmb(){
-        var params = [  ["type","E"],
-            ["pages",$("#pages").val()],
-            ["name", $("#name").val()]];
-        form_submit("toHt/tolevel","post",params,"_self");
+        form_submit("toHt/toselect","post",params,"_self");
     }
 
-    function drlevel(){
-        $('#file').click();
-    }
-
-    function daoru(file){
-        var fileTypes = [ ".xlsx",".xls" ];
-        var filePath = file.value;
-        // 当括号里面的值为0、空字符、false 、null 、undefined的时候就相当于false
-        if (filePath) {
-            var isNext = false;
-            var fileEnd = filePath.substring(filePath.indexOf("."));
-            for (var i = 0; i < fileTypes.length; i++) {
-                if (fileTypes[i] == fileEnd) {
-                    isNext = true;
-                    break;
-                }
-            }
-            if(isNext == true){
-                daoruwj();
-                return;
-            }else{
-                layer.alert('只允许上传以.xlsx和.xls结尾的文件');
-                file.value = "";
-                return;
-            }
-        } else {
-            layer.alert('请选择文件');
-        }
-    }
-
-    function daoruwj() {
-        var formData = new FormData();
-        formData.append("file", document.getElementById("file").files[0]);
-        var index = layer.load(1, {
-            content: "导入中",
-            shade: [0.1, 'black'], //0.1透明度的白色背景
-            success: function (layero) {
-                layero.find('.layui-layer-content').css({
-                    'padding-top': '39px',
-                    'width': '60px'
-                });
-            }
-        });
-        $.ajax({
-            url: 'toHt/drlevel',
-            type: 'POST',
-            data: formData,
-            //async: false,                      //async 设置为 false，则所有的请求均为同步请求，在没有返回值之前，同步请求将锁住浏览器
-            cache: false,                      // 不缓存
-            processData: false,                // jQuery不要去处理发送的数据
-            contentType: false,                // jQuery不要去设置Content-Type请求头
-            dataType: 'text',
-            success: function (data) {
-                if (data == 'A') {
-                    var params = [
-                        ["pages", $("#pages").val()],
-                        ["name",$.trim($("#name").val())]];
-                    // layer.msg("导入成功", {time: 1000}, function () {
-                    form_submit("toHt/tolevel", "post", params, "_self");
-                    // });
-                } else if (data == 'B') {
-                    // layer.msg("导入失败");
-                    $("#file1").val("");
-                } else {
-                    deleteCookie('tab_list');
-                    deleteCookie('left_menu_father');
-                    deleteCookie('left_menu_son');
-                    var error = "登录失效";
-                    window.parent.location = 'login?error=' + error;
-                }
-            },
-            error: function () { layer.close(index); }
-        });
-    }
-
-
-    function drchose(id){
-        $("#cjid").val(id)
-        $('#file1').click();
-    }
-
-    function daoru1(file){
-        var fileTypes = [ ".xlsx",".xls" ];
-        var filePath = file.value;
-        // 当括号里面的值为0、空字符、false 、null 、undefined的时候就相当于false
-        if (filePath) {
-            var isNext = false;
-            var fileEnd = filePath.substring(filePath.indexOf("."));
-            for (var i = 0; i < fileTypes.length; i++) {
-                if (fileTypes[i] == fileEnd) {
-                    isNext = true;
-                    break;
-                }
-            }
-            if(isNext == true){
-                daoruxk();
-                return;
-            }else{
-                layer.alert('只允许上传以.xlsx和.xls结尾的文件');
-                file.value = "";
-                return;
-            }
-        } else {
-            layer.alert('请选择文件');
-        }
-    }
-
-    function daoruxk() {
-        var formData = new FormData();
-        formData.append("file", document.getElementById("file1").files[0]);
-        formData.append("cid",  $("#cjid").val());
-        var index = layer.load(1, {
-            content: "导入中",
-            shade: [0.1, 'black'], //0.1透明度的白色背景
-            success: function (layero) {
-                layero.find('.layui-layer-content').css({
-                    'padding-top': '39px',
-                    'width': '60px'
-                });
-            }
-        });
-        $.ajax({
-            url: 'toHt/drchose',
-            type: 'POST',
-            data: formData,
-            //async: false,                      //async 设置为 false，则所有的请求均为同步请求，在没有返回值之前，同步请求将锁住浏览器
-            cache: false,                      // 不缓存
-            processData: false,                // jQuery不要去处理发送的数据
-            contentType: false,                // jQuery不要去设置Content-Type请求头
-            dataType: 'text',
-            success: function (data) {
-                if (data == 'A') {
-                    var params = [
-                        ["pages", $("#pages").val()],
-                        ["name",$.trim($("#name").val())]];
-                    // layer.msg("导入成功", {time: 1000}, function () {
-                    form_submit("toHt/tochose", "post", params, "_self");
-                    // });
-                } else if (data == 'B') {
-                    // layer.msg("导入失败");
-                    $("#file1").val("");
-                } else {
-                    deleteCookie('tab_list');
-                    deleteCookie('left_menu_father');
-                    deleteCookie('left_menu_son');
-                    var error = "登录失效";
-                    window.parent.location = 'login?error=' + error;
-                }
-            },
-            error: function () { layer.close(index); }
-        });
-    }
     function del(id){
         if (confirm("您确定删除吗?")) {
             load_index = layer.load(1);
             var formData = new FormData();
             formData.append("fid",id);
             $.ajax({
-                url: 'toHt/dellevel', // 服务器端处理上传文件的URL
+                url: 'toHt/delselect', // 服务器端处理上传文件的URL
                 type: 'POST',
                 data: formData,
                 dataType:'json',
@@ -391,7 +302,7 @@
                         },1000);
                         layer.close(load_index);
                     }else{
-                        layer.msg("该层级下还有选课方，无法删除");
+                        layer.msg("该授课方下还有课程，无法删除");
                     }
                 },
                 error: function () { console.log('提交失败'); }
@@ -413,10 +324,23 @@
             }else{
                 josnobj = jsStringTojsonString(obj);
             }
-            $("#fid").val(josnobj.yha001);
-            $("#t2").val(josnobj.yha002);
-            $("#t4").val(josnobj.yha004);
-            $("#t5").val(josnobj.yha005);
+            $("#fid").val(josnobj.yhe001);
+            $("input[name='t3']").each(function(){
+                if($(this).val()==josnobj.yhe002){
+                    $(this).prop("checked",true);
+                }else{
+                    $(this).prop("checked",false);
+                }
+            });
+            $("#t2").val(josnobj.yhe003);
+            $("#t4").val(josnobj.yhe004);
+            $("#t5").val(josnobj.yhe005);
+            $("#t6").val(josnobj.yhe006);
+            $("#t7").val(josnobj.yhe007);
+            $("#t9").val(josnobj.yhe009);
+            $("#t10").val(josnobj.yhe010);
+            $("#t8").val(getTime(josnobj.yhe008,'YY-MM-DD'));
+            $("#t8").val(getTime(josnobj.yhe008,'YY-MM-DD'));
             $("#ftype").text("编辑");
         }else{
             $("#ftype").text("添加");
@@ -435,11 +359,17 @@
             load_index = layer.load(1);
             var formData = new FormData();
             formData.append("fid",$("#fid").val().trim());
-            formData.append("t2",$("#t2").val());
+            formData.append("t2",$("input[name='t3']:checked").val());
+            formData.append("t3",$("#t2").val());
             formData.append("t4",$("#t4").val());
             formData.append("t5",$("#t5").val());
+            formData.append("t6",$("#t6").val());
+            formData.append("t7",$("#t7").val());
+            formData.append("t8",$("#t8").val());
+            formData.append("t9",$("#t9").val());
+            formData.append("t10",$("#t10").val());
             $.ajax({
-                url: 'toHt/xglevel', // 服务器端处理上传文件的URL
+                url: 'toHt/xgselect', // 服务器端处理上传文件的URL
                 type: 'POST',
                 data: formData,
                 dataType:'json',
@@ -447,7 +377,7 @@
                 processData: false, // 不处理发送的数据
                 success: function (res) {
                     var d = eval(res);
-                    $("#fid").val(d.yha001);
+                    $("#fid").val(d.yhe001);
                     layer.close(load_index);
                     layer.msg("提交成功");
                 },
@@ -456,6 +386,66 @@
 
         }
     });
+
+    function xgzt(id,uname,type){
+        if(type=="E"){
+            var num = prompt("请输入驳回备注","");
+            if (num!="") {
+                load_index = layer.load(1);
+                var formData = new FormData();
+                formData.append("fid",id);
+                formData.append("uname",uname);
+                formData.append("type",type);
+                formData.append("t1",num);
+                $.ajax({
+                    url: 'toHt/xgztselection', // 服务器端处理上传文件的URL
+                    type: 'POST',
+                    data: formData,
+                    dataType:'json',
+                    contentType: false, // 不设置内容类型
+                    processData: false, // 不处理发送的数据
+                    success: function (res) {
+                        var d = eval(res);
+                        if(d.msg=="0"){
+                            layer.msg("修改成功");
+                            setTimeout(function(){
+                                location.reload();
+                            },1000);
+                            layer.close(load_index);
+                        }
+                    },
+                    error: function () { console.log('提交失败'); }
+                });
+            }else{
+                xgzt(id,uname,type);
+            }
+        }else if (confirm("您确定修改吗?")) {
+            load_index = layer.load(1);
+            var formData = new FormData();
+            formData.append("fid",id);
+            formData.append("uname",uname);
+            formData.append("type",type);
+            $.ajax({
+                url: 'toHt/xgztselection', // 服务器端处理上传文件的URL
+                type: 'POST',
+                data: formData,
+                dataType:'json',
+                contentType: false, // 不设置内容类型
+                processData: false, // 不处理发送的数据
+                success: function (res) {
+                    var d = eval(res);
+                    if(d.msg=="0"){
+                        layer.msg("修改成功");
+                        setTimeout(function(){
+                            location.reload();
+                        },1000);
+                        layer.close(load_index);
+                    }
+                },
+                error: function () { console.log('提交失败'); }
+            });
+        }
+    }
 </script>
 </body>
 </html>

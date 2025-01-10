@@ -3,6 +3,26 @@ package com.efx.Science.model;
 import java.util.Date;
 
 public class cduse {
+
+    private cdsmd smd;
+    private cdyhb yhb;
+
+    public cdsmd getSmd() {
+        return smd;
+    }
+
+    public void setSmd(cdsmd smd) {
+        this.smd = smd;
+    }
+
+    public cdyhb getYhb() {
+        return yhb;
+    }
+
+    public void setYhb(cdyhb yhb) {
+        this.yhb = yhb;
+    }
+
     private Integer use001;
 
     private String use002;

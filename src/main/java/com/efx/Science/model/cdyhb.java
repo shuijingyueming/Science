@@ -3,6 +3,17 @@ package com.efx.Science.model;
 import java.util.Date;
 
 public class cdyhb {
+
+    private cdyha yha;
+
+    public cdyha getYha() {
+        return yha;
+    }
+
+    public void setYha(cdyha yha) {
+        this.yha = yha;
+    }
+
     private Integer yhb001;
 
     private Integer yhb002;

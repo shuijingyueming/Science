@@ -72,6 +72,7 @@ public class LoginController extends BaseController {
         HttpSession session = request.getSession();
         //直接去掉账号session
         if (null != session.getAttribute("user")) session.removeAttribute("user");
+        mav.addObject("yhalist", yhaService.getAll());
         mav.setViewName("HTlogin");
         return mav;
     }

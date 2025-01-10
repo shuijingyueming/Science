@@ -1,0 +1,208 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <base th:href="${#request.getContextPath()}+'/'">
+    <title>后台管理系统</title>
+    <meta http-equiv="pragma" content="no-cache"/>
+    <meta http-equiv="cache-control" content="no-cache"/>
+    <meta http-equiv="expires" content="0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="stylesheet" type="text/css" href="css/materialdesignicons.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="js/bootstrap-multitabs/multitabs.min.css">
+    <link type="text/css" rel="stylesheet" href="js/jquery-tagsinput/jquery.tagsinput.min.css">
+    <link type="text/css" rel="stylesheet" href="js/webuploader/webuploader.css">
+    <link type="text/css" rel="stylesheet" href="js/magnific-popup/magnific-popup.min.css">
+    <link rel="stylesheet" type="text/css" href="css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.min.css">
+    <link rel="stylesheet" type="text/css" href="css/page.css">
+</head>
+<body>
+<div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <header class="card-header">
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">状态</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                               [[${zt=='E'?'驳回：'+bz:(zt=='P'?'审核中':(zt=='M'?'通过':''))}]]
+
+                            </div>
+                        </div>
+                    </header>
+                    <div class="card-body">
+                        <form id="uploadForm" enctype="multipart/form-data">
+                            <input type="hidden" id="fid" th:value="${item.smd001}" />
+                            <div class="modal-body">
+                                <div class="row col-auto" style="margin-top: 20px;">
+                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">身份类别</label>
+                                    <div class="form-check">
+                                        <div class="form-check form-check-inline">
+                                            <input  class="form-check-input" id="r31" name="t3" value="A" type="radio" th:checked="${item.smd002=='A'?true:false}" >
+                                            <label for="r32" class="form-check-label">机构</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input  class="form-check-input" id="r32" name="t3" value="B" type="radio" th:checked="${item.smd002=='B'?true:false}">
+                                            <label for="r32" class="form-check-label">个人</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" id="r33" name="t3" value="C" type="radio" th:checked="${item.smd002=='C'?true:false}">
+                                            <label for="r33" class="form-check-label">专家</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row col-auto" style="margin-top: 20px;">
+                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">机构名称/个人单位</label>
+                                    <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                        <input type="text" class="form-control" id="t2" name="t2"  th:value="${item.smd003}"  placeholder="请输入机构名称/个人单位"/>
+                                    </div>
+                                </div>
+                                <div class="row col-auto" style="margin-top: 20px;">
+                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">年度场次限数</label>
+                                    <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                        <input type="number" class="form-control" id="t9" name="t9" th:value="${item.smd009}" placeholder="请输入年度场次限数"/>
+                                    </div>
+                                </div>
+                                <div class="row col-auto" style="margin-top: 20px;">
+                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">年度人次限数</label>
+                                    <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                        <input type="number" class="form-control" id="t10" name="t10" th:value="${item.smd010}" placeholder="请输入年度人次限数"/>
+                                    </div>
+                                </div>
+                                <div class="row col-auto" style="margin-top: 20px;">
+                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">上线日期</label>
+                                    <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                        <input type="date" class="form-control" id="t8" name="t8" th:value="${#dates.format(item.smd008,'yyyy-MM-dd')}" placeholder="请输入上线日期"/>
+                                    </div>
+                                </div>
+                                <div class="row col-auto" style="margin-top: 20px;">
+                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">营业执照/身份证号</label>
+                                    <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                        <input type="number" class="form-control" id="t4" name="t4" th:value="${item.smd004}" placeholder="请输入营业执照/身份证号"/>
+                                    </div>
+                                </div>
+                                <div class="row col-auto" style="margin-top: 20px;">
+                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">开户行</label>
+                                    <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                        <input type="number" class="form-control" id="t5" name="t5"th:value="${item.smd005}"  placeholder="请输入开户行"/>
+                                    </div>
+                                </div>
+                                <div class="row col-auto" style="margin-top: 20px;">
+                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">户名/银行卡号</label>
+                                    <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                        <input type="number" class="form-control" id="t6" name="t6"th:value="${item.smd006}"  placeholder="请输入户名/银行卡号"/>
+                                    </div>
+                                </div>
+                                <div class="row col-auto" style="margin-top: 20px;">
+                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">账号/姓名</label>
+                                    <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                        <input type="number" class="form-control" id="t7" name="t7"th:value="${item.smd007}"  placeholder="请输入账号/姓名"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer" style="height:100px;">
+                                <button type="submit" class="btn btn-primary" id="edit-four">保存</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/popper.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<!-- 数字动态滚动增加效果 -->
+<script type="text/javascript" src="js/scroll-numbers.js"></script>
+<!--引入chart插件js-->
+<script type="text/javascript" src="js/main.min.js"></script>
+<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-multitabs/multitabs.min.js"></script>
+<script type="text/javascript" src="js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="js/index.min.js"></script>
+<!-- 表格JS -->
+<script type="text/javascript" src="static/tables/datatables.min.js"></script>
+<script type="text/javascript" src="static/tables/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="static/tables/jszip.min.js"></script>
+<script type="text/javascript" src="static/tables/pdfmake.min.js"></script>
+<script type="text/javascript" src="static/tables/vfs_fonts.js"></script>
+<script type="text/javascript" src="static/tables/buttons.html5.min.js"></script>
+<script type="text/javascript" src="static/tables/buttons.print.min.js"></script>
+<script type="text/javascript" src="static/tables/datatable.js"></script>
+<!--tags插件-->
+<script type="text/javascript" src="js/jquery-tagsinput/jquery.tagsinput.min.js"></script>
+<!--上传插件-->
+<script type="text/javascript" src="js/webuploader/webuploader.js"></script>
+<!--灯箱效果插件-->
+<script type="text/javascript" src="js/magnific-popup/magnific-popup.min.js"></script>
+<!--通知消息插件-->
+<script type="text/javascript" src="js/bootstrap-notify.min.js"></script>
+<!--引入标签插件js-->
+<script type="text/javascript" src="js/jquery-confirm/jquery-confirm.min.js"></script>
+<script type="text/javascript" src="js/main.min.js"></script>
+<!--引入下拉插件js-->
+<script type="text/javascript" src="js/bootstrap-select/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-select/i18n/defaults-zh_CN.min.js"></script>
+<script type="text/javascript" src="js/layer/layer.js"></script>
+<script type="text/javascript" src="js/layui/layui.js"></script>
+<!-- validate JS 验证-->
+<script type="text/javascript" src="assets/jquery-validate/jquery.validate.js"></script>
+<script type="text/javascript" src="assets/jquery-validate/validate-methods.js"></script>
+<script type="text/javascript">
+
+    var layer = layui.layer;
+    var file_lastName = "";
+    var load_index;
+    $("#uploadForm").validate({
+        errorPlacement: function(error, element) {
+            //替换错误显示位置，error表示错误信息
+            $(element).parent("div").parent("div").append(error);
+            $(element).parent("div").parent("div").find("label").addClass("col-12");
+            // $(element).parent("div").parent("div").find("label").attr("style","margin-left:5px;");
+        },
+        rules : {t2: { required : true, },t4: { required : true, },t5: { required : true, },},
+        messages: {},
+        submitHandler: function(form) {
+            load_index = layer.load(1);
+            var formData = new FormData();
+            formData.append("fid",$("#fid").val().trim());
+            formData.append("t2",$("input[name='t3']:checked").val());
+            formData.append("t3",$("#t2").val());
+            formData.append("t4",$("#t4").val());
+            formData.append("t5",$("#t5").val());
+            formData.append("t6",$("#t6").val());
+            formData.append("t7",$("#t7").val());
+            formData.append("t8",$("#t8").val());
+            formData.append("t9",$("#t9").val());
+            formData.append("t10",$("#t10").val());
+            formData.append("zt","X");
+            $.ajax({
+                url: 'toHt/xgselect', // 服务器端处理上传文件的URL
+                type: 'POST',
+                data: formData,
+                dataType:'json',
+                contentType: false, // 不设置内容类型
+                processData: false, // 不处理发送的数据
+                success: function (res) {
+                    var d = eval(res);
+                    $("#fid").val(d.smd001);
+                    layer.close(load_index);
+                    layer.msg("提交成功");
+                },
+                error: function () { console.log('提交失败'); }
+            });
+
+        }
+    });
+</script>
+</body>
+</html>

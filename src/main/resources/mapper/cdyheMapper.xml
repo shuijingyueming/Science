@@ -47,6 +47,12 @@
     <result column="YHE031" jdbcType="LONGVARCHAR" property="yhe031" />
     <result column="YHE039" jdbcType="LONGVARCHAR" property="yhe039" />
   </resultMap>
+  <resultMap id="BaseResultMap1" type="com.efx.Science.model.cdyheWithBLOBs"  extends="ResultMapWithBLOBs">
+    <association property="smd" column="YHE002" select="com.efx.Science.dao.cdsmdMapper.selectByPrimaryKey"/>
+    <association property="yhb" column="YHE003" select="com.efx.Science.dao.cdyhbMapper.selectByPrimaryKey"/>
+    <association property="hba" column="YHE004" select="com.efx.Science.dao.cdhbaMapper.selectByPrimaryKey"/>
+    <association property="yhc" column="YHE005" select="com.efx.Science.dao.cdyhcMapper.selectByPrimaryKey"/>
+  </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -896,12 +902,12 @@
       YHE042 = #{yhe042,jdbcType=VARCHAR}
     where YHE001 = #{yhe001,jdbcType=INTEGER}
   </update>
-  <select id="selectByExampleAndPage" resultMap="BaseResultMap" parameterType="com.efx.Science.model.cdyheExample" flushCache="true" useCache="false">
+  <select id="selectByExampleAndPage" resultMap="BaseResultMap1" parameterType="com.efx.Science.model.cdyheExample" flushCache="true" useCache="false">
     select
     <if test="distinct" >
       distinct
     </if>
-    <include refid="Base_Column_List" />
+    <include refid="Base_Column_List" />, <include refid="Blob_Column_List" />
     from cdyhe
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />

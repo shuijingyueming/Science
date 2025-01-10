@@ -1,6 +1,43 @@
 package com.efx.Science.model;
 
 public class cdyheWithBLOBs extends cdyhe {
+
+    private cdsmd smd;
+    private cdyhb yhb;
+    private cdhba hba;
+    private cdyhc yhc;
+
+    public cdsmd getSmd() {
+        return smd;
+    }
+
+    public void setSmd(cdsmd smd) {
+        this.smd = smd;
+    }
+
+    public cdyhb getYhb() {
+        return yhb;
+    }
+
+    public void setYhb(cdyhb yhb) {
+        this.yhb = yhb;
+    }
+
+    public cdhba getHba() {
+        return hba;
+    }
+
+    public void setHba(cdhba hba) {
+        this.hba = hba;
+    }
+
+    public cdyhc getYhc() {
+        return yhc;
+    }
+
+    public void setYhc(cdyhc yhc) {
+        this.yhc = yhc;
+    }
     private String yhe029;
 
     private String yhe030;

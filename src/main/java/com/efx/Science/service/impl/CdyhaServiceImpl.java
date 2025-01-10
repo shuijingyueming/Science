@@ -72,6 +72,11 @@ public class CdyhaServiceImpl implements CdyhaService {
         yhaMapper.deleteByPrimaryKey(id);
     }
 
+    @Override
+    public List<cdyha> getAll() {
+        return yhaMapper.selectByExample(null);
+    }
+
 
     public PageBean queryByPage(PageBean pageBean, cdyhaExample example) {
         int page = (int) pageBean.getCurrentPage();

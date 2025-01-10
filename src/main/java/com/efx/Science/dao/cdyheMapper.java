@@ -36,5 +36,5 @@ public interface cdyheMapper {
 
     int updateByPrimaryKey(cdyhe record);
 
-    List<cdyhe> selectByExampleAndPage(cdyheExample example, RowBounds rowBounds);
+    List<cdyheWithBLOBs> selectByExampleAndPage(cdyheExample example, RowBounds rowBounds);
 }

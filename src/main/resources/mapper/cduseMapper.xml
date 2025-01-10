@@ -18,6 +18,12 @@
     <result column="USE014" jdbcType="VARCHAR" property="use014" />
     <result column="USE015" jdbcType="VARCHAR" property="use015" />
   </resultMap>
+  <resultMap id="BaseResultMap1" type="com.efx.Science.model.cduse"  extends="BaseResultMap">
+    <association property="smd" column="USE011" select="com.efx.Science.dao.cdsmdMapper.selectByPrimaryKey"/>
+  </resultMap>
+  <resultMap id="BaseResultMap2" type="com.efx.Science.model.cduse"  extends="BaseResultMap">
+    <association property="yhb" column="USE011" select="com.efx.Science.dao.cdyhbMapper.selectByPrimaryKey"/>
+  </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -368,6 +374,34 @@
     where USE001 = #{use001,jdbcType=INTEGER}
   </update>
   <select id="selectByExampleAndPage" resultMap="BaseResultMap" parameterType="com.efx.Science.model.cduseExample" flushCache="true" useCache="false">
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cduse
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExampleAndPage1" resultMap="BaseResultMap1" parameterType="com.efx.Science.model.cduseExample" flushCache="true" useCache="false">
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cduse
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExampleAndPage2" resultMap="BaseResultMap2" parameterType="com.efx.Science.model.cduseExample" flushCache="true" useCache="false">
     select
     <if test="distinct" >
       distinct

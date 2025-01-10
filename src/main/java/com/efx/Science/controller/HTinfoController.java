@@ -7,7 +7,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.efx.Science.model.*;
 import com.efx.Science.until.EncrpytUtil;
 import com.efx.Science.until.ExcelExport;
-import com.google.gson.JsonArray;
+import com.efx.Science.until.RSACoder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -23,7 +23,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.time.LocalDate;
@@ -41,7 +40,7 @@ public class HTinfoController extends BaseController {
 
     private DateFormat df = DateFormat.getDateInstance();
 
-//框架页面加载
+    //框架页面加载
     @RequestMapping("/toHTindex")
     public ModelAndView index(HttpServletRequest request, HttpServletResponse response) throws Exception{
         HttpSession session = request.getSession();
@@ -80,30 +79,35 @@ public class HTinfoController extends BaseController {
         if(session.getAttribute("user")==null){
             SystemTZYM(response,"登录失效");
             return null;
-        }else{
-            userid = Decrypt(session.getAttribute("user").toString());
-            cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
-            mav.addObject("msg", request.getParameter("msg"));
-            PageBean pb = new PageBean();
-            if (request.getParameter("pages") != null && !request.getParameter("pages").isEmpty())
-                pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
-            else
-                pb.setCurrentPage(1);
-            if (request.getParameter("name") != null && !request.getParameter("name").isEmpty()) {
-                pb.setOthersql(request.getParameter("name"));
-            }
-            if (request.getParameter("phone") != null && !request.getParameter("phone").isEmpty()) {
-                pb.setOthersql6(request.getParameter("phone"));
-            }
-            if (request.getParameter("lx") != null && !request.getParameter("lx").isEmpty()) {
-                pb.setOthersql1(request.getParameter("lx"));
-            }
-            mav.addObject("pageobj", useService.selectPageBean(pb));
-            if(pb.getOthersql1().equals("B")){
-                mav.addObject("smdlist", smdService.getAll());
-            }else if(pb.getOthersql1().equals("C")){
-
-            }
+        }
+        userid = Decrypt(session.getAttribute("user").toString());
+        cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
+        mav.addObject("msg", request.getParameter("msg"));
+        PageBean pb = new PageBean();
+        if (request.getParameter("pages") != null && !request.getParameter("pages").isEmpty())
+            pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
+        else
+            pb.setCurrentPage(1);
+        if (request.getParameter("name") != null && !request.getParameter("name").isEmpty()) {
+            pb.setOthersql(request.getParameter("name"));
+        }
+        if (request.getParameter("phone") != null && !request.getParameter("phone").isEmpty()) {
+            pb.setOthersql6(request.getParameter("phone"));
+        }
+        if (request.getParameter("lx") != null && !request.getParameter("lx").isEmpty()) {
+            pb.setOthersql1(request.getParameter("lx"));
+        }
+        if(user.getUse009().equals("B")||user.getUse009().equals("C")){
+            pb.setOthersql5(String.valueOf(user.getUse011()));
+        }else if(request.getParameter("skid") != null && !request.getParameter("skid").toString().isEmpty()){
+            pb.setOthersql5(request.getParameter("skid"));
+        }
+        pb.setOthersql3(String.valueOf(user.getUse001()));
+        mav.addObject("pageobj", useService.selectPageBean(pb));
+        if(pb.getOthersql1().equals("B")){
+            mav.addObject("smdlist", smdService.getAll());
+        }else if(pb.getOthersql1().equals("C")){
+            mav.addObject("yhblist", yhbService.getAll());
         }
         mav.setViewName("staff");
         return mav;
@@ -173,6 +177,11 @@ public class HTinfoController extends BaseController {
         addLog(getUse(request).getUse002(),"修改了活动名称为：【" + request.getParameter("uname") + "】的状态");
         cduse use = useService.getByid(Integer.valueOf(request.getParameter("fid")));
         use.setUse013(request.getParameter("type"));
+        if(request.getParameter("t1")!=null){
+            use.setUse014(request.getParameter("t1"));
+        }else{
+            use.setUse014("");
+        }
         useService.update(use);
         result.put("msg","0");
         return JSON.toJSONString(result);
@@ -197,9 +206,9 @@ public class HTinfoController extends BaseController {
         item.setUse002(request.getParameter("t2"));
         item.setUse004(request.getParameter("t4"));
         item.setUse005(request.getParameter("t5"));
-        if(request.getParameter("t11")!=null&&request.getParameter("t11").isEmpty())item.setUse011(Integer.valueOf(request.getParameter("t11")));
+        if(request.getParameter("t11")!=null&&!request.getParameter("t11").isEmpty())item.setUse011(Integer.valueOf(request.getParameter("t11")));
         if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()){
-            String log = "修改了名字为：【" + request.getParameter("t1") + "】的用户信息";
+            String log = "修改了名字为：【" + request.getParameter("t2") + "】的用户信息";
             item.setUse001(Integer.valueOf((request.getParameter("fid"))));
             addLog(getUse(request).getUse002(),log);
             useService.update(item);
@@ -212,7 +221,7 @@ public class HTinfoController extends BaseController {
             }
             result.put("msg", "U");
         }else{
-            String log = "新增了名字为：【" + request.getParameter("t1")+ "】的用户信息";
+            String log = "新增了名字为：【" + request.getParameter("t2")+ "】的用户信息";
             item.setUse003(EncrpytUtil.getSHA256("123456"));
             item.setUse009(request.getParameter("t9"));
             item.setUse013("M");
@@ -221,6 +230,106 @@ public class HTinfoController extends BaseController {
             result.put("msg", "I");
         }
         result.put("d",item);
+        return JSON.toJSONString(result);
+    }
+
+    /**
+     * 修改账户
+     * 王新苗
+     * @param request
+     * @param response
+     */
+    @ResponseBody
+    @RequestMapping(value = "/xgselect1")
+    public String xgselect1(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        HttpSession session = request.getSession();
+        cdsmd item = new cdsmd();
+        //修改
+        item.setSmd002(request.getParameter("t2"));
+        item.setSmd003(request.getParameter("t3"));
+        item.setSmd004(request.getParameter("t4"));
+        item.setSmd005(request.getParameter("t5"));
+        item.setSmd006(request.getParameter("t6"));
+        item.setSmd007(request.getParameter("t7"));
+        item.setSmd009(Integer.valueOf(request.getParameter("t9")));
+        item.setSmd010(Integer.valueOf(request.getParameter("t10")));
+        item.setSmd008(DATE.parse(request.getParameter("t8")));
+        item.setSmd011(0);
+        item.setSmd012(0);
+        item.setSmd013(0);
+        item = smdService.insert(item);
+        result.put("msg", "I");
+        cduse use = new cduse();
+        //修改
+        use.setUse002(request.getParameter("z2"));
+        use.setUse003(EncrpytUtil.getSHA256("123456"));
+        use.setUse004(request.getParameter("z4"));
+        use.setUse005(request.getParameter("z5"));
+        use.setUse013("P");
+        use.setUse009("B");
+        use.setUse011(item.getSmd001());
+        use = useService.insert(use);
+        byte[] encodedData = RSACoder.encryptByPublicKey(use.getUse001()+"", EncrpytUtil.publicKey);
+        session.setAttribute("user", RSACoder.encryptBASE64(encodedData));
+        //用户信息
+        user user = new user();
+        user.setUname(use.getUse002());
+        user.setJstype(use.getUse009());
+        if (use.getUse002().equals("A")) user.setJs("平台管理员");
+        else if (use.getUse002().equals("B")) user.setJs("授课方管理员");
+        else if (use.getUse002().equals("C")) user.setJs("选课方管理员");
+        session.setAttribute("umsg", user);
+        result.put("d",item);
+        return JSON.toJSONString(result);
+    }
+
+    /**
+     * 修改账户
+     * 王新苗
+     * @param request
+     * @param response
+     */
+    @ResponseBody
+    @RequestMapping(value = "/xgchose1")
+    public String xgchose1(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        HttpSession session = request.getSession();
+        cdyhb item = new cdyhb();
+        //修改
+        item.setYhb002(Integer.valueOf(request.getParameter("t2")));
+        item.setYhb004(request.getParameter("t4"));
+        item.setYhb005(request.getParameter("t5"));
+        item.setYhb006(request.getParameter("t6"));
+        item.setYhb007(request.getParameter("t7"));
+        item.setYhb011(DATE.parse(request.getParameter("t11")));
+        item.setYhb016(Integer.valueOf(request.getParameter("t16")));
+        item.setYhb017(Float.valueOf(request.getParameter("t16")));
+        item.setYhb012(0);
+        item.setYhb013(0);
+        item.setYhb014(0);
+        item.setYhb015(0);
+        item = yhbService.insert(item);
+        cduse use = new cduse();
+        //修改
+        use.setUse002(request.getParameter("z2"));
+        use.setUse003(EncrpytUtil.getSHA256("123456"));
+        use.setUse004(request.getParameter("z4"));
+        use.setUse005(request.getParameter("z5"));
+        use.setUse013("P");
+        use.setUse009("C");
+        use.setUse011(item.getYhb001());
+        use = useService.insert(use);
+        byte[] encodedData = RSACoder.encryptByPublicKey(use.getUse001()+"", EncrpytUtil.publicKey);
+        session.setAttribute("user", RSACoder.encryptBASE64(encodedData));
+        //用户信息
+        user user = new user();
+        user.setUname(use.getUse002());
+        user.setJstype(use.getUse009());
+        if (use.getUse002().equals("A")) user.setJs("平台管理员");
+        else if (use.getUse002().equals("B")) user.setJs("授课方管理员");
+        else if (use.getUse002().equals("C")) user.setJs("选课方管理员");
+        session.setAttribute("umsg", user);
         return JSON.toJSONString(result);
     }
 
@@ -233,26 +342,25 @@ public class HTinfoController extends BaseController {
         if(session.getAttribute("user")==null){
             SystemTZYM(response,"登录失效");
             return null;
-        }else{
-            //导出模板
-            if (request.getParameter("type") != null && request.getParameter("type").equals("E")) {
-                String fpath = LoginController.class.getClass().getResource("/").getPath();
-                downloadLocal(fpath.substring(1,fpath.length())+"static/upload/level.xls", "层级导入模板.xls",response, request);
-                return null;
-            }
-            userid = Decrypt(session.getAttribute("user").toString());
-            cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
-            mav.addObject("msg",request.getParameter("msg") );
-            PageBean pb = new PageBean();
-            if (request.getParameter("pages") != null && !request.getParameter("pages").toString().isEmpty())
-                pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
-            else
-                pb.setCurrentPage(1);
-            if (request.getParameter("name") != null && !request.getParameter("name").toString().isEmpty()) {
-                pb.setOthersql(request.getParameter("name"));
-            }
-            mav.addObject("pageobj", yhaService.selectPageBean(pb));
         }
+        //导出模板
+        if (request.getParameter("type") != null && request.getParameter("type").equals("E")) {
+            String fpath = LoginController.class.getClass().getResource("/").getPath();
+            downloadLocal(fpath.substring(1,fpath.length())+"static/upload/level.xls", "层级导入模板.xls",response, request);
+            return null;
+        }
+        userid = Decrypt(session.getAttribute("user").toString());
+        cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
+        mav.addObject("msg",request.getParameter("msg") );
+        PageBean pb = new PageBean();
+        if (request.getParameter("pages") != null && !request.getParameter("pages").toString().isEmpty())
+            pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
+        else
+            pb.setCurrentPage(1);
+        if (request.getParameter("name") != null && !request.getParameter("name").toString().isEmpty()) {
+            pb.setOthersql(request.getParameter("name"));
+        }
+        mav.addObject("pageobj", yhaService.selectPageBean(pb));
         mav.setViewName("HTlevel");
         return mav;
     }
@@ -329,6 +437,136 @@ public class HTinfoController extends BaseController {
         return JSON.toJSONString(result);
     }
 
+    /**
+     * 导入excel
+     * 王新苗
+     */
+    @ResponseBody
+    @RequestMapping(value = "/drchose")
+    public String drchose(HttpServletRequest request, HttpServletResponse response)throws Exception {
+        HttpSession session = request.getSession();
+        if (session.getAttribute("user") == null) {
+            SystemTZYM(response, "登录失效");
+            return null;
+        }
+        try {
+            Integer id = Integer.valueOf(request.getParameter("cid"));
+            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+            MultipartFile file = multipartRequest.getFile("file");
+            InputStream in = file.getInputStream();
+            ExcelExport.getByExcelchose(in, file.getOriginalFilename(),useService,yhbService,id);
+            addLog(getUse(request).getUse002(),"导入了选课方信息");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "B";
+        }
+        return "A";
+    }
+
+
+    /**
+     * 进入管理员管理页面
+     * othersql:登录名  othersql1:机构
+     * @return 用户页面
+     */
+    @RequestMapping("/tochose")
+    public ModelAndView tochose(HttpServletRequest request,HttpServletResponse response) throws Exception{
+        ModelAndView mav = new ModelAndView();
+        HttpSession session = request.getSession();
+        int userid = 0;//后台登录用户ID
+        if(session.getAttribute("user")==null){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
+        userid = Decrypt(session.getAttribute("user").toString());
+        cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
+        if(user.getUse009().equals("A")){
+            //导出模板
+            if (request.getParameter("type") != null && request.getParameter("type").equals("E")) {
+                String fpath = LoginController.class.getClass().getResource("/").getPath();
+                downloadLocal(fpath.substring(1,fpath.length())+"static/upload/chose.xls", "选课方导入模板.xls",response, request);
+                return null;
+            }
+            mav.addObject("msg", request.getParameter("msg"));
+            PageBean pb = new PageBean();
+            if (request.getParameter("pages") != null && !request.getParameter("pages").isEmpty())
+                pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
+            else
+                pb.setCurrentPage(1);
+            if (request.getParameter("name") != null && !request.getParameter("name").isEmpty()) {
+                pb.setOthersql(request.getParameter("name"));
+            }
+            if (request.getParameter("phone") != null && !request.getParameter("phone").isEmpty()) {
+                pb.setOthersql6(request.getParameter("phone"));
+            }
+            if (request.getParameter("lx") != null && !request.getParameter("lx").isEmpty()) {
+                pb.setOthersql1(request.getParameter("lx"));
+            }
+            mav.addObject("pageobj", yhbService.selectPageBean(pb));
+            mav.addObject("yhalist", yhaService.getAll());
+            mav.setViewName("HTchose");
+        }else{
+            mav.addObject("item", yhbService.getByid(user.getUse011()));
+            mav.addObject("zt", user.getUse013());
+            mav.addObject("bz", user.getUse014());
+            mav.setViewName("HTchosexq");
+        }
+        return mav;
+    }
+
+
+    /**
+     * 修改账户
+     * 王新苗
+     * @param request
+     * @param response
+     */
+    @ResponseBody
+    @RequestMapping(value = "/xgchose")
+    public String xgchose(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        HttpSession session = request.getSession();
+        if (session.getAttribute("user") == null) {
+            SystemTZYM(response, "登录失效");
+            return null;
+        }
+        cdyhb item = new cdyhb();
+        //修改
+        item.setYhb002(Integer.valueOf(request.getParameter("t2")));
+        item.setYhb004(request.getParameter("t4"));
+        item.setYhb005(request.getParameter("t5"));
+        item.setYhb006(request.getParameter("t6"));
+        item.setYhb007(request.getParameter("t7"));
+        item.setYhb011(DATE.parse(request.getParameter("t11")));
+        item.setYhb016(Integer.valueOf(request.getParameter("t16")));
+        item.setYhb017(Float.valueOf(request.getParameter("t16")));
+        if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()){
+            String log = "修改了名字为：【" + request.getParameter("t1") + "】的用户信息";
+            item.setYhb001(Integer.valueOf((request.getParameter("fid"))));
+            addLog(getUse(request).getUse002(),log);
+            yhbService.update(item);
+            result.put("msg", "U");
+        }else{
+            String log = "新增了名字为：【" + request.getParameter("t1")+ "】的用户信息";
+            item.setYhb012(0);
+            item.setYhb013(0);
+            item.setYhb014(0);
+            item.setYhb015(0);
+            addLog(getUse(request).getUse002(),log);
+            item = yhbService.insert(item);
+            result.put("msg", "I");
+        }
+        if(request.getParameter("zt")!=null){
+            cduse use=new cduse();
+            use.setUse001(Decrypt(session.getAttribute("user").toString()));
+            use.setUse013("P");
+            use.setUse014("");
+            useService.update(use);
+        }
+        result.put("d",item);
+        return JSON.toJSONString(result);
+    }
+
     //后台分类加载
     @RequestMapping("/tocourselx")
     public ModelAndView tocourselx(HttpServletRequest request, HttpServletResponse response) throws Exception{
@@ -338,20 +576,20 @@ public class HTinfoController extends BaseController {
         if(session.getAttribute("user")==null){
             SystemTZYM(response,"登录失效");
             return null;
-        }else{
-            userid = Decrypt(session.getAttribute("user").toString());
-            cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
-            mav.addObject("msg",request.getParameter("msg") );
-            PageBean pb = new PageBean();
-            if (request.getParameter("pages") != null && !request.getParameter("pages").toString().isEmpty())
-                pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
-            else
-                pb.setCurrentPage(1);
-            if (request.getParameter("name") != null && !request.getParameter("name").toString().isEmpty()) {
-                pb.setOthersql(request.getParameter("name"));
-            }
-            mav.addObject("pageobj", hbbService.selectPageBean(pb));
         }
+        userid = Decrypt(session.getAttribute("user").toString());
+        cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
+        mav.addObject("msg",request.getParameter("msg") );
+        PageBean pb = new PageBean();
+        if (request.getParameter("pages") != null && !request.getParameter("pages").toString().isEmpty())
+            pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
+        else
+            pb.setCurrentPage(1);
+        if (request.getParameter("name") != null && !request.getParameter("name").toString().isEmpty()) {
+            pb.setOthersql(request.getParameter("name"));
+        }
+        mav.addObject("pageobj", hbbService.selectPageBean(pb));
+
         mav.setViewName("HTcourselx");
         return mav;
     }
@@ -413,22 +651,26 @@ public class HTinfoController extends BaseController {
         if(session.getAttribute("user")==null){
             SystemTZYM(response,"登录失效");
             return null;
-        }else{
-            userid = Decrypt(session.getAttribute("user").toString());
-            cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
-            mav.addObject("msg",request.getParameter("msg") );
-            PageBean pb = new PageBean();
-            if (request.getParameter("pages") != null && !request.getParameter("pages").toString().isEmpty())
-                pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
-            else
-                pb.setCurrentPage(1);
-            if (request.getParameter("name") != null && !request.getParameter("name").toString().isEmpty()) {
-                pb.setOthersql(request.getParameter("name"));
-            }
-            mav.addObject("pageobj", hbaService.selectPageBean(pb));
-            mav.addObject("smdlist", smdService.getAll());
-            mav.addObject("hbblist", hbbService.getAll());
         }
+        userid = Decrypt(session.getAttribute("user").toString());
+        cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
+        mav.addObject("msg",request.getParameter("msg") );
+        PageBean pb = new PageBean();
+        if (request.getParameter("pages") != null && !request.getParameter("pages").toString().isEmpty())
+            pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
+        else
+            pb.setCurrentPage(1);
+        if (request.getParameter("name") != null && !request.getParameter("name").toString().isEmpty()) {
+            pb.setOthersql(request.getParameter("name"));
+        }
+        if(user.getUse009().equals("B")){
+            pb.setOthersql1(String.valueOf(user.getUse011()));
+        }else  if (request.getParameter("skid") != null && !request.getParameter("skid").toString().isEmpty()) {
+            pb.setOthersql1(request.getParameter("skid"));
+        }
+        mav.addObject("pageobj", hbaService.selectPageBean(pb));
+        mav.addObject("smdlist", smdService.getAll());
+        mav.addObject("hbblist", hbbService.getAll());
         mav.setViewName("HTcourse");
         return mav;
     }
@@ -446,6 +688,7 @@ public class HTinfoController extends BaseController {
         addLog(getUse(request).getUse002(),"修改了活动名称为：【" + request.getParameter("uname") + "】的状态");
         cdhba hba=hbaService.getByid(Integer.valueOf(request.getParameter("fid")));
         hba.setHba026(request.getParameter("type"));
+        if(request.getParameter("t1")!=null)hba.setHba025(request.getParameter("t1"));
         hbaService.update(hba);
         result.put("msg","0");
         return JSON.toJSONString(result);
@@ -495,24 +738,32 @@ public class HTinfoController extends BaseController {
         if(!request.getParameter("t12").isEmpty())item.setHba012(Float.valueOf(request.getParameter("t12")));
         if(!request.getParameter("t13").isEmpty())item.setHba013(Integer.valueOf(request.getParameter("t13")));
         item.setHba014(request.getParameter("t14"));
-        item.setHba019(request.getParameter("t15"));
-        item.setHba018(request.getParameter("t16"));
+        item.setHba015(request.getParameter("t15"));
+        item.setHba016(request.getParameter("t16"));
         item.setHba017(request.getParameter("t17"));
         item.setHba019(request.getParameter("t19"));
         Date date = new Date();
         MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
         MultipartFile file = multipartHttpServletRequest.getFile("t20");
-        if(null!=file.getOriginalFilename()&&!file.getOriginalFilename().toString().isEmpty()){
+        if(null!=file&&null!=file.getOriginalFilename()&&!file.getOriginalFilename().toString().isEmpty()){
             String filename = sdf.format(date)+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
             item.setHba020(filename);
             uploadpic("kcvideo/"+filename,file,"kcvideo/"+request.getParameter("tt20"));
         }
         if(!request.getParameter("t21").isEmpty())item.setHba021(Integer.valueOf(request.getParameter("t21")));
         if(!request.getParameter("t22").isEmpty())item.setHba022(Integer.valueOf(request.getParameter("t22")));
+        MultipartFile file1 = multipartHttpServletRequest.getFile("t24");
+        if(null!=file1&&null!=file1.getOriginalFilename()&&!file1.getOriginalFilename().toString().isEmpty()){
+            String filename = sdf.format(date)+file1.getOriginalFilename().substring(file1.getOriginalFilename().lastIndexOf("."));
+            item.setHba024(filename);
+            uploadpic("kcimg/"+filename,file1,"kcimg/"+request.getParameter("tt24"));
+        }
         if(!request.getParameter("t27").isEmpty())item.setHba027(Float.valueOf(request.getParameter("t27")));
         if(!request.getParameter("t28").isEmpty())item.setHba028(Float.valueOf(request.getParameter("t28")));
         if(!request.getParameter("t29").isEmpty())item.setHba029(Float.valueOf(request.getParameter("t29")));
         if(!request.getParameter("t30").isEmpty())item.setHba030(Float.valueOf(request.getParameter("t30")));
+        item.setHba025("");
+        item.setHba026("A");
         if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()){
             String log = "修改了名字为：【" + request.getParameter("t3") + "】的课程分类信息";
             item.setHba001(Integer.valueOf((request.getParameter("fid"))));
@@ -520,7 +771,6 @@ public class HTinfoController extends BaseController {
             hbaService.update(item);
             result.put("msg","U");
         }else{
-            item.setHba026("A");
             String log = "新增了名字为：【" + request.getParameter("t3")+ "】的课程分类信息";
             addLog(getUse(request).getUse002(),log);
             item = hbaService.insert(item);
@@ -531,25 +781,24 @@ public class HTinfoController extends BaseController {
     }
 
     //后台分类加载
-    @RequestMapping("/tocoursels")
-    public ModelAndView tocoursels(HttpServletRequest request, HttpServletResponse response) throws Exception{
+    @RequestMapping("/tocourseyy")
+    public ModelAndView tocourseyy(HttpServletRequest request, HttpServletResponse response) throws Exception{
         HttpSession session = request.getSession();
         ModelAndView mav = new ModelAndView();
         int userid = 0;//后台登录用户ID
         if(session.getAttribute("user")==null){
             SystemTZYM(response,"登录失效");
             return null;
-        }else{
-            userid = Decrypt(session.getAttribute("user").toString());
-            cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
-            System.out.println(request);
-            mav.addObject("yhclist", yhcService.getAll(request.getParameter("kcid"),request.getParameter("name1")));
-            mav.addObject("pages", request.getParameter("pages"));
-            mav.addObject("kcid", request.getParameter("kcid"));
-            mav.addObject("name", request.getParameter("name"));
-            mav.addObject("name1", request.getParameter("name1"));
         }
-        mav.setViewName("HTcoursels");
+        userid = Decrypt(session.getAttribute("user").toString());
+        cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
+        int  kcid = Integer.parseInt(request.getParameter("kcid"));
+        cdhba hba = hbaService.getByid(kcid);
+        mav.addObject("item", hba);
+        mav.addObject("pages", request.getParameter("pages"));
+        mav.addObject("kcid", request.getParameter("kcid"));
+        mav.addObject("name", request.getParameter("name"));
+        mav.setViewName("HTcourseyy");
         return mav;
     }
 
@@ -564,7 +813,7 @@ public class HTinfoController extends BaseController {
         }
         int userid = 0;//后台登录用户ID
         userid = Decrypt(session.getAttribute("user").toString());
-       // cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
+        // cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
         int  kcid = Integer.parseInt(request.getParameter("kcid"));
         cdhba hba = hbaService.getByid(kcid);
         String pkyear = sdf2.format(new Date());
@@ -624,7 +873,7 @@ public class HTinfoController extends BaseController {
         System.out.println(ispk);
         System.out.println(kcid);
         System.out.println(pkyear);
-       System.out.println(request.getParameter("condition"));
+        System.out.println(request.getParameter("condition"));
         System.out.println(request.getParameter("dayarr"));
         if(request.getParameter("condition")!=null) conditionlist = JSON.parseArray(request.getParameter("condition").toString());
         if(request.getParameter("dayarr")!=null) dayarrlist = JSON.parseArray(request.getParameter("dayarr").toString());
@@ -705,7 +954,7 @@ public class HTinfoController extends BaseController {
                 for(int i=0;i<datearr.size();i++){
                     week = datearr.getJSONObject(i);
                     wday = week.getString("T");
-                  //  System.out.println(wday);
+                    //  System.out.println(wday);
                     timeBetween tm = new timeBetween();
                     wdayarr = wday.split("#");
                     tm.setStartTime(LocalDate.parse(wdayarr[0]));
@@ -727,64 +976,64 @@ public class HTinfoController extends BaseController {
             //如果按天修改的条件不为空，直接循环天修改集合，按天修改
             if(dayarrlist!=null&&dayarrlist.size()>0){
                 for(int j=0;j<dayarrlist.size();j++){
-                  week = dayarrlist.getJSONObject(j);
-                  //判断操作类型D:删除 A:新添加 X:修改
-                  cdyhd yhd = null;
-                  if(week.getString("cz").equals("D")){
-                      yhd = yhdService.getByid(week.getString("id"));
-                      if(yhd!=null){
-                          if(week.getString("title").indexOf("上午")>=0){
-                              yhd.setYhd004("N");
-                          }else if(week.getString("title").indexOf("下午")>=0){
-                              yhd.setYhd005("N");
-                          }else if(week.getString("title").indexOf("晚上")>=0){
-                              yhd.setYhd006("N");
-                          }
-                      }
-                  }else if(week.getString("cz").equals("X")){
-                      yhd = yhdService.getByid(week.getString("id"));
-                      if(week.getString("title").indexOf("上午")>=0){
-                          //状态：Y：暂停打开 N：暂停关闭
-                          if(week.getString("zt").equals("Y")) yhd.setYhd004("M");
-                          else yhd.setYhd004("Y");
-                      }else if(week.getString("title").indexOf("下午")>=0){
-                          if(week.getString("zt").equals("Y")) yhd.setYhd005("M");
-                          else yhd.setYhd005("Y");
-                      }else if(week.getString("title").indexOf("晚上")>=0){
-                          if(week.getString("zt").equals("Y")) yhd.setYhd006("M");
-                          else yhd.setYhd006("Y");
-                      }
-                  }else if(week.getString("cz").equals("A")){
-                      //查找当天的排课记录
-                      yhd = yhdService.serachObject(week.getString("start"),kcid);
-                      if(yhd!=null){
-                          //已有保存，直接在上面记录
-                          if(week.getString("title").indexOf("上午")>=0) yhd.setYhd004("Y");
-                          else if(week.getString("title").indexOf("下午")>=0) yhd.setYhd005("Y");
-                          else if(week.getString("title").indexOf("晚上")>=0) yhd.setYhd006("Y");
-                          yhdService.update(yhd);
-                      }else{
-                          yhd = new cdyhd();
-                          yhd.setYhd001(UUID.randomUUID().toString().replaceAll("-",""));
-                          yhd.setYhd002(kcid);
-                          yhd.setYhd003(week.getDate("start"));
-                          if(week.getString("title").indexOf("上午")>=0) {
-                              yhd.setYhd004("Y");
-                              yhd.setYhd010(0);
-                          }else if(week.getString("title").indexOf("下午")>=0) {
-                              yhd.setYhd005("Y");
-                              yhd.setYhd012(0);
-                          }else if(week.getString("title").indexOf("晚上")>=0) {
-                              yhd.setYhd006("Y");
-                              yhd.setYhd014(0);
-                          }
-                          yhdService.insert(yhd);
-                      }
-                  }
-                  //判断预约Bean,如果上午下午晚上都是不可预约，直接删除Bean
-                   if(yhd!=null&&yhd.getYhd004().equals("N")&&yhd.getYhd005().equals("N")&&yhd.getYhd006().equals("N")){
-                       yhdService.delete(yhd.getYhd001());
-                   }
+                    week = dayarrlist.getJSONObject(j);
+                    //判断操作类型D:删除 A:新添加 X:修改
+                    cdyhd yhd = null;
+                    if(week.getString("cz").equals("D")){
+                        yhd = yhdService.getByid(week.getString("id"));
+                        if(yhd!=null){
+                            if(week.getString("title").indexOf("上午")>=0){
+                                yhd.setYhd004("N");
+                            }else if(week.getString("title").indexOf("下午")>=0){
+                                yhd.setYhd005("N");
+                            }else if(week.getString("title").indexOf("晚上")>=0){
+                                yhd.setYhd006("N");
+                            }
+                        }
+                    }else if(week.getString("cz").equals("X")){
+                        yhd = yhdService.getByid(week.getString("id"));
+                        if(week.getString("title").indexOf("上午")>=0){
+                            //状态：Y：暂停打开 N：暂停关闭
+                            if(week.getString("zt").equals("Y")) yhd.setYhd004("M");
+                            else yhd.setYhd004("Y");
+                        }else if(week.getString("title").indexOf("下午")>=0){
+                            if(week.getString("zt").equals("Y")) yhd.setYhd005("M");
+                            else yhd.setYhd005("Y");
+                        }else if(week.getString("title").indexOf("晚上")>=0){
+                            if(week.getString("zt").equals("Y")) yhd.setYhd006("M");
+                            else yhd.setYhd006("Y");
+                        }
+                    }else if(week.getString("cz").equals("A")){
+                        //查找当天的排课记录
+                        yhd = yhdService.serachObject(week.getString("start"),kcid);
+                        if(yhd!=null){
+                            //已有保存，直接在上面记录
+                            if(week.getString("title").indexOf("上午")>=0) yhd.setYhd004("Y");
+                            else if(week.getString("title").indexOf("下午")>=0) yhd.setYhd005("Y");
+                            else if(week.getString("title").indexOf("晚上")>=0) yhd.setYhd006("Y");
+                            yhdService.update(yhd);
+                        }else{
+                            yhd = new cdyhd();
+                            yhd.setYhd001(UUID.randomUUID().toString().replaceAll("-",""));
+                            yhd.setYhd002(kcid);
+                            yhd.setYhd003(week.getDate("start"));
+                            if(week.getString("title").indexOf("上午")>=0) {
+                                yhd.setYhd004("Y");
+                                yhd.setYhd010(0);
+                            }else if(week.getString("title").indexOf("下午")>=0) {
+                                yhd.setYhd005("Y");
+                                yhd.setYhd012(0);
+                            }else if(week.getString("title").indexOf("晚上")>=0) {
+                                yhd.setYhd006("Y");
+                                yhd.setYhd014(0);
+                            }
+                            yhdService.insert(yhd);
+                        }
+                    }
+                    //判断预约Bean,如果上午下午晚上都是不可预约，直接删除Bean
+                    if(yhd!=null&&yhd.getYhd004().equals("N")&&yhd.getYhd005().equals("N")&&yhd.getYhd006().equals("N")){
+                        yhdService.delete(yhd.getYhd001());
+                    }
                 }
             }
         }else{
@@ -813,13 +1062,13 @@ public class HTinfoController extends BaseController {
                     switch(date.getDayOfWeek().getValue()){
                         case 1:
                             if(w1_a||w1_b||w1_c){
-                               yhd = new cdyhd();
-                               if(w1_a) yhd.setYhd004("Y");
-                               else yhd.setYhd004("N");
-                               if(w1_b) yhd.setYhd005("Y");
-                               else yhd.setYhd005("N");
-                               if(w1_c) yhd.setYhd006("Y");
-                               else yhd.setYhd006("N");
+                                yhd = new cdyhd();
+                                if(w1_a) yhd.setYhd004("Y");
+                                else yhd.setYhd004("N");
+                                if(w1_b) yhd.setYhd005("Y");
+                                else yhd.setYhd005("N");
+                                if(w1_c) yhd.setYhd006("Y");
+                                else yhd.setYhd006("N");
                             }
                             break;
                         case 2:
@@ -957,7 +1206,7 @@ public class HTinfoController extends BaseController {
                                 case 7:
                                     if(w0_a||w0_b||w0_c) isok = false;break;
                             }
-                           //产生预约信息，保存到集合
+                            //产生预约信息，保存到集合
                             if(isok){
                                 isdel = true;//这里借用标识是否是
                                 //循环已保存的集合，存在相同日期，直接取出修改
@@ -1041,6 +1290,28 @@ public class HTinfoController extends BaseController {
     }
 
 
+    //后台分类加载
+    @RequestMapping("/tocoursels")
+    public ModelAndView tocoursels(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        HttpSession session = request.getSession();
+        ModelAndView mav = new ModelAndView();
+        int userid = 0;//后台登录用户ID
+        if(session.getAttribute("user")==null){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
+        userid = Decrypt(session.getAttribute("user").toString());
+        cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
+        System.out.println(request);
+        mav.addObject("yhclist", yhcService.getAll(request.getParameter("kcid"),request.getParameter("name1")));
+        mav.addObject("pages", request.getParameter("pages"));
+        mav.addObject("kcid", request.getParameter("kcid"));
+        mav.addObject("name", request.getParameter("name"));
+        mav.addObject("name1", request.getParameter("name1"));
+        mav.setViewName("HTcoursels");
+        return mav;
+    }
+
     /**
      * 删除用户
      * 王新苗
@@ -1104,9 +1375,10 @@ public class HTinfoController extends BaseController {
         if(session.getAttribute("user")==null){
             SystemTZYM(response,"登录失效");
             return null;
-        }else{
-            userid = Decrypt(session.getAttribute("user").toString());
-            cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
+        }
+        userid = Decrypt(session.getAttribute("user").toString());
+        cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
+        if(user.getUse009().equals("A")||user.getUse009().equals("C")){
             mav.addObject("msg", request.getParameter("msg"));
             PageBean pb = new PageBean();
             if (request.getParameter("pages") != null && !request.getParameter("pages").isEmpty())
@@ -1123,11 +1395,16 @@ public class HTinfoController extends BaseController {
                 pb.setOthersql1(request.getParameter("lx"));
             }
             mav.addObject("pageobj", smdService.selectPageBean(pb));
+            mav.setViewName("HTselect");
+        }else{
+            mav.addObject("item", smdService.getByid(user.getUse011()));
+            mav.addObject("zt", user.getUse013());
+            mav.addObject("bz", user.getUse014());
+            mav.setViewName("HTselectxq");
         }
-        mav.setViewName("HTselect");
         return mav;
     }
-    
+
 
     /**
      * 修改账户
@@ -1170,9 +1447,107 @@ public class HTinfoController extends BaseController {
             item = smdService.insert(item);
             result.put("msg", "I");
         }
+        if(request.getParameter("zt")!=null){
+            cduse use=new cduse();
+            use.setUse001(Decrypt(session.getAttribute("user").toString()));
+            use.setUse013("P");
+            use.setUse014("");
+            useService.update(use);
+        }
         result.put("d",item);
         return JSON.toJSONString(result);
     }
 
+    /**
+     * 进入管理员管理页面
+     * othersql:登录名  othersql1:机构
+     * @return 用户页面
+     */
+    @RequestMapping("/toselection")
+    public ModelAndView toselection(HttpServletRequest request,HttpServletResponse response) throws Exception{
+        ModelAndView mav = new ModelAndView();
+        HttpSession session = request.getSession();
+        int userid = 0;//后台登录用户ID
+        if(session.getAttribute("user")==null){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
+        userid = Decrypt(session.getAttribute("user").toString());
+        cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
+            mav.addObject("msg", request.getParameter("msg"));
+            PageBean pb = new PageBean();
+            if (request.getParameter("pages") != null && !request.getParameter("pages").isEmpty())
+                pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
+            else
+                pb.setCurrentPage(1);
+            if (request.getParameter("name") != null && !request.getParameter("name").isEmpty()) {
+                pb.setOthersql(request.getParameter("name"));
+            }
+            if (request.getParameter("phone") != null && !request.getParameter("phone").isEmpty()) {
+                pb.setOthersql6(request.getParameter("phone"));
+            }
+            if (request.getParameter("lx") != null && !request.getParameter("lx").isEmpty()) {
+                pb.setOthersql1(request.getParameter("lx"));
+            }
+            mav.addObject("pageobj", yheService.selectPageBean(pb));
+            mav.setViewName("HTselection");
+        return mav;
+    }
 
+    /**
+     * 删除用户
+     * 王新苗
+     * @param request
+     * @param response
+     */
+    @ResponseBody
+    @RequestMapping(value = "/xgztselection",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    public String xgztselection(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        addLog(getUse(request).getUse002(),"修改了选课方名称为：【" + request.getParameter("uname") + "】的课程预约状态");
+        cdyheWithBLOBs yhe = yheService.getByid(Integer.valueOf(request.getParameter("fid")));
+        yhe.setYhe007(request.getParameter("type"));
+        if(request.getParameter("t1")!=null){
+            yhe.setYhe030(request.getParameter("t1"));
+        }else{
+            yhe.setYhe030("");
+        }
+        yheService.update(yhe);
+        result.put("msg","0");
+        return JSON.toJSONString(result);
+    }
+
+    /**
+     * 修改账户
+     * 王新苗
+     * @param request
+     * @param response
+     */
+    @ResponseBody
+    @RequestMapping(value = "/xgselection")
+    public String xgselection(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        HttpSession session = request.getSession();
+        if (session.getAttribute("user") == null) {
+            SystemTZYM(response, "登录失效");
+            return null;
+        }
+        cdyheWithBLOBs item = new cdyheWithBLOBs();
+        //修改
+        item.setYhe002(Integer.valueOf(request.getParameter("t2")));
+        if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()){
+            String log = "修改了名字为：【" + request.getParameter("t1") + "】的用户信息";
+            item.setYhe001(Integer.valueOf(request.getParameter("fid")));
+            addLog(getUse(request).getUse002(),log);
+            yheService.update(item);
+            result.put("msg", "U");
+        }else{
+            String log = "新增了名字为：【" + request.getParameter("t1")+ "】的用户信息";
+            addLog(getUse(request).getUse002(),log);
+            item = yheService.insert(item);
+            result.put("msg", "I");
+        }
+        result.put("d",item);
+        return JSON.toJSONString(result);
+    }
 }

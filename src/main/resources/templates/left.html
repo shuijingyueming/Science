@@ -60,7 +60,8 @@
                         </a>
                         <ul class="nav nav-subnav">
                             <li><a class="multitabs" href="toHt/tolevel">选课方层级管理</a></li>
-                            <li><a class="multitabs" href="toHt/toselect">选课方管理</a></li>
+                            <li><a class="multitabs" href="toHt/tochose">选课方管理</a></li>
+                            <li><a class="multitabs" href="toHt/toselection">选课预约管理</a></li>
                         </ul>
                     </li>
                     <li class="nav-item nav-item-has-subnav">
@@ -78,6 +79,47 @@
                                     <li><a class="multitabs" href="toHt/tocourse">课程管理</a></li>
                                 </ul>
                             </li>
+                        </ul>
+                    </li>
+                </th:block>
+                <!--授课方-->
+                <th:block th:if="${session.umsg.jstype=='B'}">
+                    <li class="nav-item nav-item-has-subnav">
+                        <a class="multitabs" href="toHt/staff?lx=B">
+                            <i class="mdi mdi-stove"></i> <span>授课账户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item nav-item-has-subnav">
+                        <a class="multitabs"  href="toHt/toselect">
+                            <i class="mdi mdi-stove"></i> <span>授课方管理</span>
+                        </a>
+                        <ul class="nav nav-subnav">
+                            <li><a class="multitabs" href="toHt/toselect">授课方管理</a></li>
+                            <li><a class="multitabs" href="toHt/tocourse">课程管理</a></li>
+                            <li><a class="multitabs" href="toHt/toselection">选课预约管理</a></li>
+                        </ul>
+                    </li>
+                </th:block>
+                <!--选课方-->
+                <th:block th:if="${session.umsg.jstype=='C'}">
+                    <li class="nav-item nav-item-has-subnav">
+                        <a class="multitabs" href="toHt/staff?lx=C">
+                            <i class="mdi mdi-stove"></i> <span>选课账户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item nav-item-has-subnav">
+                        <a class="multitabs" href="toHt/tochose">
+                            <i class="mdi mdi-stove"></i> <span>选课方管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item nav-item-has-subnav">
+                        <a href="javascript:void(0)">
+                            <i class="mdi mdi-stove"></i> <span>授课方管理</span>
+                        </a>
+                        <ul class="nav nav-subnav">
+                            <li><a class="multitabs" href="toHt/toselect">授课方管理</a></li>
+                            <li><a class="multitabs" href="toHt/tocourse">选课管理</a></li>
+                            <li><a class="multitabs" href="toHt/toselection">选课预约管理</a></li>
                         </ul>
                     </li>
                 </th:block>

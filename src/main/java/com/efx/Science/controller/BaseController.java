@@ -47,6 +47,8 @@ public class BaseController {
     protected CdhbaService hbaService;
     @Autowired
     protected CdyhcService yhcService;
+    @Autowired
+    protected CdyhbService yhbService;
 
     @Autowired
     protected CdyheService yheService;

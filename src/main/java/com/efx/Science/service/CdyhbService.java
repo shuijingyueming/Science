@@ -2,7 +2,7 @@ package com.efx.Science.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.efx.Science.model.PageBean;
-import com.efx.Science.model.cdyha;
+import com.efx.Science.model.cdyhb;
 
 import java.util.List;
 
@@ -14,18 +14,18 @@ import java.util.List;
  * @author dps
  * @since 2023-03-15
  */
-public interface CdyhaService extends IService<cdyha> {
-    cdyha getByid(Integer id);
+public interface CdyhbService extends IService<cdyhb> {
+    cdyhb getByid(Integer id);
 
     PageBean selectPageBean(PageBean pb);
 
-    boolean update(cdyha yha);
+    boolean update(cdyhb yhb);
 
-    cdyha insert(cdyha yha);
+    cdyhb insert(cdyhb yhb);
 
-    cdyha selectByName(String name);
+    cdyhb selectByName(String name, Integer id);
 
     void delete(int id);
 
-    List<cdyha> getAll();
+    List<cdyhb> getAll();
 }

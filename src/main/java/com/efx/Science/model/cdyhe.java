@@ -3,6 +3,7 @@ package com.efx.Science.model;
 import java.util.Date;
 
 public class cdyhe {
+
     private Integer yhe001;
 
     private Integer yhe002;

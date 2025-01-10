@@ -30,4 +30,8 @@ public interface cduseMapper {
     int updateByPrimaryKey(cduse record);
 
     List<cduse> selectByExampleAndPage(cduseExample example, RowBounds rowBounds);
+
+    List<cduse> selectByExampleAndPage1(cduseExample example, RowBounds rowBounds);
+
+    List<cduse> selectByExampleAndPage2(cduseExample example, RowBounds rowBounds);
 }
