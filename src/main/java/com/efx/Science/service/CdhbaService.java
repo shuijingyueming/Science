@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.efx.Science.model.PageBean;
 import com.efx.Science.model.cdhba;
 
+import java.util.List;
+
 /**
  * <p>
  * 服务类
@@ -26,4 +28,6 @@ public interface CdhbaService extends IService<cdhba> {
     void delete(int id);
 
     Integer countByflid(int fid);
+
+    List<cdhba> getAll(String flid, String jgid);
 }

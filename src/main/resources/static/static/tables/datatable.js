@@ -155,6 +155,11 @@ $(document).ready(function () {
         "paging": false,
         dom: 'Bfrtip',
         buttons: [
+            {
+                iTname: '#yymode', text: '课程预约', action: function (e, dt, node, config) {
+                    kcyy();
+                }
+            },
             /*{
                  iTname: '#editmode', text: '添加', action: function (e, dt, node, config) {
                      edit();

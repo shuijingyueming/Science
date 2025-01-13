@@ -43,6 +43,8 @@ public class CdhbaServiceImpl implements CdhbaService {
         cdhbaExample e1 = new cdhbaExample();
         Criteria c = e1.createCriteria();
         if(pb.getOthersql()!=null) c.andHba002Like("%"+pb.getOthersql()+"%");
+        if(pb.getOthersql1()!=null) c.andHba022EqualTo(Integer.valueOf(pb.getOthersql1()));
+        if(pb.getOthersql2()!=null) c.andHba021EqualTo(Integer.valueOf(pb.getOthersql2()));
         e1.setOrderByClause("hba001 desc");
         return queryByPage(pb,e1);
     }
@@ -78,6 +80,15 @@ public class CdhbaServiceImpl implements CdhbaService {
         Criteria c = e1.createCriteria();
         c.andHba021EqualTo(id);
         return Math.toIntExact(hbaMapper.countByExample(e1));
+    }
+
+    @Override
+    public List<cdhba> getAll(String flid, String jgid) {
+        cdhbaExample e1 = new cdhbaExample();
+        Criteria c = e1.createCriteria();
+        if(flid!=null&&!flid.isEmpty())c.andHba021EqualTo(Integer.valueOf(flid));
+        if(jgid!=null&&!jgid.isEmpty())c.andHba022EqualTo(Integer.valueOf(jgid));
+        return hbaMapper.selectByExample(e1);
     }
 
 

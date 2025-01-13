@@ -50,17 +50,25 @@
                             <!--text input-->
                             <div class="row g-3">
                                 <div class="col-auto">
-                                    <div class="row">
                                         <label class="col-auto col-form-label"
                                                style="padding-right:0;padding-left:10px;">名称</label>
                                         <div class="col-auto">
                                             <input type="text" class="form-control" id="name" name="name" th:value="${pageobj.othersql}"
                                                    placeholder="请输入名称"/>
                                         </div>
-                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">课程分类</label>
+                                    <div class="col-auto">
+                                        <select id="flid" name="flid"  class="form-control selectpicker" data-live-search="true">
+                                            <option value="" selected>请选择</option>
+                                            <th:block th:each="item,stat:${hbblist}">
+                                                <option th:value="${item.hbb001}"  th:selected="${pageobj.othersql2==#strings.toString(item.hbb001)?true:false}">[[${item.hbb002}]]</option>
+                                            </th:block>
+                                        </select>
+                                </div>
                                 </div>
                                 <div class="col-auto" th:style="${session.umsg.jstype=='B'?'display: none':''}">
-                                    <div class="row">
                                         <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">授课方名称</label>
                                         <div class="col-auto">
                                             <select id="skid" name="skid"  class="form-control selectpicker" data-live-search="true">
@@ -70,7 +78,6 @@
                                                 </th:block>
                                             </select>
                                         </div>
-                                    </div>
                                 </div>
                                 <!--button-->
                                 <div class="col-auto">
@@ -135,11 +142,11 @@
                                                 <a href="javascript:void(0);" th:onclick="topk([[${item.hba001}]])" class="btn btn-table"
                                                    data-bs-toggle="modal" data-bs-target="#">排课</a>
                                             </th:block>
-                                            <th:block th:if="${session.umsg.jstype=='C'}">
+                                            <!--<th:block th:if="${session.umsg.jstype=='C'}">
                                                 <a href="javascript:void(0);" th:onclick="toyy([[${item.hba001}]])" class="btn btn-table"
                                                    data-bs-toggle="modal" data-bs-target="#">预约申请</a>
                                                 <div class="ivu-divider-vertical"></div>
-                                            </th:block>
+                                            </th:block>-->
                                             <!--<a href="javascript:void(0);" th:onclick="del([[${item.hba001}]])" class="btn btn-table">删除</a>-->
                                         </div>
                                     </td>
@@ -452,7 +459,7 @@
     function usefanye(pageindex){
         var params = [
             ["pages",pageindex],
-            ["name", $("#name").val()],["skid", $("#skid").val()],["skid", $("#skid").val()]];
+            ["name", $("#name").val()],["skid", $("#skid").val()],["flid", $("#flid").val()]];
         form_submit("toHt/tocourse","post",params,"_self");
     }
 
@@ -460,7 +467,7 @@
         var params = [
             ["kcid",kcid],
             ["pages",$("#pages").val()],
-            ["name", $("#name").val()],["skid", $("#skid").val()]];
+            ["name", $("#name").val()],["skid", $("#skid").val()],["flid", $("#flid").val()]];
         form_submit("toHt/tocourseyy","post",params,"_self");
     }
 
@@ -469,7 +476,7 @@
         var params = [
             ["kcid",kcid],
             ["pages",$("#pages").val()],
-            ["name", $("#name").val()],["skid", $("#skid").val()]];
+            ["name", $("#name").val()],["skid", $("#skid").val()],["flid", $("#flid").val()]];
         form_submit("toHt/tocoursels","post",params,"_self");
     }
 
@@ -482,7 +489,7 @@
     function xzmb(){
         var params = [  ["type","E"],
             ["pages",$("#pages").val()],
-            ["name", $("#name").val()],["skid", $("#skid").val()]];
+            ["name", $("#name").val()],["skid", $("#skid").val()],["flid", $("#flid").val()]];
         form_submit("toHt/tocourse","post",params,"_self");
     }
 
@@ -542,7 +549,7 @@
                 if (data == 'A') {
                     var params = [
                         ["pages", $("#pages").val()],
-                        ["name", $("#name").val()]];
+                        ["name", $("#name").val()],["skid", $("#skid").val()],["flid", $("#flid").val()]];
                     // layer.msg("导入成功", {time: 1000}, function () {
                     form_submit("toHt/tocourse", "post", params, "_self");
                     // });

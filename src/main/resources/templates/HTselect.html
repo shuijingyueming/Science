@@ -102,9 +102,11 @@
                                     <td th:text="${#dates.format(item.smd008,'yyyy-MM-dd')}"></td>
                                     <td>
                                         <div class="btn-group btn-group-sm">
+                                            <th:block th:if="${session.umsg.jstype=='B'}">
                                             <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]])" class="btn btn-table"
                                                data-bs-toggle="modal" data-bs-target="#editmode">编辑</a>
                                             <div class="ivu-divider-vertical"></div>
+                                            </th:block>
                                             <!-- <a href="javascript:void(0);" th:onclick="del([[${item.smd001}]])" class="btn btn-table">删除</a>-->
                                         </div>
                                     </td>
@@ -165,12 +167,6 @@
                             <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">年度人次限数</label>
                             <div class="col-10 col-sm-8 col-md-6 col-lg-4">
                                 <input type="number" class="form-control" id="t10" name="t10" placeholder="请输入年度人次限数"/>
-                            </div>
-                        </div>
-                        <div class="row col-auto" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">上线日期</label>
-                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                <input type="date" class="form-control" id="t8" name="t8" placeholder="请输入上线日期"/>
                             </div>
                         </div>
                         <div class="row col-auto" style="margin-top: 20px;">
@@ -329,7 +325,6 @@
             $("#t7").val(josnobj.smd007);
             $("#t9").val(josnobj.smd009);
             $("#t10").val(josnobj.smd010);
-            $("#t8").val(getTime(josnobj.smd008,'YY-MM-DD'));
             $("#ftype").text("编辑");
         }else{
             $("#ftype").text("添加");
@@ -354,7 +349,6 @@
             formData.append("t5",$("#t5").val());
             formData.append("t6",$("#t6").val());
             formData.append("t7",$("#t7").val());
-            formData.append("t8",$("#t8").val());
             formData.append("t9",$("#t9").val());
             formData.append("t10",$("#t10").val());
             $.ajax({

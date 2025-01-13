@@ -2,11 +2,13 @@ package com.efx.Science.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.efx.Science.model.cdhba;
 import com.efx.Science.model.cduse;
 import com.efx.Science.model.user;
 import com.efx.Science.pub.PubMessage;
 import com.efx.Science.until.EncrpytUtil;
 import com.efx.Science.until.RSACoder;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,6 +26,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 @Controller
 public class LoginController extends BaseController {
@@ -281,4 +284,12 @@ public class LoginController extends BaseController {
         return JSON.toJSONString(result);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/getallcourse",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    public String getallcourse(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        List<cdhba> list=hbaService.getAll(request.getParameter("flid"),request.getParameter("jgid"));
+        result.put("list",list);
+        return JSON.toJSONString(result);
+    }
 }

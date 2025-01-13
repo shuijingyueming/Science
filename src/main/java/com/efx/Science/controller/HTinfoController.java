@@ -176,12 +176,26 @@ public class HTinfoController extends BaseController {
         HashMap result = new HashMap();
         addLog(getUse(request).getUse002(),"修改了活动名称为：【" + request.getParameter("uname") + "】的状态");
         cduse use = useService.getByid(Integer.valueOf(request.getParameter("fid")));
+        if(use.getUse013().equals("P")&&request.getParameter("type").equals("M")){
+            if(use.getUse009().equals("B")){
+                cdsmd smd=new cdsmd();
+                smd.setSmd001(use.getUse011());
+                smd.setSmd008(new Date());
+                smdService.update(smd);
+            }else  if(use.getUse009().equals("C")){
+                    cdyhb yhb=new cdyhb();
+                    yhb.setYhb001(use.getUse011());
+                    yhb.setYhb011(new Date());
+                    yhbService.update(yhb);
+            }
+        }
         use.setUse013(request.getParameter("type"));
         if(request.getParameter("t1")!=null){
             use.setUse014(request.getParameter("t1"));
         }else{
             use.setUse014("");
         }
+
         useService.update(use);
         result.put("msg","0");
         return JSON.toJSONString(result);
@@ -254,7 +268,6 @@ public class HTinfoController extends BaseController {
         item.setSmd007(request.getParameter("t7"));
         item.setSmd009(Integer.valueOf(request.getParameter("t9")));
         item.setSmd010(Integer.valueOf(request.getParameter("t10")));
-        item.setSmd008(DATE.parse(request.getParameter("t8")));
         item.setSmd011(0);
         item.setSmd012(0);
         item.setSmd013(0);
@@ -302,7 +315,6 @@ public class HTinfoController extends BaseController {
         item.setYhb005(request.getParameter("t5"));
         item.setYhb006(request.getParameter("t6"));
         item.setYhb007(request.getParameter("t7"));
-        item.setYhb011(DATE.parse(request.getParameter("t11")));
         item.setYhb016(Integer.valueOf(request.getParameter("t16")));
         item.setYhb017(Float.valueOf(request.getParameter("t16")));
         item.setYhb012(0);
@@ -537,7 +549,6 @@ public class HTinfoController extends BaseController {
         item.setYhb005(request.getParameter("t5"));
         item.setYhb006(request.getParameter("t6"));
         item.setYhb007(request.getParameter("t7"));
-        item.setYhb011(DATE.parse(request.getParameter("t11")));
         item.setYhb016(Integer.valueOf(request.getParameter("t16")));
         item.setYhb017(Float.valueOf(request.getParameter("t16")));
         if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()){
@@ -548,6 +559,7 @@ public class HTinfoController extends BaseController {
             result.put("msg", "U");
         }else{
             String log = "新增了名字为：【" + request.getParameter("t1")+ "】的用户信息";
+            item.setYhb011(new Date());
             item.setYhb012(0);
             item.setYhb013(0);
             item.setYhb014(0);
@@ -662,6 +674,9 @@ public class HTinfoController extends BaseController {
             pb.setCurrentPage(1);
         if (request.getParameter("name") != null && !request.getParameter("name").toString().isEmpty()) {
             pb.setOthersql(request.getParameter("name"));
+        }
+        if (request.getParameter("flid") != null && !request.getParameter("flid").toString().isEmpty()) {
+            pb.setOthersql2(request.getParameter("flid"));
         }
         if(user.getUse009().equals("B")){
             pb.setOthersql1(String.valueOf(user.getUse011()));
@@ -1431,7 +1446,6 @@ public class HTinfoController extends BaseController {
         item.setSmd007(request.getParameter("t7"));
         item.setSmd009(Integer.valueOf(request.getParameter("t9")));
         item.setSmd010(Integer.valueOf(request.getParameter("t10")));
-        item.setSmd008(DATE.parse(request.getParameter("t8")));
         if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()){
             String log = "修改了名字为：【" + request.getParameter("t1") + "】的用户信息";
             item.setSmd001(Integer.valueOf((request.getParameter("fid"))));
@@ -1440,6 +1454,7 @@ public class HTinfoController extends BaseController {
             result.put("msg", "U");
         }else{
             String log = "新增了名字为：【" + request.getParameter("t1")+ "】的用户信息";
+            item.setSmd008(new Date());
             item.setSmd011(0);
             item.setSmd012(0);
             item.setSmd013(0);
@@ -1490,6 +1505,9 @@ public class HTinfoController extends BaseController {
                 pb.setOthersql1(request.getParameter("lx"));
             }
             mav.addObject("pageobj", yheService.selectPageBean(pb));
+        mav.addObject("smdlist", smdService.getAll());
+        mav.addObject("hbblist", hbbService.getAll());
+        mav.addObject("hbalist", hbaService.getAll(null, null));
             mav.setViewName("HTselection");
         return mav;
     }
