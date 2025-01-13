@@ -72,7 +72,7 @@ public class LoginController extends BaseController {
         HttpSession session = request.getSession();
         //直接去掉账号session
         if (null != session.getAttribute("user")) session.removeAttribute("user");
-        mav.addObject("yhalist", yhaService.getAll());
+        //mav.addObject("yhalist", yhaService.getAll());
         mav.setViewName("HTlogin");
         return mav;
     }
@@ -161,8 +161,8 @@ public class LoginController extends BaseController {
         HashMap map = new HashMap();
         boolean isok = true;
         request.getHeader("");
-        System.out.println(PubMessage.dlmap.get(name + "bcode"));
-        System.out.println(ycode);
+       // System.out.println(PubMessage.dlmap.get(name + "bcode"));
+       // System.out.println(ycode);
         /*if(!PubMessage.dlmap.get(name + "bcode").equals(ycode)) {
             map.put("res", "N");
             map.put("msg", "验证码错误");

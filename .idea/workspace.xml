@@ -6,37 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="1c9d71b9-fba8-441f-81e4-9a18972a5c64" name="变更" comment="新提交">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/controller/BaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/controller/BaseController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/controller/HTinfoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/controller/HTinfoController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/controller/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/dao/cduseMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/dao/cduseMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/dao/cdyhbMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/dao/cdyhbMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/dao/cdyhdMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/dao/cdyhdMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/dao/cdyheMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/dao/cdyheMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/model/cduse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/model/cduse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/model/cdyhb.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/model/cdyhb.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/model/cdyhd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/model/cdyhd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/model/cdyhe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/model/cdyhe.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/model/cdyheWithBLOBs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/model/cdyheWithBLOBs.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/service/CduseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/service/CduseService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/service/CdyhaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/service/CdyhaService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/service/CdyhdService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/service/CdyhdService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/service/CdyheService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/service/CdyheService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/service/impl/CduseServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/service/impl/CduseServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/service/impl/CdyhaServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/service/impl/CdyhaServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/service/impl/CdyhdServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/service/impl/CdyhdServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/service/impl/CdyheServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/service/impl/CdyheServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/efx/Science/until/ExcelExport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/efx/Science/until/ExcelExport.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/cduseMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/cduseMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/cdyhbMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/cdyhbMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/cdyhdMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/cdyhdMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/cdyheMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/cdyheMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/tables/datatable.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/static/tables/datatable.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/HTcourse.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/HTcourse.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/HTlevel.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/HTlevel.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/HTlogin.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/HTlogin.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/left.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/left.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/staff.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/staff.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +28,7 @@
     <option name="BRANCH" value="origin/master" />
   </component>
   <component name="Git.Settings">
+    <option name="PUSH_AUTO_UPDATE" value="true" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -81,42 +53,42 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/IdeaProjects/Science/src/main/resources/templates&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;show.run.dashboard.notification&quot;: &quot;false&quot;,
-    &quot;spring.configuration.checksum&quot;: &quot;35bf1210e6727959a7a88a00462db959&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "D:/Science/src/main/resources/static/images",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "show.run.dashboard.notification": "false",
+    "spring.configuration.checksum": "35bf1210e6727959a7a88a00462db959"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;ChangesTree.GroupingKeys&quot;: [
-      &quot;module&quot;,
-      &quot;directory&quot;
+  "keyToStringList": {
+    "ChangesTree.GroupingKeys": [
+      "module",
+      "directory"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Science\src\main\resources\static\images" />
       <recent name="D:\IdeaProjects\Science\src\main\resources\templates" />
       <recent name="D:\IdeaProjects\Science\src\main\resources\static\images" />
       <recent name="D:\HxObject\src\main\resources\static\pagejs" />
       <recent name="D:\HxObject\src\main\resources\static\upload\mimg" />
-      <recent name="D:\HxObject\src\main\resources\static\upload" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\HxObject\src\main\resources\static\upload\pimg" />
@@ -257,6 +229,9 @@
       <workItem from="1736326713880" duration="205000" />
       <workItem from="1736326942090" duration="567000" />
       <workItem from="1736388108311" duration="628000" />
+      <workItem from="1736502973504" duration="825000" />
+      <workItem from="1736558196970" duration="13085000" />
+      <workItem from="1736730974534" duration="4568000" />
     </task>
     <task id="LOCAL-00001" summary="新提交">
       <created>1730428025413</created>
