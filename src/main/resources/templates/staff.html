@@ -48,7 +48,7 @@
                             <input type="hidden" id="counts" name="counts" th:value="${pageobj.pageCount}"/>
                             <input type="hidden" id="lx" name="lx" th:value="${pageobj.othersql1}"/>
                             <!--text input-->
-                            <div class="row g-3">
+                            <div class="row g-4">
                                 <div class="col-auto">
                                     <div class="row">
                                         <label class="col-auto col-form-label"
@@ -61,8 +61,7 @@
                                 </div>
                                 <div class="col-auto">
                                     <div class="row">
-                                        <label class="col-auto col-form-label"
-                                               style="padding-right:0;padding-left:10px;">联系手机</label>
+                                        <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">联系手机</label>
                                         <div class="col-auto">
                                             <input type="text" class="form-control" id="phone" name="phone" th:value="${pageobj.othersql6}"
                                                    placeholder="请输入联系手机"/>
@@ -70,9 +69,10 @@
                                     </div>
                                 </div>
                                 <th:block th:if="${pageobj.othersql1=='B'}">
-                                    <div class="row col-auto" style="margin-top: 20px;">
-                                        <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">授课方</label>
-                                        <div class="form-controls">
+                                    <div class="col-auto">
+                                    <div class="row">
+                                        <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">授课方</label>
+                                        <div class="form-controls col-auto">
                                             <select id="skid" name="skid"  class="form-control selectpicker" data-live-search="true">
                                                 <option value="" selected>请选择</option>
                                                 <th:block th:each="item,stat:${smdlist}">
@@ -81,11 +81,13 @@
                                             </select>
                                         </div>
                                     </div>
+                                    </div>
                                 </th:block>
                                 <th:block th:if="${pageobj.othersql1=='C'}">
-                                    <div class="row col-auto" style="margin-top: 20px;">
-                                        <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">选课方</label>
-                                        <div class="form-controls">
+                                    <div class="col-auto">
+                                    <div class="row">
+                                        <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">选课方</label>
+                                        <div class="form-controls col-auto">
                                             <select id="skid" name="skid"  class="form-control selectpicker" data-live-search="true">
                                                 <option value="" selected>请选择</option>
                                                 <th:block th:each="item,stat:${yhblist}">
@@ -93,6 +95,7 @@
                                                 </th:block>
                                             </select>
                                         </div>
+                                    </div>
                                     </div>
                                 </th:block>
                                 <!--button-->
