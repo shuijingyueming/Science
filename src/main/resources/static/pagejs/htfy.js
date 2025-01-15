@@ -1,3 +1,12 @@
+document.addEventListener("error", function (e) {
+    var elem = e.target;
+    console.log(elem.tagName.toLowerCase())
+    if (elem.tagName.toLowerCase() === 'img') {
+        elem.src = "images/nopic.png";
+    }
+}, true /* 指定事件处理函数在捕获阶段执行 */);
+
+
 var dqys = 0;
 
 //判断页数 zys：总页数  dqy：当前页

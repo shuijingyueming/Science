@@ -1552,15 +1552,24 @@ public class HTinfoController extends BaseController {
         }
         cdyheWithBLOBs item = new cdyheWithBLOBs();
         //修改
-        item.setYhe002(Integer.valueOf(request.getParameter("t2")));
+        item.setYhe009(request.getParameter("z1"));
+        if(!request.getParameter("z2").isEmpty())item.setYhe010(Integer.valueOf(request.getParameter("z2")));
+        if(!request.getParameter("z3").isEmpty())item.setYhe011(Float.valueOf(request.getParameter("z3")));
+        if(!request.getParameter("z4").isEmpty())item.setYhe012(Float.valueOf(request.getParameter("z4")));
+        if(!request.getParameter("z5").isEmpty())item.setYhe013(Float.valueOf(request.getParameter("z5")));
+        if(!request.getParameter("z6").isEmpty())item.setYhe014(Float.valueOf(request.getParameter("z6")));
+        if(!request.getParameter("z7").isEmpty())item.setYhe015(Integer.valueOf(request.getParameter("z7")));
+        if(!request.getParameter("z8").isEmpty())item.setYhe016(Integer.valueOf(request.getParameter("z8")));
+        if(!request.getParameter("z9").isEmpty())item.setYhe018(Float.valueOf(request.getParameter("z9")));
+        if(!request.getParameter("z10").isEmpty())item.setYhe020(DATE.parse(request.getParameter("z10")));
         if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()){
-            String log = "修改了名字为：【" + request.getParameter("t1") + "】的用户信息";
+            String log = "修改了名字为：【" + request.getParameter("t1") + "】的课程预约信息";
             item.setYhe001(Integer.valueOf(request.getParameter("fid")));
             addLog(getUse(request).getUse002(),log);
             yheService.update(item);
             result.put("msg", "U");
         }else{
-            String log = "新增了名字为：【" + request.getParameter("t1")+ "】的用户信息";
+            String log = "新增了名字为：【" + request.getParameter("t1")+ "】的课程预约信息";
             addLog(getUse(request).getUse002(),log);
             item = yheService.insert(item);
             result.put("msg", "I");

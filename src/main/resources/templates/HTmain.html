@@ -46,13 +46,13 @@
     <!-- 编辑分类模态框 -->
     <div class="modal fade" id="editmode" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen">
-            <div class="modal-content">
+           <!-- <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="editmodeLabel"><span id="ftype"></span>分类</h6>
                     <button type="button" onclick="pagerefalsh()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="uploadForm" enctype="multipart/form-data">
-                <div class="modal-body">
+                <div class="modal-body" style="min-height:580px;">
                     <div class="row col-auto">
                         <label class="col-auto col-form-label" style="padding-right:0;padding-left:20px;">分类名称</label>
                         <div class="col-4">
@@ -86,9 +86,9 @@
                                 <li class="col-6 col-sm-4 col-md-3 list-images-item" >
                                     <figure>
                                         <img id="upfileimg" src="" />
-<!--                                        <figcaption>-->
-<!--                                            <a class="btn btn-round btn-danger btn-remove-pic"><i class="mdi mdi-delete"></i></a>-->
-<!--                                        </figcaption>-->
+&lt;!&ndash;                                        <figcaption>&ndash;&gt;
+&lt;!&ndash;                                            <a class="btn btn-round btn-danger btn-remove-pic"><i class="mdi mdi-delete"></i></a>&ndash;&gt;
+&lt;!&ndash;                                        </figcaption>&ndash;&gt;
                                     </figure>
                                 </li>
                             </ul>
@@ -100,7 +100,7 @@
                     <button type="submit" class="btn btn-primary" id="edit-four">保存</button>
                 </div>
                 </form>
-            </div>
+            </div>-->
         </div>
     </div>
 
@@ -113,7 +113,7 @@
                     <h6 class="modal-title">图片预览</h6>
                     <button type="button" class="btn-close" data-bs-target="#editmode" data-bs-toggle="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="min-height:580px;">
                     <img src="" id="picyl" alt="图片位"/>
                 </div>
             </div>
@@ -307,7 +307,7 @@
                             $("#wurl").val(d.usa.usa006);
                         }
                         layer.close(load_index);
-                        layer.msg(d.msg);
+                       layer.msg('提交成功');
                     },
                     error: function () { console.log('提交失败'); }
                 });

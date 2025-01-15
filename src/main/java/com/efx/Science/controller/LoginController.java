@@ -11,6 +11,7 @@ import com.efx.Science.until.RSACoder;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -291,5 +292,39 @@ public class LoginController extends BaseController {
         List<cdhba> list=hbaService.getAll(request.getParameter("flid"),request.getParameter("jgid"));
         result.put("list",list);
         return JSON.toJSONString(result);
+    }
+
+    //富文本框 上传图片
+    @RequestMapping(value = "upload")
+    @ResponseBody
+    public String upload(@RequestParam("imgFile") MultipartFile[] files, HttpServletRequest request) {
+        JSONObject jb=new JSONObject();
+        jb.put("error", 0);
+        //文件保存目录路径
+        String path = request.getSession().getServletContext().getRealPath("/");
+        //定义允许上传的文件扩展名
+        try {
+
+            if (files!=null&&files.length>0) {
+                for (MultipartFile file : files) {
+                    String filename=sdf1.format(new Date())+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+                    uploadpic("/kimg/"+filename, file, null);
+                    jb.put("error", 0);
+                    jb.put("message", "上传成功！");
+                    jb.put("url", PubMessage.serverUrl+"/upload/kimg/"+filename);
+
+//                    String imagename[] = OSSUtil.uploadObjectOSS(file,"B");
+//                    jb.put("message", "上传成功！");
+//                    jb.put("url", PubMessage.ossUrl+"/xqimg/"+imagename[1]);
+
+                    return jb.toJSONString();
+                }
+            }
+        } catch (Exception e1) {
+            jb.put("error", 1);
+            jb.put("message", e1.getMessage());
+            return jb.toJSONString();
+        }
+        return jb.toJSONString();
     }
 }

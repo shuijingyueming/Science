@@ -1,7 +1,7 @@
 document.addEventListener("error", function (e) {
     var elem = e.target;
     if (elem.tagName.toLowerCase() === 'img') {
-        elem.src = "static/xtimg/nopic.png";
+        elem.src = "static/images/nopic.png";
     }
 }, true /* 指定事件处理函数在捕获阶段执行 */);
 

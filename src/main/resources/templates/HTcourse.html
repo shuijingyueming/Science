@@ -35,6 +35,10 @@
     <link rel="stylesheet" type="text/css" href="css/page.css">
     <!--引入下拉插件css-->
     <link rel="stylesheet" type="text/css" href="js/bootstrap-select/bootstrap-select.min.css">
+    <!-- 富文本编辑器 -->
+    <link href="kindeditor/themes/default/default.css" rel="stylesheet" />
+    <script src="kindeditor/kindeditor-all-min.js"></script>
+    <script src="kindeditor/lang/zh_CN.js"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -176,7 +180,7 @@
                 </div>
                 <form id="uploadForm1" enctype="multipart/form-data">
                     <input type="hidden" id="fid1" value=""/>
-                    <div class="modal-body">
+                    <div class="modal-body" style="min-height:580px;">
 
                     </div>
                     <div class="modal-footer" style="height:100px;">
@@ -205,7 +209,7 @@
                 </div>
                 <form id="uploadForm" enctype="multipart/form-data">
                     <input type="hidden" id="fid" value=""/>
-                    <div class="modal-body">
+                    <div class="modal-body" style="min-height:580px;">
                         <div class="row col-auto" style="margin-top: 20px;">
                             <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">课程名称</label>
                             <div class="col-10 col-sm-8 col-md-6 col-lg-4">
@@ -367,7 +371,7 @@
                         <div class="row col-auto" style="margin-top: 20px;">
                             <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">课程内容描述</label>
                             <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                <textarea class="form-control" style="resize: none;" rows="3" id="t19" name="t19"></textarea>
+                                <textarea class="form-control" style="resize: none;width:350px;height:500px;" rows="3" id="t19" name="t19"></textarea>
                             </div>
                         </div>
                         <div class="row">
@@ -445,6 +449,39 @@
 <!-- validate JS 验证-->
 <script type="text/javascript" src="assets/jquery-validate/jquery.validate.js"></script>
 <script type="text/javascript" src="assets/jquery-validate/validate-methods.js"></script>
+
+<script type="text/javascript">
+    //富文本编辑器
+    KindEditor.ready(function (K) {
+        KE = K.create('#t19', {
+            allowFileManager: true, //浏览图片空间
+            filterMode: false, //HTML特殊代码过滤
+            uploadJson:"upload",
+            items : [
+                'source', '|', 'undo', 'redo', '|', 'preview', /* "print", */
+                'code', 'cut', 'copy', 'paste','plainpaste', 'wordpaste',
+                '|', 'justifyleft', 'justifycenter', 'justifyright','justifyfull', 'insertorderedlist', 'insertunorderedlist',
+                'indent', 'outdent', 'subscript','superscript', 'clearhtml', 'quickformat', 'selectall', '|',
+                'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image',
+                /*  "multiimage", "flash", "media",  "insertfile",*/
+                'table', 'hr', 'emoticons', /* "baidumap",  */ 'pagebreak',
+                /* "anchor", "link", "unlink", "|","about" */
+            ],
+            afterBlur: function () { this.sync(); }, //编辑器失去焦点(blur)时执行的回调函数（将编辑器的HTML数据同步到textarea）
+            afterUpload: function (url, data, name) { //上传文件后执行的回调函数，必须为3个参数
+                if (name == "image" || name == "multiimage") { //单个和批量上传图片时
+                    var img = new Image(); img.src = url;
+                    img.onload = function () { //图片必须加载完成才能获取尺寸
+                        if (img.width > 100) {
+                            KE.html(KE.html().replace('<img src="' + url + '"', '<img src="' + url + '" style="max-width:100%"'));
+                        }
+                    };
+                }
+            }
+        });
+    });
+</script>
 
 <script type="text/javascript">
 
@@ -757,7 +794,8 @@
             $("#t15").val(josnobj.hba015);
             $("#t16").val(josnobj.hba016);
             $("#t17").val(josnobj.hba017);
-            $("#t19").val(josnobj.hba019);
+            // $("#t19").val(josnobj.hba019);
+            KE.html(josnobj.hba019)
             $("#tt24").val(josnobj.hba024);
             $("#t27").val(josnobj.hba027);
             $("#t28").val(josnobj.hba028);
@@ -800,7 +838,8 @@
             formData.append("t15",$("#t15").val());
             formData.append("t16",$("#t16").val());
             formData.append("t17",$("#t17").val());
-            formData.append("t19",$("#t19").val());
+            // formData.append("t19",$("#t19").val());
+            formData.append("t19",KE.html());
             formData.append("t20",$("#t20").val());
             formData.append("tt20", $("#tt20").val());
             formData.append("t20", document.getElementById("t20").files[0]);

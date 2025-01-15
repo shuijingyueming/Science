@@ -81,6 +81,17 @@ public class CdyheServiceImpl implements CdyheService {
         return Math.toIntExact(yheMapper.countByExample(e1));
     }
 
+    @Override
+    public void updatebytime() {
+        cdyheWithBLOBs yhe = new cdyheWithBLOBs();
+        yhe.setYhe007("F");
+        cdyheExample e1 = new cdyheExample();
+        Criteria c = e1.createCriteria();
+        c.andYhe007EqualTo("C");
+        c.andSql("(DATE_FORMAT(yhe020,'%Y-%m-%d')=DATE_FORMAT(CURDATE(),'%Y-%m-%d'))");
+        yheMapper.updateByExampleSelective(yhe,e1);
+    }
+
 
     public PageBean queryByPage(PageBean pageBean, cdyheExample example) {
         int page = (int) pageBean.getCurrentPage();

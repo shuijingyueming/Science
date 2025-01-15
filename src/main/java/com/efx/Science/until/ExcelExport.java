@@ -93,8 +93,7 @@ public class ExcelExport {
 		String name="";
 		String dress="";
 		String lxname="";
-		String lxphone="";
-		String date="";
+		String phone="";
 		String num="";
 		String fee="";
 		cdyhb item = new cdyhb();
@@ -107,10 +106,9 @@ public class ExcelExport {
 				name = getValue(row.getCell(3)).replaceAll(" ", "");
 				dress = getValue(row.getCell(4)).replaceAll(" ", "");
 				lxname = getValue(row.getCell(5)).replaceAll(" ", "");
-				lxphone = getValue(row.getCell(6)).replaceAll(" ", "");
-				date = getValue(row.getCell(7)).replaceAll(" ", "");
-				num = getValue(row.getCell(8)).replaceAll(" ", "");
-				fee = getValue(row.getCell(9)).replaceAll(" ", "");
+				phone = getValue(row.getCell(6)).replaceAll(" ", "");
+				num = getValue(row.getCell(7)).replaceAll(" ", "");
+				fee = getValue(row.getCell(8)).replaceAll(" ", "");
 				if (!name.isEmpty()) {
 					item=yhbService.selectByName(name,id);
 					if(item==null){
@@ -119,56 +117,55 @@ public class ExcelExport {
 						item.setYhb004(name);
 						if(!dress.isEmpty())item.setYhb005(dress);
 						if(!lxname.isEmpty())item.setYhb006(lxname);
-						if(!lxphone.isEmpty())item.setYhb007(lxphone);
+						if(!phone.isEmpty())item.setYhb007(phone);
 						if(!num.isEmpty())item.setYhb016(Integer.valueOf(num));
 						if(!fee.isEmpty())item.setYhb017(Float.valueOf(fee));
-						if(!date.isEmpty())item.setYhb011(sdf2.parse(date));
 						item.setYhb012(0);
 						item.setYhb013(0);
 						item.setYhb014(0);
 						item.setYhb015(0);
+						item.setYhb011(new Date());
 						item = yhbService.insert(item);
 						if(!zhname.isEmpty()){
-							cduse use = useService.selectByName(zhname,item.getYhb001());
+							cduse use = useService.selectByName(zhname,"C",item.getYhb001());
 							if(use==null){
 								use=new cduse();
 								use.setUse002(zhname);
-								use.setUse004(zhzname);
-								use.setUse005(zhphone);
 								use.setUse003(EncrpytUtil.getSHA256("123456"));
+								if(!zhzname.isEmpty())use.setUse004(zhzname);
+								if(!zhphone.isEmpty())use.setUse005(zhphone);
+								use.setUse013("M");
 								use.setUse009("C");
 								use.setUse011(item.getYhb001());
-								use.setUse013("M");
 								useService.insert(use);
 							}else{
-								use.setUse004(zhzname);
-								use.setUse005(zhphone);
+								if(!zhzname.isEmpty())use.setUse004(zhzname);
+								if(!zhphone.isEmpty())use.setUse005(zhphone);
 								useService.update(use);
 							}
 						}
 					}else{
 						if(!dress.isEmpty())item.setYhb005(dress);
 						if(!lxname.isEmpty())item.setYhb006(lxname);
-						if(!lxphone.isEmpty())item.setYhb007(lxphone);
+						if(!phone.isEmpty())item.setYhb007(phone);
 						if(!num.isEmpty())item.setYhb016(Integer.valueOf(num));
 						if(!fee.isEmpty())item.setYhb017(Float.valueOf(fee));
-						if(!date.isEmpty())item.setYhb011(sdf2.parse(date));
 						yhbService.update(item);
 						if(!zhname.isEmpty()){
-							cduse use = useService.selectByName(zhname,item.getYhb001());
+							cduse use = useService.selectByName(zhname,"C",item.getYhb001());
 							if(use==null){
 								use=new cduse();
 								use.setUse002(zhname);
-								use.setUse004(zhzname);
-								use.setUse005(zhphone);
 								use.setUse003(EncrpytUtil.getSHA256("123456"));
+								if(!zhzname.isEmpty())use.setUse004(zhzname);
+								if(!zhphone.isEmpty())use.setUse005(zhphone);
+								use.setUse013("M");
 								use.setUse009("C");
 								use.setUse011(item.getYhb001());
-								use.setUse013("M");
 								useService.insert(use);
 							}else{
-								use.setUse004(zhzname);
-								use.setUse005(zhphone);
+								if(!zhzname.isEmpty())use.setUse004(zhzname);
+								if(!zhphone.isEmpty())use.setUse005(zhphone);
 								useService.update(use);
 							}
 						}

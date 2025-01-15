@@ -27,4 +27,6 @@ public interface CdyheService extends IService<cdyhe> {
     void delete(int id);
 
     Integer countBylsid(int fid);
+
+    void updatebytime();
 }

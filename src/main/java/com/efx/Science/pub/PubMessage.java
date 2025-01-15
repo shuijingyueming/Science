@@ -6,7 +6,7 @@ import java.util.Map;
 public class PubMessage {
     public static Map dlmap = new HashMap();
 
-
+    public static String serverUrl = "http://localhost";
 
 
 }

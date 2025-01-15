@@ -95,9 +95,9 @@
                                     <td th:text="${item.yhe007=='A'?'选课方预约':(item.yhe007=='B'?'授课方退回':(item.yhe007=='C'?'授课方接受':(item.yhe007=='D'?'选课方取消预约 ':(item.yhe007=='E'?'已完结已传资料':(item.yhe007=='F'?'已完结未传资料':'')))))}"></td>
                                     <td>
                                         <div class="btn-group btn-group-sm">
+                                            <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]],[[${item.yhb.yhb004}]])" class="btn btn-table"
+                                               data-bs-toggle="modal" data-bs-target="#editmode">编辑</a>
                                             <th:block th:if="${session.umsg.jstype=='B'}">
-                                                <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]])" class="btn btn-table"
-                                                   data-bs-toggle="modal" data-bs-target="#editmode">编辑</a>
                                                 <div class="ivu-divider-vertical"></div>
                                                 <th:block th:if="${item.yhe007=='A'}">
                                                 <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['C']])">接受</a>
@@ -135,11 +135,76 @@
                 </div>
                 <form id="uploadForm" enctype="multipart/form-data">
                     <input type="hidden" id="fid" value=""/>
-                    <div class="modal-body">
-                        <div class="row col-auto" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">机构名称/个人单位</label>
-                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                <input type="text" class="form-control" id="t2" name="t2" placeholder="请输入机构名称/个人单位"/>
+                    <input type="hidden" id="fname" value=""/>
+                    <div class="modal-body" style="min-height:580px;">
+                        <div class="row ">
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">授课结束日期</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="date" class="form-control" id="z10" name="z10" placeholder="请输入授课结束日期"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">授课地点</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="text" class="form-control" id="z1" name="z1" placeholder="请输入授课地点"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">服务人次</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="text" class="form-control" id="z2" name="z2" placeholder="请输入服务人次"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">服务总费用</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="text" class="form-control" id="z3" name="z3" placeholder="请输入服务总费用"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">实际服务人次</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="text" class="form-control" id="z8" name="z8" placeholder="请输入实际服务人次"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">实际服务总费用</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="text" class="form-control" id="z9" name="z9" placeholder="请输入实际服务总费用"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">交通补贴费</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="text" class="form-control" id="z4" name="z4" placeholder="请输入交通补贴费"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">附加材料费</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="text" class="form-control" id="z5" name="z5" placeholder="请输入附加材料费"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">志愿者人数</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="text" class="form-control" id="z7" name="z7" placeholder="请输入志愿者人数"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">志愿者补贴总金额</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="text" class="form-control" id="z6" name="z6" placeholder="请输入志愿者补贴总金额"/>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -200,7 +265,58 @@
                                 <input type="date" class="form-control" id="t8" name="t8" placeholder="请输入授课日期"/>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">授课结束日期</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="date" class="form-control" id="t10" name="t10" placeholder="请输入授课结束日期"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">授课地点</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="text" class="form-control" id="t2" name="t2" placeholder="请输入授课地点"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">服务人次</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="text" class="form-control" id="t14" name="t14" placeholder="请输入服务人次"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">服务总费用</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="text" class="form-control" id="t5" name="t5" placeholder="请输入服务总费用"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">交通补贴费</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="text" class="form-control" id="t11" name="t11" placeholder="请输入交通补贴费"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">附加材料费</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="text" class="form-control" id="t12" name="t12" placeholder="请输入附加材料费"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-md-3">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">志愿者人数</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <input type="text" class="form-control" id="t7" name="t7" placeholder="请输入志愿者人数"/>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                     <div class="modal-footer" style="height:100px;">
                         <button type="submit" class="btn btn-primary" id="edit-four1">保存</button>
                     </div>
@@ -317,16 +433,12 @@
 
     pdyes($("#pages").val(), $("#counts").val());
 
-    function kcyy(){
-
-    }
-
     //翻页
     function usefanye(pageindex){
         var params = [
             ["pages",pageindex],
             ["name",$.trim($("#name").val())]];
-        form_submit("toHt/toselect","post",params,"_self");
+        form_submit("toHt/toselection","post",params,"_self");
     }
 
     function del(id){
@@ -335,7 +447,7 @@
             var formData = new FormData();
             formData.append("fid",id);
             $.ajax({
-                url: 'toHt/delselect', // 服务器端处理上传文件的URL
+                url: 'toHt/delselection', // 服务器端处理上传文件的URL
                 type: 'POST',
                 data: formData,
                 dataType:'json',
@@ -364,7 +476,7 @@
         location.reload();
     }
 
-    function edit(obj){
+    function edit(obj,name){
         if(obj!=null&&obj!=''){
             let josnobj = null;
             if(obj.indexOf("Hash")>0){
@@ -372,23 +484,18 @@
             }else{
                 josnobj = jsStringTojsonString(obj);
             }
+            $("#tname").val(name);
             $("#fid").val(josnobj.yhe001);
-            $("input[name='t3']").each(function(){
-                if($(this).val()==josnobj.yhe002){
-                    $(this).prop("checked",true);
-                }else{
-                    $(this).prop("checked",false);
-                }
-            });
-            $("#t2").val(josnobj.yhe003);
-            $("#t4").val(josnobj.yhe004);
-            $("#t5").val(josnobj.yhe005);
-            $("#t6").val(josnobj.yhe006);
-            $("#t7").val(josnobj.yhe007);
-            $("#t9").val(josnobj.yhe009);
-            $("#t10").val(josnobj.yhe010);
-            $("#t8").val(getTime(josnobj.yhe008,'YY-MM-DD'));
-            $("#t8").val(getTime(josnobj.yhe008,'YY-MM-DD'));
+            $("#z1").val(josnobj.yhe009);
+            $("#z2").val(josnobj.yhe010);
+            $("#z3").val(josnobj.yhe011);
+            $("#z4").val(josnobj.yhe012);
+            $("#z5").val(josnobj.yhe013);
+            $("#z6").val(josnobj.yhe014);
+            $("#z7").val(josnobj.yhe015);
+            $("#z8").val(josnobj.yhe016);
+            $("#z9").val(josnobj.yhe018);
+            $("#z10").val(getTime(josnobj.yhe020,'YY-MM-DD'));
             $("#ftype").text("编辑");
         }else{
             $("#ftype").text("添加");
@@ -407,17 +514,19 @@
             load_index = layer.load(1);
             var formData = new FormData();
             formData.append("fid",$("#fid").val().trim());
-            formData.append("t2",$("input[name='t3']:checked").val());
-            formData.append("t3",$("#t2").val());
-            formData.append("t4",$("#t4").val());
-            formData.append("t5",$("#t5").val());
-            formData.append("t6",$("#t6").val());
-            formData.append("t7",$("#t7").val());
-            formData.append("t8",$("#t8").val());
-            formData.append("t9",$("#t9").val());
-            formData.append("t10",$("#t10").val());
+            formData.append("z1",$("#z1").val());
+            formData.append("z2",$("#z2").val());
+            formData.append("z3",$("#z3").val());
+            formData.append("z4",$("#z4").val());
+            formData.append("z5",$("#z5").val());
+            formData.append("z6",$("#z6").val());
+            formData.append("z7",$("#z7").val());
+            formData.append("z8",$("#z8").val());
+            formData.append("z9",$("#z9").val());
+            formData.append("z10",$("#z10").val());
+            formData.append("t1",$("#tname").val());
             $.ajax({
-                url: 'toHt/xgselect', // 服务器端处理上传文件的URL
+                url: 'toHt/xgselection', // 服务器端处理上传文件的URL
                 type: 'POST',
                 data: formData,
                 dataType:'json',

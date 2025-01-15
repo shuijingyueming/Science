@@ -129,7 +129,7 @@
       #{smd016,jdbcType=REAL}, #{smd017,jdbcType=VARCHAR}, #{smd018,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.efx.Science.model.cdsmd">
+  <insert id="insertSelective" parameterType="com.efx.Science.model.cdsmd" useGeneratedKeys="true" keyProperty="smd001">
     insert into cdsmd
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="smd001 != null">

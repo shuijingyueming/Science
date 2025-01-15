@@ -50,6 +50,7 @@
                         <form class="search-form" method="post" role="form" action="toHt/toselect">
                             <input type="hidden" id="pages" name="pages" th:value="${pageobj.currentPage}"/>
                             <input type="hidden" id="counts" name="counts" th:value="${pageobj.pageCount}"/>
+                            <input type="hidden" id="jstype" name="jstype" th:value="${session.umsg.jstype}"/>
                             <!--text input-->
                             <div class="row g-3">
                                 <div class="col-auto">
@@ -91,7 +92,7 @@
                                 <tbody id="tablebody">
                                 <tr th:each="item,stat:${pageobj.resultList}">
                                     <td th:text="${stat.index+1}"></td>
-                                    <td th:text="${item.smd002}"></td>
+                                    <td th:text="${item.smd002=='A'?'机构':(item.smd002=='B'?'个人':(item.smd002=='C'?'专家':''))}"></td>
                                     <td th:text="${item.smd003}"></td>
                                     <td th:text="${item.smd004}"></td>
                                     <td th:text="${item.smd010}"></td>
@@ -133,7 +134,7 @@
                 </div>
                 <form id="uploadForm" enctype="multipart/form-data">
                     <input type="hidden" id="fid" value=""/>
-                    <div class="modal-body">
+                    <div class="modal-body" style="min-height:580px;">
                         <div class="row col-auto" style="margin-top: 20px;">
                             <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">身份类别</label>
                             <div class="form-check">

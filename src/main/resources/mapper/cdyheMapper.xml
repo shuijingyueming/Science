@@ -41,7 +41,7 @@
     <result column="YHE041" jdbcType="VARCHAR" property="yhe041" />
     <result column="YHE042" jdbcType="VARCHAR" property="yhe042" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.efx.Science.model.cdyheWithBLOBs">
+  <resultMap extends="BaseResultMap" type="com.efx.Science.model.cdyheWithBLOBs" id="ResultMapWithBLOBs" >
     <result column="YHE029" jdbcType="LONGVARCHAR" property="yhe029" />
     <result column="YHE030" jdbcType="LONGVARCHAR" property="yhe030" />
     <result column="YHE031" jdbcType="LONGVARCHAR" property="yhe031" />

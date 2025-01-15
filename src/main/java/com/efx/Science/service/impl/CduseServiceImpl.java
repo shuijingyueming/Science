@@ -52,6 +52,7 @@ public class CduseServiceImpl implements CduseService {
         if(pb.getOthersql()!=null) c.andUse002Like("%"+pb.getOthersql()+"%");
 //        if(pb.getOthersql6()!=null) c.andUse007Like("%"+pb.getOthersql6()+"%");
         if (pb.getOthersql1() != null) c.andUse009EqualTo(pb.getOthersql1());
+        if (pb.getOthersql5() != null) c.andUse011EqualTo(Integer.valueOf(pb.getOthersql5()));
         return queryByPage(pb, e1);
     }
 
@@ -66,13 +67,12 @@ public class CduseServiceImpl implements CduseService {
         return use;
     }
 
-
-
     @Override
-    public cduse selectByName(String name, Integer id) {
+    public cduse selectByName(String name, String type, Integer id) {
         cduseExample e1 = new cduseExample();
         Criteria c = e1.createCriteria();
         c.andUse002EqualTo(name);
+        if (type != null)c.andUse009EqualTo(type);
         if (id != null) c.andUse011EqualTo(id);
         List<cduse> list = useMapper.selectByExample(e1);
         return list.size() > 0 ? list.get(0) : null;
@@ -88,8 +88,8 @@ public class CduseServiceImpl implements CduseService {
         //check page
         page = page < 1 ? 1 : ((page > count) ? count : page);
         //query
-        List<cduse> list = pageBean.getOthersql1().equals("A")?useMapper.selectByExampleAndPage(example, new RowBounds((page - 1) * size, size)):
-                (pageBean.getOthersql1().equals("B")?useMapper.selectByExampleAndPage1(example, new RowBounds((page - 1) * size, size)):useMapper.selectByExampleAndPage2(example, new RowBounds((page - 1) * size, size)));
+            List<cduse> list = pageBean.getOthersql1().equals("C")?useMapper.selectByExampleAndPage2(example, new RowBounds((page - 1) * size, size)):
+                (pageBean.getOthersql1().equals("B")?useMapper.selectByExampleAndPage1(example, new RowBounds((page - 1) * size, size)):useMapper.selectByExampleAndPage(example, new RowBounds((page - 1) * size, size)));
         //save to PageBean
         pageBean.setCurrentPage(page);
         pageBean.setPageCount(count);

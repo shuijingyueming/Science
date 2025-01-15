@@ -24,6 +24,8 @@
     <result column="YHB020" jdbcType="INTEGER" property="yhb020" />
     <result column="YHB021" jdbcType="INTEGER" property="yhb021" />
     <result column="YHB022" jdbcType="TIMESTAMP" property="yhb022" />
+  </resultMap>
+  <resultMap id="BaseResultMap1" type="com.efx.Science.model.cdyhb"  extends="BaseResultMap">
     <association property="yha" column="YHB002" select="com.efx.Science.dao.cdyhaMapper.selectByPrimaryKey"/>
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -477,7 +479,7 @@
       YHB022 = #{yhb022,jdbcType=TIMESTAMP}
     where YHB001 = #{yhb001,jdbcType=INTEGER}
   </update>
-  <select id="selectByExampleAndPage" resultMap="BaseResultMap" parameterType="com.efx.Science.model.cdyhbExample" flushCache="true" useCache="false">
+  <select id="selectByExampleAndPage" resultMap="BaseResultMap1" parameterType="com.efx.Science.model.cdyhbExample" flushCache="true" useCache="false">
     select
     <if test="distinct" >
       distinct

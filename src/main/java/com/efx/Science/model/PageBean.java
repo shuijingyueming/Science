@@ -25,7 +25,7 @@ public class PageBean {
 
     private long currentPage;//本页的页号
 
-    private Integer pageSize=10;//每页条数
+    private Integer pageSize=20;//每页条数
 
 
     private long recordCount;//总条数

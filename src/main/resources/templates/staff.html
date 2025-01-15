@@ -69,33 +69,33 @@
                                     </div>
                                 </div>
                                 <th:block th:if="${pageobj.othersql1=='B'}">
-                                    <div class="col-auto">
-                                    <div class="row">
-                                        <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">授课方</label>
-                                        <div class="form-controls col-auto">
-                                            <select id="skid" name="skid"  class="form-control selectpicker" data-live-search="true">
-                                                <option value="" selected>请选择</option>
-                                                <th:block th:each="item,stat:${smdlist}">
-                                                    <option th:value="${item.smd001}"  th:selected="${#strings.toString(item.smd001)==pageobj.othersql5?true:false}">[[${item.smd003}]]</option>
-                                                </th:block>
-                                            </select>
+                                    <div class="col-auto" th:style="${session.umsg.jstype=='B'?'display: none':''}">
+                                        <div class="row">
+                                            <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">授课方名称</label>
+                                            <div class="col-auto">
+                                                <select id="skid" name="skid"  class="form-control selectpicker" data-live-search="true">
+                                                    <option value="" selected>请选择</option>
+                                                    <th:block th:each="item,stat:${smdlist}">
+                                                        <option th:value="${item.smd001}"  th:selected="${pageobj.othersql5==#strings.toString(item.smd001)?true:false}">[[${item.smd003}]]</option>
+                                                    </th:block>
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
                                 </th:block>
                                 <th:block th:if="${pageobj.othersql1=='C'}">
-                                    <div class="col-auto">
-                                    <div class="row">
-                                        <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">选课方</label>
-                                        <div class="form-controls col-auto">
-                                            <select id="skid" name="skid"  class="form-control selectpicker" data-live-search="true">
-                                                <option value="" selected>请选择</option>
-                                                <th:block th:each="item,stat:${yhblist}">
-                                                    <option th:value="${item.yhb001}" th:selected="${#strings.toString(item.yhb001)==pageobj.othersql5?true:false}">[[${item.yhb004}]]</option>
-                                                </th:block>
-                                            </select>
+                                    <div class="col-auto" th:style="${session.umsg.jstype=='C'?'display: none':''}">
+                                        <div class="row">
+                                            <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">授课方名称</label>
+                                            <div class="col-auto">
+                                                <select id="skid" name="skid"  class="form-control selectpicker" data-live-search="true">
+                                                    <option value="" selected>请选择</option>
+                                                    <th:block th:each="item,stat:${yhblist}">
+                                                        <option th:value="${item.yhb001}"  th:selected="${pageobj.othersql5==#strings.toString(item.yhb001)?true:false}">[[${item.yhb004}]]</option>
+                                                    </th:block>
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
                                 </th:block>
                                 <!--button-->
@@ -125,6 +125,9 @@
                                 <tbody id="tablebody">
                                     <tr th:each="item,stat:${pageobj.resultList}">
                                     <td th:text="${stat.index+1}"></td>
+                                        <th:block th:if="${pageobj.othersql1!='A'}">
+                                            <th th:text="${pageobj.othersql1=='B'?item.smd.smd003:item.yhb.yhb004}"></th>
+                                        </th:block>
                                         <td><img class="wimg" th:src="${item.use008!=null?'upload/tximg/'+item.use008:'images/nopic.png'}" style='width:100px;height:auto;object-fit:cover;border:1px solid rgb(229, 229, 229);'></td>
                                         <td th:text="${item.use007}"></td>
                                         <td th:text="${item.use002}"></td>
@@ -170,7 +173,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="min-height:580px;">
 
                     </div>
                     <div class="modal-footer" style="height:100px;">
@@ -193,7 +196,7 @@
                 </div>
                 <form id="uploadForm" enctype="multipart/form-data">
                     <input type="hidden" id="fid" value=""/>
-                    <div class="modal-body">
+                    <div class="modal-body" style="min-height:580px;">
                         <div class="row col-auto" style="margin-top: 20px;">
                             <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">账户名称</label>
                             <div class="col-10 col-sm-8 col-md-6 col-lg-4">
@@ -213,26 +216,26 @@
                             </div>
                         </div>
                         <th:block th:if="${pageobj.othersql1=='B'}">
-                        <div class="row col-auto" th:style="${session.umsg.jstype=='B'?'margin-top: 20px;display:none':'margin-top: 20px;'}">
+                        <div class="row col-auto" th:style="${session.umsg.jstype=='B'?'margin-top: 20px;display: none':'margin-top: 20px;'}">
                                 <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">授课方</label>
                                 <div class="form-controls">
                                     <select id="t11" name="t11"  class="form-control selectpicker" data-live-search="true">
                                         <option value="" selected>请选择</option>
                                         <th:block th:each="item,stat:${smdlist}">
-                                            <option th:value="${item.smd001}"  th:selected="${session.umsg.jstype=='B'&&#strings.toString(item.smd001)==pageobj.othersql5?true:false}">[[${item.smd003}]]</option>
+                                            <option th:value="${item.smd001}" th:selected="${session.umsg.jstype=='B'&&pageobj.othersql5==#strings.toString(item.smd001)?true:false}">[[${item.smd003}]]</option>
                                         </th:block>
                                     </select>
                                 </div>
                         </div>
                         </th:block>
                         <th:block th:if="${pageobj.othersql1=='C'}">
-                        <div class="row col-auto" th:style="${session.umsg.jstype=='C'?'margin-top: 20px;display:none':'margin-top: 20px;'}">
+                        <div class="row col-auto" th:style="${session.umsg.jstype=='C'?'margin-top: 20px;display: none':'margin-top: 20px;'}">
                             <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">选课方</label>
                             <div class="form-controls">
                                 <select id="t11" name="t11"  class="form-control selectpicker" data-live-search="true">
                                     <option value="" selected>请选择</option>
                                     <th:block th:each="item,stat:${yhblist}">
-                                        <option th:value="${item.yhb001}" th:selected="${session.umsg.jstype=='C'&&#strings.toString(item.yhb001)==pageobj.othersql5?true:false}">[[${item.yhb004}]]</option>
+                                        <option th:value="${item.yhb001}"  th:selected="${session.umsg.jstype=='C'&&pageobj.othersql5==#strings.toString(item.yhb001)?true:false}">[[${item.yhb004}]]</option>
                                     </th:block>
                                 </select>
                             </div>
@@ -252,14 +255,9 @@
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/popper.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
-<!-- 数字动态滚动增加效果 -->
-<script type="text/javascript" src="js/scroll-numbers.js"></script>
-<!--引入chart插件js-->
+
 <script type="text/javascript" src="js/main.min.js"></script>
-<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
-<script type="text/javascript" src="js/bootstrap-multitabs/multitabs.min.js"></script>
-<script type="text/javascript" src="js/jquery.cookie.min.js"></script>
-<script type="text/javascript" src="js/index.min.js"></script>
+<script type="text/javascript" src="js/jquery-confirm/jquery-confirm.min.js"></script>
 <!--tags插件-->
 <script type="text/javascript" src="js/jquery-tagsinput/jquery.tagsinput.min.js"></script>
 <!--上传插件-->
@@ -308,27 +306,26 @@
     function usefanye(pageindex){
         var params = [
             ["pages",pageindex],
-            ["name",$.trim($("#name").val())]];
+            ["name", $("#name").val()],["phone", $("#phone").val()],["skid", $("#skid").val()]];
         form_submit("toHt/staff","post",params,"_self");
     }
     function xzmb(){
         var params = [  ["type","E"],
             ["pages",$("#pages").val()],
-            ["name", $("#name").val()]];
+            ["name", $("#name").val()],["phone", $("#phone").val()],["skid", $("#skid").val()]];
         form_submit("toHt/staff","post",params,"_self");
     }
 
 
-    //详情
-    function tosh(obj,obj1,name){
-        var item = null;
+    function toxq(obj,obj1,cjname){
+        let item = null;
         if(obj.indexOf("Hash")>0){
             item = striongTOjsonString(obj);
         }else{
             item = jsStringTojsonString(obj);
         }
-        var item1 = null;
-        if(obj.indexOf("Hash")>0){
+        let item1 = null;
+        if(obj1.indexOf("Hash")>0){
             item1 = striongTOjsonString(obj1);
         }else{
             item1 = jsStringTojsonString(obj1);
@@ -336,55 +333,60 @@
         $("#xqmode").find(".modal-body").empty();
         let html="";
         if($("#lx").val()=="B"){
-            html+= "<div class='row'><div class='col-md-6'>";
-            html+= "<div class='form-group'><label class='layui-form-label'>身份类别：</label>";
-            html+=  '<span class="jspan">'+(item1.smd002=="A"?"机构":(item1.smd002=="B"?"个人":(item1.smd002=="C"?"专家":"")))+"</div></div></div>";
-            html+= "</div></div></div>";
-            html+= "<div class='row'><div class='col-md-6'>";
-            html+= "<div class='form-group'><label class='layui-form-label'>机构名称/个人单位：</label>";
-            html+=  '<span class="jspan">'+item1.smd003+"</div></div></div>";
-            html+= "</div></div></div>";
-            html+= "<div class='row'><div class='col-md-6'>";
-            html+= "<div class='form-group'><label class='layui-form-label'>营业执照/身份证号：</label>";
-            html+=  '<span class="jspan">'+item1.smd004+"</div></div></div>";
-            html+= "</div></div></div>";
-            html+= "<div class='row'><div class='col-md-6'>";
-            html+= "<div class='form-group'><label class='layui-form-label'>开户行：</label>";
-            html+=  '<span class="jspan">'+item1.smd005+"</div></div></div>";
-            html+= "</div></div></div>";
-            html+= "<div class='row'><div class='col-md-6'>";
-            html+= "<div class='form-group'><label class='layui-form-label'>户名/银行卡号：</label>";
-            html+=  '<span class="jspan">'+item1.smd006+"</div></div></div>";
-            html+= "</div></div></div>";
-            html+= "<div class='row'><div class='col-md-6'>";
-            html+= "<div class='form-group'><label class='layui-form-label'>账号/姓名：</label>";
-            html+=  '<span class="jspan">'+item1.smd007+"</div></div></div>";
-            html+= "</div></div></div>";
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">身份类别：</label>';
+            html+= '<span class="jspan">'+(item1.smd002=='A'?'机构':(item1.smd002=='B'?'个人':(item1.smd002=='C'?'专家':'')))+'</span>';
+            html+= '</div></div></div>';
+            html+= '';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">机构名称/个人单位：</label>';
+            html+= '<span class="jspan">'+item1.smd003+'</span>';
+            html+= '</div></div></div>';
+            html+= '';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">营业执照/身份证号：</label>';
+            html+= '<span class="jspan">'+item1.smd004+'</span>';
+            html+= '</div></div></div>';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">开户行：</label>';
+            html+= '<span class="jspan">'+item1.smd005+'</span>';
+            html+= '</div></div></div>';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">户名/银行卡号：</label>';
+            html+= '<span class="jspan">'+item1.smd006+'</span>';
+            html+= '</div></div></div>';
+            html+= '';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">账号/姓名：</label>';
+            html+= '<span class="jspan">'+item1.smd007+'</span>';
+            html+= '</div></div></div>';
         }else{
-            html+= "<div class='row'><div class='col-md-6'>";
-            html+= "<div class='form-group'><label class='layui-form-label'>层级名称：</label>";
-            html+=  '<span class="jspan">'+name+"</div></div></div>";
-            html+= "</div></div></div>";
-            html+= "<div class='row'><div class='col-md-6'>";
-            html+= "<div class='form-group'><label class='layui-form-label'>单位名称：</label>";
-            html+=  '<span class="jspan">'+item1.yhb004+"</div></div></div>";
-            html+= "</div></div></div>";
-            html+= "<div class='row'><div class='col-md-6'>";
-            html+= "<div class='form-group'><label class='layui-form-label'>单位地址：</label>";
-            html+=  '<span class="jspan">'+item1.yhb005+"</div></div></div>";
-            html+= "</div></div></div>";
-            html+= "<div class='row'><div class='col-md-6'>";
-            html+= "<div class='form-group'><label class='layui-form-label'>联系人：</label>";
-            html+=  '<span class="jspan">'+item1.yhb006+"</div></div></div>";
-            html+= "</div></div></div>";
-            html+= "<div class='row'><div class='col-md-6'>";
-            html+= "<div class='form-group'><label class='layui-form-label'>联系电话：</label>";
-            html+=  '<span class="jspan">'+item1.yhb007+"</div></div></div>";
-            html+= "</div></div></div>";
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">层级：</label>';
+            html+= '<span class="jspan">'+cjname+'</span>';
+            html+= '</div></div></div>';
+            html+= '';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">单位名称：</label>';
+            html+= '<span class="jspan">'+item1.yhb004+'</span>';
+            html+= '</div></div></div>';
+            html+= '';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">单位地址：</label>';
+            html+= '<span class="jspan">'+item1.yhb005+'</span>';
+            html+= '</div></div></div>';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">联系人：</label>';
+            html+= '<span class="jspan">'+item1.yhb006+'</span>';
+            html+= '</div></div></div>';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">联系电话：</label>';
+            html+= '<span class="jspan">'+item1.yhb007+'</span>';
+            html+= '</div></div></div>';
+            html+= '';
         }
-
-        $("#shtg").attr("onclick","xgzt('"+item.use001+"','"+item.use004+"','M')")
-        $("#shbh").attr("onclick","xgzt('"+item.use001+"','"+item.use004+"','E')")
+        $("#shtg").attr("onclick","xgzt("+item.use001+","+item.use002+",'M')")
+        $("#shbh").attr("onclick","xgzt("+item.use001+","+item.use002+",'E')")
         $("#xqmode").find(".modal-body").append(html);
     }
 
@@ -504,7 +506,7 @@
                 if (data == 'A') {
                     var params = [
                         ["pages", $("#pages").val()],
-                        ["name",$.trim($("#name").val())]];
+                        ["name", $("#name").val()],["phone", $("#phone").val()],["skid", $("#skid").val()]];
                     // layer.msg("导入成功", {time: 1000}, function () {
                     form_submit("toHt/staff", "post", params, "_self");
                     // });
