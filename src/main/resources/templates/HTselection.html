@@ -33,9 +33,34 @@
     <link rel="stylesheet" type="text/css" href="css/animate.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.min.css">
     <link rel="stylesheet" type="text/css" href="css/page.css">
-    <link rel="stylesheet" type="text/css" href="js/bootstrap-datepicker/bootstrap-datepicker3.min.css">
-    <link rel="stylesheet" type="text/css" href="js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" type="text/css" href="js/bootstrap-select/bootstrap-select.min.css">
+    <!--日程插件-->
+    <link rel="stylesheet" type="text/css" href="js/fullcalendar/core/main.min.css">
+    <link rel="stylesheet" type="text/css" href='js/fullcalendar/daygrid/main.min.css' />
+    <link rel="stylesheet" type="text/css" href='js/fullcalendar/timegrid/main.min.css' />
+    <link rel="stylesheet" type="text/css" href='js/fullcalendar/list/main.min.css' />
+    <!--时间选择器css-->
+    <link rel="stylesheet" type="text/css" href="js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+    <!--日期选择器css-->
+    <link rel="stylesheet" type="text/css" href="js/bootstrap-datepicker/bootstrap-datepicker3.min.css">
+
+    <style>
+        td.fc-day.fc-past {
+            background-color: #FaFaFa;
+        }
+        .small-f1{
+            font-size: 12px;
+            color:#6a6a6a;
+        }
+        .fadeMask{
+            width:100%;
+            height:100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background-color: #0a0a0a48;
+        }
+    </style>
 </head>
 <body>
 <div class="container-fluid">
@@ -227,11 +252,11 @@
                 <form id="uploadForm1" enctype="multipart/form-data">
                     <input type="hidden" id="fid1" value=""/>
                     <div class="modal-body" style="min-height:580px;">
-                        <div class="row col-auto" style="margin-top: 20px;">
-                            <div class="col-md-3">
+                        <div class="row col-auto">
+                            <div class="col-lg-2 col-md-3 col-sm-4">
                                 <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">课程分类</label>
                                 <div class="form-controls">
-                                    <select id="t1" name="t1"  class="form-control selectpicker" data-live-search="true">
+                                    <select id="t1" name="t1"  class="form-control form-select">
                                         <option value="" selected>请选择</option>
                                         <th:block th:each="item,stat:${hbblist}">
                                             <option th:value="${item.hbb001}" >[[${item.hbb002}]]</option>
@@ -239,84 +264,32 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-3" th:style="${session.umsg.jstype=='B'?'display: none':''}">
-                                <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">授课方</label>
-                                <div class="form-controls">
-                                    <select id="t3" name="t3"  class="form-control selectpicker" data-live-search="true">
-                                        <option value="" selected>请选择</option>
-                                        <th:block th:each="item,stat:${smdlist}">
-                                            <option th:value="${item.smd001}"  th:selected="${session.umsg.jstype=='B'&&pageobj.othersql1==#strings.toString(item.smd001)?true:false}">[[${item.smd003}]]</option>
-                                        </th:block>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
+                            <div class="col-lg-4 col-md-6 col-sm-8">
                                 <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">课程</label>
                                 <div class="form-controls">
-                                    <select id="t4" name="t4"  class="form-control selectpicker" data-live-search="true">
+                                    <select id="t4" name="t4" class="form-control form-select">
                                         <option value="" selected>请选择</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
-                        <div class="row col-auto" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">授课日期</label>
-                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                <input type="date" class="form-control" id="t8" name="t8" placeholder="请输入授课日期"/>
+                        <div class="row col-auto">
+                            <div class="col-lg-4 col-md-6 col-sm-8">
+                                <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">授课日期</label>
+                                <input type="text" class="form-control col-auto" disabled="false" id="t8" name="t8" />
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">授课结束日期</label>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                    <input type="date" class="form-control" id="t10" name="t10" placeholder="请输入授课结束日期"/>
-                                </div>
+                        <div class="row col-auto">
+                            <div class="col-lg-4 col-md-6 col-sm-8">
+                                <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">授课地点</label>
+                                <input type="text" class="form-control col-auto" id="t2" name="t2" placeholder="请输入授课地点"/>
                             </div>
-                            <div class="col-md-3">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">授课地点</label>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                    <input type="text" class="form-control" id="t2" name="t2" placeholder="请输入授课地点"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row ">
-                            <div class="col-md-3">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">服务人次</label>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                    <input type="text" class="form-control" id="t14" name="t14" placeholder="请输入服务人次"/>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">服务总费用</label>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                    <input type="text" class="form-control" id="t5" name="t5" placeholder="请输入服务总费用"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row ">
-                            <div class="col-md-3">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">交通补贴费</label>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                    <input type="text" class="form-control" id="t11" name="t11" placeholder="请输入交通补贴费"/>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">附加材料费</label>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                    <input type="text" class="form-control" id="t12" name="t12" placeholder="请输入附加材料费"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row ">
-                            <div class="col-md-3">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">志愿者人数</label>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                    <input type="text" class="form-control" id="t7" name="t7" placeholder="请输入志愿者人数"/>
-                                </div>
+                            <div class="col-lg-2 col-md-3 col-sm-4">
+                                <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">服务人次</label>
+                                <input type="text" class="form-control col-auto" id="t14" name="t14" placeholder="请输入服务人次"/>
                             </div>
                         </div>
                     </div>
-
                     <div class="modal-footer" style="height:100px;">
                         <button type="submit" class="btn btn-primary" id="edit-four1">保存</button>
                     </div>
@@ -324,7 +297,26 @@
             </div>
         </div>
     </div>
+</div>
 
+<div class="modal fade fadeMask" id="modal-event" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog" style="max-width: 800px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">选择上课日期</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closecbt()"></button>
+            </div>
+            <div class="modal-body">
+                <div id="calendar" data-provide="fullcalendar"></div>
+            </div>
+            <div class="modal-footer">
+                <span style="width:60px;position: absolute;left:10px;">预约日期</span>
+                <span id="yydate" style="width:120px;position: absolute;left:80px;"></span>
+                <button onclick="closecbt()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="okcbt()">确认</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -369,64 +361,125 @@
 <script type="text/javascript" src="assets/jquery-validate/jquery.validate.js"></script>
 <script type="text/javascript" src="assets/jquery-validate/validate-methods.js"></script>
 
+<!--日期选择器js-->
+<script type="text/javascript" src="js/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js"></script>
+<!--时间日期选择器js-->
+<script type="text/javascript" src="js/momentjs/moment.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="js/momentjs/locale/zh-cn.min.js"></script>
+<!--日程插件-->
+<script type="text/javascript" src="js/fullcalendar/core/main.min.js"></script>
+<script type="text/javascript" src="js/fullcalendar/core/locales/zh-cn.js"></script>
+<script type="text/javascript" src="js/fullcalendar/interaction/main.min.js"></script>
+<script type="text/javascript" src="js/fullcalendar/daygrid/main.min.js"></script>
+<script type="text/javascript" src="js/fullcalendar/timegrid/main.min.js"></script>
+<script type="text/javascript" src="js/fullcalendar/list/main.min.js"></script>
+<script type="text/javascript" src="js/fullcalendar/rrule/main.min.js"></script>
+
 <script type="text/javascript">
 
     var file_lastName="";
     var filesize;
     var layer = layui.layer;
     var load_index;
+    var kcid;
+    var arr=[];
+    $(document).ready(function(){
+        //上月监听
+        $(".fc-prev-button").click(function(e){
+            getpkjl();
+        });
+        //下月监听
+        $(".fc-next-button").click(function(e){
+           getpkjl();
+        });
+        $(".fc-today-button").click(function(e){
+             getpkjl();
+        });
+    });
+
+    function closecbt(){
+        $("#yydate").empty();
+    }
+    function okcbt(){
+        $("#t8").val($("#yydate").text());
+        $("#yydate").empty();
+        $("#modal-event").modal('hide');
+    }
+
+    //获取当月的排课记录的方法
+    function getpkjl() {
+         load_index = layer.load(1);
+         var formData = new FormData();
+         formData.append('kcid',kcid);
+         formData.append('pkyear',formatDate(calendar.state.currentDate, 'yyyy'));
+         formData.append('pkmonth',formatDate(calendar.state.currentDate, 'MM'));
+        $.ajax({
+            url: 'toHt/getcoursepk',
+            type: 'POST',
+            data: formData,
+            async: false,                      //async 设置为 false，则所有的请求均为同步请求，在没有返回值之前，同步请求将锁住浏览器
+            cache: false,                      // 不缓存
+            processData: false,                // jQuery不要去处理发送的数据
+            contentType: false,                // jQuery不要去设置Content-Type请求头
+            dataType: 'json',
+            success: function (res) {
+                var d = eval(res);
+                if(d.msg=="N"){
+                    layer.msg('该月无排课记录！');
+                    ispk = false;
+                }else{
+                    arr = [];
+                    calendar.removeAllEventSources();
+                    d = d.list;
+                    for(var i=0;i<d.length;i++){
+                        if(d[i].yhd004!="N") arr.push({id:d[i].yhd001,title:"上午",start:formatDate(d[i].yhd003, 'yyyy-MM-dd'),zt:(d[i].yhd004=="Y"?"N":"Y")});
+                        if(d[i].yhd005!="N") arr.push({id:d[i].yhd001,title:"下午",start:formatDate(d[i].yhd003, 'yyyy-MM-dd'),zt:(d[i].yhd005=="Y"?"N":"Y"),className: 'bg-purple'});
+                        if(d[i].yhd006!="N") arr.push({id:d[i].yhd001,title:"晚上",start:formatDate(d[i].yhd003, 'yyyy-MM-dd'),zt:(d[i].yhd006=="Y"?"N":"Y"),className: 'bg-danger'});
+                    }
+                    calendar.addEventSource(arr);
+                    calendar.refetchEvents();
+                    ispk = true;
+                }
+                layer.close(load_index);
+            },
+            error: function () {
+                layer.close(load_index);
+            }
+        });
+
+    }
+
     $('select[id=t1]').change(function() {
-        // if(this.value!=""){
-            $.ajax({
-                url:'getallcourse?flid='+this.value+'&jgid='+$("#t3").val(),
-                type:'post',
-                async: false,
-                cache: false,
-                processData: false,
-                contentType: false,
-                dataType:'json',
-                success:function(data) {
-                    var list = eval(data.list);
-                    $("select[id=t4]").empty();
-                    $("select[id=t4]").append("<option value=''>请选择</option>");
-                    for(var i=0;i<list.length;i++){
-                        $("select[id=t4]").append("<option value='"+list[i].hba001+"'>"+list[i].hba002+"</option>");
-                    }
-                },
-                error:function(){}
-            });
-        // }else{
-        //     $("select[id=t4]").empty();
-        //     $("select[id=t4]").append("<option value=''>请选择</option>");
-        // }
-    });
+        $.ajax({
+            url:'getallcourse?flid='+this.value,
+            type:'post',
+            async: false,
+            cache: false,
+            processData: false,
+            contentType: false,
+            dataType:'json',
+            success:function(data) {
+                var list = eval(data.list);
+                $('select[id=t4]').empty();
+                 $("select[id=t4]").append("<option value=''>请选择</option>");
+                for(var i=0;i<list.length;i++){
+                     $("select[id=t4]").append("<option value='"+list[i].hba001+"'>"+list[i].hba002+"</option>");
+                }
+            },
+            error:function(){}
+        });
 
-    $('select[id=t3]').change(function() {
-        // if(this.value!=""){
-            $.ajax({
-                url:'getallcourse?jgid='+this.value+'&flid='+$("#t1").val(),
-                type:'post',
-                async: false,
-                cache: false,
-                processData: false,
-                contentType: false,
-                dataType:'json',
-                success:function(data) {
-                    var list = eval(data.list);
-                    $("select[id=t4]").empty();
-                    $("select[id=t4]").append("<option value=''>请选择</option>");
-                    for(var i=0;i<list.length;i++){
-                        $("select[id=t4]").append("<option value='"+list[i].hba001+"'>"+list[i].hba002+"</option>");
-                    }
-                },
-                error:function(){}
-            });
-        // }else{
-        //     $("select[id=t4]").empty();
-        //     $("select[id=t4]").append("<option value=''>请选择</option>");
-        // }
     });
-
+    $('select[id=t4]').change(function() {
+        $("#t8").empty();
+        if(this.value!=""){
+            $('#modal-event').modal('show');
+            kcid = this.value;
+            getpkjl();
+        }
+    });
     function gobackpage(){
         window.history.back();
     }
@@ -469,7 +522,6 @@
             });
         }
     }
-
 
     //刷新页面
     function pagerefalsh(){
@@ -603,6 +655,97 @@
             });
         }
     }
+
+    var calendarEl = document.getElementById('calendar');
+
+    // 定义时间点（避免时间变化导致示例不显示）
+    var thisDate     = new Date();
+    var thisFullYear = thisDate.getFullYear();
+    var thisMonth    = thisDate .getMonth() + 1;
+    if (thisMonth < 10) thisMonth = '0' + thisMonth;
+
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list', 'rrule' ],
+        height: 'auto',
+        header: {
+            left: '',
+            center: 'title',
+            right:'today,prev,next'
+        },
+        buttonText: {
+            today:'今天',
+            prev:'上月',
+            next:'下月',
+            prevYear:'上一年',
+            nextYear:'下一年'
+        },
+        defaultView: 'dayGridMonth',
+        editable: true, // 确定是否可以修改日历上的事件。
+        eventLimit: false, // 当事件太多时允许“更多”链接
+        eventOrder:false,
+        events: [],
+        dateClick: function(date, jsEvent, view) {
+        },
+        eventClick: function(date, jsEvent, view) {
+            check = formatDate(date.event.start, 'yyyy-MM-dd HH:mm:ss');
+            today = formatDate(new Date(), 'yyyy-MM-dd');
+            if (check < today) {
+                // 这是一个过去的日期，取消选择或显示消息
+                layer.msg('请预约今天及以后日期！');
+            } else {
+                // 这是一个有效的日期，执行你的逻辑
+                 var time_str = formatDate(date.event.start, 'yyyy-MM-dd');
+                $("#yydate").empty();
+                $("#yydate").text(time_str+" "+date.event.title);
+            }
+        }
+    });
+
+    calendar.render();
+    calendar.setOption('locale', 'zh');
+
+    // 时间格式化
+    function formatDate(date = new Date(), fmt = 'yyyy-MM-dd HH:mm:ss') {
+        date = (typeof date === 'number' || typeof date === 'string') ? new Date(date) : date;
+
+        var o = {
+            'M+': date.getMonth() + 1, // 月份
+            'd+': date.getDate(), // 日
+            'h+': date.getHours() % 12 === 0 ? 12 : date.getHours() % 12, // 小时
+            'H+': date.getHours(), // 小时
+            'm+': date.getMinutes(), // 分
+            's+': date.getSeconds(), // 秒
+            'q+': Math.floor((date.getMonth() + 3) / 3), // 季度
+            'S': date.getMilliseconds() // 毫秒
+        };
+        var week = {
+            '0': '\u65e5',
+            '1': '\u4e00',
+            '2': '\u4e8c',
+            '3': '\u4e09',
+            '4': '\u56db',
+            '5': '\u4e94',
+            '6': '\u516d'
+        };
+
+        if (/(y+)/.test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length));
+        }
+
+        if (/(E+)/.test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, ((RegExp.$1.length > 1) ? (RegExp.$1.length > 2 ? '\u661f\u671f' : '\u5468') : '') + week[date.getDay() + '']);
+        }
+
+        for (var k in o) {
+            if (new RegExp('(' + k + ')').test(fmt)) {
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)));
+            }
+        }
+
+        return fmt;
+    }
+
 </script>
 </body>
 </html>
