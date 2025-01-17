@@ -40,7 +40,6 @@ public class BaseController {
     protected CdyhaService yhaService;
     @Autowired
     protected CdsmdService smdService;
-
     @Autowired
     protected CdhbbService hbbService;
     @Autowired
@@ -49,12 +48,14 @@ public class BaseController {
     protected CdyhcService yhcService;
     @Autowired
     protected CdyhbService yhbService;
-
     @Autowired
     protected CdyheService yheService;
-
     @Autowired
     protected CdyhdService yhdService;
+    @Autowired
+    protected CdyhgService yhgService;
+    @Autowired
+    protected CdyhfService yhfService;
 
     //静态公共时间格式对象 调用BaseController.DATE
     protected final static SimpleDateFormat DATE = new SimpleDateFormat("yyyy-MM-dd");
@@ -72,7 +73,7 @@ public class BaseController {
     protected final static SimpleDateFormat DATE3 = new SimpleDateFormat("yyyy/MM/dd");
     protected final static SimpleDateFormat sdf1 = new SimpleDateFormat("yyMMddHHmmss");
 
-    protected final static SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy");
+    protected final static SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMdd");
     protected final static SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM");
 
     protected final static SimpleDateFormat sdf4 = new SimpleDateFormat("MM月");

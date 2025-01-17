@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.efx.Science.model.cdhba;
 import com.efx.Science.model.cduse;
+import com.efx.Science.model.cdyhc;
 import com.efx.Science.model.user;
 import com.efx.Science.pub.PubMessage;
 import com.efx.Science.until.EncrpytUtil;
@@ -290,6 +291,15 @@ public class LoginController extends BaseController {
     public String getallcourse(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HashMap result = new HashMap();
         List<cdhba> list=hbaService.getAll(request.getParameter("flid"),request.getParameter("jgid"));
+        result.put("list",list);
+        return JSON.toJSONString(result);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getallcoursels",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    public String getallcoursels(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        List<cdyhc> list=yhcService.getAll(request.getParameter("id"),null);
         result.put("list",list);
         return JSON.toJSONString(result);
     }

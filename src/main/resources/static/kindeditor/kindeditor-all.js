@@ -301,6 +301,7 @@ K.options = {
 			'id', 'class', 'align', '.text-align', '.color', '.background-color', '.font-size', '.font-family', '.background',
 			'.font-weight', '.font-style', '.text-decoration', '.vertical-align', '.text-indent', '.margin-left'
 		],
+		video : ['id', 'class', 'src', 'width', 'height', 'type', 'loop', 'autostart', 'quality', '.width', '.height', 'align','controls'],
 		pre : ['id', 'class'],
 		hr : ['id', 'class', '.page-break-after'],
 		'br,tbody,tr,strong,b,sub,sup,em,i,u,strike,s,del' : ['id', 'class'],
@@ -929,6 +930,14 @@ function _mediaEmbed(attrs) {
 		html += key + '="' + val + '" ';
 	});
 	html += '/>';
+	// 一段简单的代码 解决视频上传问题
+	if (attrs.type=="video/mp4"||attrs.type=="video/x-ms-asf-plugin"){
+		var html = '<video ';
+		_each(attrs, function(key, val) {
+			html += key + '="' + val + '" ';
+		});
+		html += 'controls="controls" />';
+	}
 	return html;
 }
 function _mediaImg(blankPath, attrs) {

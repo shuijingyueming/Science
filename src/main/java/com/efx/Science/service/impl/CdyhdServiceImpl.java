@@ -52,7 +52,8 @@ public class CdyhdServiceImpl implements CdyhdService {
         }catch (ParseException e) {
             throw new RuntimeException(e);
         }
-        return null;
+        List<cdyhd> list= yhdMapper.selectByExample(e1);
+        return list.size()>0?list.get(0):null;
     }
 
     @Override

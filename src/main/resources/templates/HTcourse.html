@@ -130,6 +130,8 @@
                                     <td th:text="${item.hba026=='B'?'正常':(item.hba026=='C'?'下架':(item.hba026=='A'?'待审核':(item.hba026=='E'?'驳回':'')))}"></td>
                                     <td>
                                         <div class="btn-group btn-group-sm">
+                                            <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#xqmode" th:onclick="toxq([[${item.toString()}]],[[${item.hba019}]])">详情</a>
+                                            <div class="ivu-divider-vertical"></div>
                                             <th:block th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">
                                                 <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.hba001}]],[[${item.hba002}]],[['C']])">审核通过</a>
                                                 <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.hba001}]],[[${item.hba002}]],[['E']])">驳回</a>
@@ -166,6 +168,23 @@
                     <ul class="pagination">
                     </ul>
                 </div>
+            </div>
+        </div>
+    </div>
+    <!-- 详情模态框 -->
+    <div class="modal fade" id="xqmode" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="xqmodeLabel">查看详情</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div>
+                    <div class="modal-body" style="min-height:580px;">
+
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -525,6 +544,112 @@
         var params = [
             ["kcid",kcid],["pages",$("#pages").val()],["name", $("#name").val()]];
         form_submit("toHt/tocoursepk","post",params,"_self");
+    }
+
+    function toxq(obj,html1){
+        let item = null;
+        if(obj.indexOf("Hash")>0){
+            item = striongTOjsonString(obj);
+        }else{
+            item = jsStringTojsonString(obj);
+        }
+        $("#xqmode").find(".modal-body").empty();
+        let html="";
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">课程名称：</label>';
+        html+= '<span class="jspan">'+item.hba002+'</span>';
+        html+= '</div></div></div>';
+        html+= '';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">适合年龄段：</label>';
+        html+= '<span class="jspan">'+item.hba003+'</span>';
+        html+= '</div></div></div>';
+        html+= '';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">课时总时长：</label>';
+        html+= '<span class="jspan">'+item.hba004+'</span>';
+        html+= '</div></div></div>';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">每次课时：</label>';
+        html+= '<span class="jspan">'+item.hba005+'</span>';
+        html+= '</div></div></div>';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">志愿者补贴金额：</label>';
+        html+= '<span class="jspan">'+item.hba006+'</span>';
+        html+= '</div></div></div>';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">是否需要亲子：</label>';
+        html+= '<span class="jspan">'+item.hba007+'</span>';
+        html+= '</div></div></div>';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">上下限人数建议：</label>';
+        html+= '<span class="jspan">'+item.hba008+'</span>';
+        html+= '</div></div></div>';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">最佳人数建议：</label>';
+        html+= '<span class="jspan">'+item.hba009+'</span>';
+        html+= '</div></div></div>';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">场地要求：</label>';
+        html+= '<span class="jspan">'+item.hba010+'</span>';
+        html+= '</div></div></div>';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">附加费产生条件：</label>';
+        html+= '<span class="jspan">'+item.hba011+'</span>';
+        html+= '</div></div></div>';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">附加材料费：</label>';
+        html+= '<span class="jspan">'+item.hba012+'</span>';
+        html+= '</div></div></div>';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">志愿者人数：</label>';
+        html+= '<span class="jspan">'+item.hba013+'</span>';
+        html+= '</div></div></div>';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">对志愿者要求：</label>';
+        html+= '<span class="jspan">'+item.hba014+'</span>';
+        html+= '</div></div></div>';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">送教地域限制：</label>';
+        html+= '<span class="jspan">'+item.hba015+'</span>';
+        html+= '</div></div></div>';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">联系人名称：</label>';
+        html+= '<span class="jspan">'+item.hba016+'</span>';
+        html+= '</div></div></div>';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">联系人手机号：</label>';
+        html+= '<span class="jspan">'+item.hba017+'</span>';
+        html+= '</div></div></div>';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">课时费用10人以下：</label>';
+        html+= '<span class="jspan">'+item.hba027+'</span>';
+        html+= '</div></div></div>';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">课时费用11-20人：</label>';
+        html+= '<span class="jspan">'+item.hba028+'</span>';
+        html+= '</div></div></div>';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">课时费用21-30人：</label>';
+        html+= '<span class="jspan">'+item.hba029+'</span>';
+        html+= '</div></div></div>';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">课时费用31-45人：</label>';
+        html+= '<span class="jspan">'+item.hba030+'</span>';
+        html+= '</div></div></div>';
+        html+= "<div class='row'><div class='col-md-6'>";
+        html+= "<div class='form-group'><label class='layui-form-label'>图片：</label>";
+        html+=  '<span class="jspan">'+"<img class='form-control' src='upload/kcimg/"+item.hba024+"' style='width: 300px'/></div></div></div>";
+        html+= "</div></div></div>";
+        html+= "<div class='row'><div class='col-md-6'>";
+        html+= "<div class='form-group'><label class='layui-form-label'>视频：</label>";
+        html+=  '<span class="jspan">'+"<embed class='form-control' src='upload/kcvideo/"+item.hba020+"' style='width: 300px'/></div></div></div>";
+        html+= "</div></div></div>";
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">内容描述：</label>';
+        html+= '<span class="jspan">'+html1+'</span>';
+        html+= '</div></div></div>';
+        $("#xqmode").find(".modal-body").append(html);
     }
 
     function xzmb(){

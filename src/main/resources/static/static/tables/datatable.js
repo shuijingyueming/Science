@@ -155,16 +155,32 @@ $(document).ready(function () {
         "paging": false,
         dom: 'Bfrtip',
         buttons: [
-            {
-                iTname: '#yymode', text: '课程预约', action: function (e, dt, node, config) {
-                    kcyy();
-                }
-            },
+            $("#jstype").val()=="C"?{
+                iTname: '#yymode', text: '课程预约'
+            }:undefined,
             /*{
                  iTname: '#editmode', text: '添加', action: function (e, dt, node, config) {
                      edit();
                  }
              },*/
+        ],
+        "columnDefs": [{
+            "orderable": false,
+            "targets": [0]
+        }]
+    });
+
+    $('#newsexm').DataTable({
+        "searching": true,
+        "info": false,
+        "paging": false,
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                iTname: '#editmode', text: '添加', action: function (e, dt, node, config) {
+                    edit();
+                }
+            },
         ],
         "columnDefs": [{
             "orderable": false,

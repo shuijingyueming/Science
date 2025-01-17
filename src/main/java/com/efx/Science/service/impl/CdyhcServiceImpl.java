@@ -62,7 +62,7 @@ public class CdyhcServiceImpl implements CdyhcService {
     public List<cdyhc> getAll(String id,String name) {
         cdyhcExample e1 = new cdyhcExample();
         Criteria c = e1.createCriteria();
-        c.andYhc002EqualTo(Integer.valueOf(id));
+        if(id!=null&&!id.isEmpty())c.andYhc002EqualTo(Integer.valueOf(id));
         if(name!=null&&!name.isEmpty())c.andYhc003Like("%"+name+"%");
         return yhcMapper.selectByExample(e1);
     }

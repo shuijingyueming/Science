@@ -127,7 +127,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByExample" parameterType="com.efx.Science.model.cdhbaExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.efx.Science.model.cdhbaExample" resultMap="BaseResultMap1">
     select
     <if test="distinct">
       distinct

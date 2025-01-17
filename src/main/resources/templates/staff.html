@@ -113,6 +113,9 @@
                                 <thead>
                                 <tr>
                                     <th style="max-width:30px;">序号</th>
+                                    <th:block th:if="${session.umsg.jstype=='A'&&pageobj.othersql1!='A'}">
+                                        <th th:text="${pageobj.othersql1=='B'?'授课方':'选课方'}"></th>
+                                    </th:block>
                                     <th>微信头像</th>
                                     <th>微信昵称</th>
                                     <th>账户名称</th>
@@ -125,7 +128,7 @@
                                 <tbody id="tablebody">
                                     <tr th:each="item,stat:${pageobj.resultList}">
                                     <td th:text="${stat.index+1}"></td>
-                                        <th:block th:if="${pageobj.othersql1!='A'}">
+                                        <th:block th:if="${session.umsg.jstype=='A'&&pageobj.othersql1!='A'}">
                                             <th th:text="${pageobj.othersql1=='B'?item.smd.smd003:item.yhb.yhb004}"></th>
                                         </th:block>
                                         <td><img class="wimg" th:src="${item.use008!=null?'upload/tximg/'+item.use008:'images/nopic.png'}" style='width:100px;height:auto;object-fit:cover;border:1px solid rgb(229, 229, 229);'></td>
@@ -317,7 +320,7 @@
     }
 
 
-    function toxq(obj,obj1,cjname){
+    function tosh(obj,obj1,cjname){
         let item = null;
         if(obj.indexOf("Hash")>0){
             item = striongTOjsonString(obj);

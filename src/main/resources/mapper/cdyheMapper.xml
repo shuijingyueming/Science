@@ -150,7 +150,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap1">
     select 
     <include refid="Base_Column_List" />
     ,
@@ -196,7 +196,7 @@
       #{yhe030,jdbcType=LONGVARCHAR}, #{yhe031,jdbcType=LONGVARCHAR}, #{yhe039,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.efx.Science.model.cdyheWithBLOBs">
+  <insert id="insertSelective" parameterType="com.efx.Science.model.cdyheWithBLOBs" useGeneratedKeys="true" keyProperty="yhe001">
     insert into cdyhe
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="yhe001 != null">

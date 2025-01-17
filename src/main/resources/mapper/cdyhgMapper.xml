@@ -7,13 +7,12 @@
     <result column="YHG003" jdbcType="TIMESTAMP" property="yhg003" />
     <result column="YHG004" jdbcType="VARCHAR" property="yhg004" />
     <result column="YHG005" jdbcType="INTEGER" property="yhg005" />
+    <result column="YHG006" jdbcType="LONGVARCHAR" property="yhg006" />
     <result column="YHG007" jdbcType="INTEGER" property="yhg007" />
     <result column="YHG008" jdbcType="INTEGER" property="yhg008" />
     <result column="YHG009" jdbcType="VARCHAR" property="yhg009" />
     <result column="YHG010" jdbcType="VARCHAR" property="yhg010" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.efx.Science.model.cdyhg">
-    <result column="YHG006" jdbcType="LONGVARCHAR" property="yhg006" />
+    <association property="use" column="YHG004" select="com.efx.Science.dao.cduseMapper.selectByPrimaryKey"/>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -79,7 +78,7 @@
   <sql id="Blob_Column_List">
     YHG006
   </sql>
-  <select id="selectByExampleWithBLOBs" parameterType="com.efx.Science.model.cdyhgExample" resultMap="ResultMapWithBLOBs">
+  <select id="selectByExampleWithBLOBs" parameterType="com.efx.Science.model.cdyhgExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -109,7 +108,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     ,
@@ -337,4 +336,18 @@
       YHG010 = #{yhg010,jdbcType=VARCHAR}
     where YHG001 = #{yhg001,jdbcType=VARCHAR}
   </update>
+  <select id="selectByExampleAndPage" resultMap="BaseResultMap" parameterType="com.efx.Science.model.cdyhgExample" flushCache="true" useCache="false">
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />, <include refid="Blob_Column_List"/>
+    from cdyhg
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
 </mapper>

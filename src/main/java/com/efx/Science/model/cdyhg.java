@@ -3,6 +3,17 @@ package com.efx.Science.model;
 import java.util.Date;
 
 public class cdyhg {
+
+    private cduse use;
+
+    public cduse getUse() {
+        return use;
+    }
+
+    public void setUse(cduse use) {
+        this.use = use;
+    }
+
     private String yhg001;
 
     private String yhg002;
@@ -118,7 +129,6 @@ public class cdyhg {
         sb.append(", yhg008=").append(yhg008);
         sb.append(", yhg009=").append(yhg009);
         sb.append(", yhg010=").append(yhg010);
-        sb.append(", yhg006=").append(yhg006);
         sb.append("]");
         return sb.toString();
     }

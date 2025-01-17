@@ -1519,12 +1519,43 @@ public class HTinfoController extends BaseController {
      * @param response
      */
     @ResponseBody
+    @RequestMapping(value = "/delselection",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    public String delselection(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        addLog(getUse(request).getUse002(),"删除了层级名称为：【" + request.getParameter("uname") + "】的状态");
+        cdyheWithBLOBs yhe = yheService.getByid(Integer.valueOf(request.getParameter("fid")));
+        cdsmd smd = smdService.getByid(yhe.getYhe003());
+        cdyhb yhb = yhbService.getByid(yhe.getYhe002());
+        yhb.setYhb015(yhb.getYhb015()-1);
+        smd.setSmd013(smd.getSmd013()-1);
+        yhbService.update(yhb);
+        smdService.update(smd);
+        yheService.delete(Integer.parseInt(request.getParameter("fid")));
+        result.put("msg","0");
+        return JSON.toJSONString(result);
+    }
+
+    /**
+     * 删除用户
+     * 王新苗
+     * @param request
+     * @param response
+     */
+    @ResponseBody
     @RequestMapping(value = "/xgztselection",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     public String xgztselection(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HashMap result = new HashMap();
         addLog(getUse(request).getUse002(),"修改了选课方名称为：【" + request.getParameter("uname") + "】的课程预约状态");
         cdyheWithBLOBs yhe = yheService.getByid(Integer.valueOf(request.getParameter("fid")));
         yhe.setYhe007(request.getParameter("type"));
+        if(request.getParameter("type").equals("B")||request.getParameter("type").equals("D")){
+            cdsmd smd = smdService.getByid(yhe.getYhe003());
+            cdyhb yhb = yhbService.getByid(yhe.getYhe002());
+            yhb.setYhb015(yhb.getYhb015()-1);
+            smd.setSmd013(smd.getSmd013()-1);
+            yhbService.update(yhb);
+            smdService.update(smd);
+        }
         if(request.getParameter("t1")!=null){
             yhe.setYhe030(request.getParameter("t1"));
         }else{
@@ -1553,25 +1584,299 @@ public class HTinfoController extends BaseController {
         cdyheWithBLOBs item = new cdyheWithBLOBs();
         //修改
         item.setYhe009(request.getParameter("z1"));
-        if(!request.getParameter("z2").isEmpty())item.setYhe010(Integer.valueOf(request.getParameter("z2")));
-        if(!request.getParameter("z3").isEmpty())item.setYhe011(Float.valueOf(request.getParameter("z3")));
-        if(!request.getParameter("z4").isEmpty())item.setYhe012(Float.valueOf(request.getParameter("z4")));
-        if(!request.getParameter("z5").isEmpty())item.setYhe013(Float.valueOf(request.getParameter("z5")));
-        if(!request.getParameter("z6").isEmpty())item.setYhe014(Float.valueOf(request.getParameter("z6")));
         if(!request.getParameter("z7").isEmpty())item.setYhe015(Integer.valueOf(request.getParameter("z7")));
         if(!request.getParameter("z8").isEmpty())item.setYhe016(Integer.valueOf(request.getParameter("z8")));
-        if(!request.getParameter("z9").isEmpty())item.setYhe018(Float.valueOf(request.getParameter("z9")));
         if(!request.getParameter("z10").isEmpty())item.setYhe020(DATE.parse(request.getParameter("z10")));
+        if(!request.getParameter("z11").isEmpty())item.setYhe005(Integer.valueOf(request.getParameter("z11")));
+        cdyheWithBLOBs item1 =yheService.getByid(Integer.valueOf(request.getParameter("fid")));
+        item.setYhe012(item1.getYhb().getYhb017());
+        item.setYhe013(item1.getHba().getHba012());
+        item.setYhe014(item1.getHba().getHba006()*item.getYhe015());
+        item.setYhe018(item.getYhe010()<10?item1.getHba().getHba027()*item.getYhe016():(item.getYhe010()<20?item1.getHba().getHba028()*item.getYhe016():(item.getYhe010()<30?item1.getHba().getHba029()*item.getYhe016():item1.getHba().getHba030()*item.getYhe016())));
+        String log = "修改了名字为：【" + request.getParameter("t1") + "】的课程预约信息";
+        item.setYhe001(Integer.valueOf(request.getParameter("fid")));
+        addLog(getUse(request).getUse002(),log);
+        yheService.update(item);
+        result.put("msg", "U");
+        result.put("d",item);
+        return JSON.toJSONString(result);
+    }
+
+    /**
+     * 修改账户
+     * 王新苗
+     * @param request
+     * @param response
+     */
+    @ResponseBody
+    @RequestMapping(value = "/xgselection1")
+    public String xgselection1(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        HttpSession session = request.getSession();
+        if (session.getAttribute("user") == null) {
+            SystemTZYM(response, "登录失效");
+            return null;
+        }
+        cdyheWithBLOBs item = new cdyheWithBLOBs();
+        //修改
+        cduse use=getUse(request);
+        item.setYhe002(use.getUse011());
+        if(!request.getParameter("t4").isEmpty())item.setYhe004(Integer.valueOf(request.getParameter("t4")));
+        cdhba hba = hbaService.getByid(Integer.valueOf(request.getParameter("t4")));
+        item.setYhe003(hba.getHba022());
+        cdsmd smd = smdService.getByid(item.getYhe003());
+        cdyhb yhb = yhbService.getByid(item.getYhe002());
+        item.setYhe009(request.getParameter("t2"));
+        if(!request.getParameter("t14").isEmpty())item.setYhe010(Integer.valueOf(request.getParameter("t14")));
+        yhb.setYhb015(yhb.getYhb015()+1);
+        smd.setSmd013(smd.getSmd013()+1);
+        if(yhb.getYhb015()<=yhb.getYhb016()&&smd.getSmd013()<=smd.getSmd009()){
+            yhb.setYhb012(yhb.getYhb012()+1);
+            item.setYhe011(item.getYhe010()<10?hba.getHba027()*item.getYhe010():(item.getYhe010()<20?hba.getHba028()*item.getYhe010():(item.getYhe010()<30?hba.getHba029()*item.getYhe010():hba.getHba030()*item.getYhe010())));
+            item.setYhe012(yhb.getYhb017());
+            item.setYhe013(hba.getHba012());
+            item.setYhe015(hba.getHba013());
+            if(item.getYhe015()!=null)item.setYhe014(hba.getHba006()*item.getYhe015());
+            item.setYhe008(DATE.parse(request.getParameter("t8").split(" ")[0]));
+            item.setYhe041(request.getParameter("t8").split(" ")[1]);
+            item.setYhe007("A");
+            yhb.setYhb015(yhb.getYhb015()+1);
+            cdyhd yhd=yhdService.serachObject(request.getParameter("t8").split(" ")[0],item.getYhe004());
+            if(yhd!=null){
+                if(item.getYhe041().equals("上午")){
+                    yhd.setYhd010(yhd.getYhd010()+1);
+                }else if(item.getYhe041().equals("下午")){
+                    yhd.setYhd012(yhd.getYhd012()+1);
+                }else if(item.getYhe041().equals("晚上")){
+                    yhd.setYhd014(yhd.getYhd014()+1);
+                }
+                yhdService.update(yhd);
+            }
+            String log = "新增了名字为：【" + request.getParameter("t1")+ "】的课程预约信息";
+            addLog(use.getUse002(),log);
+            item = yheService.insert(item);
+            Date date = new Date();
+            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+            List<MultipartFile> t1 = multipartRequest.getFiles("s1");
+            if(t1!=null&&t1.size()>0&&!t1.get(0).getOriginalFilename().isEmpty()){
+                for(int i=0;i<t1.size();i++){
+                    if (t1.get(i).getOriginalFilename()!=null && !t1.get(i).getOriginalFilename().isEmpty()) {
+                        String filename = sdf.format(date)+i+t1.get(i).getOriginalFilename().substring(t1.get(i).getOriginalFilename().lastIndexOf("."));
+                        cdyhf yhf = new cdyhf();
+                        yhf.setYhf001(UUID.randomUUID().toString().replaceAll("-",""));
+                        yhf.setYhf002(item.getYhe001());
+                        yhf.setYhf003("D");
+                        yhf.setYhf004(filename);
+                        yhf.setYhf005("x"+item.getYhe002()+"/"+sdf2.format(date));
+                        uploadpic(yhf.getYhf005()+"/"+yhf.getYhf004(),t1.get(i),null);
+                        yhf.setYhf007(use.getUse001());
+                        yhf.setYhf008(new Date());
+                        yhfService.insert(yhf);
+                    }
+                }
+            }
+            yhbService.update(yhb);
+            smdService.update(smd);
+            result.put("msg", "I");
+            result.put("d",item);
+        }else{
+            result.put("msg", "S");
+        }
+
+        return JSON.toJSONString(result);
+    }
+
+
+    /**
+     * 修改账户
+     * 王新苗
+     * @param request
+     * @param response
+     */
+    @ResponseBody
+    @RequestMapping(value = "/xgselection2")
+    public String xgselection2(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        HttpSession session = request.getSession();
+        if (session.getAttribute("user") == null) {
+            SystemTZYM(response, "登录失效");
+            return null;
+        }
+        cdyheWithBLOBs item = new cdyheWithBLOBs();
+        //修改
+        if(request.getParameter("lx").equals("C")){
+            item.setYhe021(request.getParameter("p1"));
+            item.setYhe022(request.getParameter("p2"));
+            item.setYhe023(request.getParameter("p3"));
+            item.setYhe024(request.getParameter("p4"));
+            item.setYhe025(request.getParameter("p5"));
+            item.setYhe026(request.getParameter("p6"));
+            item.setYhe027(request.getParameter("p7"));
+            item.setYhe028(request.getParameter("p8"));
+            item.setYhe029(request.getParameter("p9"));
+        }else{
+            item.setYhe033(request.getParameter("p10"));
+            item.setYhe034(request.getParameter("p11"));
+            item.setYhe035(request.getParameter("p12"));
+            item.setYhe036(request.getParameter("p13"));
+            item.setYhe037(request.getParameter("p14"));
+            item.setYhe038(request.getParameter("p15"));
+            item.setYhe039(request.getParameter("p16"));
+
+        }
+        String log = "修改了名字为：【" + request.getParameter("t1") + "】的课程预约信息";
+        item.setYhe001(Integer.valueOf(request.getParameter("fid")));
+        addLog(getUse(request).getUse002(),log);
+        yheService.update(item);
+        result.put("msg", "U");
+        result.put("d",item);
+        return JSON.toJSONString(result);
+    }
+
+    /**
+     * 修改账户
+     * 王新苗
+     * @param request
+     * @param response
+     */
+    @ResponseBody
+    @RequestMapping(value = "/xgselection3")
+    public String xgselection3(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        HttpSession session = request.getSession();
+        if (session.getAttribute("user") == null) {
+            SystemTZYM(response, "登录失效");
+            return null;
+        }
+        cduse use=getUse(request);
+        cdyheWithBLOBs item =yheService.getByid(Integer.valueOf(request.getParameter("fid")));
+        cdyhf yhf = new cdyhf();
+        yhf.setYhf001(UUID.randomUUID().toString().replaceAll("-",""));
+        yhf.setYhf002(item.getYhe001());
+        yhf.setYhf003(request.getParameter("w1"));
+        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
+        Date date = new Date();
+        if(yhf.getYhf003().equals("A")){
+            MultipartFile file = multipartHttpServletRequest.getFile("w2");
+            if(null!=file&&null!=file.getOriginalFilename()&&!file.getOriginalFilename().toString().isEmpty()){
+                String filename = sdf.format(date)+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+                yhf.setYhf004(filename);
+                yhf.setYhf005("x"+item.getYhe002()+"/"+sdf2.format(date));
+                uploadpic(yhf.getYhf005()+"/"+yhf.getYhf004(),file,null);
+                yhf.setYhf007(use.getUse001());
+                yhf.setYhf008(new Date());
+                yhfService.insert(yhf);
+            }
+        }else if(yhf.getYhf003().equals("B")){
+            MultipartFile file = multipartHttpServletRequest.getFile("w3");
+            if(null!=file&&null!=file.getOriginalFilename()&&!file.getOriginalFilename().toString().isEmpty()){
+                String filename = sdf.format(date)+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+                yhf.setYhf004(filename);
+                yhf.setYhf005("x"+item.getYhe002()+"/"+sdf2.format(date));
+                uploadpic(yhf.getYhf005()+"/"+yhf.getYhf004(),file,null);
+                yhf.setYhf007(use.getUse001());
+                yhf.setYhf008(new Date());
+                yhfService.insert(yhf);
+            }
+        }else if(yhf.getYhf003().equals("C")){
+            MultipartFile file = multipartHttpServletRequest.getFile("w4");
+            if(null!=file&&null!=file.getOriginalFilename()&&!file.getOriginalFilename().toString().isEmpty()){
+                String filename = sdf.format(date)+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+                yhf.setYhf004(filename);
+                yhf.setYhf005("x"+item.getYhe002()+"/"+sdf2.format(date));
+                uploadpic(yhf.getYhf005()+"/"+yhf.getYhf004(),file,null);
+                yhf.setYhf007(use.getUse001());
+                yhf.setYhf008(new Date());
+                yhfService.insert(yhf);
+            }
+        }
+        return JSON.toJSONString(result);
+    }
+
+
+    /**
+     * 进入管理员管理页面
+     * othersql:登录名  othersql1:机构
+     * @return 用户页面
+     */
+    @RequestMapping("/tonews")
+    public ModelAndView tonews(HttpServletRequest request,HttpServletResponse response) throws Exception{
+        ModelAndView mav = new ModelAndView();
+        HttpSession session = request.getSession();
+        int userid = 0;//后台登录用户ID
+        if(session.getAttribute("user")==null){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
+        userid = Decrypt(session.getAttribute("user").toString());
+        cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
+        mav.addObject("msg", request.getParameter("msg"));
+        PageBean pb = new PageBean();
+        if (request.getParameter("pages") != null && !request.getParameter("pages").isEmpty())
+            pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
+        else
+            pb.setCurrentPage(1);
+        if (request.getParameter("name") != null && !request.getParameter("name").isEmpty()) {
+            pb.setOthersql(request.getParameter("name"));
+        }
+        pb.setOthersql3(String.valueOf(user.getUse001()));
+        mav.addObject("pageobj", yhgService.selectPageBean(pb));
+        mav.setViewName("HTnews");
+        return mav;
+    }
+
+    /**
+     * 删除用户
+     * 王新苗
+     * @param request
+     * @param response
+     */
+    @ResponseBody
+    @RequestMapping(value = "/xgztnews",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    public String xgztnews(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        addLog(getUse(request).getUse002(),"修改了标题名称为：【" + request.getParameter("uname") + "】的状态");
+        cdyhg yhg = yhgService.getByid(request.getParameter("fid"));
+        yhg.setYhg003(new Date());
+        yhgService.update(yhg);
+        result.put("msg","0");
+        return JSON.toJSONString(result);
+    }
+    /**
+     * 修改账户
+     * 王新苗
+     * @param request
+     * @param response
+     */
+    @ResponseBody
+    @RequestMapping(value = "/xgnews")
+    public String xgnews(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        HttpSession session = request.getSession();
+        if (session.getAttribute("user") == null) {
+            SystemTZYM(response, "登录失效");
+            return null;
+        }
+        cdyhg item = new cdyhg();
+        //修改
+        cduse use=getUse(request);
+        item.setYhg002(request.getParameter("t2"));
+        item.setYhg004(String.valueOf(use.getUse001()));
+        item.setYhg006(request.getParameter("t3"));
+        item.setYhg010(request.getParameter("t4"));
+        item.setYhg009(request.getParameter("lx"));
         if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()){
-            String log = "修改了名字为：【" + request.getParameter("t1") + "】的课程预约信息";
-            item.setYhe001(Integer.valueOf(request.getParameter("fid")));
-            addLog(getUse(request).getUse002(),log);
-            yheService.update(item);
+            String log = "修改了名字为：【" + request.getParameter("t2") + "】的用户信息";
+            item.setYhg001((request.getParameter("fid")));
+            addLog(use.getUse002(),log);
+            yhgService.update(item);
             result.put("msg", "U");
         }else{
-            String log = "新增了名字为：【" + request.getParameter("t1")+ "】的课程预约信息";
-            addLog(getUse(request).getUse002(),log);
-            item = yheService.insert(item);
+            String log = "新增了名字为：【" + request.getParameter("t2")+ "】的用户信息";
+            item.setYhg001(UUID.randomUUID().toString().replace("-",""));
+            item.setYhg005(0);
+            addLog(use.getUse002(),log);
+            item = yhgService.insert(item);
             result.put("msg", "I");
         }
         result.put("d",item);
