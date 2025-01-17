@@ -1049,13 +1049,14 @@
                         ">"+list[i].hba002+"</option>");
                 }
                 $('.selectpicker').selectpicker('refresh');
+                tokcxq()
             },
             error:function(){}
         });
 
     });
     function tokcxq(){
-        if($('#t2')!=""&&$('#t14')!=""){
+        if($('#t2').val()!=""&&$('#t14').val()!=""){
             $('.xqbox').show()
             $('#x1').html($('#t4 option:selected').attr("x1"))
             $('#x2').html($('#t4 option:selected').attr("xname"))
