@@ -136,16 +136,14 @@
                     <input type="hidden" id="fid" value=""/>
                     <div class="modal-body" style="min-height:580px;">
                         <div class="row col-auto" style="margin-top: 20px;">
-                            <div class="col-md-3">
-                                <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">层级</label>
-                                <div class="form-controls">
-                                    <select id="t2" name="t2"  class="form-control selectpicker" data-live-search="true">
-                                        <option value="" selected>请选择</option>
-                                        <th:block th:each="item,stat:${yhalist}">
-                                            <option th:value="${item.yha001}" >[[${item.yha002}]]</option>
-                                        </th:block>
-                                    </select>
-                                </div>
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">选择层级</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <select id="t2" name="t2"  class="form-control" data-live-search="true">
+                                    <option value="" selected>请选择</option>
+                                    <th:block th:each="item,stat:${yhalist}">
+                                        <option th:value="${item.yha001}" >[[${item.yha002}]]</option>
+                                    </th:block>
+                                </select>
                             </div>
                         </div>
                         <div class="row col-auto" style="margin-top: 20px;">
@@ -161,7 +159,7 @@
                             </div>
                         </div>
                         <div class="row col-auto" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">联系人</label>
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">联系人员</label>
                             <div class="col-10 col-sm-8 col-md-6 col-lg-4">
                                 <input type="text" class="form-control" id="t6" name="t6" placeholder="请输入联系人"/>
                             </div>
@@ -179,7 +177,7 @@
                             </div>
                         </div>
                         <div class="row col-auto" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">交通补贴费用</label>
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">交通补贴</label>
                             <div class="col-10 col-sm-8 col-md-6 col-lg-4">
                                 <input type="text" class="form-control" id="t17" name="t17" placeholder="请输入交通补贴费用"/>
                             </div>

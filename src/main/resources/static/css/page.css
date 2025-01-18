@@ -52,4 +52,20 @@
 .typerow video{
     width:500px;
 }
+.zt1{color:#A46BFF;}
+.zt2{color:#5776F2;}
+.zt3{color:#FFAA00;}
+.zt4{color:#36AFF5;}
+.zt5{color:#6ABF47;}
+.zt6{color:#787878;}
 
+.imgTem{
+    color: #FF1717;
+    position: absolute;
+    right:5px;
+    top:5px;
+    font-size: 22px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+}

@@ -220,8 +220,8 @@
                         </div>
                         <th:block th:if="${pageobj.othersql1=='B'}">
                         <div class="row col-auto" th:style="${session.umsg.jstype=='B'?'margin-top: 20px;display: none':'margin-top: 20px;'}">
-                                <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">授课方</label>
-                                <div class="form-controls">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">绑定授课</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
                                     <select id="t11" name="t11"  class="form-control selectpicker" data-live-search="true">
                                         <option value="" selected>请选择</option>
                                         <th:block th:each="item,stat:${smdlist}">
@@ -233,8 +233,8 @@
                         </th:block>
                         <th:block th:if="${pageobj.othersql1=='C'}">
                         <div class="row col-auto" th:style="${session.umsg.jstype=='C'?'margin-top: 20px;display: none':'margin-top: 20px;'}">
-                            <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">选课方</label>
-                            <div class="form-controls">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">绑定选课</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
                                 <select id="t11" name="t11"  class="form-control selectpicker" data-live-search="true">
                                     <option value="" selected>请选择</option>
                                     <th:block th:each="item,stat:${yhblist}">

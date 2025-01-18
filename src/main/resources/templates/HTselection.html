@@ -32,7 +32,7 @@
     <link type="text/css" rel="stylesheet" href="js/magnific-popup/magnific-popup.min.css">
     <link rel="stylesheet" type="text/css" href="css/animate.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.min.css">
-    <link rel="stylesheet" type="text/css" href="css/page.css">
+
     <link rel="stylesheet" type="text/css" href="js/bootstrap-select/bootstrap-select.min.css">
     <!--日程插件-->
     <link rel="stylesheet" type="text/css" href="js/fullcalendar/core/main.min.css">
@@ -43,6 +43,7 @@
     <link rel="stylesheet" type="text/css" href="js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
     <!--日期选择器css-->
     <link rel="stylesheet" type="text/css" href="js/bootstrap-datepicker/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" type="text/css" href="css/page.css">
 
     <style>
         td.fc-day.fc-past {
@@ -60,6 +61,8 @@
             top: 0;
             background-color: #0a0a0a48;
         }
+
+
     </style>
 </head>
 <body>
@@ -118,7 +121,8 @@
                                     <td th:text="${item.yhe009}"></td>
                                     <td th:text="${#dates.format(item.yhe008,'yyyy-MM-dd')}"></td>
                                     <td th:text="${#dates.format(item.yhe020,'yyyy-MM-dd')}"></td>
-                                    <td th:text="${item.yhe007=='A'?'选课方预约':(item.yhe007=='B'?'授课方退回':(item.yhe007=='C'?'授课方接受':(item.yhe007=='D'?'选课方取消预约 ':(item.yhe007=='E'?'已完结已传资料':(item.yhe007=='F'?'已完结未传资料':'')))))}"></td>
+                                    <td th:style="${item.yhe007=='A'?'color:#A46BFF':(item.yhe007=='B'?'color:#FFAA00;':(item.yhe007=='C'?'color:#6ABF47;':(item.yhe007=='D'?'color:#787878;':(item.yhe007=='E'?'color:#36AFF5;':'color:#5776F2;'))))}"
+                                            th:text="${item.yhe007=='A'?'预约待确认':(item.yhe007=='B'?'预约退回':(item.yhe007=='C'?'已接受预约':(item.yhe007=='D'?'取消预约':(item.yhe007=='E'?'完结已传':'完结未传'))))}"></td>
                                     <td>
                                         <div class="btn-group btn-group-sm">
                                             <th:block th:if="${session.umsg.jstype=='B'}">
@@ -620,17 +624,16 @@
                                 <input type="text" class="form-control col-auto" id="t14" name="t14" placeholder="请输入服务人次"/>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="up" class="form-label">场地照片</label>
-                            <div class="input-group">
+                        <div class="row col-auto">
+                            <div class="col-lg-4 col-md-8 col-sm-10">
+                                <label for="up" class="form-label">场地照片</label>
                                 <input type="file" class="form-control" id="up" name="up" value="/home/images/logo.png" onchange="showpdtpgs1('up','#p4')" multiple/>
-                                <!--                        <button class="btn btn-default" type="button">上传图片</button>-->
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-10  col-sm-10"><div class="form-group">
-                                <div id="p4" style="display: flex;justify-content: start;align-items: center;flex-flow: row wrap;"></div>
-                            </div></div>
+                            <div class="col-md-10 col-sm-11">
+                                <div id="p4" style="display: flex;justify-content: start;align-items: center;flex-flow: row wrap;padding: 20px;"></div>
+                           </div>
                         </div>
                         <div class="xqbox" style="min-height:580px;display: none">
                             <div class="row">
@@ -946,9 +949,9 @@
                             // const height = image.height
                             // console.log(width+"---"+height)
                             // if(width==414&&height==280){
-                            html="<div class='item'>";
-                            html+="<img src='"+data1+"' style='width:150px;' />";
-                            html+="<span class='closep' id=\'P"+i+"\' name='' onclick='imgRemove(this)'>X</span>";
+                            html="<div class='item' style='margin-right: 20px;position: relative;'>";
+                            html+="<img src='"+data1+"' style='width:200px;' />";
+                            html+="<button class='btn btn-link imgTem' id=\'P"+i+"\' name='' onclick='imgRemove(this)'>X</button>";
                             html+="</div>";
                             $(img).append(html);
                             // }else{
