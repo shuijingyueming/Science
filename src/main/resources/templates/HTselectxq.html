@@ -30,82 +30,74 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
-                    <header class="card-header">
-                        <div class="row col-auto" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">状态</label>
-                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                               [[${zt=='E'?'驳回：'+bz:(zt=='P'?'审核中':(zt=='M'?'通过':''))}]]
-
-                            </div>
-                        </div>
-                    </header>
+                    <header class="card-header"><div class="card-title">[[${zt=='E'?'驳回：'+bz:(zt=='P'?'审核中':(zt=='M'?'通过':''))}]]</div></header>
                     <div class="card-body">
                         <form id="uploadForm" enctype="multipart/form-data">
                             <input type="hidden" id="fid" th:value="${item.smd001}" />
                             <div class="modal-body">
-                                <div class="row col-auto" style="margin-top: 20px;">
+                                <div class="row">
                                     <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">身份类别</label>
-                                    <div class="form-check">
-                                        <div class="form-check form-check-inline">
-                                            <input  class="form-check-input" id="r31" name="t3" value="A" type="radio" th:checked="${item.smd002=='A'?true:false}" >
-                                            <label for="r32" class="form-check-label">机构</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input  class="form-check-input" id="r32" name="t3" value="B" type="radio" th:checked="${item.smd002=='B'?true:false}">
-                                            <label for="r32" class="form-check-label">个人</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" id="r33" name="t3" value="C" type="radio" th:checked="${item.smd002=='C'?true:false}">
-                                            <label for="r33" class="form-check-label">专家</label>
-                                        </div>
+                                    <div class="col-auto">
+                                        <input class="form-check-input" id="r31" name="t3" value="A" type="radio" th:checked="${item.smd002=='A'?true:false}" >
+                                        <label for="r32" class="form-check-label" style="padding-right:20px;">机构</label>
+                                        <input  class="form-check-input" id="r32" name="t3" value="B" type="radio" th:checked="${item.smd002=='B'?true:false}">
+                                        <label for="r32" class="form-check-label" style="padding-right:20px;">个人</label>
+                                        <input class="form-check-input" id="r33" name="t3" value="C" type="radio" th:checked="${item.smd002=='C'?true:false}">
+                                        <label for="r33" class="form-check-label" style="padding-right:20px;">专家</label>
                                     </div>
                                 </div>
-                                <div class="row col-auto" style="margin-top: 20px;">
-                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">机构名称/个人单位</label>
-                                    <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <div class="row" style="margin-top: 20px;">
+                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">机构/个人名称</label>
+                                    <div class="col-xl-4 col-md-8 col-sm-12">
                                         <input type="text" class="form-control" id="t2" name="t2"  th:value="${item.smd003}"  placeholder="请输入机构名称/个人单位"/>
                                     </div>
                                 </div>
-                                <div class="row col-auto" style="margin-top: 20px;">
-                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">年度场次限数</label>
-                                    <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                        <input type="number" class="form-control" id="t9" name="t9" th:value="${item.smd009}" placeholder="请输入年度场次限数" disabled="false" />
+                                <div class="row" style="margin-top: 20px;">
+                                    <div class="row col-xl-6 col-md-7 col-sm-6 col-12">
+                                        <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">营业执照/身份证号</label>
+                                        <div class="col-xl-8 col-md-7 col-sm-12">
+                                            <input type="number" class="form-control" id="t4" name="t4" th:value="${item.smd004}" placeholder="请输入营业执照/身份证号"/>
+                                        </div>
+                                    </div>
+                                    <div class="row col-xl-4 col-md-5 col-sm-4 col-12">
+                                        <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">账号/姓名</label>
+                                        <div class="col-xl-7 col-md-7 col-sm-12">
+                                            <input type="number" class="form-control" id="t7" name="t7"th:value="${item.smd007}"  placeholder="请输入账号/姓名"/>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="row col-auto" style="margin-top: 20px;">
-                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">年度人次限数</label>
-                                    <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                        <input type="number" class="form-control" id="t10" name="t10" th:value="${item.smd010}" placeholder="请输入年度人次限数" disabled="false" />
+                                <div class="row" style="margin-top: 20px;">
+                                    <div class="row col-xl-4 col-md-5 col-sm-4">
+                                        <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">开户行</label>
+                                        <div class="col-xl-7 col-md-8 col-sm-12">
+                                            <input type="number" class="form-control" id="t5" name="t5"th:value="${item.smd005}"  placeholder="请输入开户行"/>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row col-auto" style="margin-top: 20px;">
-                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">上线日期</label>
-                                    <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                        <input type="date" class="form-control" id="t8" name="t8" th:value="${#dates.format(item.smd008,'yyyy-MM-dd')}" placeholder="请输入上线日期" disabled="false" />
-                                    </div>
-                                </div>
-                                <div class="row col-auto" style="margin-top: 20px;">
-                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">营业执照/身份证号</label>
-                                    <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                        <input type="number" class="form-control" id="t4" name="t4" th:value="${item.smd004}" placeholder="请输入营业执照/身份证号"/>
-                                    </div>
-                                </div>
-                                <div class="row col-auto" style="margin-top: 20px;">
-                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">开户行</label>
-                                    <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                        <input type="number" class="form-control" id="t5" name="t5"th:value="${item.smd005}"  placeholder="请输入开户行"/>
-                                    </div>
-                                </div>
-                                <div class="row col-auto" style="margin-top: 20px;">
-                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">户名/银行卡号</label>
-                                    <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <div class="row col-xl-7 col-md-7 col-sm-8">
+                                       <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">户名/银行卡号</label>
+                                       <div class="col-xl-7 col-md-8 col-sm-12">
                                         <input type="number" class="form-control" id="t6" name="t6"th:value="${item.smd006}"  placeholder="请输入户名/银行卡号"/>
+                                       </div>
                                     </div>
                                 </div>
-                                <div class="row col-auto" style="margin-top: 20px;">
-                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">账号/姓名</label>
-                                    <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                        <input type="number" class="form-control" id="t7" name="t7"th:value="${item.smd007}"  placeholder="请输入账号/姓名"/>
+                                <div class="row" style="margin-top: 20px;">
+                                    <div class="row col-xl-3 col-md-4 col-sm-4 col-12">
+                                        <label class="col-auto col-form-label" >年场次数</label>
+                                        <div class="col-xl-8 col-md-8 col-sm-8">
+                                            <input type="number" class="form-control " id="t9" name="t9" th:value="${item.smd009}" placeholder="请输入年度场次限数" disabled="false" />
+                                        </div>
+                                    </div>
+                                    <div class="row col-xl-3 col-md-4 col-sm-4 col-12">
+                                        <label class="col-auto col-form-label" >年人次数</label>
+                                        <div class="col-xl-8 col-md-8 col-sm-8">
+                                            <input type="number" class="form-control" id="t10" name="t10" th:value="${item.smd010}" placeholder="请输入年度人次限数" disabled="false" />
+                                        </div>
+                                    </div>
+                                    <div class="row col-xl-3 col-md-4 col-sm-4 col-12">
+                                        <label class="col-auto col-form-label" >上线日期</label>
+                                        <div class="col-xl-8 col-md-8 col-sm-8">
+                                            <input type="date" class="form-control" id="t8" name="t8" th:value="${#dates.format(item.smd008,'yyyy-MM-dd')}" placeholder="请输入上线日期" disabled="false" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
