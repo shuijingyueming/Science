@@ -357,8 +357,8 @@ public class Datamsg {
                     process.getInputStream(), "utf8");
             bufferedReader = new BufferedReader(inputStreamReader);
             String line;
+            System.out.println(fileName+"---");
             while ((line = bufferedReader.readLine()) != null) {
-                System.out.println(fileName+"xxxxx");
                 printWriter.println(line);
             }
             printWriter.flush();

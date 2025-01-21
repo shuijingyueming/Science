@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.efx.Science.model.*;
+import com.efx.Science.pub.Datamsg;
 import com.efx.Science.until.EncrpytUtil;
 import com.efx.Science.until.ExcelExport;
 import com.efx.Science.until.RSACoder;
@@ -65,6 +66,232 @@ public class HTinfoController extends BaseController {
         mav.setViewName("HTmain");
         return mav;
     }
+
+    /**
+     * 网站信息
+     * 王新苗
+     */
+    @RequestMapping(value="/wzxx")
+    public ModelAndView towzxx(HttpServletRequest request,HttpServletResponse response)throws Exception{
+        ModelAndView mav = new ModelAndView();
+        HttpSession session = request.getSession();
+        if(null==session.getAttribute("user")){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
+        mav.addObject("xxz", xxzService.selGetAll());
+        mav.setViewName("wzxx");
+        return mav;
+    }
+
+    /**
+     * 网站信息新增/修改
+     * 王新苗
+     */
+    @RequestMapping(value="/xgwz")
+    public ModelAndView xgwz(HttpServletRequest request,HttpServletResponse response)throws Exception{
+        ModelAndView mav = new ModelAndView();
+        HttpSession session = request.getSession();
+        if(null==session.getAttribute("user")){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
+        String jtp = null!=request.getParameter("jtp")&&!request.getParameter("jtp").isEmpty()?request.getParameter("jtp"):null;
+        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
+        Date date = new Date();
+        cdxxz xxz = new cdxxz();
+        MultipartFile file = multipartHttpServletRequest.getFile("up");
+        if(null!=file&&null!=file.getOriginalFilename()&&!file.getOriginalFilename().isEmpty()){
+            String filename = sdf.format(date)+"1"+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+            xxz.setXxz006(filename);
+            uploadpic("images/"+filename,file,"images/"+jtp);
+        }
+        xxz.setXxz007(request.getParameter("wzname"));
+        xxz.setXxz008(request.getParameter("wzzt"));
+        if(null!=request.getParameter("fid")&&!request.getParameter("fid").isEmpty()){
+            xxz.setXxz001(Integer.valueOf(request.getParameter("fid")));
+            xxzService.update(xxz);
+            addLog(getUse(request).getUse002(),"对网站管理内容进行了修改");
+        }
+        ServletContext context = session.getServletContext();
+        context.setAttribute("xxz", xxzService.selGetAll());
+        mav.addObject("msg", "A");
+        mav.setViewName("redirect:/toHt/wzxx");
+        return mav;
+    }
+
+    /**
+     * 获取数据备份信息
+     * 王新苗
+     */
+    @RequestMapping(value="/selsjbf")
+    public ModelAndView selsjbf(HttpServletRequest request,HttpServletResponse response)throws Exception{
+        ModelAndView mav = new ModelAndView();
+        HttpSession session = request.getSession();
+        if(null==session.getAttribute("user")){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
+        mav.addObject("xxz", xxzService.selGetAll());
+        mav.addObject("msg", request.getParameter("msg"));
+        mav.setViewName("sjbf");
+        return mav;
+    }
+
+    /**
+     * 手动备份后并下载
+     * 王新苗
+     * 注意 mysqldump有没有放在quality/target/classes下
+     */
+    @RequestMapping("/backupdownload")
+    public void backupdownload(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        Datamsg.beifenMysql(request, response,config,this.getClass().getResource("/").getPath()+"\\");
+        addLog(getUse(request).getUse002(),"进行了数据库下载");
+    }
+
+    /**
+     * 数据库自动备份
+     * 王新苗
+     */
+    @ResponseBody
+    @RequestMapping(value = "/xgbf",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    public String xgbf(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        HttpSession session = request.getSession();
+        if(null==session.getAttribute("user")){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
+        cdxxz xxz = new cdxxz();
+		/*xxz.setXxz010(request.getParameter("sjkname"));
+		xxz.setXxz011(request.getParameter("dlname"));
+		xxz.setXxz012(request.getParameter("dlmima"));
+		xxz.setXxz015(request.getParameter("sjkdz"));*/
+        if(null!=request.getParameter("bfts")&&!request.getParameter("bfts").isEmpty())
+            xxz.setXxz010(Integer.valueOf(request.getParameter("bfts")));
+        else
+            xxz.setXxz010(1);
+        if(null!=request.getParameter("sjbfid")&&!request.getParameter("sjbfid").isEmpty()){
+            xxz.setXxz001(Integer.valueOf(request.getParameter("sjbfid")));
+            xxzService.update(xxz);
+            addLog(getUse(request).getUse002(),"对数据库备份时间进行了修改为"+request.getParameter("bfts"));
+        }/*else{
+            xxzService.insert(xxz);
+            addLog(getUse(request).getUse002(),"对数据库备份进行了添加"+request.getParameter("bfts"));
+        }*/
+        Thread[] lstThreads = findAllThread();
+        for (Thread thread : lstThreads) {
+            if(thread.getName().equals("beifen")){
+                thread.interrupt();
+            }
+        }
+        new Thread(){
+            public void run(){
+                this.setName("beifen");
+                while (true) {
+                    try {
+                        System.out.println("--数据库备份--");
+                        long current = System.currentTimeMillis();// 当前时间毫秒数
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.add(Calendar.DAY_OF_MONTH, 1);
+                        calendar.set(Calendar.HOUR_OF_DAY, 0);
+                        calendar.set(Calendar.MINUTE, 0);
+                        calendar.set(Calendar.SECOND, 0);
+                        calendar.set(Calendar.MILLISECOND, 0);
+                        long tomorrowzero = calendar.getTimeInMillis();
+                        long tomorrowzeroSeconds = (tomorrowzero- current);
+                        //按天算+早上2：00
+                        Thread.sleep(((xxz.getXxz010()-1)*86400000)+7200000+tomorrowzeroSeconds);
+                        if (Datamsg.exportDatabaseTool(config.getJdbcurl(), config.getJdbcdk(),
+                                config.getUsername(),config.getPassword(),
+                                "c:\\backup\\","xhh("+TIME_ORDER.format(new Date())+").sql",config.getDataname(),
+                                this.getClass().getResource("/").getPath()+"\\")) {
+                            System.out.println("数据库成功备份！！！");
+                        } else {
+                            System.out.println("数据库备份失败！！！");
+                        }
+                    } catch (InterruptedException e) { }
+                }
+            }
+        }.start();
+        result.put("d",xxz.getXxz001());
+        return JSON.toJSONString(result);
+    }
+
+
+    /**
+     * 查询所有日志
+     * 王新苗
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/log")
+    public ModelAndView  log(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        ModelAndView mav = new ModelAndView();
+        HttpSession session = request.getSession();
+        if (session.getAttribute("user") == null) {
+            SystemTZYM(response, "登录失效");
+            return null;
+        }
+        PageBean pb = new PageBean();
+        if (request.getParameter("zt") != null && StringUtils.isNotEmpty(request.getParameter("zt"))) {
+            if(request.getParameter("zt").equals("AD")){
+                logService.deleteById(request.getParameter("id"));
+                addLog(getUse(request).getUse002(),"删除了日志信息");
+                mav.addObject("msg","D");
+            }
+        }
+        /* 保存当前页码 todo */
+        if (request.getParameter("pages") != null && StringUtils.isNotEmpty(request.getParameter("pages")))
+            pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
+        else
+            pb.setCurrentPage(1);
+        /* 开始时间是否存在 */
+        if (request.getParameter("start") != null && StringUtils.isNotEmpty(request.getParameter("start")))
+            pb.setOthersql(request.getParameter("start"));
+        /* 结束时间是否存在 */
+        if (request.getParameter("end") != null && StringUtils.isNotEmpty(request.getParameter("end")))
+            pb.setOthersql1(request.getParameter("end"));
+		/* 操作类型是否存在
+		if (request.getParameter("czleix") != null && StringUtils.isNotEmpty(request.getParameter("czleix")) && !request.getParameter("czleix").equals("all"))
+			pb.setOthersql2(request.getParameter("czleix"));*/
+        // 查询的用户名是否存在
+        if (request.getParameter("name") != null && StringUtils.isNotEmpty(request.getParameter("name")))
+            pb.setOthersql3(request.getParameter("name"));
+        mav.addObject("pageobj", logService.selectPageBean(pb));
+        mav.setViewName("log");
+        return mav;
+    }
+
+    /**
+     * 删除角色
+     * 2023-03-24
+     * 王新苗
+     * @param request
+     * @param response
+     */
+    @ResponseBody
+    @RequestMapping(value = "/dellog",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    public String dellog(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        PageBean pb = new PageBean();
+        if (request.getParameter("start") != null && StringUtils.isNotEmpty(request.getParameter("start"))) {
+            pb.setOthersql(request.getParameter("start"));
+        }
+        if (request.getParameter("end") != null && StringUtils.isNotEmpty(request.getParameter("end"))) {
+            pb.setOthersql1(request.getParameter("end"));
+        }
+        if (request.getParameter("name") != null && StringUtils.isNotEmpty(request.getParameter("name"))) {
+            pb.setOthersql3(request.getParameter("name"));
+        }
+        logService.deletePageBean(pb);
+        addLog(getUse(request).getUse002(),"删除了日志信息");
+        result.put("msg","0");
+        return JSON.toJSONString(result);
+    }
+
 
     /**
      * 进入管理员管理页面
@@ -266,8 +493,8 @@ public class HTinfoController extends BaseController {
         item.setSmd005(request.getParameter("t5"));
         item.setSmd006(request.getParameter("t6"));
         item.setSmd007(request.getParameter("t7"));
-        item.setSmd009(Integer.valueOf(request.getParameter("t9")));
-        item.setSmd010(Integer.valueOf(request.getParameter("t10")));
+        if(!request.getParameter("t9").isEmpty())item.setSmd009(Integer.valueOf(request.getParameter("t9")));
+        if(!request.getParameter("t10").isEmpty())item.setSmd010(Integer.valueOf(request.getParameter("t10")));
         item.setSmd011(0);
         item.setSmd012(0);
         item.setSmd013(0);
@@ -740,6 +967,7 @@ public class HTinfoController extends BaseController {
         HashMap result = new HashMap();
         cdhba item = new cdhba();
         //修改
+        item.setHba035(request.getParameter("t1"));
         item.setHba002(request.getParameter("t2"));
         item.setHba003(request.getParameter("t3"));
         item.setHba004(request.getParameter("t4"));
@@ -780,13 +1008,13 @@ public class HTinfoController extends BaseController {
         item.setHba025("");
         item.setHba026("A");
         if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()){
-            String log = "修改了名字为：【" + request.getParameter("t3") + "】的课程分类信息";
+            String log = "修改了课程代码为：【" + request.getParameter("t1") + "】的课程分类信息";
             item.setHba001(Integer.valueOf((request.getParameter("fid"))));
             addLog(getUse(request).getUse002(),log);
             hbaService.update(item);
             result.put("msg","U");
         }else{
-            String log = "新增了名字为：【" + request.getParameter("t3")+ "】的课程分类信息";
+            String log = "新增了课程代码为：【" + request.getParameter("t1")+ "】的课程分类信息";
             addLog(getUse(request).getUse002(),log);
             item = hbaService.insert(item);
             result.put("msg","I");
@@ -1438,14 +1666,14 @@ public class HTinfoController extends BaseController {
         }
         cdsmd item = new cdsmd();
         //修改
-        item.setSmd002(request.getParameter("t2"));
+       /* item.setSmd002(request.getParameter("t2"));
         item.setSmd003(request.getParameter("t3"));
         item.setSmd004(request.getParameter("t4"));
         item.setSmd005(request.getParameter("t5"));
         item.setSmd006(request.getParameter("t6"));
-        item.setSmd007(request.getParameter("t7"));
-        item.setSmd009(Integer.valueOf(request.getParameter("t9")));
-        item.setSmd010(Integer.valueOf(request.getParameter("t10")));
+        item.setSmd007(request.getParameter("t7"));*/
+        if(!request.getParameter("t9").isEmpty())item.setSmd009(Integer.valueOf(request.getParameter("t9")));
+        if(!request.getParameter("t10").isEmpty())item.setSmd010(Integer.valueOf(request.getParameter("t10")));
         if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()){
             String log = "修改了名字为：【" + request.getParameter("t1") + "】的用户信息";
             item.setSmd001(Integer.valueOf((request.getParameter("fid"))));
@@ -1489,25 +1717,30 @@ public class HTinfoController extends BaseController {
         }
         userid = Decrypt(session.getAttribute("user").toString());
         cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
-            mav.addObject("msg", request.getParameter("msg"));
-            PageBean pb = new PageBean();
-            if (request.getParameter("pages") != null && !request.getParameter("pages").isEmpty())
-                pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
-            else
-                pb.setCurrentPage(1);
-            if (request.getParameter("name") != null && !request.getParameter("name").isEmpty()) {
-                pb.setOthersql(request.getParameter("name"));
-            }
-            if (request.getParameter("phone") != null && !request.getParameter("phone").isEmpty()) {
-                pb.setOthersql6(request.getParameter("phone"));
-            }
-            if (request.getParameter("lx") != null && !request.getParameter("lx").isEmpty()) {
-                pb.setOthersql1(request.getParameter("lx"));
-            }
-            mav.addObject("pageobj", yheService.selectPageBean(pb));
+        mav.addObject("msg", request.getParameter("msg"));
+        PageBean pb = new PageBean();
+        if (request.getParameter("pages") != null && !request.getParameter("pages").isEmpty())
+            pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
+        else
+            pb.setCurrentPage(1);
+        if (request.getParameter("name") != null && !request.getParameter("name").isEmpty()) {
+            pb.setOthersql(request.getParameter("name"));
+        }
+        if(user.getUse009().equals("B")){
+            pb.setOthersql5(String.valueOf(user.getUse011()));
+        }else if (request.getParameter("skid") != null && !request.getParameter("skid").isEmpty()) {
+            pb.setOthersql5(request.getParameter("skid"));
+        }
+        if(user.getUse009().equals("C")){
+            pb.setOthersql6(String.valueOf(user.getUse011()));
+        }else if (request.getParameter("xkid") != null && !request.getParameter("xkid").isEmpty()) {
+            pb.setOthersql6(request.getParameter("xkid"));
+        }
+        mav.addObject("pageobj", yheService.selectPageBean(pb));
         mav.addObject("smdlist", smdService.getAll());
+        mav.addObject("yhblist", yhbService.getAll());
         mav.addObject("hbblist", hbbService.getAll());
-        mav.addObject("hbalist", hbaService.getAll(null, null));
+        mav.addObject("hbalist", hbaService.getAll(null, user.getUse009().equals("B")?pb.getOthersql5():null));
             mav.setViewName("HTselection");
         return mav;
     }
@@ -1589,10 +1822,15 @@ public class HTinfoController extends BaseController {
         if(!request.getParameter("z10").isEmpty())item.setYhe020(DATE.parse(request.getParameter("z10")));
         if(!request.getParameter("z11").isEmpty())item.setYhe005(Integer.valueOf(request.getParameter("z11")));
         cdyheWithBLOBs item1 =yheService.getByid(Integer.valueOf(request.getParameter("fid")));
-        item.setYhe012(item1.getYhb().getYhb017());
+        item.setYhe012(item1.getYhb().getYhb017()!=null?item1.getYhb().getYhb017():(item1.getYhb().getYha().getYha005()!=null?item1.getYhb().getYha().getYha005():null));
         item.setYhe013(item1.getHba().getHba012());
         item.setYhe014(item1.getHba().getHba006()*item.getYhe015());
-        item.setYhe018(item.getYhe010()<10?item1.getHba().getHba027()*item.getYhe016():(item.getYhe010()<20?item1.getHba().getHba028()*item.getYhe016():(item.getYhe010()<30?item1.getHba().getHba029()*item.getYhe016():item1.getHba().getHba030()*item.getYhe016())));
+        item.setYhe018(item.getYhe016()<10?item1.getHba().getHba027():
+                      (item.getYhe016()<20?item1.getHba().getHba027()+item1.getHba().getHba028()*(item.getYhe016()-10):
+                      (item.getYhe016()<30?item1.getHba().getHba027()+item1.getHba().getHba028()*10+item1.getHba().getHba029()*(item.getYhe016()-20):
+                      (item.getYhe016()<45?item1.getHba().getHba027()+item1.getHba().getHba028()*10+item1.getHba().getHba029()*10+item1.getHba().getHba030()*(item.getYhe016()-30):
+                                           item1.getHba().getHba027()+item1.getHba().getHba028()*10+item1.getHba().getHba029()*10+item1.getHba().getHba030()*15))));
+
         String log = "修改了名字为：【" + request.getParameter("t1") + "】的课程预约信息";
         item.setYhe001(Integer.valueOf(request.getParameter("fid")));
         addLog(getUse(request).getUse002(),log);
@@ -1620,7 +1858,7 @@ public class HTinfoController extends BaseController {
         cdyheWithBLOBs item = new cdyheWithBLOBs();
         //修改
         cduse use=getUse(request);
-        item.setYhe002(use.getUse011());
+        item.setYhe002(Integer.valueOf(request.getParameter("t3")));
         if(!request.getParameter("t4").isEmpty())item.setYhe004(Integer.valueOf(request.getParameter("t4")));
         cdhba hba = hbaService.getByid(Integer.valueOf(request.getParameter("t4")));
         item.setYhe003(hba.getHba022());
@@ -1632,7 +1870,11 @@ public class HTinfoController extends BaseController {
         smd.setSmd013(smd.getSmd013()+1);
         if(yhb.getYhb015()<=yhb.getYhb016()&&smd.getSmd013()<=smd.getSmd009()){
             yhb.setYhb012(yhb.getYhb012()+1);
-            item.setYhe011(item.getYhe010()<10?hba.getHba027()*item.getYhe010():(item.getYhe010()<20?hba.getHba028()*item.getYhe010():(item.getYhe010()<30?hba.getHba029()*item.getYhe010():hba.getHba030()*item.getYhe010())));
+            item.setYhe011(item.getYhe010()<10?hba.getHba027():
+                          (item.getYhe010()<20?hba.getHba027()+hba.getHba028()*(item.getYhe010()-10):
+                          (item.getYhe010()<30?hba.getHba027()+hba.getHba028()*10+hba.getHba029()*(item.getYhe010()-20):
+                          (item.getYhe010()<45?hba.getHba027()+hba.getHba028()*10+hba.getHba029()*(item.getYhe010()-30):
+                                               hba.getHba027()+hba.getHba028()*10+hba.getHba029()*10+hba.getHba030()*15))));
             item.setYhe012(yhb.getYhb017());
             item.setYhe013(hba.getHba012());
             item.setYhe015(hba.getHba013());

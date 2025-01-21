@@ -47,22 +47,22 @@
                                     </div>
                                 </div>
                                 <div class="row" style="margin-top: 20px;">
-                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">机构/个人名称</label>
+                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;" id="x1">机构</label>
                                     <div class="col-xl-4 col-md-8 col-sm-12">
-                                        <input type="text" class="form-control" id="t2" name="t2"  th:value="${item.smd003}"  placeholder="请输入机构名称/个人单位"/>
+                                        <input type="text" class="form-control" id="t2" name="t2"  th:value="${item.smd003}"  placeholder="请输入机构名称"/>
                                     </div>
                                 </div>
                                 <div class="row" style="margin-top: 20px;">
                                     <div class="row col-xl-6 col-md-7 col-sm-6 col-12">
-                                        <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">营业执照/身份证号</label>
+                                        <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;" id="x2">营业执照</label>
                                         <div class="col-xl-8 col-md-7 col-sm-12">
-                                            <input type="number" class="form-control" id="t4" name="t4" th:value="${item.smd004}" placeholder="请输入营业执照/身份证号"/>
+                                            <input type="number" class="form-control" id="t4" name="t4" th:value="${item.smd004}" placeholder="请输入营业执照"/>
                                         </div>
                                     </div>
                                     <div class="row col-xl-4 col-md-5 col-sm-4 col-12">
-                                        <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">账号/姓名</label>
+                                        <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;" id="x3">账号</label>
                                         <div class="col-xl-7 col-md-7 col-sm-12">
-                                            <input type="number" class="form-control" id="t7" name="t7"th:value="${item.smd007}"  placeholder="请输入账号/姓名"/>
+                                            <input type="number" class="form-control" id="t7" name="t7"th:value="${item.smd007}"  placeholder="请输入账号"/>
                                         </div>
                                     </div>
                                 </div>
@@ -74,9 +74,9 @@
                                         </div>
                                     </div>
                                     <div class="row col-xl-7 col-md-7 col-sm-8">
-                                       <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">户名/银行卡号</label>
+                                       <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;" id="x4">户名</label>
                                        <div class="col-xl-7 col-md-8 col-sm-12">
-                                        <input type="number" class="form-control" id="t6" name="t6"th:value="${item.smd006}"  placeholder="请输入户名/银行卡号"/>
+                                        <input type="number" class="form-control" id="t6" name="t6"th:value="${item.smd006}"  placeholder="请输入户名"/>
                                        </div>
                                     </div>
                                 </div>
@@ -154,6 +154,28 @@
     var layer = layui.layer;
     var file_lastName = "";
     var load_index;
+    $("input[name='t3']").click(function(){
+            if($(this).val()=="A"){
+                $("#x1").html("机构");
+                $("#t2").attr("placeholder","请输入机构");
+                $("#x2").html("营业执照");
+                $("#t4").attr("placeholder","请输入营业执照");
+                $("#x3").html("账号");
+                $("#t7").attr("placeholder","请输入账号");
+                $("#x4").html("户名");
+                $("#t6").attr("placeholder","请输入户名");
+            }else{
+                $("#x1").html("个人名称");
+                $("#t2").attr("placeholder","请输入个人名称");
+                $("#x2").html("身份证号");
+                $("#t4").attr("placeholder","请输入身份证号");
+                $("#x3").html("姓名");
+                $("#t7").attr("placeholder","请输入姓名");
+                $("#x4").html("银行卡号");
+                $("#t6").attr("placeholder","请输入银行卡号");
+            }
+    });
+
     $("#uploadForm").validate({
         errorPlacement: function(error, element) {
             //替换错误显示位置，error表示错误信息

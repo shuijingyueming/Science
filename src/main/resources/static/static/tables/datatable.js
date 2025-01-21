@@ -1,6 +1,19 @@
 $(document).ready(function () {
     $('#example').DataTable();
 
+    $('#logexm').DataTable({
+        "searching": true,
+        "info": false,
+        "paging": false,
+        dom: 'Bfrtip',
+        buttons: [
+            {text: '全部删除',action: function ( e, dt, node, config ) {del('');},}
+        ],
+        "columnDefs": [{
+            "orderable": false,
+            "targets": [0]
+        }]
+    });
     $('#staffexm').DataTable({
         "searching": true,
         "info": false,
@@ -155,7 +168,7 @@ $(document).ready(function () {
         "paging": false,
         dom: 'Bfrtip',
         buttons: [
-            $("#jstype").val()=="C"?{
+            $("#jstype").val()!="A"?{
                 iTname: '#yymode', text: '课程预约'
             }:undefined,
             /*{

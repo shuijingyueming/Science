@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <base th:href="${#request.getContextPath()}+'/'">
+    <title>后台管理系统-表格</title>
+    <meta http-equiv="pragma" content="no-cache"/>
+    <meta http-equiv="cache-control" content="no-cache"/>
+    <meta http-equiv="expires" content="0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+
+    <!--表格css-->
+    <link rel="stylesheet" href="css/tables/datatables.min.css">
+    <link rel="stylesheet" href="css/tables/datatables-http.min.css">
+    <link rel="stylesheet" href="css/tables/jsgrid/jsgrid.css">
+    <link rel="stylesheet" href="css/tables/jsgrid/theme.css">
+    <link rel="stylesheet" href="css/tables/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="css/tables/jsgrid/demos.css">
+    <link rel="stylesheet" href="css/tables/jsgrid/jsgridui.css">
+    <link rel="stylesheet" type="text/css" href="css/materialdesignicons.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.min.css">
+    <!--日期选择器css-->
+    <link rel="stylesheet" type="text/css" href="js/bootstrap-datepicker/bootstrap-datepicker3.min.css">
+    <!--时间日期选择器css-->
+    <link rel="stylesheet" type="text/css" href="js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <header class="card-header"><div class="card-title">网站配置</div></header>
+                <div class="card-body">
+    <form id="uploadForm" action="toHt/xgwz" method="post" name="edit-form" class="edit-form" enctype="multipart/form-data">
+        <input type="hidden" th:value="${xxz.xxz001}" id="fid" name="fid" />
+        <input type="hidden" th:value="${xxz.xxz006}" id="jtp" name="jtp" />
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="config" aria-labelledby="basic-config">
+                <div class="mb-3">
+                    <img class="logoimg" th:src="${xxz.xxz006!=null?'upload/images/'+xxz.xxz006:'images/logo-sidebar.png'}"/>
+                </div>
+                <div class="mb-3">
+                    <label for="up" class="form-label">网站LOGO</label>
+                    <div class="input-group">
+                        <input type="file" class="form-control" id="up" name="up" value="/home/images/logo.png">
+<!--                        <button class="btn btn-default" type="button">上传图片</button>-->
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="wzname" class="form-label">网站名称</label>
+                    <input class="form-control" type="text" id="wzname" name="wzname"  th:value="${xxz.xxz007}"  placeholder="请输入网站名称">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">网站状态</label>
+                    <div class="form-check form-switch">
+                        <input type="checkbox" class="form-check-input"  id="wzzt" name="wzzt" th:checked="${xxz.xxz008=='A'?'checked':''}">
+                        <label class="form-check-label" for="wzzt"></label>
+                    </div>
+                    <small class="form-text">站点关闭后将不能访问，后台可正常登录</small>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary me-1">保存修改</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/popper.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/main.min.js"></script>
+<script type="text/javascript" src="js/jquery-confirm/jquery-confirm.min.js"></script>
+<!--日期选择器js-->
+<script type="text/javascript" src="js/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js"></script>
+<!--时间日期选择器js-->
+<script type="text/javascript" src="js/momentjs/moment.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="js/momentjs/locale/zh-cn.min.js"></script>
+<!--引入下拉插件js-->
+<script type="text/javascript" src="js/bootstrap-select/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-select/i18n/defaults-zh_CN.min.js"></script>
+<!-- 表格JS -->
+<script type="text/javascript" src="static/tables/datatables.min.js"></script>
+<script type="text/javascript" src="static/tables/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="static/tables/jszip.min.js"></script>
+<script type="text/javascript" src="static/tables/pdfmake.min.js"></script>
+<script type="text/javascript" src="static/tables/vfs_fonts.js"></script>
+<script type="text/javascript" src="static/tables/buttons.html5.min.js"></script>
+<script type="text/javascript" src="static/tables/buttons.print.min.js"></script>
+<script type="text/javascript" src="static/tables/datatable.js"></script>
+<!--引入loading插件js-->
+<script type="text/javascript" src="js/lyear-loading.js"></script>
+<script type="text/javascript" src="js/layer/layer.js"></script>
+<script type="text/javascript" src="js/layui/layui.js"></script>
+<script type="text/javascript" src="static/js/pubjs.js"></script>
+<script type="text/javascript" src="pagejs/htfy.js"></script>
+<!-- validate JS 验证-->
+<script type="text/javascript" src="assets/jquery-validate/jquery.validate.js"></script>
+<script type="text/javascript" src="assets/jquery-validate/validate-methods.js"></script>
+<script type="text/javascript">
+
+    var layer = layui.layer;
+    var file_lastName = "";
+    var load_index;
+
+    $(document).ready(function(){
+        //---------------------------
+        $("#uploadForm").validate({
+            errorPlacement: function(error, element) {
+                //替换错误显示位置，error表示错误信息
+                $(element).parent("div").append(error);
+                $(element).parent("div").find("label").attr("style","margin-left:5px;");
+            },
+            rules : {},
+            messages: {},
+            submitHandler: function(form) {
+                load_index = layer.load(1);
+                var formData = new FormData();
+                formData.append("fid",$("#fid").val().trim());
+                formData.append("wzname",$("#wzname").val().trim());
+                console.log($("#wzzt").attr('checked'))
+                formData.append("wzzt",$("#wzzt").attr('checked')?"A":"B");
+                formData.append("jtp",$("#jtp").val().trim());
+                formData.append("up", document.getElementById("up").files[0]);
+                $.ajax({
+                    url: 'toHt/xgwz', // 服务器端处理上传文件的URL
+                    type: 'POST',
+                    data: formData,
+                    dataType:'json',
+                    contentType: false, // 不设置内容类型
+                    processData: false, // 不处理发送的数据
+                    success: function (res) {
+                        var d = eval(res);
+                        layer.close(load_index);
+                        layer.msg('提交成功');
+                    },
+                    error: function () { console.log('提交失败'); }
+                });
+            }
+        });
+        // 图片上传(单张图片，多张图片)
+        $('.js-upload-image,.js-upload-images').each(function() {
+            var $input_file      = $(this).find('input'),
+                $input_file_name = $input_file.attr('name'),
+                $multiple        = $input_file.data('multiple'),  // 是否选择多个文件
+                $ext             = $input_file.data('ext'),       // 支持的文件后缀，示例以图片为例
+                $size            = $input_file.data('size');      // 支持最大的文件大小
+
+            var $file_list = $('#file_list_' + $input_file_name);
+            var ratio = window.devicePixelRatio || 1;
+            var thumbnailWidth = 320 * ratio;
+            var thumbnailHeight = 180 * ratio;
+            //此处不做自动上传
+            var uploader = WebUploader.create({
+                auto: false,
+                duplicate: true,
+                resize: true,
+                swf: 'js/webuploader/Uploader.swf',
+                server: '',//上传路径
+                pick: {
+                    id: '#picker_' + $input_file_name,
+                    multiple: $multiple
+                },
+                fileSingleSizeLimit: $size,
+                accept: {
+                    title: 'Images',
+                    extensions: $ext,
+                    mimeTypes: 'image/*'
+                }
+            });
+
+            uploader.on('fileQueued', function(file) {
+                $img = $("#upfileimg");
+                file_lastName = file.ext;
+                $input_file.val('');
+                uploader.makeThumb(file, function(error, src) {
+                    if (error) {
+                        $img.replaceWith('<span>不能预览</span>');
+                        return;
+                    }
+                    $img.attr('src', src);
+                }, thumbnailWidth, thumbnailHeight);
+
+            });
+
+            uploader.on('error', function(type) {
+                switch (type) {
+                    case 'Q_TYPE_DENIED':
+                        //alert('图片类型不正确，只允许上传后缀名为：' + $ext + '，请重新上传！');
+                        showNotify('图片类型不正确，只允许上传后缀名为：' + $ext + '，请重新上传！', 'danger', 1500);
+                        break;
+                    case 'F_EXCEED_SIZE':
+                        //alert('图片不得超过' + ($size / 1024) + 'kb，请重新上传！');
+                        showNotify('图片不得超过' + ($size / 1024) + 'kb，请重新上传！', 'danger', 1500);
+                        break;
+                }
+            });
+
+            // 删除操作
+            $file_list.delegate('.btn-remove-pic', 'click', function() {
+                console.log($("#fid").val().trim());
+                console.log($("#stype").val().trim());
+                if (confirm("本操作将直接删除该图片，您确认删除吗?")) { // 可改为对话框插件
+                    //直接删除后台图片
+                    load_index = layer.load(1);
+                    var formData = new FormData();
+                    formData.append("stype",$("#stype").val().trim());
+                    formData.append("fid",$("#fid").val().trim());
+                    $.ajax({
+                        url: 'toHt/delOneTypePic', // 服务器端处理上传文件的URL
+                        type: 'POST',
+                        data: formData,
+                        dataType:'json',
+                        contentType: false, // 不设置内容类型
+                        processData: false, // 不处理发送的数据
+                        success: function (res) {
+                            layer.close(load_index);
+                            layer.msg("图片删除成功");
+                        },
+                        error: function () { console.log('删除失败'); }
+                    });
+                    $(this).closest('.list-images-item').remove();
+                }
+            });
+
+        });
+
+
+    });
+
+</script>
+</body>
+</html>

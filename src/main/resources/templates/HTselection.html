@@ -78,11 +78,37 @@
                             <input type="hidden" id="jstype" name="jstype" th:value="${session.umsg.jstype}"/>
                             <!--text input-->
                             <div class="row g-3">
-                                <div class="col-auto">
+                                <!--<div class="col-auto">
                                     <div class="row">
                                         <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">名称</label>
                                         <div class="col-auto">
                                             <input type="text" class="form-control" id="name" name="name" th:value="${pageobj.othersql}" placeholder="请输入名称"/>
+                                        </div>
+                                    </div>
+                                </div>-->
+                                <div class="col-auto" th:style="${session.umsg.jstype=='B'?'display: none':''}">
+                                    <div class="row">
+                                        <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">授课方名称</label>
+                                        <div class="col-auto">
+                                            <select id="skid" name="skid"  class="form-control selectpicker" data-live-search="true">
+                                                <option value="" selected>请选择</option>
+                                                <th:block th:each="item,stat:${smdlist}">
+                                                    <option th:value="${item.smd001}"  th:selected="${pageobj.othersql5==#strings.toString(item.smd001)?true:false}">[[${item.smd003}]]</option>
+                                                </th:block>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto" th:style="${session.umsg.jstype=='C'?'display: none':''}">
+                                    <div class="row">
+                                        <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">选课方名称</label>
+                                        <div class="col-auto">
+                                            <select id="xkid" name="xkid"  class="form-control selectpicker" data-live-search="true">
+                                                <option value="" selected>请选择</option>
+                                                <th:block th:each="item,stat:${yhblist}">
+                                                    <option th:value="${item.yhb001}"  th:selected="${pageobj.othersql6==#strings.toString(item.yhb001)?true:false}">[[${item.yhb004}]]</option>
+                                                </th:block>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -114,8 +140,8 @@
                                 <tbody id="tablebody">
                                 <tr th:each="item,stat:${pageobj.resultList}">
                                     <td th:text="${stat.index+1}"></td>
-                                    <td th:text="${item.smd.smd003}"></td>
-                                    <td th:text="${item.yhb.yhb004}"></td>
+                                    <td th:text="${item.yhb!=null?item.yhb.yhb004:''}"></td>
+                                    <td th:text="${item.smd!=null?item.smd.smd003:''}"></td>
                                     <td th:text="${item.hba.hba002}"></td>
                                     <td th:text="${item.yhc!=null?item.yhc.yhc002:''}"></td>
                                     <td th:text="${item.yhe009}"></td>
@@ -137,8 +163,10 @@
                                                 <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['B']])">退回</a>
                                             </th:block>
                                             </th:block>
+                                            <th:block th:if="${session.umsg.jstype!='A'}">
                                             <th:block th:if="${item.yhe007=='C'}">
                                                 <a href="javascript:void(0);" th:onclick="topj([[${item.toString()}]])" class="btn btn-table" data-bs-toggle="modal" data-bs-target="#pjmode">评价</a>
+                                            </th:block>
                                             </th:block>
                                             <th:block th:if="${session.umsg.jstype=='C'}">
                                             <th:block th:if="${item.yhe007!='D'&&item.yhe007!='E'&&item.yhe007!='F'}">
@@ -466,7 +494,7 @@
                             <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">老师</label>
                             <div class="form-controls">
                                 <select id="z11" name="z11"  class="form-control selectpicker" data-live-search="true">
-                                    <option value="">请选择</option>
+                                    <option value=""></option>
                                 </select>
                             </div>
                         </div>
@@ -587,12 +615,23 @@
                 <form id="uploadForm1" enctype="multipart/form-data">
                     <input type="hidden" id="fid1" value=""/>
                     <div class="modal-body" style="min-height:580px;">
+                        <div class="row col-auto" th:style="${session.umsg.jstype=='C'?'margin-top: 20px;display: none':'margin-top: 20px;'}">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">选课方</label>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <select id="t3" name="t3"  class="form-control selectpicker" data-live-search="true">
+                                    <option value="" selected>请选择</option>
+                                    <th:block th:each="item,stat:${yhblist}">
+                                        <option th:value="${item.yhb001}"  th:selected="${session.umsg.jstype=='C'&&pageobj.othersql6==#strings.toString(item.yhb001)?true:false}">[[${item.yhb004}]]</option>
+                                    </th:block>
+                                </select>
+                            </div>
+                        </div>
                         <div class="row col-auto">
                             <div class="col-lg-2 col-md-3 col-sm-4">
                                 <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">课程分类</label>
                                 <div class="form-controls">
                                     <select id="t1" name="t1"  class="form-control form-select">
-                                        <option value="">请选择</option>
+                                        <option value=""></option>
                                         <th:block th:each="item,stat:${hbblist}">
                                             <option th:value="${item.hbb001}" >[[${item.hbb002}]]</option>
                                         </th:block>
@@ -603,7 +642,7 @@
                                 <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">课程</label>
                                 <div class="form-controls">
                                     <select id="t4" name="t4" class="form-control selectpicker">
-                                        <option value="">请选择</option>
+                                        <option value=""></option>
                                     </select>
                                 </div>
                             </div>
@@ -798,7 +837,7 @@
     function usefanye(pageindex){
         var params = [
             ["pages",pageindex],
-            ["name",$.trim($("#name").val())]];
+            ["skid",$.trim($("#skid").val())],["xkid",$.trim($("#xkid").val())]];
         form_submit("toHt/toselection","post",params,"_self");
     }
     function del(id,uname){
@@ -1035,7 +1074,7 @@
     }
     $('select[id=t1]').change(function() {
         $.ajax({
-            url:'getallcourse?flid='+this.value,
+            url:'getallcourse?flid='+this.value+'&jgid='+ ($("#jstype").val()=="B"?$('#skid').val():''),
             type:'post',
             async: false,
             cache: false,
@@ -1045,7 +1084,7 @@
             success:function(data) {
                 var list = eval(data.list);
                 $('select[id=t4]').empty();
-                $("select[id=t4]").append("<option value=''>请选择</option>");
+                $("select[id=t4]").append("<option value=''></option>");
                 for(var i=0;i<list.length;i++){
                     $("select[id=t4]").append("<option value='"+list[i].hba001+"' xname='"+list[i].smd.smd003+"'" +
                         " x1='"+list[i].hba002+"'  x3='"+list[i].hba017+"'  x4='"+list[i].hba003+"'  x5='"+list[i].hba008+"'  x9='"+list[i].hba009+"'  x6='"+list[i].hba005+"'  x7='"+list[i].hba015+"' " +
@@ -1092,11 +1131,12 @@
             $(element).parent("div").parent("div").find("label").addClass("col-12");
             // $(element).parent("div").parent("div").find("label").attr("style","margin-left:5px;");
         },
-        rules : {t2: { required : true, },t4: { required : true, },t5: { required : true, },},
+        rules : {t3: { required : true, },t2: { required : true, },t4: { required : true, },t5: { required : true, },},
         messages: {},
         submitHandler: function(form) {
             load_index = layer.load(1);
             var formData = new FormData();
+            formData.append("t3",$("#t3").val());
             formData.append("t2",$("#t2").val());
             formData.append("t4",$("#t4").val());
             formData.append("t8",$("#t8").val());
@@ -1241,7 +1281,7 @@
                 success:function(data) {
                     var list = eval(data.list);
                     $("select[id=z11]").empty();
-                    $("select[id=z11]").append("<option value=''>请选择</option>");
+                    $("select[id=z11]").append("<option value=''></option>");
                     for(var i=0;i<list.length;i++){
                         $("select[id=z11]").append("<option value='"+list[i].yhc001+"'>"+list[i].yhc003+"</option>");
                     }

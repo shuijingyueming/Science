@@ -86,7 +86,7 @@
                                 <th:block th:if="${pageobj.othersql1=='C'}">
                                     <div class="col-auto" th:style="${session.umsg.jstype=='C'?'display: none':''}">
                                         <div class="row">
-                                            <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">授课方名称</label>
+                                            <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">选课方名称</label>
                                             <div class="col-auto">
                                                 <select id="skid" name="skid"  class="form-control selectpicker" data-live-search="true">
                                                     <option value="" selected>请选择</option>
@@ -609,7 +609,20 @@
             $(element).parent("div").parent("div").find("label").addClass("col-12");
             // $(element).parent("div").parent("div").find("label").attr("style","margin-left:5px;");
         },
-        rules : {t2: { required : true, },t4: { required : true, },t5: { required : true, },},
+        rules : {t2: { required : true,remote:{
+                    url: "zhname", //后台处理程序
+                    type: "post",  //数据发送方式
+                    async : false,
+                    dataType: "json",       //接受数据格式
+                    data:{
+                        "name":function(){
+                            return $("#t2").val().trim();
+                        },
+                        "id":function(){
+                            return $("#fid").val().trim();
+                        }//要传递的数据
+                    }
+                } },t4: { required : true, },t5: { required : true, },},
         messages: {},
         submitHandler: function(form) {
             load_index = layer.load(1);

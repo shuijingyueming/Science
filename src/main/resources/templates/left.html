@@ -45,6 +45,16 @@
                 <!--平台-->
                 <th:block th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">
                     <li class="nav-item nav-item-has-subnav">
+                        <a >
+                            <i class="mdi mdi-stove"></i> <span>系统设置</span>
+                        </a>
+                        <ul class="nav nav-subnav">
+                                <li><a class="multitabs" href="toHt/wzxx">平台信息</a></li>
+                                <li><a class="multitabs" href="toHt/selsjbf">数据备份</a></li>
+                                <li><a class="multitabs" href="toHt/log">日志信息</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item nav-item-has-subnav">
                         <a href="javascript:void(0)">
                             <i class="mdi mdi-stove"></i> <span>账户管理</span>
                         </a>
@@ -81,6 +91,18 @@
                             </li>
                         </ul>
                     </li>
+                    <!--<li class="nav-item nav-item-has-subnav">
+                        <a >
+                            <i class="mdi mdi-stove"></i> <span>统计管理</span>
+                        </a>
+                        <ul class="nav nav-subnav">
+                            <li><a class="multitabs" href="toSt/totjsk">授课方的统计</a></li>
+                            <li><a class="multitabs" href="toSt/totjxk">选课方的统计</a></li>
+                            <li><a class="multitabs" href="toSt/totjjtbt">交通补贴明细计</a></li>
+                            <li><a class="multitabs" href="toSt/totjpjsk">授课方的评价统计</a></li>
+                            <li><a class="multitabs" href="toSt/totjpjxk">选课方的评价统计</a></li>
+                        </ul>
+                    </li>-->
                 </th:block>
                 <!--授课方-->
                 <th:block th:if="${session.umsg.jstype=='B'}">

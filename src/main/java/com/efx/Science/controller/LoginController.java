@@ -337,4 +337,35 @@ public class LoginController extends BaseController {
         }
         return jb.toJSONString();
     }
+
+
+    /**
+     * 判断账户名称是否重复
+     */
+    @ResponseBody
+    @RequestMapping(value = "/zhname",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    public boolean zskname(HttpServletRequest request,HttpServletResponse response){
+        Integer id=request.getParameter("id").isEmpty()?0:Integer.valueOf(request.getParameter("id"));
+        cduse use=useService.selectByName(request.getParameter("name"),null,null);
+        if((id==0 && use!=null)||(id!=0 && use!=null && id!=use.getUse001())){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    /**
+     * 判断账户名称是否重复
+     */
+    @ResponseBody
+    @RequestMapping(value = "/kcname",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    public boolean kcname(HttpServletRequest request,HttpServletResponse response){
+        Integer id=request.getParameter("id").isEmpty()?0:Integer.valueOf(request.getParameter("id"));
+        cdhba item=hbaService.selectByName(null,request.getParameter("name"));
+        if((id==0 && item!=null)||(id!=0 && item!=null && id!=item.getHba001())){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }

@@ -66,7 +66,7 @@
                                       <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">课程分类</label>
                                       <div class="col-auto">
                                         <select id="flid" name="flid" class="form-control selectpicker">
-                                            <option value="" selected>请选择</option>
+                                            <option value="" selected></option>
                                             <th:block th:each="item,stat:${hbblist}">
                                                 <option th:value="${item.hbb001}"  th:selected="${pageobj.othersql2==#strings.toString(item.hbb001)?true:false}">[[${item.hbb002}]]</option>
                                             </th:block>
@@ -79,7 +79,7 @@
                                       <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">授课方名称</label>
                                       <div class="col-auto">
                                         <select id="skid" name="skid" class="form-control selectpicker">
-                                            <option value="" selected>请选择</option>
+                                            <option value="" selected></option>
                                             <th:block th:each="item,stat:${smdlist}">
                                                 <option th:value="${item.smd001}"  th:selected="${pageobj.othersql1==#strings.toString(item.smd001)?true:false}">[[${item.smd003}]]</option>
                                             </th:block>
@@ -102,6 +102,7 @@
                                 <thead>
                                 <tr>
                                     <th style="max-width:30px;">序号</th>
+                                    <th>课程代码</th>
                                     <th>课程名称</th>
                                     <th>授课方</th>
                                     <th>课程分类</th>
@@ -118,6 +119,7 @@
                                 <tbody id="tablebody">
                                 <tr th:each="item,stat:${pageobj.resultList}">
                                     <td th:text="${stat.index+1}"></td>
+                                    <td th:text="${item.hba035}"></td>
                                     <td th:text="${item.hba002}"></td>
                                     <td th:text="${item.smd.smd003}"></td>
                                     <td th:text="${item.hbb.hbb002}"></td>
@@ -237,11 +239,19 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="row col-xl-4 col-md-6 col-sm-8 col-12" th:style="${session.umsg.jstype=='B'?'display:none;':''}">
-                                <label class="col-auto col-form-label" style="padding-right:10px;padding-left:10px;">授课方</label>
-                                <div class="col-xl-8 col-md-8 col-sm-10">
+                            <div class="row col-xl-4 col-md-6 col-sm-8 col-12">
+                                <label class="col-auto col-form-label" style="padding-right:10px;padding-left:10px;">课程代码</label>
+                                <div class="col-xl-8 col-md-8 col-sm-9">
+                                    <input type="text" class="form-control" id="t1" name="t1" placeholder="请输入课程代码"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-auto" style="margin-top: 20px;">
+                            <div class="col-md-3" th:style="${session.umsg.jstype=='B'?'display: none':''}">
+                                <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">授课方</label>
+                                <div class="form-controls">
                                     <select id="t22" name="t22"  class="form-control selectpicker" data-live-search="true">
-                                        <option value="" selected>请选择</option>
+                                        <option value="" selected></option>
                                         <th:block th:each="item,stat:${smdlist}">
                                             <option th:value="${item.smd001}"  th:selected="${session.umsg.jstype=='B'&&pageobj.othersql1==#strings.toString(item.smd001)?true:false}">[[${item.smd003}]]</option>
                                         </th:block>
@@ -539,24 +549,32 @@
         html+= '<span class="jspan">'+item.hba002+'</span>';
         html+= '</div>';
         html+= '<div class="form-group col-xl-3 col-md-4 col-sm-6">';
-        html+= '<label class="layui-form-label">适合年段：</label>';
-        html+= '<span class="jspan">'+item.hba003+'</span>';
+        html+= '<label class="layui-form-label">课程代码：</label>';
+        html+= '<span class="jspan">'+item.hba035+'</span>';
+        html+= '</div></div>';
+        html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
+        html+= '<label class="layui-form-label">联系人：</label>';
+        html+= '<span class="jspan">'+item.hba016+'</span>';
+        html+= '</div>';
+        html+= '<div class="form-group col-xl-3 col-md-4 col-sm-6">';
+        html+= '<label class="layui-form-label">联系手机：</label>';
+        html+= '<span class="jspan">'+item.hba017+'</span>';
+        html+= '</div>';
+        html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
+        html+= '<label class="layui-form-label">课时：</label>';
+        html+= '<span class="jspan">'+item.hba005+'</span>';
         html+= '</div>';
         html+= '<div class="form-group col-xl-3 col-md-4 col-sm-6">';
         html+= '<label class="layui-form-label">课时时长：</label>';
         html+= '<span class="jspan">'+item.hba004+'</span>';
         html+= '</div></div>';
         html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
-        html+= '<label class="layui-form-label">课时：</label>';
-        html+= '<span class="jspan">'+item.hba005+'</span>';
-        html+= '</div>';
-        html+= '<div class="form-group col-xl-3 col-md-4 col-sm-6">';
-        html+= '<label class="layui-form-label">志愿者补贴：</label>';
-        html+= '<span class="jspan">'+item.hba006+'</span>';
-        html+= '</div>';
-        html+= '<div class="form-group col-xl-3 col-md-4 col-sm-6">';
         html+= '<label class="layui-form-label">需要亲子：</label>';
-        html+= '<span class="jspan">'+item.hba007+'</span>';
+        html+= '<span class="jspan">'+(item.hba007=="y"?"是":"否")+'</span>';
+        html+= '</div>';
+        html+= '<div class="form-group col-xl-3 col-md-4 col-sm-6">';
+        html+= '<label class="layui-form-label">适合年段：</label>';
+        html+= '<span class="jspan">'+item.hba003+'</span>';
         html+= '</div></div>';
         html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
         html+= '<label class="layui-form-label">人数限制：</label>';
@@ -572,33 +590,32 @@
         html+= '</div></div>';
 
         html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
+        html+= '<label class="layui-form-label">志愿者补贴：</label>';
+        html+= '<span class="jspan">'+item.hba006+'</span>';
+        html+= '</div>';
+        html+= '<div class="form-group col-xl-3 col-md-4 col-sm-6">';
+        html+= '<label class="layui-form-label">志愿者人数：</label>';
+        html+= '<span class="jspan">'+item.hba013+'</span>';
+        html+= '</div>';
+        html+= '<div class="form-group col-xl-3 col-md-4 col-sm-6">';
+        html+= '<label class="layui-form-label">志愿者要求：</label>';
+        html+= '<span class="jspan">'+item.hba014+'</span>';
+        html+= '</div></div>';
+
+        html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
         html+= '<label class="layui-form-label">附加费条件：</label>';
         html+= '<span class="jspan">'+item.hba011+'</span>';
         html+= '</div>';
         html+= '<div class="form-group col-xl-3 col-md-4 col-sm-6">';
         html+= '<label class="layui-form-label">附加材料费：</label>';
-        html+= '<span class="jspan">'+item.hba012+'</span>';
-        html+= '</div>';
-        html+= '<div class="form-group col-xl-3 col-md-4 col-sm-6">';
-        html+= '<label class="layui-form-label">志愿者人数：</label>';
-        html+= '<span class="jspan">'+item.hba013+'</span>';
+        html+= '<span class="jspan">'+(item.hba012!=null?item.hba012:'')+'</span>';
         html+= '</div></div>';
-        html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
-        html+= '<label class="layui-form-label">志愿者要求：</label>';
-        html+= '<span class="jspan">'+item.hba014+'</span>';
-        html+= '</div>';
-        html+= '<div class="form-group col-xl-5 col-md-8 col-sm-12">';
+
+        html+= '<div class="row"><div class="form-group col-xl-5 col-md-8 col-sm-12">';
         html+= '<label class="layui-form-label">送教限制：</label>';
         html+= '<span class="jspan">'+item.hba015+'</span>';
         html+= '</div></div>';
-        html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
-        html+= '<label class="layui-form-label">联系人：</label>';
-        html+= '<span class="jspan">'+item.hba016+'</span>';
-        html+= '</div>';
-        html+= '<div class="form-group col-xl-3 col-md-4 col-sm-6">';
-        html+= '<label class="layui-form-label">联系手机：</label>';
-        html+= '<span class="jspan">'+item.hba017+'</span>';
-        html+= '</div>';
+
         html+= '<div class="row"><div class="form-group col-xl-2 col-md-3 col-sm-6">';
         html+= '<label class="layui-form-label">课时10人以下：</label>';
         html+= '<span class="jspan">'+item.hba027+'</span>';
@@ -882,6 +899,7 @@
             $("#bhbz").html(josnobj.hba025);
             $("#t21").val(josnobj.hba021);
             $("#t22").val(josnobj.hba022);
+            $("#t1").val(josnobj.hba035);
             $("#t2").val(josnobj.hba002);
             $("#t3").val(josnobj.hba003);
             $("#t4").val(josnobj.hba004);
@@ -907,7 +925,7 @@
             $("#upfilevadio").attr("src","upload/kcvideo/"+josnobj.hba020);
             $("#shtp").attr("src","upload/kcimg/"+josnobj.hba024);
             $("#t30").val(josnobj.hba030);
-
+            $('.selectpicker').selectpicker('refresh');
             $("#ftype").text("编辑");
         }else{
             $("#ftype").text("添加");
@@ -920,12 +938,27 @@
             $(element).parent("div").parent("div").find("label").addClass("col-12");
             // $(element).parent("div").parent("div").find("label").attr("style","margin-left:5px;");
         },
-        rules : {t2: { required : true, },t4: { required : true, },t5: { required : true, },t21: { required : true, },t22: { required : true, },},
+        rules : {t2: { required : true, },t1: { required : true, remote:{
+                    url: "kcname", //后台处理程序
+                    type: "post",  //数据发送方式
+                    async : false,
+                    dataType: "json",       //接受数据格式
+                    data:{
+                        "name":function(){
+                            return $("#t1").val().trim();
+                        },
+                        "id":function(){
+                            return $("#fid").val().trim();
+                        }//要传递的数据
+                    }
+                }},t4: { required : true, },t5: { required : true, },t21: { required : true, },t22: { required : true, },
+            t27: { required : true, },t28: { required : true, },t29: { required : true, },t30: { required : true, },},
         messages: {},
         submitHandler: function(form) {
             load_index = layer.load(1);
             var formData = new FormData();
             formData.append("fid",$("#fid").val().trim());
+            formData.append("t1",$("#t1").val());
             formData.append("t2",$("#t2").val());
             formData.append("t3",$("#t3").val());
             formData.append("t4",$("#t4").val());

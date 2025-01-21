@@ -307,13 +307,13 @@
         },
 
         messages: {
-            required: "This field is required.",
-            remote: "Please fix this field.",
+            required: "不能为空.",
+            remote: "已有相同.",
             email: "Please enter a valid email address.",
             url: "Please enter a valid URL.",
             date: "Please enter a valid date.",
             dateISO: "Please enter a valid date ( ISO ).",
-            number: "Please enter a valid number.",
+            number: "请输入有效数字.",
             digits: "Please enter only digits.",
             creditcard: "Please enter a valid credit card number.",
             equalTo: "Please enter the same value again.",

@@ -44,6 +44,8 @@ public class CdyheServiceImpl implements CdyheService {
         cdyheExample e1 = new cdyheExample();
         Criteria c = e1.createCriteria();
 //        if(pb.getOthersql()!=null) c.andYhe003Like("%"+pb.getOthersql()+"%");
+        if(pb.getOthersql5()!=null) c.andYhe003EqualTo(Integer.valueOf(pb.getOthersql5()));
+        if(pb.getOthersql6()!=null)  c.andYhe002EqualTo(Integer.valueOf(pb.getOthersql6()));
         e1.setOrderByClause("yhe001 desc");
         return queryByPage(pb,e1);
     }

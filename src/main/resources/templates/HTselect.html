@@ -86,7 +86,10 @@
                                     <th>已授课人次</th>
                                     <th>已预约场次</th>
                                     <th>上线日期</th>
+                                    <th:block th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">
                                     <th style="max-width:80px;">操作</th>
+                                    </th:block>
+
                                 </tr>
                                 </thead>
                                 <tbody id="tablebody">
@@ -101,16 +104,18 @@
                                     <td th:text="${item.smd012}"></td>
                                     <td th:text="${item.smd013}"></td>
                                     <td th:text="${#dates.format(item.smd008,'yyyy-MM-dd')}"></td>
+                                    <th:block th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">
                                     <td>
                                         <div class="btn-group btn-group-sm">
-                                            <th:block th:if="${session.umsg.jstype=='B'}">
+
                                             <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]])" class="btn btn-table"
                                                data-bs-toggle="modal" data-bs-target="#editmode">编辑</a>
                                             <div class="ivu-divider-vertical"></div>
-                                            </th:block>
+
                                             <!-- <a href="javascript:void(0);" th:onclick="del([[${item.smd001}]])" class="btn btn-table">删除</a>-->
                                         </div>
                                     </td>
+                                    </th:block>
                                 </tr>
                                 </tbody>
                             </table>
@@ -134,7 +139,7 @@
                 </div>
                 <form id="uploadForm" enctype="multipart/form-data">
                     <input type="hidden" id="fid" value=""/>
-                    <div class="modal-body" style="min-height:580px;">
+                   <!-- <div class="modal-body" style="min-height:580px;">
                         <div class="row col-auto" style="margin-top: 20px;">
                             <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">身份类别</label>
                             <div class="form-check">
@@ -153,11 +158,11 @@
                             </div>
                         </div>
                         <div class="row col-auto" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">机构名称/个人单位</label>
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;" id="x1">机构名称</label>
                             <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                <input type="text" class="form-control" id="t2" name="t2" placeholder="请输入机构名称/个人单位"/>
+                                <input type="text" class="form-control" id="t2" name="t2" placeholder="请输入机构名称"/>
                             </div>
-                        </div>
+                        </div>-->
                         <div class="row col-auto" style="margin-top: 20px;">
                             <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">年度场次限数</label>
                             <div class="col-10 col-sm-8 col-md-6 col-lg-4">
@@ -170,10 +175,10 @@
                                 <input type="number" class="form-control" id="t10" name="t10" placeholder="请输入年度人次限数"/>
                             </div>
                         </div>
-                        <div class="row col-auto" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">营业执照/身份证号</label>
+                       <!-- <div class="row col-auto" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;" id="x2">营业执照/身份证号</label>
                             <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                <input type="number" class="form-control" id="t4" name="t4" placeholder="请输入营业执照/身份证号"/>
+                                <input type="number" class="form-control" id="t4" name="t4" placeholder="请输入营业执照"/>
                             </div>
                         </div>
                         <div class="row col-auto" style="margin-top: 20px;">
@@ -183,18 +188,18 @@
                             </div>
                         </div>
                         <div class="row col-auto" style="margin-top: 20px;">
-                        <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">户名/银行卡号</label>
+                        <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;" id="x4">户名</label>
                         <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                            <input type="number" class="form-control" id="t6" name="t6" placeholder="请输入户名/银行卡号"/>
+                            <input type="number" class="form-control" id="t6" name="t6" placeholder="请输入户名"/>
                         </div>
                     </div>
                         <div class="row col-auto" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">账号/姓名</label>
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;" id="x3">账号</label>
                             <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                <input type="number" class="form-control" id="t7" name="t7" placeholder="请输入账号/姓名"/>
+                                <input type="number" class="form-control" id="t7" name="t7" placeholder="请输入账号"/>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="modal-footer" style="height:100px;">
                         <button type="submit" class="btn btn-primary" id="edit-four">保存</button>
                     </div>
@@ -260,6 +265,28 @@
 
     pdyes($("#pages").val(), $("#counts").val());
 
+    $("input[name='t3']").click(function(){
+        if($(this).val()=="A"){
+            $("#x1").html("机构");
+            $("#t2").attr("placeholder","请输入机构");
+            $("#x2").html("营业执照");
+            $("#t4").attr("placeholder","请输入营业执照");
+            $("#x3").html("账号");
+            $("#t7").attr("placeholder","请输入账号");
+            $("#x4").html("户名");
+            $("#t6").attr("placeholder","请输入户名");
+        }else{
+            $("#x1").html("个人名称");
+            $("#t2").attr("placeholder","请输入个人名称");
+            $("#x2").html("身份证号");
+            $("#t4").attr("placeholder","请输入身份证号");
+            $("#x3").html("姓名");
+            $("#t7").attr("placeholder","请输入姓名");
+            $("#x4").html("银行卡号");
+            $("#t6").attr("placeholder","请输入银行卡号");
+        }
+    });
+
     //翻页
     function usefanye(pageindex){
         var params = [
@@ -312,7 +339,7 @@
                 josnobj = jsStringTojsonString(obj);
             }
             $("#fid").val(josnobj.smd001);
-            $("input[name='t3']").each(function(){
+           /* $("input[name='t3']").each(function(){
                 if($(this).val()==josnobj.smd002){
                     $(this).prop("checked",true);
                 }else{
@@ -323,7 +350,7 @@
             $("#t4").val(josnobj.smd004);
             $("#t5").val(josnobj.smd005);
             $("#t6").val(josnobj.smd006);
-            $("#t7").val(josnobj.smd007);
+            $("#t7").val(josnobj.smd007);*/
             $("#t9").val(josnobj.smd009);
             $("#t10").val(josnobj.smd010);
             $("#ftype").text("编辑");
@@ -338,18 +365,18 @@
             $(element).parent("div").parent("div").find("label").addClass("col-12");
             // $(element).parent("div").parent("div").find("label").attr("style","margin-left:5px;");
         },
-        rules : {t2: { required : true, },t4: { required : true, },t5: { required : true, },},
+        rules : {},
         messages: {},
         submitHandler: function(form) {
             load_index = layer.load(1);
             var formData = new FormData();
             formData.append("fid",$("#fid").val().trim());
-            formData.append("t2",$("input[name='t3']:checked").val());
+          /*  formData.append("t2",$("input[name='t3']:checked").val());
             formData.append("t3",$("#t2").val());
             formData.append("t4",$("#t4").val());
             formData.append("t5",$("#t5").val());
             formData.append("t6",$("#t6").val());
-            formData.append("t7",$("#t7").val());
+            formData.append("t7",$("#t7").val());*/
             formData.append("t9",$("#t9").val());
             formData.append("t10",$("#t10").val());
             $.ajax({

@@ -61,10 +61,11 @@ public class CdhbaServiceImpl implements CdhbaService {
     }
 
     @Override
-    public cdhba selectByName(String name) {
+    public cdhba selectByName(String name, String code) {
         cdhbaExample e1 = new cdhbaExample();
         Criteria c = e1.createCriteria();
-        c.andHba002EqualTo(name);
+        if(name!=null)c.andHba002EqualTo(name);
+        if(code!=null)c.andHba035EqualTo(code);
         List<cdhba> list = hbaMapper.selectByExample(e1);
         return list.size()>0?list.get(0):null;
     }

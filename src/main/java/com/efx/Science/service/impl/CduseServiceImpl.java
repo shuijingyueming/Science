@@ -49,6 +49,7 @@ public class CduseServiceImpl implements CduseService {
     public PageBean selectPageBean(PageBean pb) {
         cduseExample e1 = new cduseExample();
         Criteria c = e1.createCriteria();
+        c.andUse002NotEqualTo("admin");
         if(pb.getOthersql()!=null) c.andUse002Like("%"+pb.getOthersql()+"%");
 //        if(pb.getOthersql6()!=null) c.andUse007Like("%"+pb.getOthersql6()+"%");
         if (pb.getOthersql1() != null) c.andUse009EqualTo(pb.getOthersql1());

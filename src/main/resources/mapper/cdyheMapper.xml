@@ -48,8 +48,8 @@
     <result column="YHE039" jdbcType="LONGVARCHAR" property="yhe039" />
   </resultMap>
   <resultMap id="BaseResultMap1" type="com.efx.Science.model.cdyheWithBLOBs"  extends="ResultMapWithBLOBs">
-    <association property="smd" column="YHE002" select="com.efx.Science.dao.cdsmdMapper.selectByPrimaryKey"/>
-    <association property="yhb" column="YHE003" select="com.efx.Science.dao.cdyhbMapper.selectByPrimaryKey"/>
+    <association property="yhb" column="YHE002" select="com.efx.Science.dao.cdyhbMapper.selectByPrimaryKey"/>
+    <association property="smd" column="YHE003" select="com.efx.Science.dao.cdsmdMapper.selectByPrimaryKey"/>
     <association property="hba" column="YHE004" select="com.efx.Science.dao.cdhbaMapper.selectByPrimaryKey"/>
     <association property="yhc" column="YHE005" select="com.efx.Science.dao.cdyhcMapper.selectByPrimaryKey"/>
   </resultMap>

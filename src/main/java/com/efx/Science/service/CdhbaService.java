@@ -23,7 +23,7 @@ public interface CdhbaService extends IService<cdhba> {
 
     cdhba insert(cdhba hba);
 
-    cdhba selectByName(String name);
+    cdhba selectByName(String name, String code);
 
     void delete(int id);
 
