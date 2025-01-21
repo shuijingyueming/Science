@@ -489,44 +489,33 @@
                     <input type="hidden" id="fid" value=""/>
                     <input type="hidden" id="fname" value=""/>
                     <div class="modal-body" style="min-height:580px;">
-                        <div class="row ">
-                        <div class="col-md-3">
-                            <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">老师</label>
-                            <div class="form-controls">
-                                <select id="z11" name="z11"  class="form-control selectpicker" data-live-search="true">
-                                    <option value=""></option>
-                                </select>
+                        <div class="row col-xl-6 col-md-9 col-sm-10 col-12">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">选择老师</label>
+                            <div class="col-xl-5 col-md-8 col-sm-8 col-12">
+                              <select id="z11" name="z11" class="form-control selectpicker col-xl-12 col-md-12 col-sm-12 col-12" data-live-search="true">
+                                <option value=""></option>
+                             </select>
                             </div>
                         </div>
-                            <div class="col-md-3">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">志愿者人数</label>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                    <input type="number" class="form-control" id="z7" name="z7" placeholder="请输入志愿者人数"/>
-                                </div>
+                        <div class="row col-xl-6 col-md-9 col-sm-10 col-12" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">志愿者人数</label>
+                            <div class="col-xl-5 col-md-8 col-sm-8 col-12">
+                              <input type="number" class="form-control col-xl-12 col-md-12 col-sm-12 col-12" id="z7" name="z7" placeholder="请输入志愿者人数"/>
                             </div>
                         </div>
-                        <div class="row ">
-                            <div class="col-md-3">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">授课结束日期</label>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                    <input type="date" class="form-control" id="z10" name="z10" placeholder="请输入授课结束日期"/>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">授课地点</label>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                    <input type="text" class="form-control" id="z1" name="z1" placeholder="请输入授课地点"/>
-                                </div>
+                        <div class="row col-xl-6 col-md-9 col-sm-10 col-12" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">授课地点</label>
+                            <div class="col-xl-5 col-md-8 col-sm-8 col-12">
+                              <input type="text" class="form-control col-xl-12 col-md-12 col-sm-12 col-12" id="z1" name="z1" placeholder="请输入授课地点"/>
                             </div>
                         </div>
-                        <div class="row ">
-                            <div class="col-md-3">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">实际服务人次</label>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                    <input type="text" class="form-control" id="z8" name="z8" placeholder="请输入实际服务人次"/>
-                                </div>
+                        <div class="row col-xl-6 col-md-9 col-sm-10 col-12" style="margin-top: 20px;">
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">结束日期</label>
+                            <div class="col-xl-5 col-md-8 col-sm-8 col-12">
+                               <input type="date" class="form-control col-xl-12 col-md-12 col-sm-12 col-12" id="z10" name="z10" placeholder="请输入授课结束日期"/>
                             </div>
                         </div>
+
                     </div>
                     <div class="modal-footer" style="height:100px;">
                         <button type="submit" class="btn btn-primary" id="edit-four">保存</button>
