@@ -225,16 +225,21 @@
                 <form id="uploadForm" enctype="multipart/form-data">
                     <input type="hidden" id="fid" value=""/>
                     <div class="modal-body" style="min-height:580px;">
-                        <div class="row col-auto" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">课程名称</label>
-                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                <input type="text" class="form-control" id="t2" name="t2" placeholder="请输入课程名称"/>
+                        <div class="row">
+                            <div class="row col-xl-3 col-md-4 col-sm-4 col-12">
+                                <label class="col-auto col-form-label" style="padding-right:10px;padding-left:10px;">课程分类</label>
+                                <div class="col-xl-8 col-md-8 col-sm-7">
+                                    <select id="t21" name="t21"  class="form-control selectpicker" data-live-search="true">
+                                        <option value="" selected>请选择</option>
+                                        <th:block th:each="item,stat:${hbblist}">
+                                            <option th:value="${item.hbb001}" >[[${item.hbb002}]]</option>
+                                        </th:block>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row col-auto" style="margin-top: 20px;">
-                            <div class="col-md-3" th:style="${session.umsg.jstype=='B'?'display: none':''}">
-                                <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">授课方</label>
-                                <div class="form-controls">
+                            <div class="row col-xl-4 col-md-6 col-sm-8 col-12" th:style="${session.umsg.jstype=='B'?'display:none;':''}">
+                                <label class="col-auto col-form-label" style="padding-right:10px;padding-left:10px;">授课方</label>
+                                <div class="col-xl-8 col-md-8 col-sm-10">
                                     <select id="t22" name="t22"  class="form-control selectpicker" data-live-search="true">
                                         <option value="" selected>请选择</option>
                                         <th:block th:each="item,stat:${smdlist}">
@@ -243,174 +248,184 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">课程分类</label>
-                                <div class="form-controls">
-                                    <select id="t21" name="t21"  class="form-control selectpicker" data-live-search="true">
-                                        <option value="" selected>请选择</option>
-                                        <th:block th:each="item,stat:${hbblist}">
-                                            <option th:value="${item.hbb001}" >[[${item.hbb002}]]</option>
-                                        </th:block>
-                                    </select>
-                                </div>
-
-                            </div>
                         </div>
-                        <div class="row col-auto" style="margin-top: 20px;">
-                            <div class="col-md-3">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">适合年龄段</label>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                        <div class="row" style="margin-top:20px;">
+                            <div class="row col-xl-4 col-md-6 col-sm-8 col-12">
+                                <label class="col-auto col-form-label" style="padding-right:10px;padding-left:10px;">课程名称</label>
+                                <div class="col-xl-8 col-md-8 col-sm-9">
+                                    <input type="text" class="form-control" id="t2" name="t2" placeholder="请输入课程名称"/>
+                                </div>
+                            </div>
+                            <div class="row col-xl-3 col-md-4 col-sm-4 col-12">
+                                <label class="col-auto col-form-label" style="padding-right:10px;padding-left:10px;">适合年龄</label>
+                                <div class="col-xl-8 col-md-8 col-sm-7">
                                     <input type="text" class="form-control" id="t3" name="t3" placeholder="请输入适合年龄段"/>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">课时总时长</label>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                        </div>
+                        <div class="row" style="margin-top:20px;">
+                            <div class="row col-xl-3 col-md-4 col-sm-6 col-12">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">课时时长</label>
+                                <div class="col-xl-8 col-md-7 col-sm-9">
                                     <input type="text" class="form-control" id="t4" name="t4" placeholder="请输入课时总时长"/>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="row col-xl-3 col-md-4 col-sm-6 col-12">
                                 <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">每次课时</label>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <div class="col-xl-8 col-md-7 col-sm-9">
                                     <input type="text" class="form-control" id="t5" name="t5" placeholder="请输入每次课时"/>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">上下限人数建议</label>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                    <textarea class="form-control" style="resize: none;" rows="3" id="t8" name="t8"></textarea>
+                            <div class="row col-xl-3 col-md-4 col-sm-6 col-12">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">人数上限</label>
+                                <div class="col-xl-8 col-md-7 col-sm-9">
+                                    <input type="text" class="form-control" id="t8" name="t8" />
                                 </div>
                             </div>
                         </div>
-                        <div class="row col-auto" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">是否需要亲子</label>
-                            <div class="form-check form-switch" style="display: flex;align-items: center;justify-content: left;">
-                                <div style="margin-top:5px;margin-left: -30px;">是</div>
-                                <input class="form-check-input" style="margin-left: 10px;" type="checkbox" role="switch" id="t7">
-                                <div style="margin-top:5px;margin-left: 10px;">否</div>
+                        <div class="row" style="margin-top:20px;">
+                            <div class="row col-xl-3 col-md-4 col-sm-5 col-12">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">需要亲子</label>
+                                <div class="form-check form-switch col-xl-6 col-md-5 col-sm-4 col-8" style="display: flex;align-items: center;justify-content: left;">
+                                    <div style="margin-top:3px;margin-left: -30px;">是</div>
+                                    <input class="form-check-input" style="margin-left: -10px;" type="checkbox" role="switch" id="t7">
+                                    <div style="margin-top:3px;margin-left: 40px;">否</div>
+                                </div>
+                            </div>
+                            <div class="row col-xl-5 col-md-8 col-sm-7 col-12">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">附加材料费</label>
+                                <div class="col-xl-8 col-md-7 col-sm-6 col-7">
+                                    <input type="number" class="form-control" id="t12" name="t12" placeholder="请输入附加材料费"/>
+                                </div>
                             </div>
                         </div>
-
-                        <div class="row col-auto" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">最佳人数建议</label>
-                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                <textarea class="form-control" style="resize: none;" rows="3" id="t9" name="t9"></textarea>
+                        <div class="row" style="margin-top:20px;">
+                            <div class="row col-xl-8 col-md-10 col-sm-11 col-12">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">附加费条件</label>
+                                <div class="col-xl-10 col-md-9 col-sm-9 col-12">
+                                    <textarea class="form-control" style="resize: none;" rows="3" id="t11" name="t11"></textarea>
+                                </div>
                             </div>
                         </div>
-                        <div class="row col-auto" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">场地要求</label>
-                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                <textarea class="form-control" style="resize: none;" rows="3" id="t10" name="t10"></textarea>
+                        <div class="row" style="margin-top:20px;">
+                            <div class="row col-xl-8 col-md-10 col-sm-11 col-12">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">人数建议</label>
+                                <div class="col-xl-10 col-md-9 col-sm-9 col-12">
+                                    <textarea class="form-control" style="resize: none;" rows="3" id="t9" name="t9"></textarea>
+                                </div>
                             </div>
                         </div>
-                        <div class="row col-auto" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">附加费产生条件</label>
-                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                <textarea class="form-control" style="resize: none;" rows="3" id="t11" name="t11"></textarea>
+                        <div class="row" style="margin-top:20px;">
+                            <div class="row col-xl-8 col-md-10 col-sm-11 col-12">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">场地要求</label>
+                                <div class="col-xl-10 col-md-9 col-sm-9 col-12">
+                                    <textarea class="form-control" style="resize: none;" rows="3" id="t10" name="t10"></textarea>
+                                </div>
                             </div>
                         </div>
-                        <div class="row col-auto" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">附加材料费</label>
-                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                <input type="number" class="form-control" id="t12" name="t12" placeholder="请输入附加材料费"/>
+                        <div class="row" style="margin-top:20px;">
+                            <div class="row col-xl-8 col-md-10 col-sm-11 col-12">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">送教地域限制</label>
+                                <div class="col-xl-10 col-md-9 col-sm-9 col-12">
+                                    <textarea class="form-control" style="resize: none;" rows="3" id="t15" name="t15"></textarea>
+                                </div>
                             </div>
                         </div>
-                        <div class="row col-auto" style="margin-top: 20px;">
-                            <div class="col-md-3">
+                        <div class="row" style="margin-top:20px;">
+                            <div class="row col-xl-3 col-md-5 col-sm-6 col-12">
                                 <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">志愿者人数</label>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <div class="col-xl-7 col-md-7 col-sm-7 col-12">
                                     <input type="number" class="form-control" id="t13" name="t13" placeholder="请输入志愿者人数"/>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">志愿者补贴金额</label>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                            <div class="row col-xl-3 col-md-5 col-sm-6 col-12">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">补贴金额</label>
+                                <div class="col-xl-8 col-md-7 col-sm-7 col-12">
                                     <input type="number" class="form-control" id="t6" name="t6" placeholder="请输入志愿者补贴金额"/>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                        </div>
+                        <div class="row" style="margin-top:20px;">
+                            <div class="row col-xl-8 col-md-10 col-sm-11 col-12">
                                 <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">对志愿者要求</label>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <div class="col-xl-10 col-md-8 col-sm-9 col-12">
                                     <textarea class="form-control" style="resize: none;" rows="3" id="t14" name="t14"></textarea>
                                 </div>
-
                             </div>
                         </div>
-                        <div class="row col-auto" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">送教地域限制</label>
-                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                <textarea class="form-control" style="resize: none;" rows="3" id="t15" name="t15"></textarea>
-                            </div>
-                        </div>
-                        <div class="row col-auto" style="margin-top: 20px;">
-                            <div class="col-md-3">
+                        <div class="row" style="margin-top:20px;">
+                            <div class="row col-xl-3 col-md-5 col-sm-6 col-12">
                                 <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">联系人名称</label>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                <div class="col-xl-7 col-md-5 col-sm-7 col-12">
                                     <input type="text" class="form-control" id="t16" name="t16" placeholder="请输入联系人名称"/>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">联系人手机号</label>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                            <div class="row col-xl-3 col-md-5 col-sm-6 col-12">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">联系手机号</label>
+                                <div class="col-xl-7 col-md-5 col-sm-7 col-12">
                                     <input type="text" class="form-control" id="t17" name="t17" placeholder="请输入联系人手机号"/>
                                 </div>
-
                             </div>
                         </div>
-                        <div class="row col-auto" style="margin-top: 20px;">
-                            <div class="col-md-3">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">课时费用10人以下</label>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                        <div class="row" style="margin-top:20px;">
+                            <div class="row col-xl-3 col-md-5 col-sm-6 col-12">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">10人以下费用</label>
+                                <div class="col-xl-7 col-md-5 col-sm-6 col-12">
                                     <input type="number" class="form-control" id="t27" name="t27" placeholder="请输入课时费用10人以下"/>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">课时费用11-20人</label>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                            <div class="row col-xl-3 col-md-5 col-sm-6 col-12">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">11-20人费用</label>
+                                <div class="col-xl-7 col-md-5 col-sm-6 col-12">
                                     <input type="number" class="form-control" id="t28" name="t28" placeholder="请输入课时费用11-20人"/>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">课时费用21-30人</label>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                        </div>
+                        <div class="row" style="margin-top:20px;">
+                            <div class="row col-xl-3 col-md-5 col-sm-6 col-12">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">21-30人费用</label>
+                                <div class="col-xl-7 col-md-5 col-sm-6 col-12">
                                     <input type="number" class="form-control" id="t29" name="t29" placeholder="请输入课时费用21-30人"/>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">课时费用31-45人</label>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                            <div class="row col-xl-3 col-md-5 col-sm-6 col-12">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">31-45人费用</label>
+                                <div class="col-xl-7 col-md-5 col-sm-6 col-12">
                                     <input type="number" class="form-control" id="t30" name="t30" placeholder="请输入课时费用31-45人"/>
                                 </div>
                             </div>
                         </div>
-                        <div class="row col-auto" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">课程内容描述</label>
-                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                <textarea class="form-control" style="resize: none;width:350px;height:500px;" rows="3" id="t19" name="t19"></textarea>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="mb-3 col-md-12">
+                        <div class="row" style="margin-top:20px;">
+                            <div class="row col-xl-4 col-md-6 col-sm-12 col-12">
                                 <input id="tt24" name="tt24" type="hidden">
-                                <label for="t24" class="form-label">封面上传</label>
-                                <input class="form-control" type="file" id="t24" onchange="showpdtpgs()">
-                                <img alt="..." src="" id="shtp" onclick="$('#t24').click()"
-                                     class="form-control"
-                                     style="width:260px;height: 260px;border:1px solid rgb(229, 229, 229);"/>
+                                <label for="t24" class="col-auto form-label">封面上传</label>
+                                <div class="col-xl-8 col-md-8 col-sm-6 col-6">
+                                  <input class="form-control" type="file" id="t24" onchange="showpdtpgs()">
+                                  <img src="" id="shtp" onclick="$('#t24').click()" class="form-control"
+                                     style="width:100%;border:1px solid rgb(229, 229, 229);"/>
+                                </div>
                             </div>
-                        </div>
-                        <div class="mb-3 col-md-12 position-relative" id="upvadiofile" style="margin-top: 20px;padding-left: 8px;">
-                            <div class="form-check form-check-inline" style="padding-left: 10px;">
-                                <button type="button" class="btn btn-primary" onclick="uploadvadio()">上传视频</button>
-                            </div>
-                            <div class="col-10 col-sm-8 col-md-6 col-lg-5 form-check form-check-inline typerow_p" style="padding-left: 10px;">
-                                <figure style="max-height: 400px;min-height: 300px;height:100%;width:100%;display: flex;">
+                            <div class="row col-xl-4 col-md-6 col-sm-12 col-12">
+                                <label for="t20" class="col-auto form-label">视频上传</label>
+                                <div class="col-xl-8 col-md-8 col-sm-6 col-6">
+                                  <button type="button" class="btn btn-primary" onclick="uploadvadio()">上传视频</button>
+                                    <div class="col-12 small" style="color:#0096FF;">视频不超过100M，视频格式mp4</div>
+                                  <figure style="width:100%;display: flex;">
                                     <input id="tt20" name="tt20" type="hidden">
                                     <input type="file" id="t20" accept="video/*" style="display:none;">
                                     <video class="form-vadio" id="upfilevadio" src="" controls/>
-                                </figure>
+                                  </figure>
+                                </div>
                             </div>
-                            <div class="col-11 small" style="margin-left:10px;color:#0096FF;">视频不超过100M，视频格式mp4</div>
+                        </div>
+                        <div class="row" style="margin-top:20px;">
+                            <div class="row col-xl-7 col-md-6 col-sm-12 col-12">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">课程内容描述</label>
+                                <div class="col-xl-8 col-md-7 col-sm-8 col-12">
+                                    <textarea class="form-control" style="resize: none;width:430px;min-height:500px;height: 500px;" id="t19" name="t19"></textarea>
+                                    <div class="position-relative" id="upvadiofile" style="margin-top: 20px;padding-left: 8px;"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer" style="height:100px;">
