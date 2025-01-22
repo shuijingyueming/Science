@@ -124,13 +124,26 @@
                     <h6 class="modal-title" id="xqmodeLabel">查看详情</h6>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <div>
+                    <div class="modal-body" style="min-height:580px;">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- 详情模态框 -->
+    <div class="modal fade" id="xqmode1" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="xqmodeLabel1">查看详情</h6>
+                    <a class="btn-close"  data-bs-toggle="modal" data-bs-target="#xqmode"/a>
+
+                </div>
                 <div style="position: relative;">
                     <img src="../images/phonebk1.png" style="width:340px;height:696px;position: absolute;left:0;top:0;"/>
-                   <div class="modal-body" style="width:292px;height:504px;position: absolute;left:24px;top:96px;"></div>
-                </div>
-                <div class="modal-footer" style="height:100px;">
-                    <button type="button" class="btn btn-primary" id="shtg">通过</button>
-                    <button type="button" class="btn btn-primary" id="shbh">驳回</button>
+                    <div class="modal-body" style="width:292px;height:504px;position: absolute;left:24px;top:96px;"></div>
                 </div>
             </div>
         </div>
@@ -284,9 +297,10 @@
         html+= '</div></div></div>';
         html+= '<div class="row"><div class="col-md-5">';
         html+= '<div class="form-group"><label class="layui-form-label">信息内容：</label>';
-        html+= '<span class="jspan">'+html1+'</span>';
+        html+= '<span class="jspan"><a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#xqmode1">查看详情</a></span>';
         html+= '</div></div></div>';
         $("#xqmode").find(".modal-body").append(html);
+        $("#xqmode1").find(".modal-body").html(html1);
     }
 
     //翻页

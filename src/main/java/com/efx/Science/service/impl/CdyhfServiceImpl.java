@@ -75,8 +75,12 @@ public class CdyhfServiceImpl implements CdyhfService {
     }
 
     @Override
-    public List<cdyhf> getAll() {
-        return yhfMapper.selectByExample(null);
+    public List<cdyhf> getAll(String fid, String type) {
+        cdyhfExample e1 = new cdyhfExample();
+        Criteria c = e1.createCriteria();
+        if(fid!=null&&!fid.isEmpty())c.andYhf002EqualTo(Integer.valueOf(fid));
+        if(type!=null&&!type.isEmpty())c.andYhf003EqualTo(type);
+        return yhfMapper.selectByExample(e1);
     }
 
 

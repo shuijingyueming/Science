@@ -14,6 +14,8 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +34,8 @@ public class CdyheServiceImpl implements CdyheService {
 
     @Autowired
     private cdyheMapper yheMapper;
+
+    private SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 
     @Override
@@ -93,6 +97,86 @@ public class CdyheServiceImpl implements CdyheService {
         c.andSql("(DATE_FORMAT(yhe020,'%Y-%m-%d')=DATE_FORMAT(CURDATE(),'%Y-%m-%d'))");
         yheMapper.updateByExampleSelective(yhe,e1);
     }
+
+    @Override
+    public Integer countByfwcc(Integer jgid, Integer xkid, String start, String end) throws ParseException {
+        cdyheExample e1 = new cdyheExample();
+        Criteria c = e1.createCriteria();
+        if(xkid!=null)c.andYhe002EqualTo(xkid);
+        if(jgid!=null)c.andYhe003EqualTo(jgid);
+        if(start!=null)c.andYhe008GreaterThanOrEqualTo(sdf.parse(start+" 00:00:00"));
+        if(end!=null)c.andYhe008LessThanOrEqualTo(sdf.parse(end+" 23:59:59"));
+        c.andSql("(yhe007='E' or yhe007='F')");
+        return Math.toIntExact(yheMapper.countByExample(e1));
+    }
+
+    @Override
+    public Integer countByfwrc(Integer jgid, String start, String end) throws ParseException {
+        cdyheExample e1 = new cdyheExample();
+        Criteria c = e1.createCriteria();
+        c.andYhe003EqualTo(jgid);
+        if(start!=null)c.andYhe008GreaterThanOrEqualTo(sdf.parse(start+" 00:00:00"));
+        if(end!=null)c.andYhe008LessThanOrEqualTo(sdf.parse(end+" 23:59:59"));
+        c.andSql("(yhe007='E' or yhe007='F')");
+        return yheMapper.countByExamplefwrc(e1);
+    }
+
+    @Override
+    public Float countByjtbt(Integer jgid, String start, String end) throws ParseException {
+        cdyheExample e1 = new cdyheExample();
+        Criteria c = e1.createCriteria();
+        c.andYhe003EqualTo(jgid);
+        if(start!=null)c.andYhe008GreaterThanOrEqualTo(sdf.parse(start+" 00:00:00"));
+        if(end!=null)c.andYhe008LessThanOrEqualTo(sdf.parse(end+" 23:59:59"));
+        c.andSql("(yhe007='E' or yhe007='F')");
+        return yheMapper.countByExamplejtbt(e1);
+    }
+
+    @Override
+    public Float countBykcje(Integer jgid, String start, String end) throws ParseException {
+        cdyheExample e1 = new cdyheExample();
+        Criteria c = e1.createCriteria();
+        c.andYhe003EqualTo(jgid);
+        if(start!=null)c.andYhe008GreaterThanOrEqualTo(sdf.parse(start+" 00:00:00"));
+        if(end!=null)c.andYhe008LessThanOrEqualTo(sdf.parse(end+" 23:59:59"));
+        c.andSql("(yhe007='E' or yhe007='F')");
+        return yheMapper.countByExamplekcje(e1);
+    }
+
+    @Override
+    public Integer countByfwrwpj(Integer jgid, Integer xkid, String start, String end, String type) throws ParseException {
+        cdyheExample e1 = new cdyheExample();
+        Criteria c = e1.createCriteria();
+        if(xkid!=null){
+            c.andYhe002EqualTo(xkid);
+            c.andYhe038EqualTo(type);
+        }
+        if(jgid!=null){
+            c.andYhe003EqualTo(jgid);
+            c.andYhe028EqualTo(type);
+        }
+        if(start!=null)c.andYhe008GreaterThanOrEqualTo(sdf.parse(start+" 00:00:00"));
+        if(end!=null)c.andYhe008LessThanOrEqualTo(sdf.parse(end+" 23:59:59"));
+
+        c.andSql("(yhe007='E' or yhe007='F')");
+        return Math.toIntExact(yheMapper.countByExample(e1));
+    }
+
+    @Override
+    public PageBean selectPageBean1(PageBean pb) throws ParseException {
+        cdyheExample e1 = new cdyheExample();
+        Criteria c = e1.createCriteria();
+//        if(pb.getOthersql()!=null) c.andYhe003Like("%"+pb.getOthersql()+"%");
+        if(pb.getOthersql1()!=null)c.andYhe008GreaterThanOrEqualTo(sdf.parse(pb.getOthersql1()+" 00:00:00"));
+        if(pb.getOthersql2()!=null)c.andYhe008LessThanOrEqualTo(sdf.parse(pb.getOthersql2()+" 23:59:59"));
+        if(pb.getOthersql5()!=null) c.andYhe003EqualTo(Integer.valueOf(pb.getOthersql5()));
+        if(pb.getOthersql6()!=null)  c.andYhe002EqualTo(Integer.valueOf(pb.getOthersql6()));
+        if(pb.getOthersql()!=null)c.andSql("(yhe007='E' or yhe007='F')");
+        e1.setOrderByClause("yhe001 desc");
+        return queryByPage(pb,e1);
+    }
+
+
 
 
     public PageBean queryByPage(PageBean pageBean, cdyheExample example) {

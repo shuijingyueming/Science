@@ -3,6 +3,81 @@ package com.efx.Science.model;
 import java.util.Date;
 
 public class cdsmd {
+
+    private Integer fwpjA;
+    private Integer fwpjB;
+    private Integer fwpjC;
+    private Integer fwpjD;
+
+    public Integer getFwpjA() {
+        return fwpjA;
+    }
+
+    public void setFwpjA(Integer fwpjA) {
+        this.fwpjA = fwpjA;
+    }
+
+    public Integer getFwpjB() {
+        return fwpjB;
+    }
+
+    public void setFwpjB(Integer fwpjB) {
+        this.fwpjB = fwpjB;
+    }
+
+    public Integer getFwpjC() {
+        return fwpjC;
+    }
+
+    public void setFwpjC(Integer fwpjC) {
+        this.fwpjC = fwpjC;
+    }
+
+    public Integer getFwpjD() {
+        return fwpjD;
+    }
+
+    public void setFwpjD(Integer fwpjD) {
+        this.fwpjD = fwpjD;
+    }
+
+    private Integer fwcc;
+    private Integer fwrc;
+    private Float jtbt;
+    private Float kcje;
+
+    public Integer getFwcc() {
+        return fwcc;
+    }
+
+    public void setFwcc(Integer fwcc) {
+        this.fwcc = fwcc;
+    }
+
+    public Integer getFwrc() {
+        return fwrc;
+    }
+
+    public void setFwrc(Integer fwrc) {
+        this.fwrc = fwrc;
+    }
+
+    public Float getJtbt() {
+        return jtbt;
+    }
+
+    public void setJtbt(Float jtbt) {
+        this.jtbt = jtbt;
+    }
+
+    public Float getKcje() {
+        return kcje;
+    }
+
+    public void setKcje(Float kcje) {
+        this.kcje = kcje;
+    }
+
     private Integer smd001;
 
     private String smd002;

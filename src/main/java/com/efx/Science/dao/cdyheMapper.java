@@ -37,4 +37,10 @@ public interface cdyheMapper {
     int updateByPrimaryKey(cdyhe record);
 
     List<cdyheWithBLOBs> selectByExampleAndPage(cdyheExample example, RowBounds rowBounds);
+
+    Integer countByExamplefwrc(cdyheExample e1);
+
+    Float countByExamplejtbt(cdyheExample e1);
+
+    Float countByExamplekcje(cdyheExample e1);
 }

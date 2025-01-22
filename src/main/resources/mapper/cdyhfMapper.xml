@@ -10,6 +10,7 @@
     <result column="YHF006" jdbcType="VARCHAR" property="yhf006" />
     <result column="YHF007" jdbcType="INTEGER" property="yhf007" />
     <result column="YHF008" jdbcType="TIMESTAMP" property="yhf008" />
+    <association property="use" column="YHF007" select="com.efx.Science.dao.cduseMapper.selectByPrimaryKey"/>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>

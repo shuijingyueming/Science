@@ -3,6 +3,17 @@ package com.efx.Science.model;
 import java.util.Date;
 
 public class cdyhf {
+
+    private cduse use;
+
+    public cduse getUse() {
+        return use;
+    }
+
+    public void setUse(cduse use) {
+        this.use = use;
+    }
+
     private String yhf001;
 
     private Integer yhf002;

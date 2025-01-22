@@ -1818,19 +1818,19 @@ public class HTinfoController extends BaseController {
         //修改
         item.setYhe009(request.getParameter("z1"));
         if(!request.getParameter("z7").isEmpty())item.setYhe015(Integer.valueOf(request.getParameter("z7")));
-        if(!request.getParameter("z8").isEmpty())item.setYhe016(Integer.valueOf(request.getParameter("z8")));
+//        if(!request.getParameter("z8").isEmpty())item.setYhe016(Integer.valueOf(request.getParameter("z8")));
         if(!request.getParameter("z10").isEmpty())item.setYhe020(DATE.parse(request.getParameter("z10")));
         if(!request.getParameter("z11").isEmpty())item.setYhe005(Integer.valueOf(request.getParameter("z11")));
         cdyheWithBLOBs item1 =yheService.getByid(Integer.valueOf(request.getParameter("fid")));
         item.setYhe012(item1.getYhb().getYhb017()!=null?item1.getYhb().getYhb017():(item1.getYhb().getYha().getYha005()!=null?item1.getYhb().getYha().getYha005():null));
         item.setYhe013(item1.getHba().getHba012());
         item.setYhe014(item1.getHba().getHba006()*item.getYhe015());
-        item.setYhe018(item.getYhe016()<10?item1.getHba().getHba027():
+        /*item.setYhe018(item.getYhe016()<10?item1.getHba().getHba027():
                       (item.getYhe016()<20?item1.getHba().getHba027()+item1.getHba().getHba028()*(item.getYhe016()-10):
                       (item.getYhe016()<30?item1.getHba().getHba027()+item1.getHba().getHba028()*10+item1.getHba().getHba029()*(item.getYhe016()-20):
                       (item.getYhe016()<45?item1.getHba().getHba027()+item1.getHba().getHba028()*10+item1.getHba().getHba029()*10+item1.getHba().getHba030()*(item.getYhe016()-30):
                                            item1.getHba().getHba027()+item1.getHba().getHba028()*10+item1.getHba().getHba029()*10+item1.getHba().getHba030()*15))));
-
+*/
         String log = "修改了名字为：【" + request.getParameter("t1") + "】的课程预约信息";
         item.setYhe001(Integer.valueOf(request.getParameter("fid")));
         addLog(getUse(request).getUse002(),log);
@@ -1964,6 +1964,13 @@ public class HTinfoController extends BaseController {
             item.setYhe037(request.getParameter("p14"));
             item.setYhe038(request.getParameter("p15"));
             item.setYhe039(request.getParameter("p16"));
+            item.setYhe016(Integer.valueOf(request.getParameter("p17")));
+            cdyheWithBLOBs item1 =yheService.getByid(Integer.valueOf(request.getParameter("fid")));
+            item.setYhe018(item.getYhe016()<10?item1.getHba().getHba027():
+                          (item.getYhe016()<20?item1.getHba().getHba027()+item1.getHba().getHba028()*(item.getYhe016()-10):
+                          (item.getYhe016()<30?item1.getHba().getHba027()+item1.getHba().getHba028()*10+item1.getHba().getHba029()*(item.getYhe016()-20):
+                          (item.getYhe016()<45?item1.getHba().getHba027()+item1.getHba().getHba028()*10+item1.getHba().getHba029()*10+item1.getHba().getHba030()*(item.getYhe016()-30):
+                                               item1.getHba().getHba027()+item1.getHba().getHba028()*10+item1.getHba().getHba029()*10+item1.getHba().getHba030()*15))));
 
         }
         String log = "修改了名字为：【" + request.getParameter("t1") + "】的课程预约信息";

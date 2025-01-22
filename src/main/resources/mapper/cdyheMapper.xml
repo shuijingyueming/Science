@@ -916,4 +916,22 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="countByExamplefwrc" parameterType="com.efx.Science.model.cdyheExample" resultType="java.lang.Integer">
+    select sum(yhe016) from cdyhe
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="countByExamplejtbt" parameterType="com.efx.Science.model.cdyheExample" resultType="java.lang.Float">
+    select sum(yhe012) from cdyhe
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="countByExamplekcje" parameterType="com.efx.Science.model.cdyheExample" resultType="java.lang.Float">
+    select sum(yhe018) from cdyhe
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
 </mapper>

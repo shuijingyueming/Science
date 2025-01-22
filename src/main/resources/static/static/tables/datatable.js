@@ -200,4 +200,54 @@ $(document).ready(function () {
             "targets": [0]
         }]
     });
+
+    $('#tjskexm').DataTable({
+        "searching": true,
+        "info": false,
+        "paging": false,
+        dom: 'Bfrtip',
+        buttons: [],
+        "columnDefs": [{
+            "orderable": false,
+            "targets": [0]
+        }]
+    });
+
+    $('#tjpjskexm').DataTable({
+        "searching": true,
+        "info": false,
+        "paging": false,
+        dom: 'Bfrtip',
+        buttons: [],
+        "columnDefs": [{
+            "orderable": false,
+            "targets": [0]
+        }]
+    });
+
+    $('#tjpjxkexm').DataTable({
+        "searching": true,
+        "info": false,
+        "paging": false,
+        dom: 'Bfrtip',
+        buttons: [],
+        "columnDefs": [{
+            "orderable": false,
+            "targets": [0]
+        }]
+    });
+
+    $('#tjselectionexm').DataTable({
+        "searching": true,
+        "info": false,
+        "paging": false,
+        dom: 'Bfrtip',
+        buttons: [
+            $("#fhlx").val()=="SK"?{text: '返回', action: function (e, dt, node, config) {tosk();}}:undefined,
+        ],
+        "columnDefs": [{
+            "orderable": false,
+            "targets": [0]
+        }]
+    });
 })

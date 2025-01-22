@@ -5,6 +5,8 @@ import com.efx.Science.model.PageBean;
 import com.efx.Science.model.cdyhe;
 import com.efx.Science.model.cdyheWithBLOBs;
 
+import java.text.ParseException;
+
 /**
  * <p>
  * 服务类
@@ -29,4 +31,16 @@ public interface CdyheService extends IService<cdyhe> {
     Integer countBylsid(int fid);
 
     void updatebytime();
+
+    Integer countByfwcc(Integer jgid, Integer xkid, String start, String end) throws ParseException;
+
+    Integer countByfwrc(Integer jgid, String start, String end) throws ParseException;
+
+    Float countByjtbt(Integer jgid, String start, String end) throws ParseException;
+
+    Float countBykcje(Integer jgid, String start, String end) throws ParseException;
+
+    PageBean selectPageBean1(PageBean pb) throws ParseException;
+
+    Integer countByfwrwpj(Integer jgid, Integer xkid, String start, String end, String type) throws ParseException;
 }

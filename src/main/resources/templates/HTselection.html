@@ -280,7 +280,7 @@
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input  class="form-check-input" id="r52" name="p5" value="B" type="radio">
-                                    <label for="r52" class="form-check-label">个人</label>
+                                    <label for="r52" class="form-check-label">一般</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input  class="form-check-input" id="r53" name="p5" value="C" type="radio">
@@ -353,6 +353,14 @@
                         </div>
                         </th:block>
                         <th:block th:if="${session.umsg.jstype=='B'}">
+                            <div class="row ">
+                                <div class="col-md-3">
+                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">实际服务人次议</label>
+                                    <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                        <input type="number" class="form-control col-xl-12 col-md-12 col-sm-12 col-12" id="p17" name="p17" placeholder="请输入实际服务人次议"/>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row col-auto" style="margin-top: 20px;">
                                 <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">实际与预计人数差别</label>
                                 <div class="form-check">
@@ -1260,7 +1268,7 @@
             $("#tname").val(name);
             $("#fid").val(josnobj.yhe001);
             $.ajax({
-                url:'getallcoursels?fd='+josnobj.yhe001,
+                url:'getallcoursels?fid='+josnobj.yhe001,
                 type:'post',
                 async: false,
                 cache: false,
@@ -1283,7 +1291,7 @@
             $("#z1").val(josnobj.yhe009);
             $("#z3").val(josnobj.yhe011);
             $("#z7").val(josnobj.yhe015);
-            $("#z8").val(josnobj.yhe016);
+            // $("#z8").val(josnobj.yhe016);
             $("#z10").val(getTime(josnobj.yhe020,'YY/MM/DD'));
             $("#ftype").text("编辑");
         }else{
@@ -1307,7 +1315,7 @@
             formData.append("z1",$("#z1").val());
             formData.append("z3",$("#z3").val());
             formData.append("z7",$("#z7").val());
-            formData.append("z8",$("#z8").val());
+            // formData.append("z8",$("#z8").val());
             formData.append("z10",$("#z10").val());
             formData.append("z11",$("#z11").val());
             formData.append("t1",$("#tname").val());
@@ -1444,6 +1452,7 @@
                     }
                 });
                 $("#p16").val(josnobj.yhe039)
+                $("#p17").val(josnobj.yhe016)
             }
             $("#ftype2").text("编辑");
         }else{
@@ -1458,7 +1467,7 @@
             $(element).parent("div").parent("div").find("label").addClass("col-12");
             // $(element).parent("div").parent("div").find("label").attr("style","margin-left:5px;");
         },
-        rules : {t2: { required : true, },t4: { required : true, },t5: { required : true, },},
+        rules : {p17: { required : $("#lx").val()=="B", },},
         messages: {},
         submitHandler: function(form) {
             load_index = layer.load(1);
@@ -1480,6 +1489,7 @@
             formData.append("p14",$("input[name='p14']:checked").val());
             formData.append("p15",$("input[name='p15']:checked").val());
             formData.append("p16",$("#p16").val());
+            formData.append("p17",$("#p17").val());
             formData.append("t1",$("#tname").val());
             formData.append("lx",$("#lx").val());
             $.ajax({

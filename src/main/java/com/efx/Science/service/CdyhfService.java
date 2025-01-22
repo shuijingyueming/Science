@@ -27,5 +27,5 @@ public interface CdyhfService extends IService<cdyhf> {
 
     void delete(String id);
 
-    List<cdyhf> getAll();
+    List<cdyhf> getAll(String fid, String type);
 }

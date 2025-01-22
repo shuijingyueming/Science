@@ -1,0 +1,367 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <base th:href="${#request.getContextPath()}+'/'">
+    <title>后台管理系统</title>
+    <meta http-equiv="pragma" content="no-cache"/>
+    <meta http-equiv="cache-control" content="no-cache"/>
+    <meta http-equiv="expires" content="0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, yher-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <!--表格css-->
+    <link rel="stylesheet" href="css/tables/datatables.min.css">
+    <link rel="stylesheet" href="css/tables/datatables-http.min.css">
+    <link rel="stylesheet" href="css/tables/jsgrid/jsgrid.css">
+    <link rel="stylesheet" href="css/tables/jsgrid/theme.css">
+    <link rel="stylesheet" href="css/tables/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="css/tables/jsgrid/demos.css">
+    <link rel="stylesheet" href="css/tables/jsgrid/jsgridui.css">
+
+    <link rel="stylesheet" type="text/css" href="css/materialdesignicons.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="js/bootstrap-multitabs/multitabs.min.css">
+    <link type="text/css" rel="stylesheet" href="js/jquery-tagsinput/jquery.tagsinput.min.css">
+    <link type="text/css" rel="stylesheet" href="js/webuploader/webuploader.css">
+    <link type="text/css" rel="stylesheet" href="js/magnific-popup/magnific-popup.min.css">
+    <link rel="stylesheet" type="text/css" href="css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.min.css">
+
+    <link rel="stylesheet" type="text/css" href="js/bootstrap-select/bootstrap-select.min.css">
+    <!--日程插件-->
+    <link rel="stylesheet" type="text/css" href="js/fullcalendar/core/main.min.css">
+    <link rel="stylesheet" type="text/css" href='js/fullcalendar/daygrid/main.min.css' />
+    <link rel="stylesheet" type="text/css" href='js/fullcalendar/timegrid/main.min.css' />
+    <link rel="stylesheet" type="text/css" href='js/fullcalendar/list/main.min.css' />
+    <!--时间选择器css-->
+    <link rel="stylesheet" type="text/css" href="js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+    <!--日期选择器css-->
+    <link rel="stylesheet" type="text/css" href="js/bootstrap-datepicker/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" type="text/css" href="css/page.css">
+
+    <style>
+        td.fc-day.fc-past {
+            background-color: #FaFaFa;
+        }
+        .small-f1{
+            font-size: 12px;
+            color:#6a6a6a;
+        }
+        .fadeMask{
+            width:100%;
+            height:100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background-color: #0a0a0a48;
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-search mb-2-5">
+                        <form class="search-form" method="post" role="form" action="toHt/toselection">
+                            <input type="hidden" id="name" name="name" th:value="${name}"/>
+                            <input type="hidden" id="pages" name="pages" th:value="${pages}"/>
+                            <input type="hidden" id="fhlx" name="fhlx" th:value="${pageobj.othersql}"/>
+                            <input type="hidden" id="pages1" name="pages1" th:value="${pageobj.currentPage}"/>
+                            <input type="hidden" id="counts" name="counts" th:value="${pageobj.pageCount}"/>
+                            <input type="hidden" id="jstype" name="jstype" th:value="${session.umsg.jstype}"/>
+                            <input type="hidden" id="skid" name="skid" th:value="${pageobj.othersql5}"/>
+                            <input type="hidden" id="xkid" name="xkid" th:value="${pageobj.othersql6}"/>
+                            <input type="hidden" id="start" name="start" th:value="${pageobj.othersql1}"/>
+                            <input type="hidden" id="end" name="end" th:value="${pageobj.othersql2}"/>
+                            <!--text input-->
+                           <!-- <div class="row g-3">
+
+                                <div class="col-auto" th:style="${session.umsg.jstype=='C'?'display: none':''}">
+                                    <div class="row">
+                                        <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">选课方名称</label>
+                                        <div class="col-auto">
+                                            <select id="xkid" name="xkid"  class="form-control selectpicker" data-live-search="true">
+                                                <option value="" selected>请选择</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                &lt;!&ndash;button&ndash;&gt;
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-primary me-1">搜索</button>
+                                </div>
+                            </div>-->
+                        </form>
+                    </div>
+                    <div id="wrapp" >
+                        <div class="jsgrid table-responsive" data-parent="#accordion">
+                            <input type="file" id="file" name="file" style="display: none" onchange="daoru(this)"/>
+                            <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%;" id="tjselectionexm" >
+                                <thead>
+                                <tr>
+                                    <th style="max-width:30px;">序号</th>
+                                    <th>选课方名称</th>
+                                    <th>授课方名称</th>
+                                    <th>课程名称</th>
+                                    <th>服务人次</th>
+                                    <th>课程金额</th>
+                                    <th>交通补贴金额</th>
+                                    <th>服务地点</th>
+                                    <th>服务时间</th>
+                                    <th>服务结束日期</th>
+                                    <th>状态</th>
+                                    <th style="max-width:80px;">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tablebody">
+                                <tr th:each="item,stat:${pageobj.resultList}">
+                                    <td th:text="${stat.index+1}"></td>
+                                    <td th:text="${item.yhb!=null?item.yhb.yhb004:''}"></td>
+                                    <td th:text="${item.smd!=null?item.smd.smd003:''}"></td>
+                                    <td th:text="${item.hba.hba002}"></td>
+                                    <td th:text="${item.yhe016}"></td>
+                                    <td th:text="${item.yhe018}"></td>
+                                    <td th:text="${item.yhe012}"></td>
+                                    <td th:text="${item.yhe009}"></td>
+                                    <td th:text="${#dates.format(item.yhe008,'yyyy-MM-dd')}"></td>
+                                    <td th:text="${#dates.format(item.yhe020,'yyyy-MM-dd')}"></td>
+                                    <td th:style="${item.yhe007=='A'?'color:#A46BFF':(item.yhe007=='B'?'color:#FFAA00;':(item.yhe007=='C'?'color:#6ABF47;':(item.yhe007=='D'?'color:#787878;':(item.yhe007=='E'?'color:#36AFF5;':'color:#5776F2;'))))}"
+                                            th:text="${item.yhe007=='A'?'预约待确认':(item.yhe007=='B'?'预约退回':(item.yhe007=='C'?'已接受预约':(item.yhe007=='D'?'取消预约':(item.yhe007=='E'?'完结已传':'完结未传'))))}"></td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                                <a href="javascript:void(0);" th:onclick="toxq([[${item.toString()}]],[[${item.hba.toString()}]])" class="btn btn-table" data-bs-toggle="modal" data-bs-target="#xqmode">详情</a>
+                                                <div class="ivu-divider-vertical"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <ul class="pagination">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 详情模态框 -->
+    <div class="modal fade" id="xqmode" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="xqmodeLabel">查看详情</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div>
+                    <div class="modal-body" style="min-height:580px;">
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/popper.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<!-- 数字动态滚动增加效果 -->
+<script type="text/javascript" src="js/scroll-numbers.js"></script>
+<!--引入chart插件js-->
+<script type="text/javascript" src="js/main.min.js"></script>
+<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-multitabs/multitabs.min.js"></script>
+<script type="text/javascript" src="js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="js/index.min.js"></script>
+<!--tags插件-->
+<script type="text/javascript" src="js/jquery-tagsinput/jquery.tagsinput.min.js"></script>
+<!--上传插件-->
+<script type="text/javascript" src="js/webuploader/webuploader.js"></script>
+<!--灯箱效果插件-->
+<script type="text/javascript" src="js/magnific-popup/magnific-popup.min.js"></script>
+<!--通知消息插件-->
+<script type="text/javascript" src="js/bootstrap-notify.min.js"></script>
+<!--引入标签插件js-->
+<script type="text/javascript" src="js/jquery-confirm/jquery-confirm.min.js"></script>
+<script type="text/javascript" src="js/main.min.js"></script>
+<!--引入下拉插件js-->
+<script type="text/javascript" src="js/bootstrap-select/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-select/i18n/defaults-zh_CN.min.js"></script>
+<script type="text/javascript" src="js/layer/layer.js"></script>
+<script type="text/javascript" src="js/layui/layui.js"></script>
+<!-- 表格JS -->
+<script type="text/javascript" src="static/tables/datatables.min.js"></script>
+<script type="text/javascript" src="static/tables/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="static/tables/jszip.min.js"></script>
+<script type="text/javascript" src="static/tables/pdfmake.min.js"></script>
+<script type="text/javascript" src="static/tables/vfs_fonts.js"></script>
+<script type="text/javascript" src="static/tables/buttons.html5.min.js"></script>
+<script type="text/javascript" src="static/tables/buttons.print.min.js"></script>
+<script type="text/javascript" src="static/tables/datatable.js"></script>
+<!-- 翻页-->
+<script type="text/javascript" src="pagejs/htfy.js"></script>
+<!-- validate JS 验证-->
+<script type="text/javascript" src="assets/jquery-validate/jquery.validate.js"></script>
+<script type="text/javascript" src="assets/jquery-validate/validate-methods.js"></script>
+
+<!--日期选择器js-->
+<script type="text/javascript" src="js/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js"></script>
+<!--时间日期选择器js-->
+<script type="text/javascript" src="js/momentjs/moment.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="js/momentjs/locale/zh-cn.min.js"></script>
+<!--日程插件-->
+<script type="text/javascript" src="js/fullcalendar/core/main.min.js"></script>
+<script type="text/javascript" src="js/fullcalendar/core/locales/zh-cn.js"></script>
+<script type="text/javascript" src="js/fullcalendar/interaction/main.min.js"></script>
+<script type="text/javascript" src="js/fullcalendar/daygrid/main.min.js"></script>
+<script type="text/javascript" src="js/fullcalendar/timegrid/main.min.js"></script>
+<script type="text/javascript" src="js/fullcalendar/list/main.min.js"></script>
+<script type="text/javascript" src="js/fullcalendar/rrule/main.min.js"></script>
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+    var file_lastName="";
+    var filesize;
+    var layer = layui.layer;
+    var load_index;
+    var kcid;
+    var arr=[];
+
+    pdyes($("#pages").val(), $("#counts").val());
+    //翻页
+    function usefanye(pageindex){
+        var params = [
+            ["pages1",pageindex],
+            ["name",$("#name").val()],["pages",$("#pages").val()],
+            ["start",$("#start").val()], ["end",$("#end").val()],
+            ["fhlx",$("#fhlx").val()],
+            ["skid",$("#skid").val()],["xkid",$("#xkid").val()]];
+        form_submit("toHt/toselection","post",params,"_self");
+    }
+
+    function tosk(){
+        var params = [
+            ["pages",$("#pages").val()],
+            ["name",$("#name").val()],
+            ["start",$("#start").val()],
+            ["end",$("#end").val()]];
+        form_submit("toSt/totjsk","post",params,"_self");
+    }
+
+    function toxq(obj,obj1){
+        let item = null;
+        if(obj.indexOf("Hash")>0){
+            item = striongTOjsonString(obj);
+        }else{
+            item = jsStringTojsonString(obj);
+        }
+        let item1 = null;
+        if(obj1.indexOf("Hash")>0){
+            item1 = striongTOjsonString(obj1);
+        }else{
+            item1 = jsStringTojsonString(obj1);
+        }
+        $("#xqmode").find(".modal-body").empty();
+        let html="";
+        if($("#fhlx").val()=="SK"){
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">服务时间：</label>';
+            html+= '<span class="jspan">'+(getTime(item.yhe008,'YY/MM/DD'))+'</span>';
+            html+= '</div></div></div>';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">服务地点：</label>';
+            html+= '<span class="jspan">'+(item.yhe009)+'</span>';
+            html+= '</div></div></div>';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">交通补贴金额：</label>';
+            html+= '<span class="jspan">'+(item.yhe012)+'</span>';
+            html+= '</div></div></div>';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">服务人次：</label>';
+            html+= '<span class="jspan">'+(item.yhe016)+'</span>';
+            html+= '</div></div></div>';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">课程金额：</label>';
+            html+= '<span class="jspan">'+(item.yhe018)+'</span>';
+            html+= '</div></div></div>';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">内容科学性：</label>';
+            html+= '<span class="jspan">'+(item.yhe021=='A'?'强':(item.yhe021=='B'?'较强':(item.yhe021=='C'?'一般':'')))+'</span>';
+            html+= '</div></div></div>';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">内容丰富性：</label>';
+            html+= '<span class="jspan">'+(item.yhe022=='A'?'很丰富':(item.yhe022=='B'?'较好':(item.yhe022=='C'?'一般':'')))+'</span>';
+            html+= '</div></div></div>';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">内容与人的相应度：</label>';
+            html+= '<span class="jspan">'+(item.yhe023=='A'?'>很相应':(item.yhe023=='B'?'参差不一':(item.yhe023=='C'?'不相应':'')))+'</span>';
+            html+= '</div></div></div>';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">内容时长设置：</label>';
+            html+= '<span class="jspan">'+(item.yhe024=='A'?'合理':(item.yhe024=='B'?'偏短':(item.yhe024=='C'?'偏长':'')))+'</span>';
+            html+= '</div></div></div>';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">课前准备：</label>';
+            html+= '<span class="jspan">'+(item.yhe025=='A'?'充分':(item.yhe025=='B'?'一般':(item.yhe025=='C'?'不充分':'')))+'</span>';
+            html+= '</div></div></div>';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">讲师场控能力：</label>';
+            html+= '<span class="jspan">'+(item.yhe026=='A'?'很强':(item.yhe026=='B'?'一般':(item.yhe026=='C'?'较弱':'')))+'</span>';
+            html+= '</div></div></div>';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">课堂互动：</label>';
+            html+= '<span class="jspan">'+(item.yhe027=='A'?'较多':(item.yhe027=='B'?'弱':(item.yhe027=='C'?'没有':'')))+'</span>';
+            html+= '</div></div></div>';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">总体评价：</label>';
+            html+= '<span class="jspan">'+(item.yhe028=='A'?'非常满意':(item.yhe028=='B'?'满意':(item.yhe028=='C'?'一般':(item.yhe028=='D'?'不满意':''))))+'</span>';
+            html+= '</div></div></div>';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">其他意见或建议：</label>';
+            html+= '<span class="jspan">'+(item.yhe029)+'</span>';
+            html+= '</div></div></div>';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">服务照片：</label>';
+            html+= '<span class="jspan">'
+            $.ajax({
+                url:'getallselectionwj?fid='+item.yhe001+'&type=B',
+                type:'post',
+                async: false,
+                cache: false,
+                processData: false,
+                contentType: false,
+                dataType:'json',
+                success:function(data) {
+                    var list = eval(data.list);
+                    for(var i=0;i<list.length;i++){
+                        html+= list[i].use.use002;
+                        html+= "<img class='form-control' src='upload/"+list[i].yhf005+"/"+list[i].yhf004+"' style='width: 300px;'/>";
+                    }
+                },
+                error:function(){}
+            });
+            html+='</span>';
+            html+= '</div></div></div>';
+        }
+        html+= '';
+        $("#xqmode").find(".modal-body").html(html);
+    }
+
+</script>
+
