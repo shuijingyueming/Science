@@ -69,3 +69,14 @@
     cursor: pointer;
     text-decoration: none;
 }
+.sbc1::-webkit-scrollbar {
+    width: 1px; /* 设置滚动条的宽度 */
+    height: 1px;
+}
+.sbc1::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1;
+}
+.sbc1::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* 轨道颜色 */
+}
+

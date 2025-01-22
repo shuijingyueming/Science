@@ -137,13 +137,12 @@
         <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="xqmodeLabel1">查看详情</h6>
-                    <a class="btn-close"  data-bs-toggle="modal" data-bs-target="#xqmode"/a>
-
+                    <h6 class="modal-title" id="xqmodeLabel1">信息内容</h6>
+                    <a class="btn-close"  data-bs-toggle="modal" data-bs-target="#xqmode"></a>
                 </div>
                 <div style="position: relative;">
                     <img src="../images/phonebk1.png" style="width:340px;height:696px;position: absolute;left:0;top:0;"/>
-                    <div class="modal-body" style="width:292px;height:504px;position: absolute;left:24px;top:96px;"></div>
+                    <div class="modal-body sbc1" style="width:292px;height:504px;position: absolute;left:24px;top:105px;"></div>
                 </div>
             </div>
         </div>
@@ -228,6 +227,12 @@
 <script type="text/javascript" src="assets/jquery-validate/validate-methods.js"></script>
 
 <script type="text/javascript">
+
+    var file_lastName="";
+    var filesize;
+    var layer = layui.layer;
+    var load_index;
+
     //富文本编辑器
     KindEditor.ready(function (K) {
         KE = K.create('#t3', {
@@ -258,13 +263,7 @@
             }
         });
     });
-</script>
-<script type="text/javascript">
 
-    var file_lastName="";
-    var filesize;
-    var layer = layui.layer;
-    var load_index;
 
     function gobackpage(){
         window.history.back();
@@ -280,6 +279,7 @@
             item = jsStringTojsonString(obj);
         }
         $("#xqmode").find(".modal-body").empty();
+        $("#xqmode1").find(".modal-body").empty();
         let html="";
         html+= '<div class="row"><div class="col-md-5">';
         html+= '<div class="form-group"><label class="layui-form-label">标题：</label>';
