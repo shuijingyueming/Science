@@ -26,4 +26,7 @@ public interface CduseService extends IService<cduse> {
 
     cduse selectByName(String name, String type, Integer id);
 
+    cduse selectByOpenid(String openid);
+
+    cduse selectByphone(String phone);
 }

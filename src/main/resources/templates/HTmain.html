@@ -17,326 +17,77 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="stylesheet" type="text/css" href="css/materialdesignicons.min.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="js/bootstrap-multitabs/multitabs.min.css">
-    <link type="text/css" rel="stylesheet" href="js/jquery-tagsinput/jquery.tagsinput.min.css">
-    <link type="text/css" rel="stylesheet" href="js/webuploader/webuploader.css">
-    <link type="text/css" rel="stylesheet" href="js/magnific-popup/magnific-popup.min.css">
-    <link rel="stylesheet" type="text/css" href="css/animate.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.min.css">
-    <link rel="stylesheet" type="text/css" href="css/page.css">
+
 </head>
 <body>
 <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card"></div>
+    <div class="row">
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <span class="avatar-md rounded-circle bg-white bg-opacity-25 avatar-box"><i class="mdi mdi-currency-cny fs-4"></i></span>
+                        <span class="fs-4 scroll-numbers">[[${skfs!=null?skfs:0}]]</span>
+                    </div>
+                    <div class="text-end"> 授课方数量</div>
+                </div>
             </div>
         </div>
-
-    <!-- 编辑分类模态框 -->
-    <div class="modal fade" id="editmode" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel" aria-hidden="true">
-        <div class="modal-dialog modal-fullscreen"></div>
+        <div class="col-md-6 col-xl-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <span class="avatar-md rounded-circle bg-white bg-opacity-25 avatar-box"><i class="mdi mdi-currency-cny fs-4"></i></span>
+                        <span class="fs-4 scroll-numbers">[[${xkfs!=null?xkfs:0}]]</span>
+                    </div>
+                    <div class="text-end"> 选课方数量</div>
+                </div>
+            </div>
+        </div>
     </div>
-
-
-    <!-- 垂直居中的图片模态框 -->
-    <div class="modal fade" id="picModalLive" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title">图片预览</h6>
-                    <button type="button" class="btn-close" data-bs-target="#editmode" data-bs-toggle="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" style="min-height:580px;">
-                    <img src="" id="picyl" alt="图片位"/>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <header class="card-header">
+                    <div class="card-title">预约提醒</div>
+                </header>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>选课方名称</th>
+                                <th>授课方名称</th>
+                                <th>课程名称</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tablebody">
+                            <tr th:each="item,stat:${txliat}">
+                                <td th:text="${item.yhb!=null?item.yhb.yhb004:''}"></td>
+                                <td th:text="${item.smd!=null?item.smd.smd003:''}"></td>
+                                <td th:text="${item.hba.hba002}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
 
 </div>
+
+
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/popper.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/chart.min.js"></script>
 <!-- 数字动态滚动增加效果 -->
 <script type="text/javascript" src="js/scroll-numbers.js"></script>
 <!--引入chart插件js-->
 <script type="text/javascript" src="js/main.min.js"></script>
-<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
-<script type="text/javascript" src="js/bootstrap-multitabs/multitabs.min.js"></script>
-<script type="text/javascript" src="js/jquery.cookie.min.js"></script>
-<script type="text/javascript" src="js/index.min.js"></script>
-<!-- 表格JS -->
-<script type="text/javascript" src="static/tables/datatables.min.js"></script>
-<script type="text/javascript" src="static/tables/dataTables.buttons.min.js"></script>
-<script type="text/javascript" src="static/tables/jszip.min.js"></script>
-<script type="text/javascript" src="static/tables/pdfmake.min.js"></script>
-<script type="text/javascript" src="static/tables/vfs_fonts.js"></script>
-<script type="text/javascript" src="static/tables/buttons.html5.min.js"></script>
-<script type="text/javascript" src="static/tables/buttons.print.min.js"></script>
-<script type="text/javascript" src="static/tables/datatable.js"></script>
-<!--tags插件-->
-<script type="text/javascript" src="js/jquery-tagsinput/jquery.tagsinput.min.js"></script>
-<!--上传插件-->
-<script type="text/javascript" src="js/webuploader/webuploader.js"></script>
-<!--灯箱效果插件-->
-<script type="text/javascript" src="js/magnific-popup/magnific-popup.min.js"></script>
-<!--通知消息插件-->
-<script type="text/javascript" src="js/bootstrap-notify.min.js"></script>
-<!--引入标签插件js-->
-<script type="text/javascript" src="js/jquery-confirm/jquery-confirm.min.js"></script>
-<script type="text/javascript" src="js/main.min.js"></script>
-<!--引入下拉插件js-->
-<script type="text/javascript" src="js/bootstrap-select/bootstrap-select.min.js"></script>
-<script type="text/javascript" src="js/bootstrap-select/i18n/defaults-zh_CN.min.js"></script>
-<script type="text/javascript" src="js/layer/layer.js"></script>
-<script type="text/javascript" src="js/layui/layui.js"></script>
-<!-- validate JS 验证-->
-<script type="text/javascript" src="assets/jquery-validate/jquery.validate.js"></script>
-<script type="text/javascript" src="assets/jquery-validate/validate-methods.js"></script>
-<script type="text/javascript">
-
-    var layer = layui.layer;
-    var file_lastName = "";
-    var load_index;
-
-    //stype:"A"一级分类 “B”二级分类 “C”三级分类
-    //sid:上级分类ID
-    function addY(stype,sid){
-     $("#ftype").text("添加一级");
-     $("#stype").val(stype);
-     $("#sid").val(sid);
-   }
-
-   function showpic(){
-       $("#picyl").attr("src",$("#upfileimg").attr("src"));
-   }
-
-   //刷新页面
-   function pagerefalsh(){
-       location.reload();
-   }
-   //切换
-   function qhcz(){
-       $(".threeul").css("display","block");
-   }
-
-    //分类编辑
-    //stype:"A"一级分类 “B”二级分类 “C”三级分类
-   function editonetype(obj){
-       $("#stype").val("A");
-       let josnobj = striongTOjsonString(obj);
-           $("#fid").val(josnobj.yha001);
-           $("#fname").val(josnobj.yha002);
-           $("#isqy").prop("checked",josnobj.yha005=="Y"?true:false);
-           $("#upfileimg").attr("src","upload/pimg/"+josnobj.yha004);
-           $("#wurl").val(josnobj.yha006);
-   }
-    function edittwotype(obj){
-        $("#stype").val("B");
-        let josnobj = striongTOjsonString(obj);
-        $("#fid").val(josnobj.usc001);
-        $("#fname").val(josnobj.usc002);
-        $("#sid").val(josnobj.usc003);
-        $("#isqy").prop("checked",josnobj.usc005=="Y"?true:false);
-        $("#upfileimg").attr("src","upload/fimg/"+josnobj.usc004);
-        $("#wurl").val(josnobj.usc006);
-    }
-    function editthreetype(obj) {
-        $("#stype").val("C");
-        let josnobj = striongTOjsonString(obj);
-        $("#fid").val(josnobj.usa001);
-        $("#fname").val(josnobj.usa002);
-        $("#sid").val(josnobj.usa003);
-        $("#isqy").prop("checked", josnobj.usa005 == "Y" ? true : false);
-        $("#upfileimg").attr("src", "upload/mimg/" + josnobj.usa004);
-        $("#wurl").val(josnobj.usa006);
-    }
-
-    //一级分类删除
-   function deltype(stype,id){
-       if (confirm("删除操作将同时删除此分类下级分类及分类下所有内容，确定删除吗?")) {
-           load_index = layer.load(1);
-           var formData = new FormData();
-           formData.append("fid",id);
-           formData.append("stype",stype);
-           $.ajax({
-               url: 'toHt/delOneType', // 服务器端处理上传文件的URL
-               type: 'POST',
-               data: formData,
-               dataType:'json',
-               contentType: false, // 不设置内容类型
-               processData: false, // 不处理发送的数据
-               success: function (res) {
-                   var d = eval(res);
-                   layer.msg("删除成功");
-                   setTimeout(function(){
-                       location.reload();
-                   },1000);
-                   layer.close(load_index);
-               },
-               error: function () { console.log('提交失败'); }
-           });
-
-       }
-   }
-
-   function striongTOjsonString(obj){
-       obj = obj.replace(/\s+/g,'');
-       obj = obj.substring(obj.indexOf("["));
-       obj = obj.replaceAll("[","{\"");
-       obj = obj.replaceAll("]","\"}");
-       obj = obj.replaceAll("=","\":\"");
-       obj = obj.replaceAll(",","\",\"");
-       return JSON.parse(obj);
-   }
-
-    $(document).ready(function(){
-      //---------------------------
-        $("#uploadForm").validate({
-            errorPlacement: function(error, element) {
-                //替换错误显示位置，error表示错误信息
-                $(element).parent("div").append(error);
-                $(element).parent("div").find("label").attr("style","margin-left:5px;");
-            },
-            rules : { fname: { required : true, },},
-            messages: { fname: { required: "必须填写分类名称",},},
-            submitHandler: function(form) {
-                load_index = layer.load(1);
-                var formData = new FormData();
-                formData.append("stype",$("#stype").val().trim());
-                formData.append("sid",$("#sid").val().trim());
-                formData.append("fid",$("#fid").val().trim());
-                formData.append("fname",$("#fname").val().trim());
-                formData.append("fext",file_lastName);
-                formData.append("qy",$("#isqy").prop('checked')?"Y":"N");
-                formData.append("picfile",$("#upfileimg").attr("src"));
-                formData.append("wurl",$("#wurl").val().trim());
-                $.ajax({
-                    url: 'toHt/saveOneType', // 服务器端处理上传文件的URL
-                    type: 'POST',
-                    data: formData,
-                    dataType:'json',
-                    contentType: false, // 不设置内容类型
-                    processData: false, // 不处理发送的数据
-                    success: function (res) {
-                        var d = eval(res);
-                        if(d.stype=="A"){
-                            $("#fid").val(d.yha.yha001);
-                            $("#fname").val(d.yha.yha002);
-                            $("#isqy").prop("checked",d.yha.yha005=="Y"?true:false);
-                            $("#upfileimg").attr("src","upload/pimg/"+d.yha.yha004);
-                            $("#wurl").val(d.yha.yha006);
-                        }else if(d.stype=="B"){
-                            $("#fid").val(d.usc.usc001);
-                            $("#fname").val(d.usc.usc002);
-                            $("#isqy").prop("checked",d.usc.usc005=="Y"?true:false);
-                            $("#upfileimg").attr("src","upload/fimg/"+d.usc.usc004);
-                            $("#wurl").val(d.usc.usc006);
-                        }else if(d.stype=="C"){
-                            $("#fid").val(d.usa.usa001);
-                            $("#fname").val(d.usa.usa002);
-                            $("#isqy").prop("checked",d.usa.usa005=="Y"?true:false);
-                            $("#upfileimg").attr("src","upload/mimg/"+d.usa.usa004);
-                            $("#wurl").val(d.usa.usa006);
-                        }
-                        layer.close(load_index);
-                       layer.msg('提交成功');
-                    },
-                    error: function () { console.log('提交失败'); }
-                });
-            }
-        });
-        // 图片上传(单张图片，多张图片)
-        $('.js-upload-image,.js-upload-images').each(function() {
-            var $input_file      = $(this).find('input'),
-                $input_file_name = $input_file.attr('name'),
-                $multiple        = $input_file.data('multiple'),  // 是否选择多个文件
-                $ext             = $input_file.data('ext'),       // 支持的文件后缀，示例以图片为例
-                $size            = $input_file.data('size');      // 支持最大的文件大小
-
-            var $file_list = $('#file_list_' + $input_file_name);
-            var ratio = window.devicePixelRatio || 1;
-            var thumbnailWidth = 320 * ratio;
-            var thumbnailHeight = 180 * ratio;
-            //此处不做自动上传
-            var uploader = WebUploader.create({
-                auto: false,
-                duplicate: true,
-                resize: true,
-                swf: 'js/webuploader/Uploader.swf',
-                server: '',//上传路径
-                pick: {
-                    id: '#picker_' + $input_file_name,
-                    multiple: $multiple
-                },
-                fileSingleSizeLimit: $size,
-                accept: {
-                    title: 'Images',
-                    extensions: $ext,
-                    mimeTypes: 'image/*'
-                }
-            });
-
-            uploader.on('fileQueued', function(file) {
-                $img = $("#upfileimg");
-                file_lastName = file.ext;
-                $input_file.val('');
-                uploader.makeThumb(file, function(error, src) {
-                    if (error) {
-                        $img.replaceWith('<span>不能预览</span>');
-                        return;
-                    }
-                    $img.attr('src', src);
-                }, thumbnailWidth, thumbnailHeight);
-
-            });
-
-            uploader.on('error', function(type) {
-                switch (type) {
-                    case 'Q_TYPE_DENIED':
-                        //alert('图片类型不正确，只允许上传后缀名为：' + $ext + '，请重新上传！');
-                        showNotify('图片类型不正确，只允许上传后缀名为：' + $ext + '，请重新上传！', 'danger', 1500);
-                        break;
-                    case 'F_EXCEED_SIZE':
-                        //alert('图片不得超过' + ($size / 1024) + 'kb，请重新上传！');
-                        showNotify('图片不得超过' + ($size / 1024) + 'kb，请重新上传！', 'danger', 1500);
-                        break;
-                }
-            });
-
-            // 删除操作
-            $file_list.delegate('.btn-remove-pic', 'click', function() {
-                console.log($("#fid").val().trim());
-                console.log($("#stype").val().trim());
-                if (confirm("本操作将直接删除该图片，您确认删除吗?")) { // 可改为对话框插件
-                    //直接删除后台图片
-                    load_index = layer.load(1);
-                    var formData = new FormData();
-                    formData.append("stype",$("#stype").val().trim());
-                    formData.append("fid",$("#fid").val().trim());
-                    $.ajax({
-                        url: 'toHt/delOneTypePic', // 服务器端处理上传文件的URL
-                        type: 'POST',
-                        data: formData,
-                        dataType:'json',
-                        contentType: false, // 不设置内容类型
-                        processData: false, // 不处理发送的数据
-                        success: function (res) {
-                            layer.close(load_index);
-                            layer.msg("图片删除成功");
-                        },
-                        error: function () { console.log('删除失败'); }
-                    });
-                    $(this).closest('.list-images-item').remove();
-                }
-            });
-
-        });
-
-
-    });
-
-</script>
 </body>
 </html>

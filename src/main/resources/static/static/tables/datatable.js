@@ -201,6 +201,20 @@ $(document).ready(function () {
         }]
     });
 
+    $('#newsaexm').DataTable({
+        "searching": true,
+        "info": false,
+        "paging": false,
+        dom: 'Bfrtip',
+        buttons: [
+        ],
+        "columnDefs": [{
+            "orderable": false,
+            "targets": [0]
+        }]
+    });
+
+
     $('#tjskexm').DataTable({
         "searching": true,
         "info": false,
@@ -224,8 +238,54 @@ $(document).ready(function () {
             "targets": [0]
         }]
     });
+    $('#tjxkexm').DataTable({
+        "searching": true,
+        "info": false,
+        "paging": false,
+        dom: 'Bfrtip',
+        buttons: [],
+        "columnDefs": [{
+            "orderable": false,
+            "targets": [0]
+        }]
+    });
+    $('#tjjtbtexm').DataTable({
+        "searching": true,
+        "info": false,
+        "paging": false,
+        dom: 'Bfrtip',
+        buttons: [],
+        "columnDefs": [{
+            "orderable": false,
+            "targets": [0]
+        }]
+    });
+    $('#tjxkexm1').DataTable({
+        "searching": true,
+        "info": false,
+        "paging": false,
+        dom: 'Bfrtip',
+        buttons: [],
+        "columnDefs": [{
+            "orderable": false,
+            "targets": [0]
+        }]
+    });
+
 
     $('#tjpjxkexm').DataTable({
+        "searching": true,
+        "info": false,
+        "paging": false,
+        dom: 'Bfrtip',
+        buttons: [],
+        "columnDefs": [{
+            "orderable": false,
+            "targets": [0]
+        }]
+    });
+
+    $('#tjpjxkexm1').DataTable({
         "searching": true,
         "info": false,
         "paging": false,
@@ -244,6 +304,8 @@ $(document).ready(function () {
         dom: 'Bfrtip',
         buttons: [
             $("#fhlx").val()=="SK"?{text: '返回', action: function (e, dt, node, config) {tosk();}}:undefined,
+            $("#fhlx").val()=="XK"?{text: '返回', action: function (e, dt, node, config) {toxk();}}:undefined,
+            $("#fhlx").val()=="SK"?{text: '导出', action: function (e, dt, node, config) {todc();}}:undefined,
         ],
         "columnDefs": [{
             "orderable": false,

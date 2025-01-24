@@ -147,34 +147,66 @@
                                     <td th:text="${item.yhe009}"></td>
                                     <td th:text="${#dates.format(item.yhe008,'yyyy-MM-dd')}"></td>
                                     <td th:text="${#dates.format(item.yhe020,'yyyy-MM-dd')}"></td>
-                                    <td th:style="${item.yhe007=='A'?'color:#A46BFF':(item.yhe007=='B'?'color:#FFAA00;':(item.yhe007=='C'?'color:#6ABF47;':(item.yhe007=='D'?'color:#787878;':(item.yhe007=='E'?'color:#36AFF5;':'color:#5776F2;'))))}"
-                                            th:text="${item.yhe007=='A'?'预约待确认':(item.yhe007=='B'?'预约退回':(item.yhe007=='C'?'已接受预约':(item.yhe007=='D'?'取消预约':(item.yhe007=='E'?'完结已传':'完结未传'))))}"></td>
+                                    <td th:style="${item.yhe007=='A'||item.yhe007=='B'||item.yhe007=='J'||item.yhe007=='K'?'color:#A46BFF':
+                                                   (item.yhe007=='C'||item.yhe007=='D'?'color:#FFAA00;':(item.yhe007=='G'||item.yhe007=='H'?'color:#6ABF47;':
+                                                   (item.yhe007=='M'||item.yhe007=='N'||item.yhe007=='O'||item.yhe007=='P'?'color:#787878;':
+                                                   (item.yhe007=='E'?'color:#36AFF5;':'color:#5776F2;'))))}"
+                                        th:text="${item.yhe007=='A'||item.yhe007=='B'?'预约待确认':(item.yhe007=='J'||item.yhe007=='K'?'修改待确认':
+                                                  (item.yhe007=='C'||item.yhe007=='D'?'预约退回':(item.yhe007=='G'||item.yhe007=='H'?'已接受预约':
+                                                  (item.yhe007=='M'||item.yhe007=='N'?'取消预约':(item.yhe007=='O'||item.yhe007=='P'?'确认取消':
+                                                  (item.yhe007=='E'?'完结已传':'完结未传'))))))}"></td>
                                     <td>
                                         <div class="btn-group btn-group-sm">
-                                            <th:block th:if="${session.umsg.jstype=='B'}">
+                                            <th:block th:if="${item.yhe007=='G'||item.yhe007=='H'||item.yhe007=='J'||item.yhe007=='K'}">
                                                 <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]],[[${item.yhb.yhb004}]])" class="btn btn-table" data-bs-toggle="modal" data-bs-target="#editmode">编辑</a>
+                                            </th:block>
+                                            <th:block th:if="${session.umsg.jstype=='B'}">
                                                 <div class="ivu-divider-vertical"></div>
-                                                <th:block th:if="${item.yhe007=='C'}">
-                                                <a href="javascript:void(0);" th:onclick="tosc([[${item.toString()}]],[[${item.yhb.yhb004}]])" class="btn btn-table" data-bs-toggle="modal" data-bs-target="#editmode2">资料上传</a>
-                                                <div class="ivu-divider-vertical"></div>
-                                                </th:block>
                                                 <th:block th:if="${item.yhe007=='A'}">
-                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['C']])">接受</a>
-                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['B']])">退回</a>
-                                            </th:block>
-                                            </th:block>
-                                            <th:block th:if="${session.umsg.jstype!='A'}">
-                                            <th:block th:if="${item.yhe007=='C'}">
-                                                <a href="javascript:void(0);" th:onclick="topj([[${item.toString()}]])" class="btn btn-table" data-bs-toggle="modal" data-bs-target="#pjmode">评价</a>
-                                            </th:block>
-                                            </th:block>
-                                            <th:block th:if="${session.umsg.jstype=='C'}">
-                                            <th:block th:if="${item.yhe007!='D'&&item.yhe007!='E'&&item.yhe007!='F'}">
-                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['D']])">取消预约</a>
-                                            </th:block>
-                                                <th:block th:if="${item.yhe007=='A'||item.yhe007=='D'||item.yhe007=='B'}">
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['G']])">接受</a>
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['C']])">退回</a>
+                                                </th:block>
+                                                <th:block th:if="${item.yhe007=='J'}">
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['G']])">确认修改</a>
+                                                </th:block>
+                                                <th:block th:if="${item.yhe007=='M'}">
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['O']])">确认取消</a>
+                                                </th:block>
+
+                                                <th:block th:if="${item.yhe007!='K'&&item.yhe007!='E'&&item.yhe007!='F'}">
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['D']])">取消预约</a>
+                                                </th:block>
+                                                <th:block th:if="${item.yhe007=='B'||item.yhe007=='D'||item.yhe007=='P'}">
                                                     <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#" th:onclick="del([[${item.yhe001}]],[[${item.yhb.yhb004}]])">删除</a>
                                                 </th:block>
+                                            </th:block>
+                                            <th:block th:if="${session.umsg.jstype=='C'}">
+                                                <th:block th:if="${item.yhe007=='B'}">
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['H']])">接受</a>
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['D']])">退回</a>
+                                                </th:block>
+                                                <th:block th:if="${item.yhe007=='K'}">
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['H']])">确认修改</a>
+                                                </th:block>
+                                                <th:block th:if="${item.yhe007=='N'}">
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['P']])">确认取消</a>
+                                                </th:block>
+
+                                                <th:block th:if="${item.yhe007!='D'&&item.yhe007!='E'&&item.yhe007!='F'}">
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['D']])">取消预约</a>
+                                                </th:block>
+                                                <th:block th:if="${item.yhe007=='A'||item.yhe007=='C'||item.yhe007=='O'}">
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#" th:onclick="del([[${item.yhe001}]],[[${item.yhb.yhb004}]])">删除</a>
+                                                </th:block>
+                                            </th:block>
+                                            <th:block th:if="${session.umsg.jstype!='A'}">
+                                                <th:block th:if="${item.yhe007=='C'}">
+                                                    <a href="javascript:void(0);" th:onclick="topj([[${item.toString()}]])" class="btn btn-table" data-bs-toggle="modal" data-bs-target="#pjmode">评价</a>
+                                                </th:block>
+                                            </th:block>
+                                            <th:block th:if="${item.yhe007=='G'||item.yhe007=='H'}">
+                                                <a href="javascript:void(0);" th:onclick="tosc([[${item.toString()}]],[[${item.yhb.yhb004}]])" class="btn btn-table" data-bs-toggle="modal" data-bs-target="#editmode2">资料上传</a>
+                                                <div class="ivu-divider-vertical"></div>
                                             </th:block>
                                         </div>
                                     </td>
@@ -203,6 +235,20 @@
                     <input type="hidden" id="lx" th:value="${session.umsg.jstype}"/>
                     <div class="modal-body" style="min-height:580px;">
                         <th:block th:if="${session.umsg.jstype=='C'}">
+                            <div class="row ">
+                                <div class="col-md-3">
+                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">实际服务人次议</label>
+                                    <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                        <input type="number" class="form-control col-xl-12 col-md-12 col-sm-12 col-12" id="p17" name="p17" placeholder="请输入实际服务人次议"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row col-xl-6 col-md-9 col-sm-10 col-12" style="margin-top: 20px;">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">结束日期</label>
+                                <div class="col-xl-5 col-md-8 col-sm-8 col-12">
+                                    <input type="date" class="form-control col-xl-12 col-md-12 col-sm-12 col-12" id="p19" name="p19" placeholder="请输入授课结束日期"/>
+                                </div>
+                            </div>
                         <div class="row col-auto" style="margin-top: 20px;">
                             <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">内容科学性</label>
                             <div class="form-check">
@@ -357,7 +403,7 @@
                                 <div class="col-md-3">
                                     <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">实际服务人次议</label>
                                     <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                        <input type="number" class="form-control col-xl-12 col-md-12 col-sm-12 col-12" id="p17" name="p17" placeholder="请输入实际服务人次议"/>
+                                        <input type="number" class="form-control col-xl-12 col-md-12 col-sm-12 col-12" id="p18" name="p18" placeholder="请输入实际服务人次议"/>
                                     </div>
                                 </div>
                             </div>
@@ -497,7 +543,7 @@
                     <input type="hidden" id="fid" value=""/>
                     <input type="hidden" id="fname" value=""/>
                     <div class="modal-body" style="min-height:580px;">
-                        <div class="row col-xl-6 col-md-9 col-sm-10 col-12">
+                        <div class="row col-xl-6 col-md-9 col-sm-10 col-12" th:style="${session.umsg.jstype=='C'?'':'display:none'}">
                             <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">选择老师</label>
                             <div class="col-xl-5 col-md-8 col-sm-8 col-12">
                               <select id="z11" name="z11" class="form-control selectpicker col-xl-12 col-md-12 col-sm-12 col-12" data-live-search="true">
@@ -505,7 +551,7 @@
                              </select>
                             </div>
                         </div>
-                        <div class="row col-xl-6 col-md-9 col-sm-10 col-12" style="margin-top: 20px;">
+                        <div class="row col-xl-6 col-md-9 col-sm-10 col-12"  th:style="${session.umsg.jstype=='C'?'':'display:none;margin-top: 20px;'}">
                             <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">志愿者人数</label>
                             <div class="col-xl-5 col-md-8 col-sm-8 col-12">
                               <input type="number" class="form-control col-xl-12 col-md-12 col-sm-12 col-12" id="z7" name="z7" placeholder="请输入志愿者人数"/>
@@ -517,13 +563,6 @@
                               <input type="text" class="form-control col-xl-12 col-md-12 col-sm-12 col-12" id="z1" name="z1" placeholder="请输入授课地点"/>
                             </div>
                         </div>
-                        <div class="row col-xl-6 col-md-9 col-sm-10 col-12" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">结束日期</label>
-                            <div class="col-xl-5 col-md-8 col-sm-8 col-12">
-                               <input type="date" class="form-control col-xl-12 col-md-12 col-sm-12 col-12" id="z10" name="z10" placeholder="请输入授课结束日期"/>
-                            </div>
-                        </div>
-
                     </div>
                     <div class="modal-footer" style="height:100px;">
                         <button type="submit" class="btn btn-primary" id="edit-four">保存</button>
@@ -875,7 +914,7 @@
 
 
     function xgzt(id,uname,type){
-        if(type=="E"){
+        if(type=="D"||type=="D"){
             var num = prompt("请输入驳回备注","");
             if (num!="") {
                 load_index = layer.load(1);
@@ -1138,6 +1177,7 @@
             formData.append("t4",$("#t4").val());
             formData.append("t8",$("#t8").val());
             formData.append("t14",$("#t14").val());
+            formData.append("lx",$("#lx").val());
             formData.delete("s1");
             for(var i=0;i<t4.length;i++){
                 formData.append("s1",t4[i]);
@@ -1292,7 +1332,6 @@
             $("#z3").val(josnobj.yhe011);
             $("#z7").val(josnobj.yhe015);
             // $("#z8").val(josnobj.yhe016);
-            $("#z10").val(getTime(josnobj.yhe020,'YY/MM/DD'));
             $("#ftype").text("编辑");
         }else{
             $("#ftype").text("添加");
@@ -1316,8 +1355,9 @@
             formData.append("z3",$("#z3").val());
             formData.append("z7",$("#z7").val());
             // formData.append("z8",$("#z8").val());
-            formData.append("z10",$("#z10").val());
             formData.append("z11",$("#z11").val());
+
+            formData.append("lx",$("#lx").val());
             formData.append("t1",$("#tname").val());
             $.ajax({
                 url: 'toHt/xgselection', // 服务器端处理上传文件的URL
@@ -1453,6 +1493,8 @@
                 });
                 $("#p16").val(josnobj.yhe039)
                 $("#p17").val(josnobj.yhe016)
+                $("#p18").val(josnobj.yhe017)
+                $("#p19").val(getTime(josnobj.yhe020,'YY/MM/DD'));
             }
             $("#ftype2").text("编辑");
         }else{
@@ -1467,7 +1509,7 @@
             $(element).parent("div").parent("div").find("label").addClass("col-12");
             // $(element).parent("div").parent("div").find("label").attr("style","margin-left:5px;");
         },
-        rules : {p17: { required : $("#lx").val()=="B", },},
+        rules : {p17: { required : $("#lx").val()=="C", },p18: { required : $("#lx").val()=="B", },},
         messages: {},
         submitHandler: function(form) {
             load_index = layer.load(1);
@@ -1481,6 +1523,7 @@
             formData.append("p6",$("input[name='p6']:checked").val());
             formData.append("p7",$("input[name='p7']:checked").val());
             formData.append("p8",$("input[name='p8']:checked").val());
+            formData.append("p18",$("#p18").val());
             formData.append("p9",$("#p9").val());
             formData.append("p10",$("input[name='p10']:checked").val());
             formData.append("p11",$("input[name='p11']:checked").val());
@@ -1489,6 +1532,7 @@
             formData.append("p14",$("input[name='p14']:checked").val());
             formData.append("p15",$("input[name='p15']:checked").val());
             formData.append("p16",$("#p16").val());
+            formData.append("p19",$("#p19").val());
             formData.append("p17",$("#p17").val());
             formData.append("t1",$("#tname").val());
             formData.append("lx",$("#lx").val());

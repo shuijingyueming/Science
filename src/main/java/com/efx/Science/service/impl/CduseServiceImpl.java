@@ -79,6 +79,25 @@ public class CduseServiceImpl implements CduseService {
         return list.size() > 0 ? list.get(0) : null;
     }
 
+    @Override
+    public cduse selectByOpenid(String openid) {
+        cduseExample cx = new cduseExample();
+        Criteria c = cx.createCriteria();
+        c.andUse006EqualTo(openid);
+        c.andUse013NotEqualTo("N");
+        List<cduse> uselist = useMapper.selectByExample(cx);
+        return uselist.size() > 0 ? uselist.get(0) : null;
+    }
+
+    @Override
+    public cduse selectByphone(String phone) {
+        cduseExample cx = new cduseExample();
+        Criteria c = cx.createCriteria();
+        c.andUse005EqualTo(phone);
+        List<cduse> uselist = useMapper.selectByExample(cx);
+        return uselist.size() > 0 ? uselist.get(0) : null;
+    }
+
     public PageBean queryByPage(PageBean pageBean, cduseExample example) {
         int page = (int) pageBean.getCurrentPage();
         int size = pageBean.getPageSize();

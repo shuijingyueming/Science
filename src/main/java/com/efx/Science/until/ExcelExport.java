@@ -1,10 +1,6 @@
 package com.efx.Science.until;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.extra.qrcode.QrCodeUtil;
-import com.efx.Science.model.cduse;
-import com.efx.Science.model.cdyha;
-import com.efx.Science.model.cdyhb;
+import com.efx.Science.model.*;
 import com.efx.Science.service.CduseService;
 import com.efx.Science.service.CdyhaService;
 import com.efx.Science.service.CdyhbService;
@@ -13,12 +9,19 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.thymeleaf.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
+import java.util.List;
+
+import static org.apache.poi.ss.usermodel.CellStyle.ALIGN_CENTER;
 
 
 /**
@@ -231,4 +234,161 @@ public class ExcelExport {
 		return value;
 	}
 
+
+	public void ExcelexportyYYMX(HttpServletRequest request, HttpServletResponse response, PageBean pb, String name) throws Exception {
+		// web浏览通过MIME类型判断文件是excel类型
+		response.setContentType("application/vnd.ms-excel;charset=utf-8");
+		response.setCharacterEncoding("utf-8");
+		String fileName =name+"预约明细.xls";// 下载的时候的文件名
+		String file=name+"预约明细";
+
+		final String userAgent = request.getHeader("USER-AGENT");
+		String finalFileName = null;
+		try {
+			outt = response.getOutputStream();
+			if (StringUtils.contains(userAgent, "MSIE")) {// IE浏览器
+				finalFileName = URLEncoder.encode(fileName, "UTF8");
+			} else if (StringUtils.contains(userAgent, "Mozilla")) {// google,火狐浏览器
+				finalFileName = new String(fileName.getBytes(), "ISO8859-1");
+			} else {
+				finalFileName = URLEncoder.encode(fileName, "UTF8");// 其他浏览器
+			}
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		// Content-disposition属性设置成以附件方式进行下载
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ finalFileName);
+
+		try {
+			outt = response.getOutputStream();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		// 声明一个工作簿
+		HSSFWorkbook wb = new HSSFWorkbook();
+		HSSFSheet sheet = wb.createSheet(file);
+		sheet.setDefaultColumnWidth(25);
+		sheet.setDefaultRowHeightInPoints(20);
+		HSSFRow row = sheet.createRow(0);
+		HSSFCellStyle cellStyle4 = wb.createCellStyle();
+		// 字体
+		HSSFFont fontStyle4 = wb.createFont();
+		fontStyle4.setFontName("宋体");
+		fontStyle4.setFontHeightInPoints((short) 26);
+		fontStyle4.setBold(true);//粗体显示
+		cellStyle4.setFont(fontStyle4);
+		cellStyle4.setAlignment(ALIGN_CENTER);//水平居中
+		cellStyle4.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);//垂直居中
+		CellRangeAddress sv1 = new CellRangeAddress((short) 0, (short) 0,(short) 0, (short) (pb.getOthersql3()==null?17:20));
+		sheet.addMergedRegion(sv1);
+		HSSFCell cells = row.createCell((short) 0);// 合并单元格示例
+		cells.setCellValue(file);
+		cells.setCellStyle(cellStyle4);
+		row.setHeight((short) 800);
+		// 字体
+		HSSFFont fontStyle = wb.createFont();
+		fontStyle.setFontHeightInPoints((short) 11);
+		HSSFCellStyle cellStyle = wb.createCellStyle();
+//		cellStyle.setLocked(true);
+		// 这里仅设置了底边边框，左边框、右边框和顶边框同理可设
+		cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		cellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+		cellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
+		cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
+		cellStyle.setFont(fontStyle);
+		cellStyle.setWrapText(true);// 自动换行
+
+		row=sheet.createRow(1);
+//		row.createCell(0).setCellValue("统计条件："+file);
+		if(pb.getOthersql1()!=null)row.createCell(0).setCellValue("开始时间："+pb.getOthersql1());
+		if(pb.getOthersql2()!=null)row.createCell(1).setCellValue("结束时间："+pb.getOthersql2());
+
+		row = sheet.createRow(2);
+		// 创建HSSFCell对象
+		HSSFCell cell = row.createCell(0);
+		if(pb.getOthersql3()==null){
+			String[] s={"序号","授课方名称","选课方名称","课程名称","服务时间","服务地点","服务人次","交通补贴金额","课程金额"
+					,"内容科学性","内容丰富性","内容与人的相应度","内容时长设置","课前准备","讲师场控能力","课堂互动","总体评价","其他意见或建议"};
+			for(int j=0;j<=17;j++){
+				cell = row.createCell(j);
+				cell.setCellValue(s[j]);
+				cell.setCellStyle(cellStyle);
+			}
+		}else{
+			String[] s={"序号","姓名","身份证号码","银行卡号","开户行","选课方名称","课程名称","服务时间","服务地点","服务人次","交通补贴金额","课程金额"
+					,"内容科学性","内容丰富性","内容与人的相应度","内容时长设置","课前准备","讲师场控能力","课堂互动","总体评价","其他意见或建议"};
+			for(int j=0;j<=20;j++){
+				cell = row.createCell(j);
+				cell.setCellValue(s[j]);
+				cell.setCellStyle(cellStyle);
+			}
+		}
+
+		int rowNum=3;
+		List<cdyheWithBLOBs> list=pb.getResultList();
+		for (int j = 0; j<list.size(); j++) {
+			row = sheet.createRow(rowNum);
+			if(pb.getOthersql3()==null){
+				String[] s1={String.valueOf(j),name,
+						list.get(j).getYhb().getYhb004(),
+						list.get(j).getHba().getHba002(),
+						sdf2.format(list.get(j).getYhe008()),
+						list.get(j).getYhe009(),
+						list.get(j).getYhe016().toString(),
+						list.get(j).getYhe018().toString(),
+						list.get(j).getYhe012().toString(),
+						(list.get(j).getYhe021().equals("A")?"强":(list.get(j).getYhe021().equals("B")?"较强":(list.get(j).getYhe021().equals("C")?"一般":""))),
+						(list.get(j).getYhe022().equals("A")?"很丰富":(list.get(j).getYhe022().equals("B")?"较好":(list.get(j).getYhe022().equals("C")?"一般":""))),
+						(list.get(j).getYhe023().equals("A")?">很相应":(list.get(j).getYhe023().equals("B")?"参差不一":(list.get(j).getYhe023().equals("C")?"不相应":""))),
+						(list.get(j).getYhe024().equals("A")?"合理":(list.get(j).getYhe024().equals("B")?"偏短":(list.get(j).getYhe024().equals("C")?"偏长":""))),
+						(list.get(j).getYhe025().equals("A")?"充分":(list.get(j).getYhe025().equals("B")?"一般":(list.get(j).getYhe025().equals("C")?"不充分":""))),
+						(list.get(j).getYhe026().equals("A")?"很强":(list.get(j).getYhe026().equals("B")?"一般":(list.get(j).getYhe026().equals("C")?"较弱":""))),
+						(list.get(j).getYhe027().equals("A")?"较多":(list.get(j).getYhe027().equals("B")?"弱":(list.get(j).getYhe027().equals("C")?"没有":""))),
+						(list.get(j).getYhe028().equals("A")?"非常满意":(list.get(j).getYhe028().equals("B")?"满意":(list.get(j).getYhe028().equals("C")?"一般":(list.get(j).getYhe028().equals("D")?"不满意":"")))),
+						list.get(j).getYhe029()};
+				for(int a=0;a<=17;a++){
+					cell = row.createCell(a);
+					cell.setCellValue(s1[a]);
+					cell.setCellStyle(cellStyle);
+				}
+			}else{
+				String[] s1={String.valueOf(j),name,
+						list.get(j).getSmd().getSmd004(),
+						list.get(j).getSmd().getSmd006(),
+						list.get(j).getSmd().getSmd005(),
+						list.get(j).getYhb().getYhb004(),
+						list.get(j).getHba().getHba002(),
+						sdf2.format(list.get(j).getYhe008()),
+						list.get(j).getYhe009(),
+						list.get(j).getYhe016().toString(),
+						list.get(j).getYhe018().toString(),
+						list.get(j).getYhe012().toString(),
+						(list.get(j).getYhe021().equals("A")?"强":(list.get(j).getYhe021().equals("B")?"较强":(list.get(j).getYhe021().equals("C")?"一般":""))),
+						(list.get(j).getYhe022().equals("A")?"很丰富":(list.get(j).getYhe022().equals("B")?"较好":(list.get(j).getYhe022().equals("C")?"一般":""))),
+						(list.get(j).getYhe023().equals("A")?">很相应":(list.get(j).getYhe023().equals("B")?"参差不一":(list.get(j).getYhe023().equals("C")?"不相应":""))),
+						(list.get(j).getYhe024().equals("A")?"合理":(list.get(j).getYhe024().equals("B")?"偏短":(list.get(j).getYhe024().equals("C")?"偏长":""))),
+						(list.get(j).getYhe025().equals("A")?"充分":(list.get(j).getYhe025().equals("B")?"一般":(list.get(j).getYhe025().equals("C")?"不充分":""))),
+						(list.get(j).getYhe026().equals("A")?"很强":(list.get(j).getYhe026().equals("B")?"一般":(list.get(j).getYhe026().equals("C")?"较弱":""))),
+						(list.get(j).getYhe027().equals("A")?"较多":(list.get(j).getYhe027().equals("B")?"弱":(list.get(j).getYhe027().equals("C")?"没有":""))),
+						(list.get(j).getYhe028().equals("A")?"非常满意":(list.get(j).getYhe028().equals("B")?"满意":(list.get(j).getYhe028().equals("C")?"一般":(list.get(j).getYhe028().equals("D")?"不满意":"")))),
+						list.get(j).getYhe029()};
+				for(int a=0;a<=20;a++){
+					cell = row.createCell(a);
+					cell.setCellValue(s1[a]);
+					cell.setCellStyle(cellStyle);
+				}
+			}
+
+			rowNum ++;
+		}
+		try {
+			wb.write(outt);
+			outt.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

@@ -97,12 +97,12 @@
                                 <tbody id="tablebody">
                                 <tr th:each="item,stat:${pageobj.resultList}">
                                     <td th:text="${stat.index+1}"></td>
-                                    <td th:text="${item.yhb002}"></td>
-                                    <td th:text="${item.fwcc}"></td>
-                                    <td th:text="${item.fwpjA}"></td>
-                                    <td th:text="${item.fwpjB}"></td>
-                                    <td th:text="${item.fwpjC}"></td>
-                                    <td th:text="${item.fwpjD}"></td>
+                                    <td th:text="${item.yhb004}"></td>
+                                    <td th:text="${item.fwcc!=null?item.fwcc:0}"></td>
+                                    <td th:text="${item.fwpjA!=null?item.fwpjA:0}"></td>
+                                    <td th:text="${item.fwpjB!=null?item.fwpjB:0}"></td>
+                                    <td th:text="${item.fwpjC!=null?item.fwpjC:0}"></td>
+                                    <td th:text="${item.fwpjD!=null?item.fwpjD:0}"></td>
                                 </tr>
                                 </tbody>
                             </table>

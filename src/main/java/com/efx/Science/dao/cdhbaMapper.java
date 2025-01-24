@@ -36,4 +36,6 @@ public interface cdhbaMapper {
     int updateByPrimaryKey(cdhba record);
 
     List<cdhba> selectByExampleAndPage(cdhbaExample example, RowBounds rowBounds);
+
+    List<cdhba> selectByExampleAndPage1(cdhbaExample example, RowBounds rowBounds);
 }

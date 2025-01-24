@@ -29,5 +29,7 @@ public interface CdhbaService extends IService<cdhba> {
 
     Integer countByflid(int fid);
 
-    List<cdhba> getAll(String flid, String jgid);
+    List<cdhba> getAll(String flid, String jgid, String type);
+
+    PageBean selectPageBean1(PageBean pb);
 }

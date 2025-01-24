@@ -78,6 +78,11 @@ public class CdyhbServiceImpl implements CdyhbService {
         return yhbMapper.selectByExample(null);
     }
 
+    @Override
+    public Integer countByExample() {
+        return Math.toIntExact(yhbMapper.countByExample(null));
+    }
+
 
     public PageBean queryByPage(PageBean pageBean, cdyhbExample example) {
         int page = (int) pageBean.getCurrentPage();

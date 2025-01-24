@@ -136,12 +136,12 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByExample" parameterType="com.efx.Science.model.cdyheExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.efx.Science.model.cdyheExample" resultMap="BaseResultMap1">
     select
     <if test="distinct">
       distinct
     </if>
-    <include refid="Base_Column_List" />
+    <include refid="Base_Column_List" />,<include refid="Blob_Column_List" />
     from cdyhe
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -916,8 +916,14 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="countByExamplefwrc" parameterType="com.efx.Science.model.cdyheExample" resultType="java.lang.Integer">
+  <select id="countByExamplefwrcX" parameterType="com.efx.Science.model.cdyheExample" resultType="java.lang.Integer">
     select sum(yhe016) from cdyhe
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="countByExamplefwrc" parameterType="com.efx.Science.model.cdyheExample" resultType="java.lang.Integer">
+    select sum(yhe017) from cdyhe
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -934,4 +940,171 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+  <select id="countByExample1" parameterType="com.efx.Science.model.cdyheExample" resultType="java.lang.Integer">
+    select count(*) from cdyhe left join cdsmd on cdyhe.yhe003=cdsmd.smd001
+    <where>
+      <if test="cdyheExample != null">
+        <foreach collection="cdyheExample.oredCriteria" item="criteria" separator="or">
+          <include refid="ECExample_Where_Clause" />
+        </foreach>
+      </if>
+      <if test="cdsmdExample != null">
+        <foreach collection="cdsmdExample.oredCriteria" item="criteria" separator="or">
+          <include refid="ECExample_Where_Clause" />
+        </foreach>
+      </if>
+    </where>
+  </select>
+  <select id="countByExamplefwrcX1" parameterType="com.efx.Science.model.cdyheExample" resultType="java.lang.Integer">
+    select sum(yhe016) from cdyhe left join cdyhb on cdyhe.yhe002=cdyhb.yhb001
+    <where>
+      <if test="cdyheExample != null">
+        <foreach collection="cdyheExample.oredCriteria" item="criteria" separator="or">
+          <include refid="ECExample_Where_Clause" />
+        </foreach>
+      </if>
+      <if test="cdyhbExample != null">
+        <foreach collection="cdyhbExample.oredCriteria" item="criteria" separator="or">
+          <include refid="ECExample_Where_Clause" />
+        </foreach>
+      </if>
+    </where>
+  </select>
+  <select id="countByExamplefwrc1" parameterType="com.efx.Science.model.cdyheExample" resultType="java.lang.Integer">
+    select sum(yhe017) from cdyhe left join cdsmd on cdyhe.yhe003=cdsmd.smd001
+    <where>
+      <if test="cdyheExample != null">
+        <foreach collection="cdyheExample.oredCriteria" item="criteria" separator="or">
+          <include refid="ECExample_Where_Clause" />
+        </foreach>
+      </if>
+      <if test="cdsmdExample != null">
+        <foreach collection="cdsmdExample.oredCriteria" item="criteria" separator="or">
+          <include refid="ECExample_Where_Clause" />
+        </foreach>
+      </if>
+    </where>
+  </select>
+  <select id="countByExamplejtbt1" parameterType="com.efx.Science.model.cdyheExample" resultType="java.lang.Float">
+    select sum(yhe012) from cdyhe left join cdsmd on cdyhe.yhe003=cdsmd.smd001
+    <where>
+      <if test="cdyheExample != null">
+        <foreach collection="cdyheExample.oredCriteria" item="criteria" separator="or">
+          <include refid="ECExample_Where_Clause" />
+        </foreach>
+      </if>
+      <if test="cdsmdExample != null">
+        <foreach collection="cdsmdExample.oredCriteria" item="criteria" separator="or">
+          <include refid="ECExample_Where_Clause" />
+        </foreach>
+      </if>
+    </where>
+  </select>
+  <select id="countByExamplekcje1" parameterType="com.efx.Science.model.cdyheExample" resultType="java.lang.Float">
+    select sum(yhe018) from cdyhe left join cdsmd on cdyhe.yhe003=cdsmd.smd001
+    <where>
+      <if test="cdyheExample != null">
+        <foreach collection="cdyheExample.oredCriteria" item="criteria" separator="or">
+          <include refid="ECExample_Where_Clause" />
+        </foreach>
+      </if>
+      <if test="cdsmdExample != null">
+        <foreach collection="cdsmdExample.oredCriteria" item="criteria" separator="or">
+          <include refid="ECExample_Where_Clause" />
+        </foreach>
+      </if>
+    </where>
+  </select>
+  <select id="selectByExampleAndPage1" resultMap="BaseResultMap1" parameterType="com.efx.Science.model.cdyheExample" flushCache="true" useCache="false">
+    select
+    <include refid="Base_Column_List" />, <include refid="Blob_Column_List" />
+    from cdyhe left join cdsmd on cdyhe.yhe003=cdsmd.smd001
+    <where>
+      <if test="cdyheExample != null">
+        <foreach collection="cdyheExample.oredCriteria" item="criteria" separator="or">
+          <include refid="ECExample_Where_Clause" />
+        </foreach>
+      </if>
+      <if test="cdsmdExample != null">
+        <foreach collection="cdsmdExample.oredCriteria" item="criteria" separator="or">
+          <include refid="ECExample_Where_Clause" />
+        </foreach>
+      </if>
+    </where>
+    <if test="cdyheExample.orderByClause != null" >
+      order by ${cdyheExample.orderByClause}
+    </if>
+  </select>
+  <select id="countByExample2" parameterType="com.efx.Science.model.cdyheExample" resultType="java.lang.Integer">
+    select count(*) from cdyhe left join cdyhb on cdyhe.yhe002=cdyhb.yhb001
+    <where>
+      <if test="cdyheExample != null">
+        <foreach collection="cdyheExample.oredCriteria" item="criteria" separator="or">
+          <include refid="ECExample_Where_Clause" />
+        </foreach>
+      </if>
+      <if test="cdyhbExample != null">
+        <foreach collection="cdyhbExample.oredCriteria" item="criteria" separator="or">
+          <include refid="ECExample_Where_Clause" />
+        </foreach>
+      </if>
+    </where>
+  </select>
+  <select id="countByExamplefwrc2" parameterType="com.efx.Science.model.cdyheExample" resultType="java.lang.Integer">
+    select sum(yhe017) from cdyhe left join cdyhb on cdyhe.yhe002=cdyhb.yhb001
+    <where>
+      <if test="cdyheExample != null">
+        <foreach collection="cdyheExample.oredCriteria" item="criteria" separator="or">
+          <include refid="ECExample_Where_Clause" />
+        </foreach>
+      </if>
+      <if test="cdyhbExample != null">
+        <foreach collection="cdyhbExample.oredCriteria" item="criteria" separator="or">
+          <include refid="ECExample_Where_Clause" />
+        </foreach>
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByExample1" parameterType="com.efx.Science.model.cdyheExample" resultMap="BaseResultMap1">
+    select <include refid="Base_Column_List" />,<include refid="Blob_Column_List" /> from cdyhe left join cdsmd on cdyhe.yhe003=cdsmd.smd001
+    <where>
+      <if test="cdyheExample != null">
+        <foreach collection="cdyheExample.oredCriteria" item="criteria" separator="or">
+          <include refid="ECExample_Where_Clause" />
+        </foreach>
+      </if>
+      <if test="cdsmdExample != null">
+        <foreach collection="cdsmdExample.oredCriteria" item="criteria" separator="or">
+          <include refid="ECExample_Where_Clause" />
+        </foreach>
+      </if>
+    </where>
+  </select>
+  <sql id="ECExample_Where_Clause">
+    <if test="criteria.valid">
+      <foreach collection="criteria.criteria" item="criterion">
+        <choose>
+          <when test="criterion.noValue">
+            and ${criterion.condition}
+          </when>
+          <when test="criterion.singleValue">
+            and ${criterion.condition}
+            #{criterion.value}
+          </when>
+          <when test="criterion.betweenValue">
+            and ${criterion.condition} #{criterion.value} and
+            #{criterion.secondValue}
+          </when>
+          <when test="criterion.listValue">
+            and ${criterion.condition}
+            <foreach collection="criterion.value" item="listItem"
+                     open="(" close=")" separator=",">
+              #{listItem}
+            </foreach>
+          </when>
+        </choose>
+      </foreach>
+    </if>
+  </sql>
 </mapper>

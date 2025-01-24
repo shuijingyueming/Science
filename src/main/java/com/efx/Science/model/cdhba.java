@@ -2,6 +2,16 @@ package com.efx.Science.model;
 
 public class cdhba {
 
+    private Integer rs;
+
+    public Integer getRs() {
+        return rs;
+    }
+
+    public void setRs(Integer rs) {
+        this.rs = rs;
+    }
+
     private cdsmd smd;
     private cdhbb hbb;
 
@@ -83,7 +93,7 @@ public class cdhba {
 
     private Float hba032;
 
-    private Float hba033;
+    private String hba033;
 
     private Integer hba034;
 
@@ -339,12 +349,12 @@ public class cdhba {
         this.hba032 = hba032;
     }
 
-    public Float getHba033() {
+    public String getHba033() {
         return hba033;
     }
 
-    public void setHba033(Float hba033) {
-        this.hba033 = hba033;
+    public void setHba033(String hba033) {
+        this.hba033 = hba033 == null ? null : hba033.trim();
     }
 
     public Integer getHba034() {

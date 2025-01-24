@@ -28,4 +28,6 @@ public interface CdsmdService extends IService<cdsmd> {
     void delete(int id);
 
     List<cdsmd> getAll();
+
+    Integer countByExample();
 }

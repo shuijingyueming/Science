@@ -85,7 +85,7 @@
                                     <th>年预约场次</th>
                                     <th>场次总量设定</th>
                                     <th>交通补贴费用</th>
-                                    <th style="max-width:80px;">操作</th>
+                                    <th style="max-width:80px;" th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody id="tablebody">
@@ -103,7 +103,7 @@
                                     <td th:text="${item.yhb015}"></td>
                                     <td th:text="${item.yhb016}"></td>
                                     <td th:text="${item.yhb017}"></td>
-                                    <td>
+                                    <td th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">
                                         <div class="btn-group btn-group-sm">
                                             <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]])" class="btn btn-table"
                                                data-bs-toggle="modal" data-bs-target="#editmode">编辑</a>

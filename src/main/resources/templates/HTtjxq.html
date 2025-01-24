@@ -83,6 +83,7 @@
                             <input type="hidden" id="xkid" name="xkid" th:value="${pageobj.othersql6}"/>
                             <input type="hidden" id="start" name="start" th:value="${pageobj.othersql1}"/>
                             <input type="hidden" id="end" name="end" th:value="${pageobj.othersql2}"/>
+                            <input type="hidden" id="zt" name="zt" th:value="${pageobj.othersql3}"/>
                             <!--text input-->
                            <!-- <div class="row g-3">
 
@@ -110,35 +111,37 @@
                                 <thead>
                                 <tr>
                                     <th style="max-width:30px;">序号</th>
+                                    <th th:if="${pageobj.othersql3!=null}">姓名</th>
+                                    <th th:if="${pageobj.othersql3==null}">授课方名称</th>
+                                    <th th:if="${pageobj.othersql3!=null}">身份证号码</th>
+                                    <th th:if="${pageobj.othersql3!=null}">银行卡号</th>
+                                    <th th:if="${pageobj.othersql3!=null}">开户行</th>
                                     <th>选课方名称</th>
-                                    <th>授课方名称</th>
                                     <th>课程名称</th>
                                     <th>服务人次</th>
                                     <th>课程金额</th>
                                     <th>交通补贴金额</th>
                                     <th>服务地点</th>
                                     <th>服务时间</th>
-                                    <th>服务结束日期</th>
-                                    <th>状态</th>
-                                    <th style="max-width:80px;">操作</th>
+                                    <th style="max-width:80px;" th:if="${pageobj.othersql=='SK'}">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody id="tablebody">
                                 <tr th:each="item,stat:${pageobj.resultList}">
                                     <td th:text="${stat.index+1}"></td>
-                                    <td th:text="${item.yhb!=null?item.yhb.yhb004:''}"></td>
                                     <td th:text="${item.smd!=null?item.smd.smd003:''}"></td>
+                                    <td th:if="${pageobj.othersql3!=null}" th:text="${item.smd!=null?item.smd.smd004:''}"></td>
+                                    <td th:if="${pageobj.othersql3!=null}" th:text="${item.smd!=null?item.smd.smd006:''}"></td>
+                                    <td th:if="${pageobj.othersql3!=null}" th:text="${item.smd!=null?item.smd.smd005:''}"></td>
+                                    <td th:text="${item.yhb!=null?item.yhb.yhb004:''}"></td>
                                     <td th:text="${item.hba.hba002}"></td>
                                     <td th:text="${item.yhe016}"></td>
                                     <td th:text="${item.yhe018}"></td>
                                     <td th:text="${item.yhe012}"></td>
                                     <td th:text="${item.yhe009}"></td>
                                     <td th:text="${#dates.format(item.yhe008,'yyyy-MM-dd')}"></td>
-                                    <td th:text="${#dates.format(item.yhe020,'yyyy-MM-dd')}"></td>
-                                    <td th:style="${item.yhe007=='A'?'color:#A46BFF':(item.yhe007=='B'?'color:#FFAA00;':(item.yhe007=='C'?'color:#6ABF47;':(item.yhe007=='D'?'color:#787878;':(item.yhe007=='E'?'color:#36AFF5;':'color:#5776F2;'))))}"
-                                            th:text="${item.yhe007=='A'?'预约待确认':(item.yhe007=='B'?'预约退回':(item.yhe007=='C'?'已接受预约':(item.yhe007=='D'?'取消预约':(item.yhe007=='E'?'完结已传':'完结未传'))))}"></td>
-                                    <td>
-                                        <div class="btn-group btn-group-sm">
+                                    <td th:if="${pageobj.othersql=='SK'}">
+                                        <div class="btn-group btn-group-sm" >
                                                 <a href="javascript:void(0);" th:onclick="toxq([[${item.toString()}]],[[${item.hba.toString()}]])" class="btn btn-table" data-bs-toggle="modal" data-bs-target="#xqmode">详情</a>
                                                 <div class="ivu-divider-vertical"></div>
                                         </div>
@@ -176,30 +179,19 @@
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/popper.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
-<!-- 数字动态滚动增加效果 -->
-<script type="text/javascript" src="js/scroll-numbers.js"></script>
-<!--引入chart插件js-->
+
 <script type="text/javascript" src="js/main.min.js"></script>
-<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
-<script type="text/javascript" src="js/bootstrap-multitabs/multitabs.min.js"></script>
-<script type="text/javascript" src="js/jquery.cookie.min.js"></script>
-<script type="text/javascript" src="js/index.min.js"></script>
-<!--tags插件-->
-<script type="text/javascript" src="js/jquery-tagsinput/jquery.tagsinput.min.js"></script>
-<!--上传插件-->
-<script type="text/javascript" src="js/webuploader/webuploader.js"></script>
-<!--灯箱效果插件-->
-<script type="text/javascript" src="js/magnific-popup/magnific-popup.min.js"></script>
-<!--通知消息插件-->
-<script type="text/javascript" src="js/bootstrap-notify.min.js"></script>
-<!--引入标签插件js-->
 <script type="text/javascript" src="js/jquery-confirm/jquery-confirm.min.js"></script>
-<script type="text/javascript" src="js/main.min.js"></script>
+<!--日期选择器js-->
+<script type="text/javascript" src="js/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js"></script>
+<!--时间日期选择器js-->
+<script type="text/javascript" src="js/momentjs/moment.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="js/momentjs/locale/zh-cn.min.js"></script>
 <!--引入下拉插件js-->
 <script type="text/javascript" src="js/bootstrap-select/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="js/bootstrap-select/i18n/defaults-zh_CN.min.js"></script>
-<script type="text/javascript" src="js/layer/layer.js"></script>
-<script type="text/javascript" src="js/layui/layui.js"></script>
 <!-- 表格JS -->
 <script type="text/javascript" src="static/tables/datatables.min.js"></script>
 <script type="text/javascript" src="static/tables/dataTables.buttons.min.js"></script>
@@ -209,31 +201,15 @@
 <script type="text/javascript" src="static/tables/buttons.html5.min.js"></script>
 <script type="text/javascript" src="static/tables/buttons.print.min.js"></script>
 <script type="text/javascript" src="static/tables/datatable.js"></script>
+<!--引入loading插件js-->
+<script type="text/javascript" src="js/lyear-loading.js"></script>
+<script type="text/javascript" src="js/layer/layer.js"></script>
+<script type="text/javascript" src="js/layui/layui.js"></script>
+<!--引入下拉插件js-->
+<script type="text/javascript" src="js/bootstrap-select/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-select/i18n/defaults-zh_CN.min.js"></script>
 <!-- 翻页-->
 <script type="text/javascript" src="pagejs/htfy.js"></script>
-<!-- validate JS 验证-->
-<script type="text/javascript" src="assets/jquery-validate/jquery.validate.js"></script>
-<script type="text/javascript" src="assets/jquery-validate/validate-methods.js"></script>
-
-<!--日期选择器js-->
-<script type="text/javascript" src="js/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
-<script type="text/javascript" src="js/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js"></script>
-<!--时间日期选择器js-->
-<script type="text/javascript" src="js/momentjs/moment.min.js"></script>
-<script type="text/javascript" src="js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
-<script type="text/javascript" src="js/momentjs/locale/zh-cn.min.js"></script>
-<!--日程插件-->
-<script type="text/javascript" src="js/fullcalendar/core/main.min.js"></script>
-<script type="text/javascript" src="js/fullcalendar/core/locales/zh-cn.js"></script>
-<script type="text/javascript" src="js/fullcalendar/interaction/main.min.js"></script>
-<script type="text/javascript" src="js/fullcalendar/daygrid/main.min.js"></script>
-<script type="text/javascript" src="js/fullcalendar/timegrid/main.min.js"></script>
-<script type="text/javascript" src="js/fullcalendar/list/main.min.js"></script>
-<script type="text/javascript" src="js/fullcalendar/rrule/main.min.js"></script>
-
-</body>
-</html>
-
 <script type="text/javascript">
 
     var file_lastName="";
@@ -250,9 +226,19 @@
             ["pages1",pageindex],
             ["name",$("#name").val()],["pages",$("#pages").val()],
             ["start",$("#start").val()], ["end",$("#end").val()],
-            ["fhlx",$("#fhlx").val()],
+            ["fhlx",$("#fhlx").val()],["zt",$("#zt").val()],
             ["skid",$("#skid").val()],["xkid",$("#xkid").val()]];
-        form_submit("toHt/toselection","post",params,"_self");
+        form_submit("toSt/toxq","post",params,"_self");
+    }
+
+    function todc(){
+        var params = [
+            ["type","DC"], ["pages1",$("#pages1").val()],
+            ["name",$("#name").val()],["pages",$("#pages").val()],
+            ["start",$("#start").val()], ["end",$("#end").val()],
+            ["fhlx",$("#fhlx").val()],["zt",$("#zt").val()],
+            ["skid",$("#skid").val()],["xkid",$("#xkid").val()]];
+        form_submit("toSt/toxq","post",params,"_blank");
     }
 
     function tosk(){
@@ -264,7 +250,16 @@
         form_submit("toSt/totjsk","post",params,"_self");
     }
 
-    function toxq(obj,obj1){
+    function toxk(){
+        var params = [
+            ["pages",$("#pages").val()],
+            ["name",$("#name").val()],
+            ["start",$("#start").val()],
+            ["end",$("#end").val()]];
+        form_submit("toSt/totjjtbt","post",params,"_self");
+    }
+
+    function toxq(obj,obj1,obj2){
         let item = null;
         if(obj.indexOf("Hash")>0){
             item = striongTOjsonString(obj);
@@ -277,9 +272,33 @@
         }else{
             item1 = jsStringTojsonString(obj1);
         }
+        let item2 = null;
+        if(obj2.indexOf("Hash")>0){
+            item2 = striongTOjsonString(obj2);
+        }else{
+            item2 = jsStringTojsonString(obj2);
+        }
         $("#xqmode").find(".modal-body").empty();
         let html="";
-        if($("#fhlx").val()=="SK"){
+        if($("#zt").val()!=""){
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">专家姓名：</label>';
+            html+= '<span class="jspan">'+(item2.smd003)+'</span>';
+            html+= '</div></div></div>';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">身份证号码：</label>';
+            html+= '<span class="jspan">'+(item2.smd004)+'</span>';
+            html+= '</div></div></div>';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">银行卡号：</label>';
+            html+= '<span class="jspan">'+(item2.smd006)+'</span>';
+            html+= '</div></div></div>';
+            html+= '<div class="row"><div class="col-md-5">';
+            html+= '<div class="form-group"><label class="layui-form-label">开户行：</label>';
+            html+= '<span class="jspan">'+(item2.smd005)+'</span>';
+            html+= '</div></div></div>';
+        }
+        if($("#fhlx").val()=="SK"&&$("#zt").val()==""){
             html+= '<div class="row"><div class="col-md-5">';
             html+= '<div class="form-group"><label class="layui-form-label">服务时间：</label>';
             html+= '<span class="jspan">'+(getTime(item.yhe008,'YY/MM/DD'))+'</span>';
@@ -364,4 +383,8 @@
     }
 
 </script>
+
+</body>
+</html>
+
 

@@ -41,7 +41,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-search mb-2-5">
-                        <form class="search-form" method="post" role="form" action="toSt/totjsk">
+                        <form class="search-form" method="post" role="form" action="toSt/totjxk1">
                             <input type="hidden" id="pages" name="pages" th:value="${pageobj.currentPage}"/>
                             <input type="hidden" id="counts" name="counts" th:value="${pageobj.pageCount}"/>
                             <!--text input-->
@@ -82,48 +82,23 @@
                     </div>
                     <div id="wrapp" >
                         <div class="jsgrid table-responsive" data-parent="#accordion">
-                            <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%;" id="tjskexm" >
+                            <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%;" id="tjxkexm1" >
                                 <thead>
                                 <tr>
                                     <th style="max-width:30px;">序号</th>
                                     <th>授课方</th>
                                     <th>服务场次总数</th>
-                                    <th>服务人次总计</th>
-                                    <th>交通补贴总计</th>
-                                    <th>课程金额总计</th>
-                                    <th style="max-width:80px;">操作</th>
+                                    <th>授课服务人次</th>
+                                    <th>选课服务人次</th>
                                 </tr>
                                 </thead>
                                 <tbody id="tablebody">
-                                <tr th:if="${pageobj.currentPage==1}">
-                                    <td>0</td>
-                                    <td th:text="${gr.smd003}"></td>
-                                    <td th:text="${gr.fwcc!=null?gr.fwcc:0}"></td>
-                                    <td th:text="${gr.fwrc!=null?gr.fwrc:0}"></td>
-                                    <td th:text="${gr.jtbt!=null?gr.jtbt:0}"></td>
-                                    <td th:text="${gr.kcje!=null?gr.kcje:0}"></td>
-                                    <td>
-                                        <div class="btn-group btn-group-sm">
-                                            <a href="javascript:void(0);" th:onclick="toxq1()" class="btn btn-table"
-                                               data-bs-toggle="modal" data-bs-target="#">明细</a>
-                                            <div class="ivu-divider-vertical"></div>
-                                        </div>
-                                    </td>
-                                </tr>
                                 <tr th:each="item,stat:${pageobj.resultList}">
                                     <td th:text="${stat.index+1}"></td>
-                                    <td th:text="${item.smd003}"></td>
+                                    <td th:text="${item.yha002}"></td>
                                     <td th:text="${item.fwcc!=null?item.fwcc:0}"></td>
                                     <td th:text="${item.fwrc!=null?item.fwrc:0}"></td>
-                                    <td th:text="${item.jtbt!=null?item.jtbt:0}"></td>
-                                    <td th:text="${item.kcje!=null?item.kcje:0}"></td>
-                                    <td>
-                                        <div class="btn-group btn-group-sm">
-                                            <a href="javascript:void(0);" th:onclick="toxq([[${item.smd001}]])" class="btn btn-table"
-                                               data-bs-toggle="modal" data-bs-target="#">明细</a>
-                                            <div class="ivu-divider-vertical"></div>
-                                        </div>
-                                    </td>
+                                    <td th:text="${item.fwrcx!=null?item.fwrcx:0}"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -199,22 +174,12 @@
             ["name",$("#name").val()],
             ["start",$("#start").val()],
             ["end",$("#end").val()]];
-        form_submit("toSt/totjsk","post",params,"_self");
+        form_submit("toSt/totjxk1","post",params,"_self");
     }
 
     function toxq(id){
         var params = [
-            ["skid",id],["fhlx","SK"],
-            ["pages",$("#pages").val()],
-            ["name",$("#name").val()],
-            ["start",$("#start").val()],
-            ["end",$("#end").val()]];
-        form_submit("toSt/toxq","post",params,"_self");
-    }
-
-    function toxq1(){
-        var params = [
-            ["zt","A"],["fhlx","SK"],
+            ["xkid",id],["fhlx","XK"],
             ["pages",$("#pages").val()],
             ["name",$("#name").val()],
             ["start",$("#start").val()],

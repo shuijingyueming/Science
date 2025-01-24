@@ -4,11 +4,8 @@ package com.efx.Science.service.impl;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.efx.Science.dao.cdyheMapper;
-import com.efx.Science.model.PageBean;
-import com.efx.Science.model.cdyhe;
-import com.efx.Science.model.cdyheExample;
+import com.efx.Science.model.*;
 import com.efx.Science.model.cdyheExample.Criteria;
-import com.efx.Science.model.cdyheWithBLOBs;
 import com.efx.Science.service.CdyheService;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +47,7 @@ public class CdyheServiceImpl implements CdyheService {
 //        if(pb.getOthersql()!=null) c.andYhe003Like("%"+pb.getOthersql()+"%");
         if(pb.getOthersql5()!=null) c.andYhe003EqualTo(Integer.valueOf(pb.getOthersql5()));
         if(pb.getOthersql6()!=null)  c.andYhe002EqualTo(Integer.valueOf(pb.getOthersql6()));
-        e1.setOrderByClause("yhe001 desc");
+        e1.setOrderByClause("yhe008 desc");
         return queryByPage(pb,e1);
     }
 
@@ -93,8 +90,8 @@ public class CdyheServiceImpl implements CdyheService {
         yhe.setYhe007("F");
         cdyheExample e1 = new cdyheExample();
         Criteria c = e1.createCriteria();
-        c.andYhe007EqualTo("C");
-        c.andSql("(DATE_FORMAT(yhe020,'%Y-%m-%d')=DATE_FORMAT(CURDATE(),'%Y-%m-%d'))");
+        c.andSql("(Yhe007='G'or Yhe007='H')");
+        c.andSql("(DATEDIFF(CURDATE(),yhe008)>=28)");
         yheMapper.updateByExampleSelective(yhe,e1);
     }
 
@@ -111,10 +108,11 @@ public class CdyheServiceImpl implements CdyheService {
     }
 
     @Override
-    public Integer countByfwrc(Integer jgid, String start, String end) throws ParseException {
+    public Integer countByfwrc(Integer jgid, Integer xkid, String start, String end) throws ParseException {
         cdyheExample e1 = new cdyheExample();
         Criteria c = e1.createCriteria();
-        c.andYhe003EqualTo(jgid);
+        if(xkid!=null)c.andYhe002EqualTo(xkid);
+        if(jgid!=null)c.andYhe003EqualTo(jgid);
         if(start!=null)c.andYhe008GreaterThanOrEqualTo(sdf.parse(start+" 00:00:00"));
         if(end!=null)c.andYhe008LessThanOrEqualTo(sdf.parse(end+" 23:59:59"));
         c.andSql("(yhe007='E' or yhe007='F')");
@@ -122,10 +120,11 @@ public class CdyheServiceImpl implements CdyheService {
     }
 
     @Override
-    public Float countByjtbt(Integer jgid, String start, String end) throws ParseException {
+    public Float countByjtbt(Integer jgid, Integer xkid, String start, String end) throws ParseException {
         cdyheExample e1 = new cdyheExample();
         Criteria c = e1.createCriteria();
-        c.andYhe003EqualTo(jgid);
+        if(xkid!=null)c.andYhe002EqualTo(xkid);
+        if(jgid!=null)c.andYhe003EqualTo(jgid);
         if(start!=null)c.andYhe008GreaterThanOrEqualTo(sdf.parse(start+" 00:00:00"));
         if(end!=null)c.andYhe008LessThanOrEqualTo(sdf.parse(end+" 23:59:59"));
         c.andSql("(yhe007='E' or yhe007='F')");
@@ -163,6 +162,57 @@ public class CdyheServiceImpl implements CdyheService {
     }
 
     @Override
+    public Integer countByfwcc1(String start, String end) throws ParseException {
+        cdyheExample e1 = new cdyheExample();
+        Criteria c = e1.createCriteria();
+        if(start!=null)c.andYhe008GreaterThanOrEqualTo(sdf.parse(start+" 00:00:00"));
+        if(end!=null)c.andYhe008LessThanOrEqualTo(sdf.parse(end+" 23:59:59"));
+        c.andSql("(yhe007='E' or yhe007='F')");
+        cdsmdExample e2 = new cdsmdExample();
+        cdsmdExample.Criteria c2 = e2.createCriteria();
+        c2.andSmd002NotEqualTo("A");
+        return yheMapper.countByExample1(e1,e2);
+    }
+
+    @Override
+    public Integer countByfwrc1(String start, String end) throws ParseException {
+        cdyheExample e1 = new cdyheExample();
+        Criteria c = e1.createCriteria();
+        if(start!=null)c.andYhe008GreaterThanOrEqualTo(sdf.parse(start+" 00:00:00"));
+        if(end!=null)c.andYhe008LessThanOrEqualTo(sdf.parse(end+" 23:59:59"));
+        c.andSql("(yhe007='E' or yhe007='F')");
+        cdsmdExample e2 = new cdsmdExample();
+        cdsmdExample.Criteria c2 = e2.createCriteria();
+        c2.andSmd002NotEqualTo("A");
+        return yheMapper.countByExamplefwrc1(e1,e2);
+    }
+
+    @Override
+    public Float countByjtbt1(String start, String end) throws ParseException {
+        cdyheExample e1 = new cdyheExample();
+        Criteria c = e1.createCriteria();
+        if(start!=null)c.andYhe008GreaterThanOrEqualTo(sdf.parse(start+" 00:00:00"));
+        if(end!=null)c.andYhe008LessThanOrEqualTo(sdf.parse(end+" 23:59:59"));
+        c.andSql("(yhe007='E' or yhe007='F')");
+        cdsmdExample e2 = new cdsmdExample();
+        cdsmdExample.Criteria c2 = e2.createCriteria();
+        c2.andSmd002NotEqualTo("A");
+        return yheMapper.countByExamplejtbt1(e1,e2);
+    }
+
+    @Override
+    public Float countBykcje1( String start, String end) throws ParseException {
+        cdyheExample e1 = new cdyheExample();
+        Criteria c = e1.createCriteria();
+        if(start!=null)c.andYhe008GreaterThanOrEqualTo(sdf.parse(start+" 00:00:00"));
+        if(end!=null)c.andYhe008LessThanOrEqualTo(sdf.parse(end+" 23:59:59"));
+        c.andSql("(yhe007='E' or yhe007='F')");
+        cdsmdExample e2 = new cdsmdExample();
+        cdsmdExample.Criteria c2 = e2.createCriteria();
+        c2.andSmd002NotEqualTo("A");
+        return yheMapper.countByExamplekcje1(e1,e2);
+    }
+    @Override
     public PageBean selectPageBean1(PageBean pb) throws ParseException {
         cdyheExample e1 = new cdyheExample();
         Criteria c = e1.createCriteria();
@@ -172,12 +222,127 @@ public class CdyheServiceImpl implements CdyheService {
         if(pb.getOthersql5()!=null) c.andYhe003EqualTo(Integer.valueOf(pb.getOthersql5()));
         if(pb.getOthersql6()!=null)  c.andYhe002EqualTo(Integer.valueOf(pb.getOthersql6()));
         if(pb.getOthersql()!=null)c.andSql("(yhe007='E' or yhe007='F')");
-        e1.setOrderByClause("yhe001 desc");
-        return queryByPage(pb,e1);
+        e1.setOrderByClause("yhe008 desc");
+        if(pb.getOthersql4()==null) {
+            if(pb.getOthersql3()==null) {
+                return queryByPage(pb,e1);
+            }else{
+                cdsmdExample e2 = new cdsmdExample();
+                cdsmdExample.Criteria c2 = e2.createCriteria();
+                c2.andSmd002NotEqualTo("A");
+                return queryByPage1(pb,e1,e2);
+            }
+        }else{
+            if(pb.getOthersql3()==null) {
+                pb.setResultList(yheMapper.selectByExample(e1));
+            }else{
+                cdsmdExample e2 = new cdsmdExample();
+                cdsmdExample.Criteria c2 = e2.createCriteria();
+                c2.andSmd002NotEqualTo("A");
+                pb.setResultList(yheMapper.selectByExample1(e1,e2));
+            }
+            return pb;
+        }
+
     }
 
+    private PageBean queryByPage1(PageBean pageBean, cdyheExample e1, cdsmdExample e2) {
+        int page = (int) pageBean.getCurrentPage();
+        int size = pageBean.getPageSize();
+        //record sum
+        int sum = (int) yheMapper.countByExample1(e1,e2);
+        //page count
+        int count = sum%size==0 ? sum/size : sum/size+1;
+        //check page
+        page = page<1 ? 1 : ((page>count)? count : page);
+        //query
+        List<cdyheWithBLOBs> list = yheMapper.selectByExampleAndPage1(e1,e2, new RowBounds((page-1)*size, size));
+        //save to PageBean
+        pageBean.setCurrentPage(page);
+        pageBean.setPageCount(count);
+        pageBean.setRecordCount(sum);
+        pageBean.setResultList(list);
+        pageBean.setPageSize(size);
+        return pageBean;
+    }
 
+    @Override
+    public Integer countByfwcc2(Integer cjid,String start, String end) throws ParseException {
+        cdyheExample e1 = new cdyheExample();
+        Criteria c = e1.createCriteria();
+        if(start!=null)c.andYhe008GreaterThanOrEqualTo(sdf.parse(start+" 00:00:00"));
+        if(end!=null)c.andYhe008LessThanOrEqualTo(sdf.parse(end+" 23:59:59"));
+        c.andSql("(yhe007='E' or yhe007='F')");
+        cdyhbExample e2 = new cdyhbExample();
+        cdyhbExample.Criteria c2 = e2.createCriteria();
+        c2.andYhb002EqualTo(cjid);
+        return yheMapper.countByExample2(e1,e2);
+    }
 
+    @Override
+    public Integer countByfwrc2(Integer cjid,String start, String end) throws ParseException {
+        cdyheExample e1 = new cdyheExample();
+        Criteria c = e1.createCriteria();
+        if(start!=null)c.andYhe008GreaterThanOrEqualTo(sdf.parse(start+" 00:00:00"));
+        if(end!=null)c.andYhe008LessThanOrEqualTo(sdf.parse(end+" 23:59:59"));
+        c.andSql("(yhe007='E' or yhe007='F')");
+        cdyhbExample e2 = new cdyhbExample();
+        cdyhbExample.Criteria c2 = e2.createCriteria();
+        c2.andYhb002EqualTo(cjid);
+        return yheMapper.countByExamplefwrc2(e1,e2);
+    }
+
+    @Override
+    public Integer countByfwrcx2(Integer cjid,String start, String end) throws ParseException {
+        cdyheExample e1 = new cdyheExample();
+        Criteria c = e1.createCriteria();
+        if(start!=null)c.andYhe008GreaterThanOrEqualTo(sdf.parse(start+" 00:00:00"));
+        if(end!=null)c.andYhe008LessThanOrEqualTo(sdf.parse(end+" 23:59:59"));
+        c.andSql("(yhe007='E' or yhe007='F')");
+        cdyhbExample e2 = new cdyhbExample();
+        cdyhbExample.Criteria c2 = e2.createCriteria();
+        c2.andYhb002EqualTo(cjid);
+        return yheMapper.countByExamplefwrcX1(e1,e2);
+    }
+
+    @Override
+    public List<cdyhe> getAll(String type, Integer id) {
+        cdyheExample e1 = new cdyheExample();
+        Criteria c = e1.createCriteria();
+        if(type.equals("B")){
+            c.andYhe003EqualTo(id);
+            c.andYhe007EqualTo("A");
+        }else if(type.equals("C")){
+            c.andYhe002EqualTo(id);
+            c.andYhe007EqualTo("B");
+        }
+        return yheMapper.selectByExample(e1);
+    }
+
+    @Override
+    public Integer countByfwrwpj2(Integer cjid, String start, String end, String type) throws ParseException {
+        cdyheExample e1 = new cdyheExample();
+        Criteria c = e1.createCriteria();
+        c.andYhe038EqualTo(type);
+        if(start!=null)c.andYhe008GreaterThanOrEqualTo(sdf.parse(start+" 00:00:00"));
+        if(end!=null)c.andYhe008LessThanOrEqualTo(sdf.parse(end+" 23:59:59"));
+        c.andSql("(yhe007='E' or yhe007='F')");
+        cdyhbExample e2 = new cdyhbExample();
+        cdyhbExample.Criteria c2 = e2.createCriteria();
+        c2.andYhb002EqualTo(cjid);
+        return yheMapper.countByExample2(e1,e2);
+    }
+
+    @Override
+    public Integer countByfwrcx(Integer jgid, String start, String end) throws ParseException {
+        cdyheExample e1 = new cdyheExample();
+        Criteria c = e1.createCriteria();
+        c.andYhe003EqualTo(jgid);
+        if(start!=null)c.andYhe008GreaterThanOrEqualTo(sdf.parse(start+" 00:00:00"));
+        if(end!=null)c.andYhe008LessThanOrEqualTo(sdf.parse(end+" 23:59:59"));
+        c.andSql("(yhe007='E' or yhe007='F')");
+        return yheMapper.countByExamplefwrcX(e1);
+    }
 
     public PageBean queryByPage(PageBean pageBean, cdyheExample example) {
         int page = (int) pageBean.getCurrentPage();

@@ -79,6 +79,8 @@
                                     <th style="max-width:30px;">序号</th>
                                     <th>机构名称/个人单位</th>
                                     <th>身份类别</th>
+                                    <th>联系人名称</th>
+                                    <th>联系人手机号</th>
                                     <th>营业执照/身份证号</th>
                                     <th>年度场次限数</th>
                                     <th>年度人次限数</th>
@@ -86,17 +88,16 @@
                                     <th>已授课人次</th>
                                     <th>已预约场次</th>
                                     <th>上线日期</th>
-                                    <th:block th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">
-                                    <th style="max-width:80px;">操作</th>
-                                    </th:block>
-
+                                    <th style="max-width:80px;" th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody id="tablebody">
                                 <tr th:each="item,stat:${pageobj.resultList}">
                                     <td th:text="${stat.index+1}"></td>
-                                    <td th:text="${item.smd002=='A'?'机构':(item.smd002=='B'?'个人':(item.smd002=='C'?'专家':''))}"></td>
                                     <td th:text="${item.smd003}"></td>
+                                    <td th:text="${item.smd002=='A'?'机构':(item.smd002=='B'?'个人':(item.smd002=='C'?'专家':''))}"></td>
+                                    <td th:text="${item.smd017}"></td>
+                                    <td th:text="${item.smd018}"></td>
                                     <td th:text="${item.smd004}"></td>
                                     <td th:text="${item.smd010}"></td>
                                     <td th:text="${item.smd009}"></td>
@@ -104,8 +105,7 @@
                                     <td th:text="${item.smd012}"></td>
                                     <td th:text="${item.smd013}"></td>
                                     <td th:text="${#dates.format(item.smd008,'yyyy-MM-dd')}"></td>
-                                    <th:block th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">
-                                    <td>
+                                    <td th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">
                                         <div class="btn-group btn-group-sm">
 
                                             <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]])" class="btn btn-table"
@@ -115,7 +115,6 @@
                                             <!-- <a href="javascript:void(0);" th:onclick="del([[${item.smd001}]])" class="btn btn-table">删除</a>-->
                                         </div>
                                     </td>
-                                    </th:block>
                                 </tr>
                                 </tbody>
                             </table>
@@ -162,7 +161,17 @@
                             <div class="col-10 col-sm-8 col-md-6 col-lg-4">
                                 <input type="text" class="form-control" id="t2" name="t2" placeholder="请输入机构名称"/>
                             </div>
-                        </div>-->
+                        </div>
+                         <div class="row">
+                                    <div class="col-md-6 col-xl-4">
+                                        <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">联系人名称</label>
+                                        <input type="text" class="form-control" id="t10" name="t10" placeholder="请输入联系人名称" required/>
+                                    </div>
+                                    <div class="col-md-6 col-xl-4">
+                                        <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">联系人手机号</label>
+                                        <input type="text" class="form-control" id="t11" name="t11" placeholder="请输入联系人手机号" required/>
+                                    </div>
+                                </div>-->
                         <div class="row col-auto" style="margin-top: 20px;">
                             <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">年度场次限数</label>
                             <div class="col-10 col-sm-8 col-md-6 col-lg-4">
@@ -350,6 +359,8 @@
             $("#t4").val(josnobj.smd004);
             $("#t5").val(josnobj.smd005);
             $("#t6").val(josnobj.smd006);
+            $("#t10").val(josnobj.smd017);
+            $("#t11").val(josnobj.smd01);
             $("#t7").val(josnobj.smd007);*/
             $("#t9").val(josnobj.smd009);
             $("#t10").val(josnobj.smd010);
@@ -376,6 +387,8 @@
             formData.append("t4",$("#t4").val());
             formData.append("t5",$("#t5").val());
             formData.append("t6",$("#t6").val());
+            formData.append("t10",$("#10").val());
+            formData.append("t11",$("#t11").val());
             formData.append("t7",$("#t7").val());*/
             formData.append("t9",$("#t9").val());
             formData.append("t10",$("#t10").val());

@@ -287,7 +287,7 @@ public class LoginController extends BaseController {
     @RequestMapping(value = "/getallcourse",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     public String getallcourse(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HashMap result = new HashMap();
-        List<cdhba> list=hbaService.getAll(request.getParameter("flid"),request.getParameter("jgid"));
+        List<cdhba> list=hbaService.getAll(request.getParameter("flid"),request.getParameter("jgid"), "B");
         result.put("list",list);
         return JSON.toJSONString(result);
     }

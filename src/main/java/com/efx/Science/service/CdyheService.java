@@ -6,6 +6,7 @@ import com.efx.Science.model.cdyhe;
 import com.efx.Science.model.cdyheWithBLOBs;
 
 import java.text.ParseException;
+import java.util.List;
 
 /**
  * <p>
@@ -34,13 +35,32 @@ public interface CdyheService extends IService<cdyhe> {
 
     Integer countByfwcc(Integer jgid, Integer xkid, String start, String end) throws ParseException;
 
-    Integer countByfwrc(Integer jgid, String start, String end) throws ParseException;
+    Integer countByfwrc(Integer jgid, Integer xkid, String start, String end) throws ParseException;
 
-    Float countByjtbt(Integer jgid, String start, String end) throws ParseException;
+    Float countByjtbt(Integer jgid, Integer xkid, String start, String end) throws ParseException;
 
     Float countBykcje(Integer jgid, String start, String end) throws ParseException;
 
     PageBean selectPageBean1(PageBean pb) throws ParseException;
 
     Integer countByfwrwpj(Integer jgid, Integer xkid, String start, String end, String type) throws ParseException;
+
+    Integer countByfwcc1(String start, String end) throws ParseException;
+
+    Integer countByfwrc1(String start, String end) throws ParseException;
+
+    Float countByjtbt1(String start, String end) throws ParseException;
+
+    Float countBykcje1(String start, String end) throws ParseException;
+
+    Integer countByfwcc2(Integer cjid, String othersql5, String othersql6) throws ParseException;
+
+    Integer countByfwrc2(Integer cjid, String othersql5, String othersql6) throws ParseException;
+
+    Integer countByfwrwpj2(Integer cjid, String othersql5, String othersql6, String a) throws ParseException;
+
+    Integer countByfwrcx(Integer xkid, String start, String end) throws ParseException;
+    Integer countByfwrcx2(Integer cjid, String othersql5, String othersql6) throws ParseException;
+
+    List<cdyhe> getAll(String type, Integer id);
 }

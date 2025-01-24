@@ -322,7 +322,7 @@
             rangelength: $.validator.format("Please enter a value between {0} and {1} characters long."),
             range: $.validator.format("Please enter a value between {0} and {1}."),
             max: $.validator.format("Please enter a value less than or equal to {0}."),
-            min: $.validator.format("Please enter a value greater than or equal to {0}.")
+            min: $.validator.format("请输入等于或大于{0}的数字.")
         },
 
         autoCreateRanges: false,

@@ -109,6 +109,16 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 col-xl-4">
+                                        <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">联系人名称</label>
+                                        <input type="text" class="form-control" id="t10" name="t10" placeholder="请输入联系人名称" required/>
+                                    </div>
+                                    <div class="col-md-6 col-xl-4">
+                                        <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">联系人手机号</label>
+                                        <input type="text" class="form-control" id="t11" name="t11" placeholder="请输入联系人手机号" required/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-xl-4">
                                         <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">机构/个人名称</label>
                                         <input type="text" class="form-control" id="t2" name="t2" placeholder="请输入机构/个人名称" required/>
                                     </div>
@@ -279,7 +289,7 @@
                 $(element).parent("div").parent("div").append(error);
                 $(element).parent("div").parent("div").find("label").addClass("col-12");
             },
-            rules : {z2: { required : true, },z4: { required : true, },z5: { required : true, },t2: { required : true, },t4: { required : true, },t5: { required : true, },},
+            rules : {z2: { required : true, },z4: { required : true, },z5: { required : true, },t2: { required : true, },t10: { required : true, },t11: { required : true, },t4: { required : true, },t5: { required : true, },},
             messages: {},
             submitHandler: function(form) {
                 var formData = new FormData();
@@ -288,6 +298,8 @@
                 formData.append("z5",$("#z5").val());
                 formData.append("t2",$("input[name='t3']:checked").val());
                 formData.append("t3",$("#t2").val());
+                formData.append("t10",$("#t10").val());
+                formData.append("t11",$("#t11").val());
                 formData.append("t4",$("#t4").val());
                 formData.append("t5",$("#t5").val());
                 formData.append("t6",$("#t6").val());

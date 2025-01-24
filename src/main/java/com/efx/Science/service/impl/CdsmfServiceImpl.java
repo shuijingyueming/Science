@@ -43,6 +43,7 @@ public class CdsmfServiceImpl implements CdsmdService {
         cdsmdExample e1 = new cdsmdExample();
         Criteria c = e1.createCriteria();
         if(pb.getOthersql()!=null) c.andSmd003Like("%"+pb.getOthersql()+"%");
+        if(pb.getOthersql2()!=null) c.andSmd002EqualTo(pb.getOthersql2());
         e1.setOrderByClause("smd001 desc");
         return queryByPage(pb,e1);
     }
@@ -75,6 +76,11 @@ public class CdsmfServiceImpl implements CdsmdService {
     @Override
     public List<cdsmd> getAll() {
         return smdMapper.selectByExample(null);
+    }
+
+    @Override
+    public Integer countByExample() {
+        return Math.toIntExact(smdMapper.countByExample(null));
     }
 
 

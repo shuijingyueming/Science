@@ -45,6 +45,7 @@ public class CdhbaServiceImpl implements CdhbaService {
         if(pb.getOthersql()!=null) c.andHba002Like("%"+pb.getOthersql()+"%");
         if(pb.getOthersql1()!=null) c.andHba022EqualTo(Integer.valueOf(pb.getOthersql1()));
         if(pb.getOthersql2()!=null) c.andHba021EqualTo(Integer.valueOf(pb.getOthersql2()));
+        if(pb.getOthersql3()!=null) c.andHba026EqualTo(pb.getOthersql3());
         e1.setOrderByClause("hba001 desc");
         return queryByPage(pb,e1);
     }
@@ -84,11 +85,12 @@ public class CdhbaServiceImpl implements CdhbaService {
     }
 
     @Override
-    public List<cdhba> getAll(String flid, String jgid) {
+    public List<cdhba> getAll(String flid, String jgid, String type) {
         cdhbaExample e1 = new cdhbaExample();
         Criteria c = e1.createCriteria();
         if(flid!=null&&!flid.isEmpty())c.andHba021EqualTo(Integer.valueOf(flid));
         if(jgid!=null&&!jgid.isEmpty())c.andHba022EqualTo(Integer.valueOf(jgid));
+        if(type!=null&&!type.isEmpty())c.andHba026EqualTo(type);
         return hbaMapper.selectByExample(e1);
     }
 
@@ -113,7 +115,37 @@ public class CdhbaServiceImpl implements CdhbaService {
         return pageBean;
     }
 
+    @Override
+    public PageBean selectPageBean1(PageBean pb) {
+        cdhbaExample e1 = new cdhbaExample();
+        Criteria c = e1.createCriteria();
+        if(pb.getOthersql()!=null) c.andHba002Like("%"+pb.getOthersql()+"%");
+        if(pb.getOthersql1()!=null) c.andHba022EqualTo(Integer.valueOf(pb.getOthersql1()));
+        if(pb.getOthersql2()!=null) c.andHba021EqualTo(Integer.valueOf(pb.getOthersql2()));
+        if(pb.getOthersql3()!=null) c.andHba026EqualTo(pb.getOthersql3());
+        e1.setOrderByClause("hba001 desc");
+        return queryByPage1(pb,e1);
+    }
 
+    public PageBean queryByPage1(PageBean pageBean, cdhbaExample example) {
+        int page = (int) pageBean.getCurrentPage();
+        int size = pageBean.getPageSize();
+        //record sum
+        int sum = (int) hbaMapper.countByExample(example);
+        //page count
+        int count = sum%size==0 ? sum/size : sum/size+1;
+        //check page
+        page = page<1 ? 1 : ((page>count)? count : page);
+        //query
+        List<cdhba> list = hbaMapper.selectByExampleAndPage1(example, new RowBounds((page-1)*size, size));
+        //save to PageBean
+        pageBean.setCurrentPage(page);
+        pageBean.setPageCount(count);
+        pageBean.setRecordCount(sum);
+        pageBean.setResultList(list);
+        pageBean.setPageSize(size);
+        return pageBean;
+    }
 
     @Override
     public boolean saveBatch(Collection<cdhba> entityList, int batchSize) {

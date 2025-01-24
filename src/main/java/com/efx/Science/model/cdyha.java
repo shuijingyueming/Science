@@ -1,6 +1,71 @@
 package com.efx.Science.model;
 
 public class cdyha {
+
+    private Integer fwcc;
+    private Integer fwrc;
+    private Integer fwrcx;
+    private Integer fwpjA;
+    private Integer fwpjB;
+    private Integer fwpjC;
+    private Integer fwpjD;
+
+    public Integer getFwcc() {
+        return fwcc;
+    }
+
+    public void setFwcc(Integer fwcc) {
+        this.fwcc = fwcc;
+    }
+
+    public Integer getFwrc() {
+        return fwrc;
+    }
+
+    public void setFwrc(Integer fwrc) {
+        this.fwrc = fwrc;
+    }
+
+    public Integer getFwrcx() {
+        return fwrcx;
+    }
+
+    public void setFwrcx(Integer fwrcx) {
+        this.fwrcx = fwrcx;
+    }
+
+    public Integer getFwpjA() {
+        return fwpjA;
+    }
+
+    public void setFwpjA(Integer fwpjA) {
+        this.fwpjA = fwpjA;
+    }
+
+    public Integer getFwpjB() {
+        return fwpjB;
+    }
+
+    public void setFwpjB(Integer fwpjB) {
+        this.fwpjB = fwpjB;
+    }
+
+    public Integer getFwpjC() {
+        return fwpjC;
+    }
+
+    public void setFwpjC(Integer fwpjC) {
+        this.fwpjC = fwpjC;
+    }
+
+    public Integer getFwpjD() {
+        return fwpjD;
+    }
+
+    public void setFwpjD(Integer fwpjD) {
+        this.fwpjD = fwpjD;
+    }
+
     private Integer yha001;
 
     private String yha002;

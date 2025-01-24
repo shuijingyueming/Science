@@ -34,7 +34,7 @@
     <result column="HBA030" jdbcType="REAL" property="hba030" />
     <result column="HBA031" jdbcType="REAL" property="hba031" />
     <result column="HBA032" jdbcType="REAL" property="hba032" />
-    <result column="HBA033" jdbcType="REAL" property="hba033" />
+    <result column="HBA033" jdbcType="VARCHAR" property="hba033" />
     <result column="HBA034" jdbcType="INTEGER" property="hba034" />
     <result column="HBA035" jdbcType="VARCHAR" property="hba035" />
   </resultMap>
@@ -43,6 +43,9 @@
   <resultMap id="BaseResultMap1" type="com.efx.Science.model.cdhba"  extends="BaseResultMap">
     <association property="smd" column="HBA022" select="com.efx.Science.dao.cdsmdMapper.selectByPrimaryKey"/>
     <association property="hbb" column="HBA021" select="com.efx.Science.dao.cdhbbMapper.selectByPrimaryKey"/>
+  </resultMap>
+  <resultMap id="BaseResultMap2" type="com.efx.Science.model.cdhba"  extends="BaseResultMap1">
+    <result column="rs" jdbcType="INTEGER" property="rs" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -110,6 +113,12 @@
   </sql>
   <sql id="Blob_Column_List">
     HBA019
+  </sql>
+  <sql id="Base_Column_List1">
+    HBA001, HBA002, HBA003, HBA004, HBA005, HBA006, HBA007, HBA008, HBA009, HBA010, HBA011,
+    HBA012, HBA013, HBA014, HBA015, HBA016, HBA017, HBA018,HBA019, HBA020, HBA021, HBA022, HBA023,
+    HBA024, HBA025, HBA026, HBA027, HBA028, HBA029, HBA030, HBA031, HBA032, HBA033, HBA034,
+    HBA035,(select sum(yhe016) from cdyhe where yhe003=HBA001 and (yhe007='E' or yhe007='F')) as rs
   </sql>
   <select id="selectByExampleWithBLOBs" parameterType="com.efx.Science.model.cdhbaExample" resultMap="ResultMapWithBLOBs">
     select
@@ -181,7 +190,7 @@
       #{hba020,jdbcType=VARCHAR}, #{hba021,jdbcType=INTEGER}, #{hba022,jdbcType=INTEGER}, 
       #{hba023,jdbcType=INTEGER}, #{hba024,jdbcType=VARCHAR}, #{hba025,jdbcType=VARCHAR}, 
       #{hba026,jdbcType=CHAR}, #{hba027,jdbcType=REAL}, #{hba028,jdbcType=REAL}, #{hba029,jdbcType=REAL}, 
-      #{hba030,jdbcType=REAL}, #{hba031,jdbcType=REAL}, #{hba032,jdbcType=REAL}, #{hba033,jdbcType=REAL}, 
+      #{hba030,jdbcType=REAL}, #{hba031,jdbcType=REAL}, #{hba032,jdbcType=REAL}, #{hba033,jdbcType=VARCHAR}, 
       #{hba034,jdbcType=INTEGER}, #{hba035,jdbcType=VARCHAR}, #{hba019,jdbcType=LONGVARCHAR}
       )
   </insert>
@@ -389,7 +398,7 @@
         #{hba032,jdbcType=REAL},
       </if>
       <if test="hba033 != null">
-        #{hba033,jdbcType=REAL},
+        #{hba033,jdbcType=VARCHAR},
       </if>
       <if test="hba034 != null">
         #{hba034,jdbcType=INTEGER},
@@ -505,7 +514,7 @@
         HBA032 = #{record.hba032,jdbcType=REAL},
       </if>
       <if test="record.hba033 != null">
-        HBA033 = #{record.hba033,jdbcType=REAL},
+        HBA033 = #{record.hba033,jdbcType=VARCHAR},
       </if>
       <if test="record.hba034 != null">
         HBA034 = #{record.hba034,jdbcType=INTEGER},
@@ -554,7 +563,7 @@
       HBA030 = #{record.hba030,jdbcType=REAL},
       HBA031 = #{record.hba031,jdbcType=REAL},
       HBA032 = #{record.hba032,jdbcType=REAL},
-      HBA033 = #{record.hba033,jdbcType=REAL},
+      HBA033 = #{record.hba033,jdbcType=VARCHAR},
       HBA034 = #{record.hba034,jdbcType=INTEGER},
       HBA035 = #{record.hba035,jdbcType=VARCHAR},
       HBA019 = #{record.hba019,jdbcType=LONGVARCHAR}
@@ -595,7 +604,7 @@
       HBA030 = #{record.hba030,jdbcType=REAL},
       HBA031 = #{record.hba031,jdbcType=REAL},
       HBA032 = #{record.hba032,jdbcType=REAL},
-      HBA033 = #{record.hba033,jdbcType=REAL},
+      HBA033 = #{record.hba033,jdbcType=VARCHAR},
       HBA034 = #{record.hba034,jdbcType=INTEGER},
       HBA035 = #{record.hba035,jdbcType=VARCHAR}
     <if test="_parameter != null">
@@ -696,7 +705,7 @@
         HBA032 = #{hba032,jdbcType=REAL},
       </if>
       <if test="hba033 != null">
-        HBA033 = #{hba033,jdbcType=REAL},
+        HBA033 = #{hba033,jdbcType=VARCHAR},
       </if>
       <if test="hba034 != null">
         HBA034 = #{hba034,jdbcType=INTEGER},
@@ -742,7 +751,7 @@
       HBA030 = #{hba030,jdbcType=REAL},
       HBA031 = #{hba031,jdbcType=REAL},
       HBA032 = #{hba032,jdbcType=REAL},
-      HBA033 = #{hba033,jdbcType=REAL},
+      HBA033 = #{hba033,jdbcType=VARCHAR},
       HBA034 = #{hba034,jdbcType=INTEGER},
       HBA035 = #{hba035,jdbcType=VARCHAR},
       HBA019 = #{hba019,jdbcType=LONGVARCHAR}
@@ -780,12 +789,26 @@
       HBA030 = #{hba030,jdbcType=REAL},
       HBA031 = #{hba031,jdbcType=REAL},
       HBA032 = #{hba032,jdbcType=REAL},
-      HBA033 = #{hba033,jdbcType=REAL},
+      HBA033 = #{hba033,jdbcType=VARCHAR},
       HBA034 = #{hba034,jdbcType=INTEGER},
       HBA035 = #{hba035,jdbcType=VARCHAR}
     where HBA001 = #{hba001,jdbcType=INTEGER}
   </update>
   <select id="selectByExampleAndPage" resultMap="BaseResultMap1" parameterType="com.efx.Science.model.cdhbaExample" flushCache="true" useCache="false">
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />, <include refid="Blob_Column_List" />
+    from cdhba
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExampleAndPage1" resultMap="BaseResultMap2" parameterType="com.efx.Science.model.cdhbaExample" flushCache="true" useCache="false">
     select
     <if test="distinct" >
       distinct

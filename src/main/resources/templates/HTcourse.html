@@ -342,6 +342,14 @@
                             </div>
                         </div>
                         <div class="row" style="margin-top:20px;">
+                            <div class="row col-xl-8 col-md-10 col-sm-11 col-12">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">送教时段限制</label>
+                                <div class="col-xl-10 col-md-9 col-sm-9 col-12">
+                                    <textarea class="form-control" style="resize: none;" rows="3" id="t33" name="t33"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:20px;">
                             <div class="row col-xl-3 col-md-5 col-sm-6 col-12">
                                 <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">志愿者人数</label>
                                 <div class="col-xl-7 col-md-7 col-sm-7 col-12">
@@ -381,13 +389,13 @@
                             <div class="row col-xl-3 col-md-5 col-sm-6 col-12">
                                 <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">10人以下费用</label>
                                 <div class="col-xl-7 col-md-5 col-sm-6 col-12">
-                                    <input type="number" class="form-control" id="t27" name="t27" placeholder="请输入课时费用10人以下"/>
+                                    <input type="number" class="form-control" id="t27" name="t27" min="0" placeholder="请输入课时费用10人以下"/>
                                 </div>
                             </div>
                             <div class="row col-xl-3 col-md-5 col-sm-6 col-12">
                                 <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">11-20人费用</label>
                                 <div class="col-xl-7 col-md-5 col-sm-6 col-12">
-                                    <input type="number" class="form-control" id="t28" name="t28" placeholder="请输入课时费用11-20人"/>
+                                    <input type="number" class="form-control" id="t28" name="t28" min="0" placeholder="请输入课时费用11-20人"/>
                                 </div>
                             </div>
                         </div>
@@ -395,13 +403,13 @@
                             <div class="row col-xl-3 col-md-5 col-sm-6 col-12">
                                 <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">21-30人费用</label>
                                 <div class="col-xl-7 col-md-5 col-sm-6 col-12">
-                                    <input type="number" class="form-control" id="t29" name="t29" placeholder="请输入课时费用21-30人"/>
+                                    <input type="number" class="form-control" id="t29" name="t29" min="0" placeholder="请输入课时费用21-30人"/>
                                 </div>
                             </div>
                             <div class="row col-xl-3 col-md-5 col-sm-6 col-12">
                                 <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">31-45人费用</label>
                                 <div class="col-xl-7 col-md-5 col-sm-6 col-12">
-                                    <input type="number" class="form-control" id="t30" name="t30" placeholder="请输入课时费用31-45人"/>
+                                    <input type="number" class="form-control" id="t30" name="t30" min="0" placeholder="请输入课时费用31-45人"/>
                                 </div>
                             </div>
                         </div>
@@ -612,8 +620,12 @@
         html+= '</div></div>';
 
         html+= '<div class="row"><div class="form-group col-xl-5 col-md-8 col-sm-12">';
-        html+= '<label class="layui-form-label">送教限制：</label>';
+        html+= '<label class="layui-form-label">送教地域限制：</label>';
         html+= '<span class="jspan">'+item.hba015+'</span>';
+        html+= '</div></div>';
+        html+= '<div class="row"><div class="form-group col-xl-5 col-md-8 col-sm-12">';
+        html+= '<label class="layui-form-label">送教时段限制：</label>';
+        html+= '<span class="jspan">'+item.hba033+'</span>';
         html+= '</div></div>';
 
         html+= '<div class="row"><div class="form-group col-xl-2 col-md-3 col-sm-6">';
@@ -914,6 +926,7 @@
             $("#t13").val(josnobj.hba013);
             $("#t14").val(josnobj.hba014);
             $("#t15").val(josnobj.hba015);
+            $("#t33").val(josnobj.hba033);
             $("#t16").val(josnobj.hba016);
             $("#t17").val(josnobj.hba017);
             // $("#t19").val(josnobj.hba019);
@@ -951,8 +964,7 @@
                             return $("#fid").val().trim();
                         }//要传递的数据
                     }
-                }},t4: { required : true, },t5: { required : true, },t21: { required : true, },t22: { required : true, },
-            t27: { required : true, },t28: { required : true, },t29: { required : true, },t30: { required : true, },},
+                }},t4: { required : true, },t5: { required : true, },t21: { required : true, },t22: { required : true, },},
         messages: {},
         submitHandler: function(form) {
             load_index = layer.load(1);
@@ -973,6 +985,7 @@
             formData.append("t13",$("#t13").val());
             formData.append("t14",$("#t14").val());
             formData.append("t15",$("#t15").val());
+            formData.append("t33",$("#t33").val());
             formData.append("t16",$("#t16").val());
             formData.append("t17",$("#t17").val());
             // formData.append("t19",$("#t19").val());

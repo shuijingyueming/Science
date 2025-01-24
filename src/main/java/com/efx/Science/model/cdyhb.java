@@ -5,6 +5,10 @@ import java.util.Date;
 public class cdyhb {
 
     private Integer fwcc;
+    private Float jtbt;
+
+    private Integer fwrc;
+    private Integer fwrcx;
     private Integer fwpjA;
     private Integer fwpjB;
     private Integer fwpjC;
@@ -16,6 +20,30 @@ public class cdyhb {
 
     public void setFwcc(Integer fwcc) {
         this.fwcc = fwcc;
+    }
+
+    public Float getJtbt() {
+        return jtbt;
+    }
+
+    public void setJtbt(Float jtbt) {
+        this.jtbt = jtbt;
+    }
+
+    public Integer getFwrc() {
+        return fwrc;
+    }
+
+    public void setFwrc(Integer fwrc) {
+        this.fwrc = fwrc;
+    }
+
+    public Integer getFwrcx() {
+        return fwrcx;
+    }
+
+    public void setFwrcx(Integer fwrcx) {
+        this.fwrcx = fwrcx;
     }
 
     public Integer getFwpjA() {
