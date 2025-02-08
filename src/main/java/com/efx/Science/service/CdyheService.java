@@ -63,4 +63,6 @@ public interface CdyheService extends IService<cdyhe> {
     Integer countByfwrcx2(Integer cjid, String othersql5, String othersql6) throws ParseException;
 
     List<cdyhe> getAll(String type, Integer id);
+
+    PageBean selectPageBean2(PageBean pagebean);
 }

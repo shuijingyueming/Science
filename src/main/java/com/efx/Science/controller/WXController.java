@@ -68,18 +68,22 @@ public class WXController extends BaseController {
         String iv = request.getParameter("ivdata");
         String encryptedData =  request.getParameter("encrypdata");
         String phone=null;
-        if(encryptedData!=null&&code!=null&&phone!=null) phone =  WeiCatJK.decrypt_new(encryptedData,code,iv);
+        if(encryptedData!=null&&code!=null&&phone==null) phone =  WeiCatJK.decrypt_new(encryptedData,code,iv);
         System.out.println(TIMEMIAO.format(new Date())+"phone----"+phone);
         if(phone!=null){
             cduse item=useService.selectByphone(phone);
-            item.setUse006(openid);
-            if(nickName!="")item.setUse007(nickName);
-            item.setUse008(avatarUrl);
-            useService.update(item);
-            result.put("item", item);
-            result.put("type", "Y");
+            if(item!=null){
+                item.setUse006(openid);
+                if(nickName!="")item.setUse007(nickName);
+                item.setUse008(avatarUrl);
+                useService.update(item);
+                result.put("item", item);
+                result.put("type", "Y");
+            }else{
+                result.put("type", "P");
+            }
         }else{
-            result.put("type", "N");
+            result.put("type", "M");
         }
         return JSON.toJSONString(result);
     }
@@ -133,6 +137,78 @@ public class WXController extends BaseController {
         List<cdyhc> list=yhcService.getAll(request.getParameter("kcid"),null);
         result.put("item", item);
         result.put("list", list);
+        return JSON.toJSONString(result);
+    }
+
+    /**
+     * 详情
+     * 王新苗
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping(value = "/wxsk", method = RequestMethod.POST)
+    public String wxsk(HttpServletRequest request) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<cdsmd> list=smdService.getAll();
+        for (cdsmd smd:list) {
+            smd.setFwrc(yheService.countByfwrc(smd.getSmd001(), null, null,null));
+            smd.setHbaList(hbaService.getAll(null,smd.getSmd001().toString(),"B"));
+        }
+        result.put("list", list);
+        return JSON.toJSONString(result);
+    }
+
+    /**
+     * 查询更多
+     */
+    @ResponseBody
+    @RequestMapping(value = "wxjl")
+    public String wxjl(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        PageBean pagebean = new PageBean();
+        if(request.getParameter("pages")!=null&&!request.getParameter("pages").isEmpty()) pagebean.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
+        else pagebean.setCurrentPage(1);
+        if(request.getParameter("size")!=null&&!request.getParameter("size").isEmpty()) pagebean.setPageSize(Integer.valueOf(request.getParameter("size")));
+        if(request.getParameter("name")!=null&&!request.getParameter("name").isEmpty())pagebean.setOthersql(request.getParameter("name"));
+        if(request.getParameter("skid")!=null&&!request.getParameter("skid").isEmpty())pagebean.setOthersql5(request.getParameter("skid"));
+        if(request.getParameter("xkid")!=null&&!request.getParameter("xkid").isEmpty())pagebean.setOthersql6(request.getParameter("xkid"));
+        if(request.getParameter("type")!=null&&!request.getParameter("type").isEmpty())pagebean.setOthersql1(request.getParameter("type"));
+        PageBean pb=yheService.selectPageBean2(pagebean);
+        result.put("pb", pb);
+        return JSON.toJSONString(result);
+    }
+
+    /**
+     * 查询更多
+     */
+    @ResponseBody
+    @RequestMapping(value = "wxnew")
+    public String wxnew(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        PageBean pagebean = new PageBean();
+        if(request.getParameter("pages")!=null&&!request.getParameter("pages").isEmpty()) pagebean.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
+        else pagebean.setCurrentPage(1);
+        if(request.getParameter("size")!=null&&!request.getParameter("size").isEmpty()) pagebean.setPageSize(Integer.valueOf(request.getParameter("size")));
+        if(request.getParameter("type")!=null&&!request.getParameter("type").isEmpty())pagebean.setOthersql1(request.getParameter("type"));
+        pagebean.setOthersql2("A");
+        PageBean pb=yhgService.selectPageBean(pagebean);
+        result.put("pb", pb);
+        return JSON.toJSONString(result);
+    }
+
+    /**
+     * 详情
+     * 王新苗
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping(value = "/wxnewxq", method = RequestMethod.POST)
+    public String wxnewxq(HttpServletRequest request) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        cdyhg item=yhgService.getByid(request.getParameter("id"));
+        result.put("item", item);
         return JSON.toJSONString(result);
     }
 }

@@ -44,7 +44,9 @@ public class CdyhgServiceImpl implements CdyhgService {
         Criteria c = e1.createCriteria();
         if(pb.getOthersql()!=null) c.andYhg010Like("%"+pb.getOthersql()+"%");
         if(pb.getOthersql3()!=null)c.andYhg004EqualTo(pb.getOthersql3());
-        e1.setOrderByClause("yhg001 desc");
+        if(pb.getOthersql1()!=null)c.andYhg009EqualTo(pb.getOthersql1());
+        if(pb.getOthersql2()!=null)c.andYhg003IsNotNull();
+        e1.setOrderByClause("yhg003 desc,yhg001 desc");
         return queryByPage(pb,e1);
     }
 

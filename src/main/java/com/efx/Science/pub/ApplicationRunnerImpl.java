@@ -4,6 +4,8 @@ package com.efx.Science.pub;
 import com.efx.Science.model.cdxxz;
 import com.efx.Science.service.CdxxzService;
 import com.efx.Science.service.CdyheService;
+import com.efx.Science.wx.HttpGetUtil;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -13,11 +15,13 @@ import javax.servlet.ServletContext;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Component
 public class ApplicationRunnerImpl implements ApplicationRunner {
-    private final SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+    private final SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
 
     @Autowired
     private ServletContext servletContext;
@@ -35,6 +39,27 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         cdxxz xxz = xxzService.selGetAll();
+        //线程获取微信的token
+       /* new Thread(){
+            public void run(){
+                while (true){
+                    try {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("secret", PubMessage.secret);
+                        params.put("appid", PubMessage.appid);
+                        params.put("grant_type", "client_credential");
+                        String requestUrl = HttpGetUtil.httpRequestToString("https://api.weixin.qq.com/cgi-bin/token", params);
+                        JSONObject result= JSONObject.fromObject(requestUrl);
+                        PubMessage.access_token = result.getString("access_token");
+                        System.out.println(new Date()+"----微信token获取："+PubMessage.access_token);
+                        Thread.sleep(7100000);//7200秒
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.start();*/
+
         new Thread(){
             public void run(){
                 this.setName("beifen");

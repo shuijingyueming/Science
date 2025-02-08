@@ -212,6 +212,26 @@ public class CdyheServiceImpl implements CdyheService {
         c2.andSmd002NotEqualTo("A");
         return yheMapper.countByExamplekcje1(e1,e2);
     }
+
+    @Override
+    public PageBean selectPageBean2(PageBean pb) {
+        cdyheExample e1 = new cdyheExample();
+        Criteria c = e1.createCriteria();
+//        if(pb.getOthersql()!=null) c.andYhe003Like("%"+pb.getOthersql()+"%");
+        if(pb.getOthersql5()!=null) c.andYhe003EqualTo(Integer.valueOf(pb.getOthersql5()));
+        if(pb.getOthersql6()!=null)  c.andYhe002EqualTo(Integer.valueOf(pb.getOthersql6()));
+        if(pb.getOthersql1()!=null)  {
+            if(pb.getOthersql1().equals("A")){
+                c.andSql("((yhe007!='E' or yhe007!='F')  and yhe008<CURDATE())");
+            }else if(pb.getOthersql1().equals("F")){
+                c.andYhe007EqualTo(pb.getOthersql1());
+            }else{
+                c.andSql("(yhe007='E' or yhe008>=CURDATE())");
+            }
+        }
+        e1.setOrderByClause("yhe008 desc");
+        return queryByPage(pb,e1);
+    }
     @Override
     public PageBean selectPageBean1(PageBean pb) throws ParseException {
         cdyheExample e1 = new cdyheExample();

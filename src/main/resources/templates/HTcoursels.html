@@ -82,7 +82,7 @@
                                     <td th:text="${item.yhc003}"></td>
                                     <td>
                                         <div class="btn-group btn-group-sm">
-                                            <a href="javascript:void(0);" th:onclick="toxq([[${item.toString()}]])" class="btn btn-table"
+                                            <a href="javascript:void(0);" th:onclick="toxq([[${item.toString()}]],[[${item.yhc004}]])" class="btn btn-table"
                                                data-bs-toggle="modal" data-bs-target="#xqmode">详情</a>
                                             <div class="ivu-divider-vertical"></div>
                                             <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]])" class="btn btn-table"
@@ -137,7 +137,7 @@
                         <div class="row col-auto" style="margin-top: 20px;">
                             <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">老师简介</label>
                             <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                <textarea class="form-control" style="resize: none;" rows="3" id="t4" name="t4"></textarea>
+                                <textarea class="form-control" style="resize: none;width:430px;min-height:500px;height: 500px;" id="t4" name="t4"></textarea>
                             </div>
                         </div>
                     </div>
@@ -192,6 +192,38 @@
 
 <script type="text/javascript">
 
+    //富文本编辑器
+    KindEditor.ready(function (K) {
+        KE = K.create('#t4', {
+            allowFileManager: true, //浏览图片空间
+            filterMode: false, //HTML特殊代码过滤
+            uploadJson:"upload",
+            items : [
+                'source', '|', 'undo', 'redo', '|', 'preview', /* "print", */
+                'code', 'cut', 'copy', 'paste','plainpaste', 'wordpaste',
+                '|', 'justifyleft', 'justifycenter', 'justifyright','justifyfull', 'insertorderedlist', 'insertunorderedlist',
+                'indent', 'outdent', 'subscript','superscript', 'clearhtml', 'quickformat', 'selectall', '|',
+                'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image',
+                /*  "multiimage", "flash", "media",  "insertfile",*/
+                'table', 'hr', 'emoticons', /* "baidumap",  */ 'pagebreak',
+                /* "anchor", "link", "unlink", "|","about" */
+            ],
+            afterBlur: function () { this.sync(); }, //编辑器失去焦点(blur)时执行的回调函数（将编辑器的HTML数据同步到textarea）
+            afterUpload: function (url, data, name) { //上传文件后执行的回调函数，必须为3个参数
+                if (name == "image" || name == "multiimage") { //单个和批量上传图片时
+                    var img = new Image(); img.src = url;
+                    img.onload = function () { //图片必须加载完成才能获取尺寸
+                        if (img.width > 100) {
+                            KE.html(KE.html().replace('<img src="' + url + '"', '<img src="' + url + '" style="max-width:100%"'));
+                        }
+                    };
+                }
+            }
+        });
+    });
+</script>
+    <script type="text/javascript">
     var file_lastName="";
     var filesize;
     var layer = layui.layer;
@@ -241,7 +273,7 @@
 
 
     //详情
-    function toxq(obj){
+    function toxq(obj,html1){
         let item = null;
         if(obj.indexOf("Hash")>0){
             item = striongTOjsonString(obj);
@@ -257,7 +289,7 @@
         html+= '';
         html+= '<div class="row"><div class="col-md-5">';
         html+= '<div class="form-group"><label class="layui-form-label">老师简介：</label>';
-        html+= '<span class="jspan">'+item.yhc004+'</span>';
+        html+= '<span class="jspan">'+html1+'</span>';
         html+= '</div></div></div>';
         $("#xqmode").find(".modal-body").append(html);
 
@@ -273,7 +305,8 @@
             }
             $("#fid").val(josnobj.yhc001);
             $("#t3").val(josnobj.yhc003);
-            $("#t4").val(josnobj.yhc004);
+            // $("#t4").val(josnobj.yhc004);
+            KE.html(josnobj.yhc004);
             $("#ftype").text("编辑");
         }else{
             $("#ftype").text("添加");
@@ -294,7 +327,7 @@
             formData.append("fid",$("#fid").val().trim());
             formData.append("kcid",$("#kcid").val());
             formData.append("t3",$("#t3").val());
-            formData.append("t4",$("#t4").val());
+            formData.append("t4", KE.html());
             $.ajax({
                 url: 'toHt/xgcoursels', // 服务器端处理上传文件的URL
                 type: 'POST',

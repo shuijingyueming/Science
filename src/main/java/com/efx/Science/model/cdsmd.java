@@ -1,8 +1,19 @@
 package com.efx.Science.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class cdsmd {
+
+    private List<cdhba> hbaList;
+
+    public List<cdhba> getHbaList() {
+        return hbaList;
+    }
+
+    public void setHbaList(List<cdhba> hbaList) {
+        this.hbaList = hbaList;
+    }
 
     private Integer fwpjA;
     private Integer fwpjB;

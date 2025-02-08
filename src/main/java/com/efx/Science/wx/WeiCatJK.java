@@ -191,11 +191,11 @@ public class WeiCatJK {
     public static String decrypt_new(String encryptedData, String session_key, String iv){
     	String phoneNumber = null;
     	 try {
-    		//System.out.println(encryptedData);
-    		System.out.println(session_key);
-    		//System.out.println(iv);
+    		//System.out.println("encryptedData:"+encryptedData);
+    		System.out.println("session_key:"+session_key);
+    		//System.out.println("iv:"+iv);
              String result = WxUtils.wxDecrypt(encryptedData, session_key, iv);
-//             System.out.println(result);
+             System.out.println("result:"+result);
              JSONObject json = JSONObject.fromObject(result);
              if (json.containsKey("phoneNumber")) {
             	 phoneNumber = json.getString("phoneNumber");
