@@ -210,12 +210,8 @@
       <if test="smd008 != null">
         #{smd008,jdbcType=TIMESTAMP},
       </if>
-      <if test="smd009 != null">
         #{smd009,jdbcType=INTEGER},
-      </if>
-      <if test="smd010 != null">
         #{smd010,jdbcType=INTEGER},
-      </if>
       <if test="smd011 != null">
         #{smd011,jdbcType=INTEGER},
       </if>

@@ -305,8 +305,8 @@
                 formData.append("t6",$("#t6").val());
                 formData.append("t7",$("#t7").val());
                 formData.append("t8",$("#t8").val());
-                formData.append("t9","B");
-                formData.append("t10",$("#t10").val());
+                formData.append("t9","");
+                formData.append("t10","");
                 $.ajax({
                     url: 'toHt/xgselect1', // 服务器端处理上传文件的URL
                     type: 'POST',
@@ -327,7 +327,6 @@
         });
 
         $(document).ajaxStart(function(){
-
             $("button:submit").html('登录中...').attr("disabled", true);
             loader = $('button:submit').lyearloading({
                 opacity: 0.3,

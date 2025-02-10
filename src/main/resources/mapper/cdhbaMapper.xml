@@ -822,4 +822,12 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByPrimaryKey1" parameterType="java.lang.Integer" resultMap="BaseResultMap1">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from cdhba
+    where HBA001 = #{hba001,jdbcType=INTEGER}
+  </select>
 </mapper>

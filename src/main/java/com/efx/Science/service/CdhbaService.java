@@ -32,4 +32,6 @@ public interface CdhbaService extends IService<cdhba> {
     List<cdhba> getAll(String flid, String jgid, String type);
 
     PageBean selectPageBean1(PageBean pb);
+
+    cdhba getByid1(Integer kcid);
 }

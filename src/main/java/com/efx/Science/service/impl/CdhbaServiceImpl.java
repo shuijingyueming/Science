@@ -127,6 +127,11 @@ public class CdhbaServiceImpl implements CdhbaService {
         return queryByPage1(pb,e1);
     }
 
+    @Override
+    public cdhba getByid1(Integer kcid) {
+        return hbaMapper.selectByPrimaryKey1(kcid);
+    }
+
     public PageBean queryByPage1(PageBean pageBean, cdhbaExample example) {
         int page = (int) pageBean.getCurrentPage();
         int size = pageBean.getPageSize();

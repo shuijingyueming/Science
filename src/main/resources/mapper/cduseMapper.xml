@@ -130,7 +130,7 @@
       #{use013,jdbcType=VARCHAR}, #{use014,jdbcType=VARCHAR}, #{use015,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.efx.Science.model.cduse">
+  <insert id="insertSelective" parameterType="com.efx.Science.model.cduse" useGeneratedKeys="true" keyProperty="use001">
     insert into cduse
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="use001 != null">

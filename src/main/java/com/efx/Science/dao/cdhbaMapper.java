@@ -38,4 +38,6 @@ public interface cdhbaMapper {
     List<cdhba> selectByExampleAndPage(cdhbaExample example, RowBounds rowBounds);
 
     List<cdhba> selectByExampleAndPage1(cdhbaExample example, RowBounds rowBounds);
+
+    cdhba selectByPrimaryKey1(Integer kcid);
 }

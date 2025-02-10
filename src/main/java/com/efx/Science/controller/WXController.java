@@ -135,7 +135,7 @@ public class WXController extends BaseController {
     @RequestMapping(value = "/wxxq", method = RequestMethod.POST)
     public String wxxq(HttpServletRequest request) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
-        cdhba item=hbaService.getByid(Integer.valueOf(request.getParameter("kcid")));
+        cdhba item=hbaService.getByid1(Integer.valueOf(request.getParameter("kcid")));
         List<cdyhc> list=yhcService.getAll(request.getParameter("kcid"),null);
         result.put("item", item);
         result.put("list", list);
