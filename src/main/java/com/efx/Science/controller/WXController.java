@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.TemplateEngine;
 
@@ -141,6 +143,104 @@ public class WXController extends BaseController {
     }
 
     /**
+     * 扫码成功
+     * 2023-04-18
+     * 王新苗
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping(value = "/wxaddyy", method = RequestMethod.POST)
+    public String toaddhx(HttpServletRequest request) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        cdhba hba = hbaService.getByid(Integer.valueOf(request.getParameter("kcid")));
+        Integer xkid= Integer.valueOf(request.getParameter("xkid"));
+        cdyheWithBLOBs item = new cdyheWithBLOBs();
+        item.setYhe002(xkid);
+        item.setYhe004(hba.getHba001());
+        item.setYhe003(hba.getHba022());
+        cdsmd smd = smdService.getByid(item.getYhe003());
+        cdyhb yhb = yhbService.getByid(item.getYhe002());
+        item.setYhe009(request.getParameter("t2"));
+        item.setYhe010(Integer.valueOf(request.getParameter("t14")));
+        yhb.setYhb015(yhb.getYhb015()+1);
+        smd.setSmd013(smd.getSmd013()+1);
+        if(yhb.getYhb015()<=yhb.getYhb016()&&smd.getSmd013()<=smd.getSmd009()) {
+            yhb.setYhb012(yhb.getYhb012() + 1);
+            item.setYhe011(item.getYhe010() < 10 ? hba.getHba027() :
+                    (item.getYhe010() < 20 ? hba.getHba027() + hba.getHba028() * (item.getYhe010() - 10) :
+                            (item.getYhe010() < 30 ? hba.getHba027() + hba.getHba028() * 10 + hba.getHba029() * (item.getYhe010() - 20) :
+                                    (item.getYhe010() < 45 ? hba.getHba027() + hba.getHba028() * 10 + hba.getHba029() * (item.getYhe010() - 30) :
+                                            hba.getHba027() + hba.getHba028() * 10 + hba.getHba029() * 10 + hba.getHba030() * 15))));
+            item.setYhe012(yhb.getYhb017()!=null?yhb.getYhb017():(yhb.getYha().getYha005()!=null?yhb.getYha().getYha005():null));
+            item.setYhe013(hba.getHba012());
+            item.setYhe015(hba.getHba013());
+            if (item.getYhe015() != null) item.setYhe014(hba.getHba006() * item.getYhe015());
+            item.setYhe008(DATE.parse(request.getParameter("date")));
+            item.setYhe041(request.getParameter("time").equals("A")?"上午":(request.getParameter("time").equals("B")?"下午":request.getParameter("time").equals("C")?"晚上":""));
+            if (request.getParameter("lx").equals("B")) {
+                item.setYhe007("B");
+            } else {
+                item.setYhe007("A");
+            }
+            yhb.setYhb015(yhb.getYhb015() + 1);
+            cdyhd yhd = yhdService.serachObject(request.getParameter("date"), item.getYhe004());
+            if (yhd != null) {
+                if (item.getYhe041().equals("上午")) {
+                    yhd.setYhd010(yhd.getYhd010() + 1);
+                } else if (item.getYhe041().equals("下午")) {
+                    yhd.setYhd012(yhd.getYhd012() + 1);
+                } else if (item.getYhe041().equals("晚上")) {
+                    yhd.setYhd014(yhd.getYhd014() + 1);
+                }
+                yhdService.update(yhd);
+            }
+            item = yheService.insert(item);
+            yhbService.update(yhb);
+            smdService.update(smd);
+            result.put("id", item.getYhe001());
+            result.put("msg", "1");
+        }else{
+            result.put("msg", "0");
+        }
+        return JSON.toJSONString(result);
+    }
+
+    /**
+     * 巡检图片
+     * 2022-12-30
+     * 王新苗
+     */
+    @ResponseBody
+    @RequestMapping(value = "/wx_addpic",headers = "content-type=multipart/form-data")
+    public String wx_addpic(HttpServletRequest request) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        // 图片
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        Date date = new Date();
+        // 获得文件
+       MultipartFile t1 = multipartRequest.getFile("imgs");
+        System.out.println(request.getParameter("id"));
+        if (t1 != null) {
+            if (t1.getOriginalFilename() != null && !t1.getOriginalFilename().isEmpty()) {
+                String filename = sdf1.format(date) + request.getParameter("i") + t1.getOriginalFilename().substring(t1.getOriginalFilename().lastIndexOf("."));
+                cdyhf yhf = new cdyhf();
+                yhf.setYhf001(UUID.randomUUID().toString().replaceAll("-", ""));
+                yhf.setYhf002(Integer.valueOf(request.getParameter("id")));
+                yhf.setYhf003("D");
+                yhf.setYhf004(filename);
+                yhf.setYhf005("x" + request.getParameter("xkid") + "/" + sdf2.format(date));
+                uploadpic(yhf.getYhf005() + "/" + yhf.getYhf004(), t1, null);
+                yhf.setYhf007(Integer.valueOf(request.getParameter("yhid")));
+                yhf.setYhf008(new Date());
+                yhfService.insert(yhf);
+            }
+        }
+        result.put("msg", "Y");
+        return JSON.toJSONString(result);
+    }
+
+    /**
      * 详情
      * 王新苗
      * @return
@@ -176,6 +276,21 @@ public class WXController extends BaseController {
         if(request.getParameter("type")!=null&&!request.getParameter("type").isEmpty())pagebean.setOthersql1(request.getParameter("type"));
         PageBean pb=yheService.selectPageBean2(pagebean);
         result.put("pb", pb);
+        return JSON.toJSONString(result);
+    }
+
+    /**
+     * 详情
+     * 王新苗
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping(value = "/wxyyxq", method = RequestMethod.POST)
+    public String wxyxq(HttpServletRequest request) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        cdyheWithBLOBs item=yheService.getByid(Integer.valueOf(request.getParameter("id")));
+        result.put("item", item);
         return JSON.toJSONString(result);
     }
 

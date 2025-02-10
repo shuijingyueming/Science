@@ -1120,12 +1120,12 @@
             success:function(data) {
                 var list = eval(data.list);
                 $('select[id=t4]').empty();
-                $("select[id=t4]").append("<option value=''></option>");
                 for(var i=0;i<list.length;i++){
                     $("select[id=t4]").append("<option value='"+list[i].hba001+"' xname='"+list[i].smd.smd003+"'" +
                         " x1='"+list[i].hba002+"'  x3='"+list[i].hba017+"'  x4='"+list[i].hba003+"'  x5='"+list[i].hba008+"'  x9='"+list[i].hba009+"'  x6='"+list[i].hba005+"'  x7='"+list[i].hba015+"' " +
                         ">"+list[i].hba002+"</option>");
                 }
+                $('.selectpicker').selectpicker('remove');
                 $('.selectpicker').selectpicker('refresh');
                 tokcxq()
             },

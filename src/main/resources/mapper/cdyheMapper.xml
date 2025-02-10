@@ -52,6 +52,7 @@
     <association property="smd" column="YHE003" select="com.efx.Science.dao.cdsmdMapper.selectByPrimaryKey"/>
     <association property="hba" column="YHE004" select="com.efx.Science.dao.cdhbaMapper.selectByPrimaryKey"/>
     <association property="yhc" column="YHE005" select="com.efx.Science.dao.cdyhcMapper.selectByPrimaryKey"/>
+    <collection  property="yhflist"  column="YHE001"  select="com.efx.Science.dao.cdyhfMapper.selectByflid"/>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>

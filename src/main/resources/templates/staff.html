@@ -52,7 +52,7 @@
                                 <div class="col-auto">
                                     <div class="row">
                                         <label class="col-auto col-form-label"
-                                               style="padding-right:0;padding-left:10px;">名称</label>
+                                               style="padding-right:0;padding-left:10px;">账户名称</label>
                                         <div class="col-auto">
                                             <input type="text" class="form-control" id="name" name="name" th:value="${pageobj.othersql}"
                                                    placeholder="请输入名称"/>
@@ -71,7 +71,7 @@
                                 <th:block th:if="${pageobj.othersql1=='B'}">
                                     <div class="col-auto" th:style="${session.umsg.jstype=='B'?'display: none':''}">
                                         <div class="row">
-                                            <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">授课方名称</label>
+                                            <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;width: 200px">授课方名称</label>
                                             <div class="col-auto">
                                                 <select id="skid" name="skid"  class="form-control selectpicker" data-live-search="true">
                                                     <option value="" selected>请选择</option>
@@ -86,7 +86,7 @@
                                 <th:block th:if="${pageobj.othersql1=='C'}">
                                     <div class="col-auto" th:style="${session.umsg.jstype=='C'?'display: none':''}">
                                         <div class="row">
-                                            <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">选课方名称</label>
+                                            <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;width: 200px">选课方名称</label>
                                             <div class="col-auto">
                                                 <select id="skid" name="skid"  class="form-control selectpicker" data-live-search="true">
                                                     <option value="" selected>请选择</option>
@@ -129,7 +129,7 @@
                                     <tr th:each="item,stat:${pageobj.resultList}">
                                     <td th:text="${stat.index+1}"></td>
                                         <th:block th:if="${session.umsg.jstype=='A'&&pageobj.othersql1!='A'}">
-                                            <th th:text="${pageobj.othersql1=='B'?item.smd.smd003:item.yhb.yhb004}"></th>
+                                            <th th:text="${pageobj.othersql1=='B'?(item.smd!=null?item.smd.smd003:''):(item.yhb!=null?item.yhb.yhb004:'')}"></th>
                                         </th:block>
                                         <td><img class="wimg" th:src="${item.use008!=null?'upload/tximg/'+item.use008:'images/nopic.png'}" style='width:100px;height:auto;object-fit:cover;border:1px solid rgb(229, 229, 229);'></td>
                                         <td th:text="${item.use007}"></td>

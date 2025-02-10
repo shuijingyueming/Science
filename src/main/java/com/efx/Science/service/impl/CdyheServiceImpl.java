@@ -222,14 +222,14 @@ public class CdyheServiceImpl implements CdyheService {
         if(pb.getOthersql6()!=null)  c.andYhe002EqualTo(Integer.valueOf(pb.getOthersql6()));
         if(pb.getOthersql1()!=null)  {
             if(pb.getOthersql1().equals("A")){
-                c.andSql("((yhe007!='E' or yhe007!='F')  and yhe008<CURDATE())");
+                c.andSql("((yhe007!='E' or yhe007!='F')  and yhe008>CURDATE())");
             }else if(pb.getOthersql1().equals("F")){
                 c.andYhe007EqualTo(pb.getOthersql1());
             }else{
-                c.andSql("(yhe007='E' or yhe008>=CURDATE())");
+                c.andSql("(yhe007='E' or yhe008<CURDATE())");
             }
         }
-        e1.setOrderByClause("yhe008 desc");
+        e1.setOrderByClause("yhe008 desc,yhe001 desc");
         return queryByPage(pb,e1);
     }
     @Override

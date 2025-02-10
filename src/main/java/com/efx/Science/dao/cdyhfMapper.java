@@ -30,4 +30,6 @@ public interface cdyhfMapper {
     int updateByPrimaryKey(cdyhf record);
 
     List<cdyhf> selectByExampleAndPage(cdyhfExample example, RowBounds rowBounds);
+
+    cdyhf selectByflid(Integer id);
 }

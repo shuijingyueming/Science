@@ -66,7 +66,7 @@ public class HTinfoController extends BaseController {
         cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
         Integer skfs=smdService.countByExample();
         Integer xkfs=yhbService.countByExample();
-        List<cdyhe> txliat=yheService.getAll(user.getUse009(),user.getUse011());
+        List<cdyhe> txliat=user.getUse011()!=null?yheService.getAll(user.getUse009(),user.getUse011()):null;
         mav.addObject("skfs", skfs);
         mav.addObject("xkfs", xkfs);
         mav.addObject("txliat", txliat);
@@ -675,7 +675,7 @@ public class HTinfoController extends BaseController {
             yhaService.update(item);
             result.put("msg","U");
         }else{
-            item.setYha006(0);
+            item.setYha006(item.getYha004());
             String log = "新增了名字为：【" + request.getParameter("t3")+ "】的层级信息";
             addLog(getUse(request).getUse002(),log);
             item = yhaService.insert(item);
@@ -1895,7 +1895,7 @@ public class HTinfoController extends BaseController {
                           (item.getYhe010()<30?hba.getHba027()+hba.getHba028()*10+hba.getHba029()*(item.getYhe010()-20):
                           (item.getYhe010()<45?hba.getHba027()+hba.getHba028()*10+hba.getHba029()*(item.getYhe010()-30):
                                                hba.getHba027()+hba.getHba028()*10+hba.getHba029()*10+hba.getHba030()*15))));
-            item.setYhe012(yhb.getYhb017());
+            item.setYhe012(yhb.getYhb017()!=null?yhb.getYhb017():(yhb.getYha().getYha005()!=null?yhb.getYha().getYha005():null));
             item.setYhe013(hba.getHba012());
             item.setYhe015(hba.getHba013());
             if(item.getYhe015()!=null)item.setYhe014(hba.getHba006()*item.getYhe015());
@@ -1927,7 +1927,7 @@ public class HTinfoController extends BaseController {
             if(t1!=null&&t1.size()>0&&!t1.get(0).getOriginalFilename().isEmpty()){
                 for(int i=0;i<t1.size();i++){
                     if (t1.get(i).getOriginalFilename()!=null && !t1.get(i).getOriginalFilename().isEmpty()) {
-                        String filename = sdf.format(date)+i+t1.get(i).getOriginalFilename().substring(t1.get(i).getOriginalFilename().lastIndexOf("."));
+                        String filename = sdf1.format(date)+i+t1.get(i).getOriginalFilename().substring(t1.get(i).getOriginalFilename().lastIndexOf("."));
                         cdyhf yhf = new cdyhf();
                         yhf.setYhf001(UUID.randomUUID().toString().replaceAll("-",""));
                         yhf.setYhf002(item.getYhe001());

@@ -67,7 +67,7 @@ public class ExcelExport {
 						item.setYha002(name);
 						if(!num.isEmpty())item.setYha004(Integer.valueOf(num));
 						if(!fee.isEmpty())item.setYha005(Float.valueOf(fee));
-						item.setYha006(0);
+						item.setYha006(item.getYha004());
 						item = yhaService.insert(item);
 					}else{
 						if(!num.isEmpty())item.setYha004(Integer.valueOf(num));
@@ -103,15 +103,15 @@ public class ExcelExport {
 		for (int row_num = 1; row_num < sheet.getPhysicalNumberOfRows(); row_num++) {
 			row = sheet.getRow(row_num);
 			if (row != null) {
-				zhname = getValue(row.getCell(0)).replaceAll(" ", "");
-				zhzname = getValue(row.getCell(1)).replaceAll(" ", "");
-				zhphone = getValue(row.getCell(2)).replaceAll(" ", "");
-				name = getValue(row.getCell(3)).replaceAll(" ", "");
-				dress = getValue(row.getCell(4)).replaceAll(" ", "");
-				lxname = getValue(row.getCell(5)).replaceAll(" ", "");
-				phone = getValue(row.getCell(6)).replaceAll(" ", "");
-				num = getValue(row.getCell(7)).replaceAll(" ", "");
-				fee = getValue(row.getCell(8)).replaceAll(" ", "");
+				name = getValue(row.getCell(0)).replaceAll(" ", "");
+				dress = getValue(row.getCell(1)).replaceAll(" ", "");
+				lxname = getValue(row.getCell(2)).replaceAll(" ", "");
+				phone = getValue(row.getCell(3)).replaceAll(" ", "");
+				num = getValue(row.getCell(4)).replaceAll(" ", "");
+				fee = getValue(row.getCell(5)).replaceAll(" ", "");
+				zhname = getValue(row.getCell(6)).replaceAll(" ", "");
+				zhzname = getValue(row.getCell(7)).replaceAll(" ", "");
+				zhphone = getValue(row.getCell(8)).replaceAll(" ", "");
 				if (!name.isEmpty()) {
 					item=yhbService.selectByName(name,id);
 					if(item==null){

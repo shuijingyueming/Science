@@ -1,8 +1,19 @@
 package com.efx.Science.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class cdyheWithBLOBs {
+
+    private List<cdyhf> yhflist;
+
+    public List<cdyhf> getYhflist() {
+        return yhflist;
+    }
+
+    public void setYhflist(List<cdyhf> yhflist) {
+        this.yhflist = yhflist;
+    }
 
     private cdsmd smd;
     private cdyhb yhb;
