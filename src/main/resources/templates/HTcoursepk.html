@@ -369,10 +369,10 @@
 
     //获取当月的排课记录的方法
     function getpkjl() {
-       // load_index = layer.load(1);
+        load_index = layer.load(1);
         var formData = new FormData();
         formData.append('kcid',$("#kcid").val());
-        formData.append('pkyear',$("#pkyear").val());
+        formData.append('pkyear',$("#pkyear").val().substring(0,4));
         formData.append('pkmonth',formatDate(calendar.state.currentDate, 'MM'));
         $.ajax({
             url: 'toHt/getcoursepk',
