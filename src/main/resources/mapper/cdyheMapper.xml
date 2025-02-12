@@ -40,8 +40,14 @@
     <result column="YHE040" jdbcType="INTEGER" property="yhe040" />
     <result column="YHE041" jdbcType="VARCHAR" property="yhe041" />
     <result column="YHE042" jdbcType="VARCHAR" property="yhe042" />
+    <result column="YHE043" jdbcType="VARCHAR" property="yhe043" />
+    <result column="YHE044" jdbcType="VARCHAR" property="yhe044" />
+    <result column="YHE045" jdbcType="VARCHAR" property="yhe045" />
+    <result column="YHE046" jdbcType="VARCHAR" property="yhe046" />
+    <result column="YHE047" jdbcType="VARCHAR" property="yhe047" />
+    <result column="YHE048" jdbcType="VARCHAR" property="yhe048" />
   </resultMap>
-  <resultMap extends="BaseResultMap" type="com.efx.Science.model.cdyheWithBLOBs" id="ResultMapWithBLOBs" >
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.efx.Science.model.cdyheWithBLOBs">
     <result column="YHE029" jdbcType="LONGVARCHAR" property="yhe029" />
     <result column="YHE030" jdbcType="LONGVARCHAR" property="yhe030" />
     <result column="YHE031" jdbcType="LONGVARCHAR" property="yhe031" />
@@ -116,7 +122,7 @@
     YHE001, YHE002, YHE003, YHE004, YHE005, YHE006, YHE007, YHE008, YHE009, YHE010, YHE011, 
     YHE012, YHE013, YHE014, YHE015, YHE016, YHE017, YHE018, YHE019, YHE020, YHE021, YHE022, 
     YHE023, YHE024, YHE025, YHE026, YHE027, YHE028, YHE032, YHE033, YHE034, YHE035, YHE036, 
-    YHE037, YHE038, YHE040, YHE041, YHE042
+    YHE037, YHE038, YHE040, YHE041, YHE042, YHE043, YHE044, YHE045, YHE046, YHE047, YHE048
   </sql>
   <sql id="Blob_Column_List">
     YHE029, YHE030, YHE031, YHE039
@@ -137,12 +143,12 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByExample" parameterType="com.efx.Science.model.cdyheExample" resultMap="BaseResultMap1">
+  <select id="selectByExample" parameterType="com.efx.Science.model.cdyheExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
-    <include refid="Base_Column_List" />,<include refid="Blob_Column_List" />
+    <include refid="Base_Column_List" />
     from cdyhe
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -151,7 +157,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap1">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
     ,
@@ -180,7 +186,9 @@
       YHE025, YHE026, YHE027, YHE028, 
       YHE032, YHE033, YHE034, YHE035, 
       YHE036, YHE037, YHE038, YHE040, 
-      YHE041, YHE042, YHE029, 
+      YHE041, YHE042, YHE043, 
+      YHE044, YHE045, YHE046, 
+      YHE047, YHE048, YHE029, 
       YHE030, YHE031, YHE039
       )
     values (#{yhe001,jdbcType=INTEGER}, #{yhe002,jdbcType=INTEGER}, #{yhe003,jdbcType=INTEGER}, 
@@ -193,11 +201,13 @@
       #{yhe025,jdbcType=CHAR}, #{yhe026,jdbcType=CHAR}, #{yhe027,jdbcType=CHAR}, #{yhe028,jdbcType=CHAR}, 
       #{yhe032,jdbcType=INTEGER}, #{yhe033,jdbcType=CHAR}, #{yhe034,jdbcType=CHAR}, #{yhe035,jdbcType=CHAR}, 
       #{yhe036,jdbcType=CHAR}, #{yhe037,jdbcType=CHAR}, #{yhe038,jdbcType=CHAR}, #{yhe040,jdbcType=INTEGER}, 
-      #{yhe041,jdbcType=VARCHAR}, #{yhe042,jdbcType=VARCHAR}, #{yhe029,jdbcType=LONGVARCHAR}, 
+      #{yhe041,jdbcType=VARCHAR}, #{yhe042,jdbcType=VARCHAR}, #{yhe043,jdbcType=VARCHAR}, 
+      #{yhe044,jdbcType=VARCHAR}, #{yhe045,jdbcType=VARCHAR}, #{yhe046,jdbcType=VARCHAR}, 
+      #{yhe047,jdbcType=VARCHAR}, #{yhe048,jdbcType=VARCHAR}, #{yhe029,jdbcType=LONGVARCHAR}, 
       #{yhe030,jdbcType=LONGVARCHAR}, #{yhe031,jdbcType=LONGVARCHAR}, #{yhe039,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.efx.Science.model.cdyheWithBLOBs" useGeneratedKeys="true" keyProperty="yhe001">
+  <insert id="insertSelective" parameterType="com.efx.Science.model.cdyheWithBLOBs">
     insert into cdyhe
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="yhe001 != null">
@@ -313,6 +323,24 @@
       </if>
       <if test="yhe042 != null">
         YHE042,
+      </if>
+      <if test="yhe043 != null">
+        YHE043,
+      </if>
+      <if test="yhe044 != null">
+        YHE044,
+      </if>
+      <if test="yhe045 != null">
+        YHE045,
+      </if>
+      <if test="yhe046 != null">
+        YHE046,
+      </if>
+      <if test="yhe047 != null">
+        YHE047,
+      </if>
+      <if test="yhe048 != null">
+        YHE048,
       </if>
       <if test="yhe029 != null">
         YHE029,
@@ -441,6 +469,24 @@
       </if>
       <if test="yhe042 != null">
         #{yhe042,jdbcType=VARCHAR},
+      </if>
+      <if test="yhe043 != null">
+        #{yhe043,jdbcType=VARCHAR},
+      </if>
+      <if test="yhe044 != null">
+        #{yhe044,jdbcType=VARCHAR},
+      </if>
+      <if test="yhe045 != null">
+        #{yhe045,jdbcType=VARCHAR},
+      </if>
+      <if test="yhe046 != null">
+        #{yhe046,jdbcType=VARCHAR},
+      </if>
+      <if test="yhe047 != null">
+        #{yhe047,jdbcType=VARCHAR},
+      </if>
+      <if test="yhe048 != null">
+        #{yhe048,jdbcType=VARCHAR},
       </if>
       <if test="yhe029 != null">
         #{yhe029,jdbcType=LONGVARCHAR},
@@ -579,6 +625,24 @@
       <if test="record.yhe042 != null">
         YHE042 = #{record.yhe042,jdbcType=VARCHAR},
       </if>
+      <if test="record.yhe043 != null">
+        YHE043 = #{record.yhe043,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yhe044 != null">
+        YHE044 = #{record.yhe044,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yhe045 != null">
+        YHE045 = #{record.yhe045,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yhe046 != null">
+        YHE046 = #{record.yhe046,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yhe047 != null">
+        YHE047 = #{record.yhe047,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yhe048 != null">
+        YHE048 = #{record.yhe048,jdbcType=VARCHAR},
+      </if>
       <if test="record.yhe029 != null">
         YHE029 = #{record.yhe029,jdbcType=LONGVARCHAR},
       </if>
@@ -636,6 +700,12 @@
       YHE040 = #{record.yhe040,jdbcType=INTEGER},
       YHE041 = #{record.yhe041,jdbcType=VARCHAR},
       YHE042 = #{record.yhe042,jdbcType=VARCHAR},
+      YHE043 = #{record.yhe043,jdbcType=VARCHAR},
+      YHE044 = #{record.yhe044,jdbcType=VARCHAR},
+      YHE045 = #{record.yhe045,jdbcType=VARCHAR},
+      YHE046 = #{record.yhe046,jdbcType=VARCHAR},
+      YHE047 = #{record.yhe047,jdbcType=VARCHAR},
+      YHE048 = #{record.yhe048,jdbcType=VARCHAR},
       YHE029 = #{record.yhe029,jdbcType=LONGVARCHAR},
       YHE030 = #{record.yhe030,jdbcType=LONGVARCHAR},
       YHE031 = #{record.yhe031,jdbcType=LONGVARCHAR},
@@ -683,7 +753,13 @@
       YHE038 = #{record.yhe038,jdbcType=CHAR},
       YHE040 = #{record.yhe040,jdbcType=INTEGER},
       YHE041 = #{record.yhe041,jdbcType=VARCHAR},
-      YHE042 = #{record.yhe042,jdbcType=VARCHAR}
+      YHE042 = #{record.yhe042,jdbcType=VARCHAR},
+      YHE043 = #{record.yhe043,jdbcType=VARCHAR},
+      YHE044 = #{record.yhe044,jdbcType=VARCHAR},
+      YHE045 = #{record.yhe045,jdbcType=VARCHAR},
+      YHE046 = #{record.yhe046,jdbcType=VARCHAR},
+      YHE047 = #{record.yhe047,jdbcType=VARCHAR},
+      YHE048 = #{record.yhe048,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -802,6 +878,24 @@
       <if test="yhe042 != null">
         YHE042 = #{yhe042,jdbcType=VARCHAR},
       </if>
+      <if test="yhe043 != null">
+        YHE043 = #{yhe043,jdbcType=VARCHAR},
+      </if>
+      <if test="yhe044 != null">
+        YHE044 = #{yhe044,jdbcType=VARCHAR},
+      </if>
+      <if test="yhe045 != null">
+        YHE045 = #{yhe045,jdbcType=VARCHAR},
+      </if>
+      <if test="yhe046 != null">
+        YHE046 = #{yhe046,jdbcType=VARCHAR},
+      </if>
+      <if test="yhe047 != null">
+        YHE047 = #{yhe047,jdbcType=VARCHAR},
+      </if>
+      <if test="yhe048 != null">
+        YHE048 = #{yhe048,jdbcType=VARCHAR},
+      </if>
       <if test="yhe029 != null">
         YHE029 = #{yhe029,jdbcType=LONGVARCHAR},
       </if>
@@ -856,6 +950,12 @@
       YHE040 = #{yhe040,jdbcType=INTEGER},
       YHE041 = #{yhe041,jdbcType=VARCHAR},
       YHE042 = #{yhe042,jdbcType=VARCHAR},
+      YHE043 = #{yhe043,jdbcType=VARCHAR},
+      YHE044 = #{yhe044,jdbcType=VARCHAR},
+      YHE045 = #{yhe045,jdbcType=VARCHAR},
+      YHE046 = #{yhe046,jdbcType=VARCHAR},
+      YHE047 = #{yhe047,jdbcType=VARCHAR},
+      YHE048 = #{yhe048,jdbcType=VARCHAR},
       YHE029 = #{yhe029,jdbcType=LONGVARCHAR},
       YHE030 = #{yhe030,jdbcType=LONGVARCHAR},
       YHE031 = #{yhe031,jdbcType=LONGVARCHAR},
@@ -900,7 +1000,13 @@
       YHE038 = #{yhe038,jdbcType=CHAR},
       YHE040 = #{yhe040,jdbcType=INTEGER},
       YHE041 = #{yhe041,jdbcType=VARCHAR},
-      YHE042 = #{yhe042,jdbcType=VARCHAR}
+      YHE042 = #{yhe042,jdbcType=VARCHAR},
+      YHE043 = #{yhe043,jdbcType=VARCHAR},
+      YHE044 = #{yhe044,jdbcType=VARCHAR},
+      YHE045 = #{yhe045,jdbcType=VARCHAR},
+      YHE046 = #{yhe046,jdbcType=VARCHAR},
+      YHE047 = #{yhe047,jdbcType=VARCHAR},
+      YHE048 = #{yhe048,jdbcType=VARCHAR}
     where YHE001 = #{yhe001,jdbcType=INTEGER}
   </update>
   <select id="selectByExampleAndPage" resultMap="BaseResultMap1" parameterType="com.efx.Science.model.cdyheExample" flushCache="true" useCache="false">
