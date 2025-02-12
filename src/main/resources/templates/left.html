@@ -108,21 +108,26 @@
                 </th:block>
                 <!--授课方-->
                 <th:block th:if="${session.umsg.jstype=='B'}">
+                    <th:block th:if="${session.umsg.jsqx=='M'}">
                     <li class="nav-item nav-item-has-subnav">
                         <a class="multitabs" href="toHt/staff?lx=B">
                             <i class="mdi mdi-stove"></i> <span>授课账户管理</span>
                         </a>
                     </li>
+                    </th:block>
                     <li class="nav-item nav-item-has-subnav">
-                        <a class="multitabs"  href="toHt/toselect">
+                        <a href="javascript:void(0)">
                             <i class="mdi mdi-stove"></i> <span>授课方管理</span>
                         </a>
                         <ul class="nav nav-subnav">
                             <li><a class="multitabs" href="toHt/toselect">授课方管理</a></li>
+                            <th:block th:if="${session.umsg.jsqx=='M'}">
                             <li><a class="multitabs" href="toHt/tocourse">课程管理</a></li>
                             <li><a class="multitabs" href="toHt/toselection">选课预约管理</a></li>
+                            </th:block>
                         </ul>
                     </li>
+                    <th:block th:if="${session.umsg.jsqx=='M'}">
                     <li class="nav-item nav-item-has-subnav">
                         <a href="javascript:void(0)">
                             <i class="mdi mdi-stove"></i> <span>消息管理</span>
@@ -132,6 +137,7 @@
                             <li><a class="multitabs" href="toHt/tonewsa">消息管理</a></li>
                         </ul>
                     </li>
+                    </th:block>
                 </th:block>
                 <!--选课方-->
                 <th:block th:if="${session.umsg.jstype=='C'}">

@@ -8,6 +8,7 @@ import com.efx.Science.model.PageBean;
 import com.efx.Science.model.cdhba;
 import com.efx.Science.model.cdhbaExample;
 import com.efx.Science.model.cdhbaExample.Criteria;
+import com.efx.Science.model.cdsmdExample;
 import com.efx.Science.service.CdhbaService;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,8 +124,11 @@ public class CdhbaServiceImpl implements CdhbaService {
         if(pb.getOthersql1()!=null) c.andHba022EqualTo(Integer.valueOf(pb.getOthersql1()));
         if(pb.getOthersql2()!=null) c.andHba021EqualTo(Integer.valueOf(pb.getOthersql2()));
         if(pb.getOthersql3()!=null) c.andHba026EqualTo(pb.getOthersql3());
+        cdsmdExample e2 = new cdsmdExample();
+        cdsmdExample.Criteria c1 = e2.createCriteria();
+        c1.andSmd014EqualTo("M");
         e1.setOrderByClause("hba001 desc");
-        return queryByPage1(pb,e1);
+        return queryByPage1(pb,e1,e2);
     }
 
     @Override
@@ -132,17 +136,17 @@ public class CdhbaServiceImpl implements CdhbaService {
         return hbaMapper.selectByPrimaryKey1(kcid);
     }
 
-    public PageBean queryByPage1(PageBean pageBean, cdhbaExample example) {
+    public PageBean queryByPage1(PageBean pageBean, cdhbaExample e1, cdsmdExample e2) {
         int page = (int) pageBean.getCurrentPage();
         int size = pageBean.getPageSize();
         //record sum
-        int sum = (int) hbaMapper.countByExample(example);
+        int sum = (int) hbaMapper.countByExample1(e1,e2);
         //page count
         int count = sum%size==0 ? sum/size : sum/size+1;
         //check page
         page = page<1 ? 1 : ((page>count)? count : page);
         //query
-        List<cdhba> list = hbaMapper.selectByExampleAndPage1(example, new RowBounds((page-1)*size, size));
+        List<cdhba> list = hbaMapper.selectByExampleAndPage1(e1,e2, new RowBounds((page-1)*size, size));
         //save to PageBean
         pageBean.setCurrentPage(page);
         pageBean.setPageCount(count);

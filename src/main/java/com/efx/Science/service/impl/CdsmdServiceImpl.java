@@ -27,7 +27,7 @@ import java.util.function.Function;
  * @since 2023-03-15
  */
 @Service
-public class CdsmfServiceImpl implements CdsmdService {
+public class CdsmdServiceImpl implements CdsmdService {
 
     @Autowired
     private cdsmdMapper smdMapper;
@@ -75,7 +75,10 @@ public class CdsmfServiceImpl implements CdsmdService {
 
     @Override
     public List<cdsmd> getAll() {
-        return smdMapper.selectByExample(null);
+        cdsmdExample e1 = new cdsmdExample();
+        Criteria c = e1.createCriteria();
+        c.andSmd014EqualTo("M");
+        return smdMapper.selectByExample(e1);
     }
 
     @Override

@@ -88,6 +88,7 @@
                                     <th>已授课人次</th>
                                     <th>已预约场次</th>
                                     <th>上线日期</th>
+                                    <th>状态</th>
                                     <th style="max-width:80px;" th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">操作</th>
                                 </tr>
                                 </thead>
@@ -105,13 +106,21 @@
                                     <td th:text="${item.smd012}"></td>
                                     <td th:text="${item.smd013}"></td>
                                     <td th:text="${#dates.format(item.smd008,'yyyy-MM-dd')}"></td>
+                                    <td th:text="${item.smd014=='M'?'正常':(item.smd014=='N'?'封号':(item.smd014=='P'?'待审核':(item.smd014=='E'?'驳回':'')))}"></td>
                                     <td th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">
                                         <div class="btn-group btn-group-sm">
-
                                             <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]])" class="btn btn-table"
                                                data-bs-toggle="modal" data-bs-target="#editmode">编辑</a>
                                             <div class="ivu-divider-vertical"></div>
-
+                                            <th:block th:if="${item.smd014=='M'}">
+                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.smd001}]],[[${item.smd003}]],[['N']])">封号</a>
+                                            </th:block>
+                                            <th:block th:if="${item.smd014=='N'}">
+                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.smd001}]],[[${item.smd003}]],[['M']])">正常</a>
+                                            </th:block>
+                                            <th:block th:if="${item.smd014=='P'}">
+                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#xqmode" th:onclick="tosh([[${item.toString()}]])">审核</a>
+                                            </th:block>
                                             <!-- <a href="javascript:void(0);" th:onclick="del([[${item.smd001}]])" class="btn btn-table">删除</a>-->
                                         </div>
                                     </td>
@@ -126,7 +135,27 @@
             </div>
         </div>
     </div>
+    <!-- 详情模态框 -->
+    <div class="modal fade" id="xqmode" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="xqmodeLabel">查看详情</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div>
+                    <div class="modal-body" style="min-height:580px;">
 
+                    </div>
+                    <div class="modal-footer" style="height:100px;">
+                        <button type="button" class="btn btn-primary" id="shtg">通过</button>
+                        <button type="button" class="btn btn-primary" id="shbh">驳回</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
     <!-- 编辑分类模态框 -->
     <div class="modal fade" id="editmode" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel"
          aria-hidden="true" style="height:100%;background-color: #FFF;">
@@ -273,6 +302,107 @@
     }
 
     pdyes($("#pages").val(), $("#counts").val());
+
+    function tosh(obj1){
+        let item1 = null;
+        if(obj1.indexOf("Hash")>0){
+            item1 = striongTOjsonString(obj1);
+        }else{
+            item1 = jsStringTojsonString(obj1);
+        }
+        $("#xqmode").find(".modal-body").empty();
+        let html="";
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">身份类别：</label>';
+        html+= '<span class="jspan">'+(item1.smd002=='A'?'机构':(item1.smd002=='B'?'个人':(item1.smd002=='C'?'专家':'')))+'</span>';
+        html+= '</div></div></div>';
+        html+= '';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">机构名称/个人单位：</label>';
+        html+= '<span class="jspan">'+item1.smd003+'</span>';
+        html+= '</div></div></div>';
+        html+= '';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">营业执照/身份证号：</label>';
+        html+= '<span class="jspan">'+item1.smd004+'</span>';
+        html+= '</div></div></div>';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">开户行：</label>';
+        html+= '<span class="jspan">'+item1.smd005+'</span>';
+        html+= '</div></div></div>';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">户名/银行卡号：</label>';
+        html+= '<span class="jspan">'+item1.smd006+'</span>';
+        html+= '</div></div></div>';
+        html+= '';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">账号/姓名：</label>';
+        html+= '<span class="jspan">'+item1.smd007+'</span>';
+        html+= '</div></div></div>';
+        $("#shtg").attr("onclick","xgzt("+item1.smd001+","+item1.smd003+",'M')")
+        $("#shbh").attr("onclick","xgzt("+item1.smd001+","+item1.smd003+",'E')")
+        $("#xqmode").find(".modal-body").append(html);
+    }
+
+    function xgzt(id,uname,type){
+        if(type=="E"){
+            var num = prompt("请输入驳回备注","");
+            if (num!="") {
+                load_index = layer.load(1);
+                var formData = new FormData();
+                formData.append("fid",id);
+                formData.append("uname",uname);
+                formData.append("type",type);
+                formData.append("t1",num);
+                $.ajax({
+                    url: 'toHt/xgztselect', // 服务器端处理上传文件的URL
+                    type: 'POST',
+                    data: formData,
+                    dataType:'json',
+                    contentType: false, // 不设置内容类型
+                    processData: false, // 不处理发送的数据
+                    success: function (res) {
+                        var d = eval(res);
+                        if(d.msg=="0"){
+                            layer.msg("修改成功");
+                            setTimeout(function(){
+                                location.reload();
+                            },1000);
+                            layer.close(load_index);
+                        }
+                    },
+                    error: function () { console.log('提交失败'); }
+                });
+            }else{
+                xgzt(id,uname,type);
+            }
+        }else if (confirm("您确定修改吗?")) {
+            load_index = layer.load(1);
+            var formData = new FormData();
+            formData.append("fid",id);
+            formData.append("uname",uname);
+            formData.append("type",type);
+            $.ajax({
+                url: 'toHt/xgztselect', // 服务器端处理上传文件的URL
+                type: 'POST',
+                data: formData,
+                dataType:'json',
+                contentType: false, // 不设置内容类型
+                processData: false, // 不处理发送的数据
+                success: function (res) {
+                    var d = eval(res);
+                    if(d.msg=="0"){
+                        layer.msg("修改成功");
+                        setTimeout(function(){
+                            location.reload();
+                        },1000);
+                        layer.close(load_index);
+                    }
+                },
+                error: function () { console.log('提交失败'); }
+            });
+        }
+    }
 
     $("input[name='t3']").click(function(){
         if($(this).val()=="A"){

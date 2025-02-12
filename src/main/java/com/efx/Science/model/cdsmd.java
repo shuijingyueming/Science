@@ -115,9 +115,9 @@ public class cdsmd {
 
     private Integer smd013;
 
-    private Integer smd014;
+    private String smd014;
 
-    private Integer smd015;
+    private String smd015;
 
     private Float smd016;
 
@@ -229,19 +229,19 @@ public class cdsmd {
         this.smd013 = smd013;
     }
 
-    public Integer getSmd014() {
+    public String getSmd014() {
         return smd014;
     }
 
-    public void setSmd014(Integer smd014) {
+    public void setSmd014(String smd014) {
         this.smd014 = smd014;
     }
 
-    public Integer getSmd015() {
+    public String getSmd015() {
         return smd015;
     }
 
-    public void setSmd015(Integer smd015) {
+    public void setSmd015(String smd015) {
         this.smd015 = smd015;
     }
 

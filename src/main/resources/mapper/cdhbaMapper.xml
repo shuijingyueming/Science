@@ -808,18 +808,39 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="countByExample1" parameterType="com.efx.Science.model.cdhbaExample" resultType="java.lang.Integer">
+    select count(*) from cdhba left join cdsmd on cdhba.hba022=cdsmd.smd001
+    <where>
+      <if test="cdhbaExample != null">
+        <foreach collection="cdhbaExample.oredCriteria" item="criteria" separator="or">
+          <include refid="ECExample_Where_Clause" />
+        </foreach>
+      </if>
+      <if test="cdsmdExample != null">
+        <foreach collection="cdsmdExample.oredCriteria" item="criteria" separator="or">
+          <include refid="ECExample_Where_Clause" />
+        </foreach>
+      </if>
+    </where>
+  </select>
   <select id="selectByExampleAndPage1" resultMap="BaseResultMap2" parameterType="com.efx.Science.model.cdhbaExample" flushCache="true" useCache="false">
     select
-    <if test="distinct" >
-      distinct
-    </if>
     <include refid="Base_Column_List" />, <include refid="Blob_Column_List" />
-    from cdhba
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
+    from cdhba  left join cdsmd on cdhba.hba022=cdsmd.smd001
+    <where>
+      <if test="cdhbaExample != null">
+        <foreach collection="cdhbaExample.oredCriteria" item="criteria" separator="or">
+          <include refid="ECExample_Where_Clause" />
+        </foreach>
+      </if>
+      <if test="cdsmdExample != null">
+        <foreach collection="cdsmdExample.oredCriteria" item="criteria" separator="or">
+          <include refid="ECExample_Where_Clause" />
+        </foreach>
+      </if>
+    </where>
+    <if test="cdhbaExample.orderByClause != null" >
+      order by ${cdhbaExample.orderByClause}
     </if>
   </select>
   <select id="selectByPrimaryKey1" parameterType="java.lang.Integer" resultMap="BaseResultMap1">
@@ -830,4 +851,31 @@
     from cdhba
     where HBA001 = #{hba001,jdbcType=INTEGER}
   </select>
+
+  <sql id="ECExample_Where_Clause">
+    <if test="criteria.valid">
+      <foreach collection="criteria.criteria" item="criterion">
+        <choose>
+          <when test="criterion.noValue">
+            and ${criterion.condition}
+          </when>
+          <when test="criterion.singleValue">
+            and ${criterion.condition}
+            #{criterion.value}
+          </when>
+          <when test="criterion.betweenValue">
+            and ${criterion.condition} #{criterion.value} and
+            #{criterion.secondValue}
+          </when>
+          <when test="criterion.listValue">
+            and ${criterion.condition}
+            <foreach collection="criterion.value" item="listItem"
+                     open="(" close=")" separator=",">
+              #{listItem}
+            </foreach>
+          </when>
+        </choose>
+      </foreach>
+    </if>
+  </sql>
 </mapper>

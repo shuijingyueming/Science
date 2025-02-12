@@ -408,7 +408,7 @@ public class HTinfoController extends BaseController {
     @RequestMapping(value = "/xgztstaff",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     public String xgztstaff(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HashMap result = new HashMap();
-        addLog(getUse(request).getUse002(),"修改了活动名称为：【" + request.getParameter("uname") + "】的状态");
+        addLog(getUse(request).getUse002(),"修改了用户名称为：【" + request.getParameter("uname") + "】的状态");
         cduse use = useService.getByid(Integer.valueOf(request.getParameter("fid")));
         if(use.getUse013().equals("P")&&request.getParameter("type").equals("M")){
             if(use.getUse009().equals("B")){
@@ -502,11 +502,12 @@ public class HTinfoController extends BaseController {
         item.setSmd007(request.getParameter("t7"));
         item.setSmd017(request.getParameter("t10"));
         item.setSmd018(request.getParameter("t11"));
-        if(!request.getParameter("t9").isEmpty())item.setSmd009(Integer.valueOf(request.getParameter("t9")));
-        if(!request.getParameter("t10").isEmpty())item.setSmd010(Integer.valueOf(request.getParameter("t10")));
+//        if(!request.getParameter("t9").isEmpty())item.setSmd009(Integer.valueOf(request.getParameter("t9")));
+//        if(!request.getParameter("t10").isEmpty())item.setSmd010(Integer.valueOf(request.getParameter("t10")));
         item.setSmd011(0);
         item.setSmd012(0);
         item.setSmd013(0);
+        item.setSmd014("P");
         item = smdService.insert(item);
         result.put("msg", "I");
         cduse use = new cduse();
@@ -515,7 +516,7 @@ public class HTinfoController extends BaseController {
         use.setUse003(EncrpytUtil.getSHA256("123456"));
         use.setUse004(request.getParameter("z4"));
         use.setUse005(request.getParameter("z5"));
-        use.setUse013("P");
+        use.setUse013("M");
         use.setUse009("B");
         use.setUse011(item.getSmd001());
         use = useService.insert(use);
@@ -564,7 +565,7 @@ public class HTinfoController extends BaseController {
         use.setUse003(EncrpytUtil.getSHA256("123456"));
         use.setUse004(request.getParameter("z4"));
         use.setUse005(request.getParameter("z5"));
-        use.setUse013("P");
+        use.setUse013("M");
         use.setUse009("C");
         use.setUse011(item.getYhb001());
         use = useService.insert(use);
@@ -936,7 +937,7 @@ public class HTinfoController extends BaseController {
     @RequestMapping(value = "/xgztcourse",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     public String xgztcourse(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HashMap result = new HashMap();
-        addLog(getUse(request).getUse002(),"修改了活动名称为：【" + request.getParameter("uname") + "】的状态");
+        addLog(getUse(request).getUse002(),"修改了课程名称为：【" + request.getParameter("uname") + "】的状态");
         cdhba hba=hbaService.getByid(Integer.valueOf(request.getParameter("fid")));
         hba.setHba026(request.getParameter("type"));
         if(request.getParameter("t1")!=null)hba.setHba025(request.getParameter("t1"));
@@ -1655,13 +1656,41 @@ public class HTinfoController extends BaseController {
             mav.setViewName("HTselect");
         }else{
             mav.addObject("item", smdService.getByid(user.getUse011()));
-            mav.addObject("zt", user.getUse013());
-            mav.addObject("bz", user.getUse014());
+//            mav.addObject("zt", user.getUse013());
+//            mav.addObject("bz", user.getUse014());
             mav.setViewName("HTselectxq");
         }
         return mav;
     }
 
+
+
+    /**
+     * 删除用户
+     * 王新苗
+     * @param request
+     * @param response
+     */
+    @ResponseBody
+    @RequestMapping(value = "/xgztselect",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    public String xgztselect(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        addLog(getUse(request).getUse002(),"修改了选课方名称为：【" + request.getParameter("uname") + "】的状态");
+        cdsmd smd = smdService.getByid(Integer.valueOf(request.getParameter("fid")));
+        if(smd.getSmd014().equals("P")&&request.getParameter("type").equals("M")){
+            smd.setSmd008(new Date());
+            smdService.update(smd);
+        }
+        smd.setSmd014(request.getParameter("type"));
+        if(request.getParameter("t1")!=null){
+            smd.setSmd015(request.getParameter("t1"));
+        }else{
+            smd.setSmd015("");
+        }
+        smdService.update(smd);
+        result.put("msg","0");
+        return JSON.toJSONString(result);
+    }
 
     /**
      * 修改账户
@@ -1690,6 +1719,8 @@ public class HTinfoController extends BaseController {
         item.setSmd007(request.getParameter("t7"));*/
         if(!request.getParameter("t9").isEmpty())item.setSmd009(Integer.valueOf(request.getParameter("t9")));
         if(!request.getParameter("t10").isEmpty())item.setSmd010(Integer.valueOf(request.getParameter("t10")));
+        item.setSmd014("P");
+        item.setSmd015("");
         if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()){
             String log = "修改了名字为：【" + request.getParameter("t1") + "】的用户信息";
             item.setSmd001(Integer.valueOf((request.getParameter("fid"))));
@@ -1705,13 +1736,6 @@ public class HTinfoController extends BaseController {
             addLog(getUse(request).getUse002(),log);
             item = smdService.insert(item);
             result.put("msg", "I");
-        }
-        if(request.getParameter("zt")!=null){
-            cduse use=new cduse();
-            use.setUse001(Decrypt(session.getAttribute("user").toString()));
-            use.setUse013("P");
-            use.setUse014("");
-            useService.update(use);
         }
         result.put("d",item);
         return JSON.toJSONString(result);
@@ -1888,6 +1912,10 @@ public class HTinfoController extends BaseController {
         if(!request.getParameter("t14").isEmpty())item.setYhe010(Integer.valueOf(request.getParameter("t14")));
         yhb.setYhb015(yhb.getYhb015()+1);
         smd.setSmd013(smd.getSmd013()+1);
+        item.setYhe041(request.getParameter("t41"));
+        item.setYhe042(request.getParameter("t42"));
+        item.setYhe043(request.getParameter("t43"));
+        item.setYhe044(request.getParameter("t44"));
         if(yhb.getYhb015()<=yhb.getYhb016()&&smd.getSmd013()<=smd.getSmd009()){
             yhb.setYhb012(yhb.getYhb012()+1);
             item.setYhe011(item.getYhe010()<10?hba.getHba027():

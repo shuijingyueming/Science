@@ -385,7 +385,6 @@ public class CdyheServiceImpl implements CdyheService {
     }
 
 
-
     @Override
     public boolean saveBatch(Collection<cdyhe> entityList, int batchSize) {
         return false;

@@ -237,9 +237,9 @@
                         <th:block th:if="${session.umsg.jstype=='C'}">
                             <div class="row ">
                                 <div class="col-md-3">
-                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">实际服务人次议</label>
+                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">实际服务人次</label>
                                     <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                        <input type="number" class="form-control col-xl-12 col-md-12 col-sm-12 col-12" id="p17" name="p17" placeholder="请输入实际服务人次议"/>
+                                        <input type="number" class="form-control col-xl-12 col-md-12 col-sm-12 col-12" id="p17" name="p17" placeholder="请输入实际服务人次"/>
                                     </div>
                                 </div>
                             </div>
@@ -401,9 +401,9 @@
                         <th:block th:if="${session.umsg.jstype=='B'}">
                             <div class="row ">
                                 <div class="col-md-3">
-                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">实际服务人次议</label>
+                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">实际服务人次</label>
                                     <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                        <input type="number" class="form-control col-xl-12 col-md-12 col-sm-12 col-12" id="p18" name="p18" placeholder="请输入实际服务人次议"/>
+                                        <input type="number" class="form-control col-xl-12 col-md-12 col-sm-12 col-12" id="p18" name="p18" placeholder="请输入实际服务人次"/>
                                     </div>
                                 </div>
                             </div>
@@ -695,8 +695,28 @@
                                 <input type="text" class="form-control col-auto" id="t2" name="t2" placeholder="请输入授课地点"/>
                             </div>
                             <div class="col-lg-2 col-md-3 col-sm-4">
-                                <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">服务人次</label>
-                                <input type="text" class="form-control col-auto" id="t14" name="t14" placeholder="请输入服务人次"/>
+                                <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">预计活动人数</label>
+                                <input type="number" class="form-control col-auto" id="t14" name="t14" placeholder="请输入预计活动人数"/>
+                            </div>
+                        </div>
+                        <div class="row col-auto">
+                            <div class="col-lg-4 col-md-6 col-sm-8">
+                                <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">联系人</label>
+                                <input type="text" class="form-control col-auto" id="t43" name="t43" placeholder="请输入联系人"/>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-4">
+                                <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">联系电话</label>
+                                <input type="text" class="form-control col-auto" id="t44" name="t44" placeholder="请输入联系电话"/>
+                            </div>
+                        </div>
+                        <div class="row col-auto">
+                            <div class="col-lg-4 col-md-6 col-sm-8">
+                                <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">预约日期备注</label>
+                                <input type="text" class="form-control col-auto" id="t41" name="t41" placeholder="请输入预约日期备注"/>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-4">
+                                <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">其他要求</label>
+                                <textarea class="form-control" style="resize: none;" rows="3" id="t42" name="t42"></textarea>
                             </div>
                         </div>
                         <div class="row col-auto">
@@ -1177,6 +1197,10 @@
             formData.append("t4",$("#t4").val());
             formData.append("t8",$("#t8").val());
             formData.append("t14",$("#t14").val());
+            formData.append("t41",$("#t41").val());
+            formData.append("t42",$("#t42").val());
+            formData.append("t43",$("#t43").val());
+            formData.append("t44",$("#t44").val());
             formData.append("lx",$("#lx").val());
             formData.delete("s1");
             for(var i=0;i<t4.length;i++){

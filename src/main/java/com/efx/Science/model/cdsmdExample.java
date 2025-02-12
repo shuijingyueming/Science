@@ -955,52 +955,62 @@ public class cdsmdExample {
             return (Criteria) this;
         }
 
-        public Criteria andSmd014EqualTo(Integer value) {
+        public Criteria andSmd014EqualTo(String value) {
             addCriterion("SMD014 =", value, "smd014");
             return (Criteria) this;
         }
 
-        public Criteria andSmd014NotEqualTo(Integer value) {
+        public Criteria andSmd014NotEqualTo(String value) {
             addCriterion("SMD014 <>", value, "smd014");
             return (Criteria) this;
         }
 
-        public Criteria andSmd014GreaterThan(Integer value) {
+        public Criteria andSmd014GreaterThan(String value) {
             addCriterion("SMD014 >", value, "smd014");
             return (Criteria) this;
         }
 
-        public Criteria andSmd014GreaterThanOrEqualTo(Integer value) {
+        public Criteria andSmd014GreaterThanOrEqualTo(String value) {
             addCriterion("SMD014 >=", value, "smd014");
             return (Criteria) this;
         }
 
-        public Criteria andSmd014LessThan(Integer value) {
+        public Criteria andSmd014LessThan(String value) {
             addCriterion("SMD014 <", value, "smd014");
             return (Criteria) this;
         }
 
-        public Criteria andSmd014LessThanOrEqualTo(Integer value) {
+        public Criteria andSmd014LessThanOrEqualTo(String value) {
             addCriterion("SMD014 <=", value, "smd014");
             return (Criteria) this;
         }
 
-        public Criteria andSmd014In(List<Integer> values) {
+        public Criteria andSmd014Like(String value) {
+            addCriterion("SMD014 like", value, "smd014");
+            return (Criteria) this;
+        }
+
+        public Criteria andSmd014NotLike(String value) {
+            addCriterion("SMD014 not like", value, "smd014");
+            return (Criteria) this;
+        }
+
+        public Criteria andSmd014In(List<String> values) {
             addCriterion("SMD014 in", values, "smd014");
             return (Criteria) this;
         }
 
-        public Criteria andSmd014NotIn(List<Integer> values) {
+        public Criteria andSmd014NotIn(List<String> values) {
             addCriterion("SMD014 not in", values, "smd014");
             return (Criteria) this;
         }
 
-        public Criteria andSmd014Between(Integer value1, Integer value2) {
+        public Criteria andSmd014Between(String value1, String value2) {
             addCriterion("SMD014 between", value1, value2, "smd014");
             return (Criteria) this;
         }
 
-        public Criteria andSmd014NotBetween(Integer value1, Integer value2) {
+        public Criteria andSmd014NotBetween(String value1, String value2) {
             addCriterion("SMD014 not between", value1, value2, "smd014");
             return (Criteria) this;
         }

@@ -136,7 +136,7 @@
                                         <td th:text="${item.use002}"></td>
                                         <td th:text="${item.use004}"></td>
                                         <td th:text="${item.use005}"></td>
-                                        <td th:text="${item.use013=='M'?'正常':(item.use013=='N'?'封号':(item.use013=='P'?'审核':(item.use013=='E'?'驳回':'')))}"></td>
+                                        <td th:text="${item.use013=='M'?'正常':(item.use013=='N'?'封号':(item.use013=='P'?'待审核':(item.use013=='E'?'驳回':'')))}"></td>
                                         <td>
                                         <div class="btn-group btn-group-sm">
                                             <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]])" class="btn btn-table"
@@ -150,9 +150,9 @@
                                             <th:block th:if="${item.use013=='N'}">
                                                 <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.use001}]],[[${item.use004}]],[['M']])">正常</a>
                                             </th:block>
-                                            <th:block th:if="${item.use013=='P'}">
-                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#xqmode" th:onclick="tosh([[${item.toString()}]],[[${pageobj.othersql1=='B'?item.smd.toString():item.yhb.toString()}]],[[${pageobj.othersql1=='B'?'':item.yhb.yha.yha002}]])">审核通过</a>
-                                            </th:block>
+                                          <!--  <th:block th:if="${item.use013=='P'}">
+                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#xqmode" th:onclick="tosh([[${item.toString()}]],[[${pageobj.othersql1=='B'?item.smd.toString():item.yhb.toString()}]],[[${pageobj.othersql1=='B'?'':item.yhb.yha.yha002}]])">审核</a>
+                                            </th:block>-->
                                             <!--  <a href="javascript:void(0);" th:onclick="del([[${item.use001}]])" class="btn btn-table">删除</a>-->
                                         </div>
                                     </td>

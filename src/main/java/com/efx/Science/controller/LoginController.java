@@ -183,6 +183,10 @@ public class LoginController extends BaseController {
                 user user = new user();
                 user.setUname(use.getUse002());
                 user.setJstype(use.getUse009());
+                if(use.getUse009().equals("B")){
+                    cdsmd smd = smdService.getByid(use.getUse011());
+                    user.setJsqx(smd.getSmd014());
+                }
                 if (use.getUse002().equals("A")) user.setJs("平台管理员");
                 else if (use.getUse002().equals("B")) user.setJs("授课方管理员");
                 else if (use.getUse002().equals("C")) user.setJs("选课方管理员");

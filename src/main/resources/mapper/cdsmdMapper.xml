@@ -15,8 +15,8 @@
     <result column="SMD011" jdbcType="INTEGER" property="smd011" />
     <result column="SMD012" jdbcType="INTEGER" property="smd012" />
     <result column="SMD013" jdbcType="INTEGER" property="smd013" />
-    <result column="SMD014" jdbcType="INTEGER" property="smd014" />
-    <result column="SMD015" jdbcType="INTEGER" property="smd015" />
+    <result column="SMD014" jdbcType="VARCHAR" property="smd014" />
+    <result column="SMD015" jdbcType="VARCHAR" property="smd015" />
     <result column="SMD016" jdbcType="REAL" property="smd016" />
     <result column="SMD017" jdbcType="VARCHAR" property="smd017" />
     <result column="SMD018" jdbcType="VARCHAR" property="smd018" />
@@ -125,7 +125,7 @@
       #{smd004,jdbcType=VARCHAR}, #{smd005,jdbcType=VARCHAR}, #{smd006,jdbcType=VARCHAR}, 
       #{smd007,jdbcType=VARCHAR}, #{smd008,jdbcType=TIMESTAMP}, #{smd009,jdbcType=INTEGER}, 
       #{smd010,jdbcType=INTEGER}, #{smd011,jdbcType=INTEGER}, #{smd012,jdbcType=INTEGER}, 
-      #{smd013,jdbcType=INTEGER}, #{smd014,jdbcType=INTEGER}, #{smd015,jdbcType=INTEGER}, 
+      #{smd013,jdbcType=INTEGER}, #{smd014,jdbcType=VARCHAR}, #{smd015,jdbcType=VARCHAR}, 
       #{smd016,jdbcType=REAL}, #{smd017,jdbcType=VARCHAR}, #{smd018,jdbcType=VARCHAR}
       )
   </insert>
@@ -222,10 +222,10 @@
         #{smd013,jdbcType=INTEGER},
       </if>
       <if test="smd014 != null">
-        #{smd014,jdbcType=INTEGER},
+        #{smd014,jdbcType=VARCHAR},
       </if>
       <if test="smd015 != null">
-        #{smd015,jdbcType=INTEGER},
+        #{smd015,jdbcType=VARCHAR},
       </if>
       <if test="smd016 != null">
         #{smd016,jdbcType=REAL},
@@ -287,10 +287,10 @@
         SMD013 = #{record.smd013,jdbcType=INTEGER},
       </if>
       <if test="record.smd014 != null">
-        SMD014 = #{record.smd014,jdbcType=INTEGER},
+        SMD014 = #{record.smd014,jdbcType=VARCHAR},
       </if>
       <if test="record.smd015 != null">
-        SMD015 = #{record.smd015,jdbcType=INTEGER},
+        SMD015 = #{record.smd015,jdbcType=VARCHAR},
       </if>
       <if test="record.smd016 != null">
         SMD016 = #{record.smd016,jdbcType=REAL},
@@ -321,8 +321,8 @@
       SMD011 = #{record.smd011,jdbcType=INTEGER},
       SMD012 = #{record.smd012,jdbcType=INTEGER},
       SMD013 = #{record.smd013,jdbcType=INTEGER},
-      SMD014 = #{record.smd014,jdbcType=INTEGER},
-      SMD015 = #{record.smd015,jdbcType=INTEGER},
+      SMD014 = #{record.smd014,jdbcType=VARCHAR},
+      SMD015 = #{record.smd015,jdbcType=VARCHAR},
       SMD016 = #{record.smd016,jdbcType=REAL},
       SMD017 = #{record.smd017,jdbcType=VARCHAR},
       SMD018 = #{record.smd018,jdbcType=VARCHAR}
@@ -368,10 +368,10 @@
         SMD013 = #{smd013,jdbcType=INTEGER},
       </if>
       <if test="smd014 != null">
-        SMD014 = #{smd014,jdbcType=INTEGER},
+        SMD014 = #{smd014,jdbcType=VARCHAR},
       </if>
       <if test="smd015 != null">
-        SMD015 = #{smd015,jdbcType=INTEGER},
+        SMD015 = #{smd015,jdbcType=VARCHAR},
       </if>
       <if test="smd016 != null">
         SMD016 = #{smd016,jdbcType=REAL},
@@ -399,8 +399,8 @@
       SMD011 = #{smd011,jdbcType=INTEGER},
       SMD012 = #{smd012,jdbcType=INTEGER},
       SMD013 = #{smd013,jdbcType=INTEGER},
-      SMD014 = #{smd014,jdbcType=INTEGER},
-      SMD015 = #{smd015,jdbcType=INTEGER},
+      SMD014 = #{smd014,jdbcType=VARCHAR},
+      SMD015 = #{smd015,jdbcType=VARCHAR},
       SMD016 = #{smd016,jdbcType=REAL},
       SMD017 = #{smd017,jdbcType=VARCHAR},
       SMD018 = #{smd018,jdbcType=VARCHAR}
