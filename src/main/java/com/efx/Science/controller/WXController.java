@@ -241,10 +241,10 @@ public class WXController extends BaseController {
             item.setYhe016(Integer.valueOf(request.getParameter("p17")));
             cdyheWithBLOBs item1 =yheService.getByid(Integer.valueOf(request.getParameter("yyid")));
             item.setYhe018(item.getYhe016()<10?item1.getHba().getHba027():
-                    (item.getYhe016()<20?item1.getHba().getHba027()+item1.getHba().getHba028()*(item.getYhe016()-10):
+                            (item.getYhe016()<20?item1.getHba().getHba027()+item1.getHba().getHba028()*(item.getYhe016()-10):
                             (item.getYhe016()<30?item1.getHba().getHba027()+item1.getHba().getHba028()*10+item1.getHba().getHba029()*(item.getYhe016()-20):
-                                    (item.getYhe016()<45?item1.getHba().getHba027()+item1.getHba().getHba028()*10+item1.getHba().getHba029()*10+item1.getHba().getHba030()*(item.getYhe016()-30):
-                                            item1.getHba().getHba027()+item1.getHba().getHba028()*10+item1.getHba().getHba029()*10+item1.getHba().getHba030()*15))));
+                            (item.getYhe016()<45?item1.getHba().getHba027()+item1.getHba().getHba028()*10+item1.getHba().getHba029()*10+item1.getHba().getHba030()*(item.getYhe016()-30):
+                             item1.getHba().getHba027()+item1.getHba().getHba028()*10+item1.getHba().getHba029()*10+item1.getHba().getHba030()*15))));
         }else{
             item.setYhe033(request.getParameter("p10"));
             item.setYhe034(request.getParameter("p11"));
