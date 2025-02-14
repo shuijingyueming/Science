@@ -328,7 +328,7 @@ public class ExcelExport {
 		}
 
 		int rowNum=3;
-		List<cdyheWithBLOBs> list=pb.getResultList();
+		List<cdyhe> list=pb.getResultList();
 		for (int j = 0; j<list.size(); j++) {
 			row = sheet.createRow(rowNum);
 			if(pb.getOthersql3()==null){

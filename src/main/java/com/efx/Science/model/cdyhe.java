@@ -1,8 +1,124 @@
 package com.efx.Science.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class cdyhe {
+
+    private cdyhb yhb;
+    private cdsmd smd;
+    private cdhba hba;
+    private cdyhc yhc;
+    private List<cdyhf> yhflist;
+
+    private List<cdyhf> yhflistA;
+    private List<cdyhf> yhflistB;
+    private List<cdyhf> yhflistC;
+
+    public List<cdyhf> getYhflistA() {
+        return yhflistA;
+    }
+
+    public void setYhflistA(List<cdyhf> yhflistA) {
+        this.yhflistA = yhflistA;
+    }
+
+    public List<cdyhf> getYhflistB() {
+        return yhflistB;
+    }
+
+    public void setYhflistB(List<cdyhf> yhflistB) {
+        this.yhflistB = yhflistB;
+    }
+
+    public List<cdyhf> getYhflistC() {
+        return yhflistC;
+    }
+
+    public void setYhflistC(List<cdyhf> yhflistC) {
+        this.yhflistC = yhflistC;
+    }
+
+    public cdyhb getYhb() {
+        return yhb;
+    }
+
+    public void setYhb(cdyhb yhb) {
+        this.yhb = yhb;
+    }
+
+    public cdsmd getSmd() {
+        return smd;
+    }
+
+    public void setSmd(cdsmd smd) {
+        this.smd = smd;
+    }
+
+    public cdhba getHba() {
+        return hba;
+    }
+
+    public void setHba(cdhba hba) {
+        this.hba = hba;
+    }
+
+    public cdyhc getYhc() {
+        return yhc;
+    }
+
+    public void setYhc(cdyhc yhc) {
+        this.yhc = yhc;
+    }
+
+    public List<cdyhf> getYhflist() {
+        return yhflist;
+    }
+
+    public void setYhflist(List<cdyhf> yhflist) {
+        this.yhflist = yhflist;
+    }
+
+    private String yhe029;
+
+    private String yhe030;
+
+    private String yhe031;
+
+    private String yhe039;
+
+    public String getYhe029() {
+        return yhe029;
+    }
+
+    public void setYhe029(String yhe029) {
+        this.yhe029 = yhe029 == null ? null : yhe029.trim();
+    }
+
+    public String getYhe030() {
+        return yhe030;
+    }
+
+    public void setYhe030(String yhe030) {
+        this.yhe030 = yhe030 == null ? null : yhe030.trim();
+    }
+
+    public String getYhe031() {
+        return yhe031;
+    }
+
+    public void setYhe031(String yhe031) {
+        this.yhe031 = yhe031 == null ? null : yhe031.trim();
+    }
+
+    public String getYhe039() {
+        return yhe039;
+    }
+
+    public void setYhe039(String yhe039) {
+        this.yhe039 = yhe039 == null ? null : yhe039.trim();
+    }
+
     private Integer yhe001;
 
     private Integer yhe002;
@@ -493,6 +609,10 @@ public class cdyhe {
         sb.append(", yhe046=").append(yhe046);
         sb.append(", yhe047=").append(yhe047);
         sb.append(", yhe048=").append(yhe048);
+        sb.append(", yhe029=").append(yhe029);
+        sb.append(", yhe030=").append(yhe030);
+        sb.append(", yhe031=").append(yhe031);
+        sb.append(", yhe039=").append(yhe039);
         sb.append("]");
         return sb.toString();
     }

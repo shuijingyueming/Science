@@ -270,10 +270,28 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByflid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByflidA" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from cdyhf
-    where YHF002 = #{yhf001,jdbcType=INTEGER}
+    where YHF002 = #{id,jdbcType=INTEGER} and YHF003 = 'A'
+  </select>
+  <select id="selectByflidB" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cdyhf
+    where YHF002 = #{id,jdbcType=INTEGER} and YHF003 = 'B'
+  </select>
+  <select id="selectByflidC" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cdyhf
+    where YHF002 = #{id,jdbcType=INTEGER} and YHF003 = 'C'
+  </select>
+  <select id="selectByflidD" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cdyhf
+    where YHF002 = #{id,jdbcType=INTEGER} and YHF003 = 'D'
   </select>
 </mapper>

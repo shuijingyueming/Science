@@ -22,6 +22,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.util.*;
 
 
@@ -155,12 +156,33 @@ public class WXController extends BaseController {
      * @throws Exception
      */
     @ResponseBody
+    @RequestMapping(value = "/wxxgztyy", method = RequestMethod.POST)
+    public String wxxgztyy(HttpServletRequest request) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        cdyhe item=yheService.getByid(Integer.valueOf(request.getParameter("id")));
+        item.setYhe007(request.getParameter("zt"));
+        item.setYhe030(request.getParameter("con"));
+        if(yheService.update(item)){
+            result.put("item", item);
+            result.put("msg", "1");
+        }else{
+            result.put("msg", "0");
+        }
+        return JSON.toJSONString(result);
+    }
+
+    /**
+     * 王新苗
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
     @RequestMapping(value = "/wxaddyy", method = RequestMethod.POST)
     public String wxaddyy(HttpServletRequest request) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
         cdhba hba = hbaService.getByid(Integer.valueOf(request.getParameter("kcid")));
         Integer xkid= Integer.valueOf(request.getParameter("xkid"));
-        cdyheWithBLOBs item = new cdyheWithBLOBs();
+        cdyhe item = new cdyhe();
         item.setYhe002(xkid);
         item.setYhe004(hba.getHba001());
         item.setYhe003(hba.getHba022());
@@ -170,10 +192,10 @@ public class WXController extends BaseController {
         item.setYhe010(Integer.valueOf(request.getParameter("t14")));
         yhb.setYhb015(yhb.getYhb015()+1);
         smd.setSmd013(smd.getSmd013()+1);
-        item.setYhe041(request.getParameter("t41"));
         item.setYhe042(request.getParameter("t42"));
         item.setYhe043(request.getParameter("t43"));
         item.setYhe044(request.getParameter("t44"));
+        item.setYhe045(request.getParameter("t45"));
         if(yhb.getYhb015()<=yhb.getYhb016()&&smd.getSmd013()<=smd.getSmd009()) {
             yhb.setYhb012(yhb.getYhb012() + 1);
             item.setYhe011(item.getYhe010() < 10 ? hba.getHba027() :
@@ -224,8 +246,12 @@ public class WXController extends BaseController {
     @RequestMapping(value = "/wxaddpj", method = RequestMethod.POST)
     public String wxaddpj(HttpServletRequest request) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
-        cdyheWithBLOBs item = new cdyheWithBLOBs();
+        String[] dzplist=request.getParameter("dzplist").split(",");
+        String[] dizplist=request.getParameter("dizplist").split(",");
+        String zt=request.getParameter("zt");
+        cdyhe item = new cdyhe();
         item.setYhe001(Integer.valueOf(request.getParameter("yyid")));
+        System.out.println(dzplist);
         //修改
         if(request.getParameter("lx").equals("C")){
             item.setYhe021(request.getParameter("p1"));
@@ -239,12 +265,17 @@ public class WXController extends BaseController {
             item.setYhe029(request.getParameter("p9"));
             if(!request.getParameter("p19").isEmpty())item.setYhe020(DATE.parse(request.getParameter("p19")));
             item.setYhe016(Integer.valueOf(request.getParameter("p17")));
-            cdyheWithBLOBs item1 =yheService.getByid(Integer.valueOf(request.getParameter("yyid")));
+            cdyhe item1 =yheService.getByid(Integer.valueOf(request.getParameter("yyid")));
             item.setYhe018(item.getYhe016()<10?item1.getHba().getHba027():
                             (item.getYhe016()<20?item1.getHba().getHba027()+item1.getHba().getHba028()*(item.getYhe016()-10):
                             (item.getYhe016()<30?item1.getHba().getHba027()+item1.getHba().getHba028()*10+item1.getHba().getHba029()*(item.getYhe016()-20):
                             (item.getYhe016()<45?item1.getHba().getHba027()+item1.getHba().getHba028()*10+item1.getHba().getHba029()*10+item1.getHba().getHba030()*(item.getYhe016()-30):
                              item1.getHba().getHba027()+item1.getHba().getHba028()*10+item1.getHba().getHba029()*10+item1.getHba().getHba030()*15))));
+            if(zt.equals("R")){
+                item.setYhe007("E");
+            }else{
+                item.setYhe007("Q");
+            }
         }else{
             item.setYhe033(request.getParameter("p10"));
             item.setYhe034(request.getParameter("p11"));
@@ -254,8 +285,20 @@ public class WXController extends BaseController {
             item.setYhe038(request.getParameter("p15"));
             item.setYhe039(request.getParameter("p16"));
             item.setYhe017(Integer.valueOf(request.getParameter("p18")));
+            if(zt.equals("Q")){
+                item.setYhe007("E");
+            }else{
+                item.setYhe007("R");
+            }
         }
         item.setYhe007("E");
+        for(String i:dzplist){
+            yhfService.delete(i);
+        }
+        for(String i:dizplist){
+            File oldFile = new File(i);
+            oldFile.delete();
+        }
         yheService.update(item);
         result.put("msg", "1");
         return JSON.toJSONString(result);
@@ -277,50 +320,23 @@ public class WXController extends BaseController {
         System.out.println(request.getParameter("id"));
         if (t1 != null) {
             if (t1.getOriginalFilename() != null && !t1.getOriginalFilename().isEmpty()) {
-                String filename = sdf1.format(date) + request.getParameter("i") + t1.getOriginalFilename().substring(t1.getOriginalFilename().lastIndexOf("."));
                 cdyhf yhf = new cdyhf();
-                yhf.setYhf001(UUID.randomUUID().toString().replaceAll("-", ""));
-                yhf.setYhf002(Integer.valueOf(request.getParameter("id")));
-                yhf.setYhf003("D");
-                yhf.setYhf004(filename);
-                yhf.setYhf005("x" + request.getParameter("xkid") + "/" + sdf2.format(date));
-                uploadpic(yhf.getYhf005() + "/" + yhf.getYhf004(), t1, null);
-                yhf.setYhf007(Integer.valueOf(request.getParameter("yhid")));
-                yhf.setYhf008(new Date());
-                yhfService.insert(yhf);
-            }
-        }
-        result.put("msg", "Y");
-        return JSON.toJSONString(result);
-    }
-
-    /**
-     * 图片
-     * 王新苗
-     */
-    @ResponseBody
-    @RequestMapping(value = "/wx_addwj",headers = "content-type=multipart/form-data")
-    public String wx_addwj(HttpServletRequest request) throws Exception {
-        Map<String, Object> result = new HashMap<String, Object>();
-        // 图片
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        Date date = new Date();
-        // 获得文件
-        MultipartFile t1 = multipartRequest.getFile("imgs");
-        System.out.println(request.getParameter("id"));
-        if (t1 != null) {
-            if (t1.getOriginalFilename() != null && !t1.getOriginalFilename().isEmpty()) {
-                String filename = sdf1.format(date) + request.getParameter("i") + t1.getOriginalFilename().substring(t1.getOriginalFilename().lastIndexOf("."));
-                cdyhf yhf = new cdyhf();
-                yhf.setYhf001(UUID.randomUUID().toString().replaceAll("-", ""));
                 yhf.setYhf002(Integer.valueOf(request.getParameter("id")));
                 yhf.setYhf003(request.getParameter("type"));
+                String filename =yhf.getYhf003()+ sdf1.format(date) + request.getParameter("i") + t1.getOriginalFilename().substring(t1.getOriginalFilename().lastIndexOf("."));
                 yhf.setYhf004(filename);
                 yhf.setYhf005("x" + request.getParameter("xkid") + "/" + sdf2.format(date));
-                uploadpic(yhf.getYhf005() + "/" + yhf.getYhf004(), t1, null);
+                yhf.setYhf006(request.getParameter("lx"));
+                uploadpic(yhf.getYhf005() + "/" + yhf.getYhf004(), t1, request.getParameter("oname"));
                 yhf.setYhf007(Integer.valueOf(request.getParameter("yhid")));
                 yhf.setYhf008(new Date());
-                yhfService.insert(yhf);
+                if(request.getParameter("oid")!=null&&!request.getParameter("oid").isEmpty()){
+                    yhf.setYhf001(request.getParameter("oid"));
+                    yhfService.update(yhf);
+                }else{
+                    yhf.setYhf001(UUID.randomUUID().toString().replaceAll("-", ""));
+                    yhfService.insert(yhf);
+                }
             }
         }
         result.put("msg", "Y");
@@ -376,7 +392,7 @@ public class WXController extends BaseController {
     @RequestMapping(value = "/wxyyxq", method = RequestMethod.POST)
     public String wxyxq(HttpServletRequest request) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
-        cdyheWithBLOBs item=yheService.getByid(Integer.valueOf(request.getParameter("id")));
+        cdyhe item=yheService.getByid(Integer.valueOf(request.getParameter("id")));
         result.put("item", item);
         return JSON.toJSONString(result);
     }

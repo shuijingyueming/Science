@@ -173,7 +173,7 @@
                                                     <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['O']])">确认取消</a>
                                                 </th:block>
 
-                                                <th:block th:if="${item.yhe007!='K'&&item.yhe007!='E'&&item.yhe007!='F'}">
+                                                <th:block th:if="${item.yhe007!='K'&&item.yhe007!='E'&&item.yhe007!='F'&&item.yhe007!='Q'&&item.yhe007!='R'}">
                                                     <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['D']])">取消预约</a>
                                                 </th:block>
                                                 <th:block th:if="${item.yhe007=='B'||item.yhe007=='D'||item.yhe007=='P'}">
@@ -192,7 +192,7 @@
                                                     <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['P']])">确认取消</a>
                                                 </th:block>
 
-                                                <th:block th:if="${item.yhe007!='D'&&item.yhe007!='E'&&item.yhe007!='F'}">
+                                                <th:block th:if="${item.yhe007!='D'&&item.yhe007!='E'&&item.yhe007!='F'&&item.yhe007!='Q'&&item.yhe007!='R'}">
                                                     <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['D']])">取消预约</a>
                                                 </th:block>
                                                 <th:block th:if="${item.yhe007=='A'||item.yhe007=='C'||item.yhe007=='O'}">
@@ -200,14 +200,14 @@
                                                 </th:block>
                                             </th:block>
                                             <th:block th:if="${session.umsg.jstype!='A'}">
-                                                <th:block th:if="${item.yhe007=='C'}">
+                                                <th:block th:if="${item.yhe007=='F'||item.yhe007=='Q'||item.yhe007=='R'}">
                                                     <a href="javascript:void(0);" th:onclick="topj([[${item.toString()}]])" class="btn btn-table" data-bs-toggle="modal" data-bs-target="#pjmode">评价</a>
                                                 </th:block>
                                             </th:block>
-                                            <th:block th:if="${item.yhe007=='G'||item.yhe007=='H'}">
-                                                <a href="javascript:void(0);" th:onclick="tosc([[${item.toString()}]],[[${item.yhb.yhb004}]])" class="btn btn-table" data-bs-toggle="modal" data-bs-target="#editmode2">资料上传</a>
-                                                <div class="ivu-divider-vertical"></div>
-                                            </th:block>
+                                            <!-- <th:block th:if="${item.yhe007=='G'||item.yhe007=='H'}">
+                                                 <a href="javascript:void(0);" th:onclick="tosc([[${item.toString()}]],[[${item.yhb.yhb004}]])" class="btn btn-table" data-bs-toggle="modal" data-bs-target="#editmode2">资料上传</a>
+                                                 <div class="ivu-divider-vertical"></div>
+                                             </th:block>-->
                                         </div>
                                     </td>
                                 </tr>
@@ -233,6 +233,9 @@
                 </div>
                 <form id="uploadForm2" enctype="multipart/form-data">
                     <input type="hidden" id="lx" th:value="${session.umsg.jstype}"/>
+                    <input type="hidden" id="tname" value=""/>
+                    <input type="hidden" id="zt" value=""/>
+                    <input type="hidden" id="xkid" value=""/>
                     <div class="modal-body" style="min-height:580px;">
                         <th:block th:if="${session.umsg.jstype=='C'}">
                             <div class="row ">
@@ -521,6 +524,36 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="mb-3 col-md-12">
+                                    <input id="ww2" name="ww2" type="hidden">
+                                    <label for="w2" class="form-label">签到表</label>
+                                    <input class="form-control" type="file" id="w2" onchange="showpdwjgs()">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="mb-3 col-md-12">
+                                    <input id="ww3" name="ww3" type="hidden">
+                                    <label for="w3" class="form-label">服务照片</label>
+                                    <input class="form-control" type="file" id="w3" onchange="showpdtpgs()">
+                                    <img alt="..." src="" id="shtp" onclick="$('#w3').click()"
+                                         class="form-control"
+                                         style="width:260px;height: 260px;border:1px solid rgb(229, 229, 229);"/>
+                                </div>
+                            </div>
+                            <div class="mb-3 col-md-12 position-relative" id="upvadiofile" style="margin-top: 20px;padding-left: 8px">
+                                <div class="form-check form-check-inline" style="padding-left: 10px;">
+                                    <button type="button" class="btn btn-primary" onclick="uploadvadio()">服务视频</button>
+                                </div>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-5 form-check form-check-inline typerow_p" style="padding-left: 10px;">
+                                    <figure style="max-height: 400px;min-height: 300px;height:100%;width:100%;display: flex;">
+                                        <input id="ww4" name="ww4" type="hidden">
+                                        <input type="file" id="w4" accept="video/*" style="display:none;">
+                                        <video class="form-vadio" id="upfilevadio" src="" controls/>
+                                    </figure>
+                                </div>
+                                <div class="col-11 small" style="margin-left:10px;color:#0096FF;">视频不超过100M，视频格式mp4</div>
+                            </div>
                         </th:block>
                     </div>
                     <div class="modal-footer" style="height:100px;">
@@ -566,74 +599,6 @@
                     </div>
                     <div class="modal-footer" style="height:100px;">
                         <button type="submit" class="btn btn-primary" id="edit-four">保存</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- 编辑分类模态框 -->
-    <div class="modal fade" id="editmode2" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel"
-         aria-hidden="true" style="height:100%;background-color: #FFF;">
-        <div class="modal-dialog modal-fullscreen">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="editmodeLabel3"><span id="ftype3"></span></h6>
-                    <button type="button" onclick="pagerefalsh()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form id="uploadForm3" enctype="multipart/form-data">
-                    <div class="modal-body" style="min-height:580px;">
-                        <div class="row ">
-                            <div class="row col-auto" style="margin-top: 20px;">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">内容科学性</label>
-                                <div class="form-check">
-                                    <div class="form-check form-check-inline">
-                                        <input  class="form-check-input" id="w11" name="w1" value="A" type="radio" checked>
-                                        <label for="w11" class="form-check-label">签到表</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input  class="form-check-input" id="w12" name="w1" value="B" type="radio">
-                                        <label for="w12" class="form-check-label">服务照片</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input  class="form-check-input" id="w13" name="w1" value="C" type="radio">
-                                        <label for="w13" class="form-check-label">服务视频</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row w2">
-                                <div class="mb-3 col-md-12">
-                                    <input id="ww2" name="ww2" type="hidden">
-                                    <label for="w2" class="form-label">文件上传</label>
-                                    <input class="form-control" type="file" id="w2" onchange="showpdwjgs()">
-                                </div>
-                            </div>
-                            <div class="row w3" style="display: none">
-                                <div class="mb-3 col-md-12">
-                                    <input id="ww3" name="ww3" type="hidden">
-                                    <label for="w3" class="form-label">照片上传</label>
-                                    <input class="form-control" type="file" id="w3" onchange="showpdtpgs()">
-                                    <img alt="..." src="" id="shtp" onclick="$('#w3').click()"
-                                         class="form-control"
-                                         style="width:260px;height: 260px;border:1px solid rgb(229, 229, 229);"/>
-                                </div>
-                            </div>
-                            <div class="mb-3 col-md-12 position-relative w4" id="upvadiofile" style="margin-top: 20px;padding-left: 8px;display: none">
-                                <div class="form-check form-check-inline" style="padding-left: 10px;">
-                                    <button type="button" class="btn btn-primary" onclick="uploadvadio()">上传视频</button>
-                                </div>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-5 form-check form-check-inline typerow_p" style="padding-left: 10px;">
-                                    <figure style="max-height: 400px;min-height: 300px;height:100%;width:100%;display: flex;">
-                                        <input id="ww4" name="ww4" type="hidden">
-                                        <input type="file" id="w4" accept="video/*" style="display:none;">
-                                        <video class="form-vadio" id="upfilevadio" src="" controls/>
-                                    </figure>
-                                </div>
-                                <div class="col-11 small" style="margin-left:10px;color:#0096FF;">视频不超过100M，视频格式mp4</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer" style="height:100px;">
-                        <button type="submit" class="btn btn-primary" id="edit-four3">保存</button>
                     </div>
                 </form>
             </div>
@@ -702,21 +667,21 @@
                         <div class="row col-auto">
                             <div class="col-lg-4 col-md-6 col-sm-8">
                                 <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">联系人</label>
-                                <input type="text" class="form-control col-auto" id="t43" name="t43" placeholder="请输入联系人"/>
+                                <input type="text" class="form-control col-auto" id="t44" name="t44" placeholder="请输入联系人"/>
                             </div>
                             <div class="col-lg-2 col-md-3 col-sm-4">
                                 <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">联系电话</label>
-                                <input type="text" class="form-control col-auto" id="t44" name="t44" placeholder="请输入联系电话"/>
+                                <input type="text" class="form-control col-auto" id="t45" name="t45" placeholder="请输入联系电话"/>
                             </div>
                         </div>
                         <div class="row col-auto">
                             <div class="col-lg-4 col-md-6 col-sm-8">
                                 <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">预约日期备注</label>
-                                <input type="text" class="form-control col-auto" id="t41" name="t41" placeholder="请输入预约日期备注"/>
+                                <input type="text" class="form-control col-auto" id="t42" name="t42" placeholder="请输入预约日期备注"/>
                             </div>
                             <div class="col-lg-2 col-md-3 col-sm-4">
                                 <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">其他要求</label>
-                                <textarea class="form-control" style="resize: none;" rows="3" id="t42" name="t42"></textarea>
+                                <textarea class="form-control" style="resize: none;" rows="3" id="t43" name="t43"></textarea>
                             </div>
                         </div>
                         <div class="row col-auto">
@@ -1197,7 +1162,7 @@
             formData.append("t4",$("#t4").val());
             formData.append("t8",$("#t8").val());
             formData.append("t14",$("#t14").val());
-            formData.append("t41",$("#t41").val());
+            formData.append("t45",$("#t45").val());
             formData.append("t42",$("#t42").val());
             formData.append("t43",$("#t43").val());
             formData.append("t44",$("#t44").val());
@@ -1332,7 +1297,7 @@
             $("#tname").val(name);
             $("#fid").val(josnobj.yhe001);
             $.ajax({
-                url:'getallcoursels?fid='+josnobj.yhe001,
+                url:'getallcoursels?fid='+josnobj.yhe004,
                 type:'post',
                 async: false,
                 cache: false,
@@ -1413,7 +1378,9 @@
                 josnobj = jsStringTojsonString(obj);
             }
             $("#fid").val(josnobj.yhe001);
+            $("#xkid").val(josnobj.yhe002);
             $("#tname").val(name);
+            $("#zt").val(josnobj.yhe007);
             if($("#lx").val()=="C") {
                 $("input[name='p1']").each(function(){
                     if($(this).val()==josnobj.yhe021){
@@ -1539,6 +1506,7 @@
             load_index = layer.load(1);
             var formData = new FormData();
             formData.append("fid",$("#fid").val().trim());
+            formData.append("xkid",$("#xkid").val().trim());
             formData.append("p1",$("input[name='p1']:checked").val());
             formData.append("p2",$("input[name='p2']:checked").val());
             formData.append("p3",$("input[name='p3']:checked").val());
@@ -1560,6 +1528,10 @@
             formData.append("p17",$("#p17").val());
             formData.append("t1",$("#tname").val());
             formData.append("lx",$("#lx").val());
+            formData.append("zt",$("#zt").val());
+            formData.append("w2", document.getElementById("w2").files[0]);
+            formData.append("w3", document.getElementById("w3").files[0]);
+            formData.append("w4", document.getElementById("w4").files[0]);
             $.ajax({
                 url: 'toHt/xgselection2', // 服务器端处理上传文件的URL
                 type: 'POST',
@@ -1595,9 +1567,10 @@
             $("#ftype3").text("添加");
         }
     }
+
     //判断
     function showpdwjgs(){
-        var filePath = [".xlsx",".xls"];
+        var filePath = ['.jpg','.png'];
         var file = document.getElementById("w2").files[0];
         if(file){
             var filename = file.name;
@@ -1612,11 +1585,12 @@
             if(!pd){
                 file.value="";
                 $("#w2").val("");
-                layer.msg("只能上传以.xlsx和.xls结尾的图片");
+                layer.msg("只能上传以.jpg、.png结尾的图片");
                 return;
             }
         }
     }
+
     //判断图片
     function showpdtpgs(){
         var filePath = ['.jpg','.png'];
@@ -1677,64 +1651,6 @@
             }
         }
 
-    });
-
-    $('#w11').on('click', function(){
-            $('.w2').show();
-            $('.w3').hide();
-            $('.w4').hide();
-    });
-    $('#w12').on('click', function(){
-            $('.w2').hide();
-            $('.w3').show();
-            $('.w4').hide();
-    });
-
-    $('#w13').on('click', function(){
-            $('.w2').hide();
-            $('.w3').hide();
-            $('.w4').show();
-    });
-
-
-    $("#uploadForm3").validate({
-        errorPlacement: function(error, element) {
-            //替换错误显示位置，error表示错误信息
-            $(element).parent("div").parent("div").append(error);
-            $(element).parent("div").parent("div").find("label").addClass("col-12");
-            // $(element).parent("div").parent("div").find("label").attr("style","margin-left:5px;");
-        },
-        rules : {t2: { required : true, },t4: { required : true, },t5: { required : true, },},
-        messages: {},
-        submitHandler: function(form) {
-            load_index = layer.load(1);
-            var formData = new FormData();
-            formData.append("fid",$("#fid").val().trim());
-            formData.append("t1",$("#tname").val());
-            formData.append("w1",$("input[name='w1']:checked").val());
-            formData.append("w2", document.getElementById("w2").files[0]);
-            formData.append("w3", document.getElementById("w3").files[0]);
-            formData.append("w4", document.getElementById("w4").files[0]);
-            $.ajax({
-                url: 'toHt/xgselection3', // 服务器端处理上传文件的URL
-                type: 'POST',
-                data: formData,
-                dataType:'json',
-                contentType: false, // 不设置内容类型
-                processData: false, // 不处理发送的数据
-                success: function (res) {
-                    var d = eval(res);
-                    layer.close(load_index);
-                    if(d.msg=="S"){
-                        layer.msg("场次不足");
-                    }else{
-                        layer.msg("提交成功");
-                    }
-                },
-                error: function () { console.log('提交失败'); }
-            });
-
-        }
     });
 </script>
 

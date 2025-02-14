@@ -1796,7 +1796,7 @@ public class HTinfoController extends BaseController {
     public String delselection(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HashMap result = new HashMap();
         addLog(getUse(request).getUse002(),"删除了层级名称为：【" + request.getParameter("uname") + "】的状态");
-        cdyheWithBLOBs yhe = yheService.getByid(Integer.valueOf(request.getParameter("fid")));
+        cdyhe yhe = yheService.getByid(Integer.valueOf(request.getParameter("fid")));
         cdsmd smd = smdService.getByid(yhe.getYhe003());
         cdyhb yhb = yhbService.getByid(yhe.getYhe002());
         yhb.setYhb015(yhb.getYhb015()-1);
@@ -1819,7 +1819,7 @@ public class HTinfoController extends BaseController {
     public String xgztselection(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HashMap result = new HashMap();
         addLog(getUse(request).getUse002(),"修改了选课方名称为：【" + request.getParameter("uname") + "】的课程预约状态");
-        cdyheWithBLOBs yhe = yheService.getByid(Integer.valueOf(request.getParameter("fid")));
+        cdyhe yhe = yheService.getByid(Integer.valueOf(request.getParameter("fid")));
         yhe.setYhe007(request.getParameter("type"));
         if(request.getParameter("type").equals("C")||request.getParameter("type").equals("D")||request.getParameter("type").equals("O")||request.getParameter("type").equals("P")){
             cdsmd smd = smdService.getByid(yhe.getYhe003());
@@ -1854,13 +1854,13 @@ public class HTinfoController extends BaseController {
             SystemTZYM(response, "登录失效");
             return null;
         }
-        cdyheWithBLOBs item = new cdyheWithBLOBs();
+        cdyhe item = new cdyhe();
         //修改
         item.setYhe009(request.getParameter("z1"));
         if(!request.getParameter("z7").isEmpty())item.setYhe015(Integer.valueOf(request.getParameter("z7")));
 //        if(!request.getParameter("z8").isEmpty())item.setYhe016(Integer.valueOf(request.getParameter("z8")));
         if(!request.getParameter("z11").isEmpty())item.setYhe005(Integer.valueOf(request.getParameter("z11")));
-        cdyheWithBLOBs item1 =yheService.getByid(Integer.valueOf(request.getParameter("fid")));
+        cdyhe item1 =yheService.getByid(Integer.valueOf(request.getParameter("fid")));
         item.setYhe012(item1.getYhb().getYhb017()!=null?item1.getYhb().getYhb017():(item1.getYhb().getYha().getYha005()!=null?item1.getYhb().getYha().getYha005():null));
         item.setYhe013(item1.getHba().getHba012());
         item.setYhe014(item1.getHba().getHba006()*item.getYhe015());
@@ -1899,7 +1899,7 @@ public class HTinfoController extends BaseController {
             SystemTZYM(response, "登录失效");
             return null;
         }
-        cdyheWithBLOBs item = new cdyheWithBLOBs();
+        cdyhe item = new cdyhe();
         //修改
         cduse use=getUse(request);
         item.setYhe002(Integer.valueOf(request.getParameter("t3")));
@@ -1912,10 +1912,10 @@ public class HTinfoController extends BaseController {
         if(!request.getParameter("t14").isEmpty())item.setYhe010(Integer.valueOf(request.getParameter("t14")));
         yhb.setYhb015(yhb.getYhb015()+1);
         smd.setSmd013(smd.getSmd013()+1);
-        item.setYhe041(request.getParameter("t41"));
         item.setYhe042(request.getParameter("t42"));
         item.setYhe043(request.getParameter("t43"));
         item.setYhe044(request.getParameter("t44"));
+        item.setYhe045(request.getParameter("t45"));
         if(yhb.getYhb015()<=yhb.getYhb016()&&smd.getSmd013()<=smd.getSmd009()){
             yhb.setYhb012(yhb.getYhb012()+1);
             item.setYhe011(item.getYhe010()<10?hba.getHba027():
@@ -1996,7 +1996,8 @@ public class HTinfoController extends BaseController {
             SystemTZYM(response, "登录失效");
             return null;
         }
-        cdyheWithBLOBs item = new cdyheWithBLOBs();
+        String zt=request.getParameter("zt");
+        cdyhe item = new cdyhe();
         //修改
         if(request.getParameter("lx").equals("C")){
             item.setYhe021(request.getParameter("p1"));
@@ -2010,12 +2011,17 @@ public class HTinfoController extends BaseController {
             item.setYhe029(request.getParameter("p9"));
             if(!request.getParameter("p19").isEmpty())item.setYhe020(DATE.parse(request.getParameter("p19")));
             item.setYhe016(Integer.valueOf(request.getParameter("p17")));
-            cdyheWithBLOBs item1 =yheService.getByid(Integer.valueOf(request.getParameter("fid")));
+            cdyhe item1 =yheService.getByid(Integer.valueOf(request.getParameter("fid")));
             item.setYhe018(item.getYhe016()<10?item1.getHba().getHba027():
                     (item.getYhe016()<20?item1.getHba().getHba027()+item1.getHba().getHba028()*(item.getYhe016()-10):
                             (item.getYhe016()<30?item1.getHba().getHba027()+item1.getHba().getHba028()*10+item1.getHba().getHba029()*(item.getYhe016()-20):
                                     (item.getYhe016()<45?item1.getHba().getHba027()+item1.getHba().getHba028()*10+item1.getHba().getHba029()*10+item1.getHba().getHba030()*(item.getYhe016()-30):
                                             item1.getHba().getHba027()+item1.getHba().getHba028()*10+item1.getHba().getHba029()*10+item1.getHba().getHba030()*15))));
+            if(zt.equals("R")){
+                item.setYhe007("E");
+            }else{
+                item.setYhe007("Q");
+            }
         }else{
             item.setYhe033(request.getParameter("p10"));
             item.setYhe034(request.getParameter("p11"));
@@ -2025,76 +2031,64 @@ public class HTinfoController extends BaseController {
             item.setYhe038(request.getParameter("p15"));
             item.setYhe039(request.getParameter("p16"));
             item.setYhe017(Integer.valueOf(request.getParameter("p18")));
+            if(zt.equals("Q")){
+                item.setYhe007("E");
+            }else{
+                item.setYhe007("R");
+            }
+        }
+        item.setYhe001(Integer.valueOf(request.getParameter("fid")));
+        item.setYhe002(Integer.valueOf(request.getParameter("skid")));
+        cduse use=getUse(request);
+        cdyhf yhf = new cdyhf();
+        yhf.setYhf002(item.getYhe001());
+        yhf.setYhf006(request.getParameter("lx"));
+        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
+        Date date = new Date();
+        MultipartFile file = multipartHttpServletRequest.getFile("w2");
+        if(null!=file&&null!=file.getOriginalFilename()&&!file.getOriginalFilename().toString().isEmpty()){
+            yhf.setYhf001(UUID.randomUUID().toString().replaceAll("-",""));
+            yhf.setYhf003("A");
+            String filename =yhf.getYhf003()+ sdf.format(date)+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+            yhf.setYhf004(filename);
+            yhf.setYhf005("x"+item.getYhe002()+"/"+sdf2.format(date));
+            uploadpic(yhf.getYhf005()+"/"+yhf.getYhf004(),file,null);
+            yhf.setYhf007(use.getUse001());
+            yhf.setYhf008(new Date());
+            yhfService.insert(yhf);
+        }
+        MultipartFile file1 = multipartHttpServletRequest.getFile("w3");
+        if(null!= file1 &&null!= file1.getOriginalFilename()&&!file1.getOriginalFilename().toString().isEmpty()){
+            yhf.setYhf001(UUID.randomUUID().toString().replaceAll("-",""));
+            yhf.setYhf003("B");
+            String filename =yhf.getYhf003()+ sdf.format(date)+ file1.getOriginalFilename().substring(file1.getOriginalFilename().lastIndexOf("."));
+            yhf.setYhf004(filename);
+            yhf.setYhf005("x"+item.getYhe002()+"/"+sdf2.format(date));
+            uploadpic(yhf.getYhf005()+"/"+yhf.getYhf004(), file1,null);
+            yhf.setYhf007(use.getUse001());
+            yhf.setYhf008(new Date());
+            yhfService.insert(yhf);
+        }
+        MultipartFile file2 = multipartHttpServletRequest.getFile("w4");
+        if(null!=file2&&null!=file2.getOriginalFilename()&&!file2.getOriginalFilename().toString().isEmpty()){
+            yhf.setYhf001(UUID.randomUUID().toString().replaceAll("-",""));
+            yhf.setYhf003("C");
+            String filename = yhf.getYhf003()+sdf.format(date)+file2.getOriginalFilename().substring(file2.getOriginalFilename().lastIndexOf("."));
+            yhf.setYhf004(filename);
+            yhf.setYhf005("x"+item.getYhe002()+"/"+sdf2.format(date));
+            uploadpic(yhf.getYhf005()+"/"+yhf.getYhf004(),file2,null);
+            yhf.setYhf007(use.getUse001());
+            yhf.setYhf008(new Date());
+            yhfService.insert(yhf);
         }
         String log = "修改了名字为：【" + request.getParameter("t1") + "】的课程预约信息";
-        item.setYhe001(Integer.valueOf(request.getParameter("fid")));
+
         addLog(getUse(request).getUse002(),log);
         yheService.update(item);
         result.put("msg", "U");
         result.put("d",item);
         return JSON.toJSONString(result);
     }
-
-    /**
-     * 修改账户
-     * 王新苗
-     * @param request
-     * @param response
-     */
-    @ResponseBody
-    @RequestMapping(value = "/xgselection3")
-    public String xgselection3(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap result = new HashMap();
-        HttpSession session = request.getSession();
-        if (session.getAttribute("user") == null) {
-            SystemTZYM(response, "登录失效");
-            return null;
-        }
-        cduse use=getUse(request);
-        cdyheWithBLOBs item =yheService.getByid(Integer.valueOf(request.getParameter("fid")));
-        cdyhf yhf = new cdyhf();
-        yhf.setYhf001(UUID.randomUUID().toString().replaceAll("-",""));
-        yhf.setYhf002(item.getYhe001());
-        yhf.setYhf003(request.getParameter("w1"));
-        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
-        Date date = new Date();
-        if(yhf.getYhf003().equals("A")){
-            MultipartFile file = multipartHttpServletRequest.getFile("w2");
-            if(null!=file&&null!=file.getOriginalFilename()&&!file.getOriginalFilename().toString().isEmpty()){
-                String filename = sdf.format(date)+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-                yhf.setYhf004(filename);
-                yhf.setYhf005("x"+item.getYhe002()+"/"+sdf2.format(date));
-                uploadpic(yhf.getYhf005()+"/"+yhf.getYhf004(),file,null);
-                yhf.setYhf007(use.getUse001());
-                yhf.setYhf008(new Date());
-                yhfService.insert(yhf);
-            }
-        }else if(yhf.getYhf003().equals("B")){
-            MultipartFile file = multipartHttpServletRequest.getFile("w3");
-            if(null!=file&&null!=file.getOriginalFilename()&&!file.getOriginalFilename().toString().isEmpty()){
-                String filename = sdf.format(date)+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-                yhf.setYhf004(filename);
-                yhf.setYhf005("x"+item.getYhe002()+"/"+sdf2.format(date));
-                uploadpic(yhf.getYhf005()+"/"+yhf.getYhf004(),file,null);
-                yhf.setYhf007(use.getUse001());
-                yhf.setYhf008(new Date());
-                yhfService.insert(yhf);
-            }
-        }else if(yhf.getYhf003().equals("C")){
-            MultipartFile file = multipartHttpServletRequest.getFile("w4");
-            if(null!=file&&null!=file.getOriginalFilename()&&!file.getOriginalFilename().toString().isEmpty()){
-                String filename = sdf.format(date)+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-                yhf.setYhf004(filename);
-                yhf.setYhf005("x"+item.getYhe002()+"/"+sdf2.format(date));
-                uploadpic(yhf.getYhf005()+"/"+yhf.getYhf004(),file,null);
-                yhf.setYhf007(use.getUse001());
-                yhf.setYhf008(new Date());
-                yhfService.insert(yhf);
-            }
-        }
-        return JSON.toJSONString(result);
-    }
-
 
     /**
      * 进入管理员管理页面

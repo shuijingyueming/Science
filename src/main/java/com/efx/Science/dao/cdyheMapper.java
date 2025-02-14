@@ -13,28 +13,28 @@ public interface cdyheMapper {
 
     int deleteByPrimaryKey(Integer yhe001);
 
-    int insert(cdyheWithBLOBs record);
+    int insert(cdyhe record);
 
-    int insertSelective(cdyheWithBLOBs record);
+    int insertSelective(cdyhe record);
 
-    List<cdyheWithBLOBs> selectByExampleWithBLOBs(cdyheExample example);
+    List<cdyhe> selectByExampleWithBLOBs(cdyheExample example);
 
     List<cdyhe> selectByExample(cdyheExample example);
 
-    cdyheWithBLOBs selectByPrimaryKey(Integer yhe001);
+    cdyhe selectByPrimaryKey(Integer yhe001);
 
-    int updateByExampleSelective(@Param("record") cdyheWithBLOBs record, @Param("example") cdyheExample example);
+    int updateByExampleSelective(@Param("record") cdyhe record, @Param("example") cdyheExample example);
 
-    int updateByExampleWithBLOBs(@Param("record") cdyheWithBLOBs record, @Param("example") cdyheExample example);
+    int updateByExampleWithBLOBs(@Param("record") cdyhe record, @Param("example") cdyheExample example);
 
     int updateByExample(@Param("record") cdyhe record, @Param("example") cdyheExample example);
 
-    int updateByPrimaryKeySelective(cdyheWithBLOBs record);
+    int updateByPrimaryKeySelective(cdyhe record);
 
-    int updateByPrimaryKeyWithBLOBs(cdyheWithBLOBs record);
+    int updateByPrimaryKeyWithBLOBs(cdyhe record);
 
     int updateByPrimaryKey(cdyhe record);
-    List<cdyheWithBLOBs> selectByExampleAndPage(cdyheExample example, RowBounds rowBounds);
+    List<cdyhe> selectByExampleAndPage(cdyheExample example, RowBounds rowBounds);
 
     Integer countByExamplefwrc(cdyheExample e1);
 
@@ -52,7 +52,7 @@ public interface cdyheMapper {
 
     Float countByExamplekcje1(@Param("cdyheExample")cdyheExample e1, @Param("cdsmdExample")cdsmdExample e2);
 
-    List<cdyheWithBLOBs> selectByExampleAndPage1(@Param("cdyheExample")cdyheExample e1, @Param("cdsmdExample")cdsmdExample e2, RowBounds rowBounds);
+    List<cdyhe> selectByExampleAndPage1(@Param("cdyheExample")cdyheExample e1, @Param("cdsmdExample")cdsmdExample e2, RowBounds rowBounds);
 
     Integer countByExample2(@Param("cdyheExample")cdyheExample e1, @Param("cdyhbExample")cdyhbExample e2);
 

@@ -46,19 +46,20 @@
     <result column="YHE046" jdbcType="VARCHAR" property="yhe046" />
     <result column="YHE047" jdbcType="VARCHAR" property="yhe047" />
     <result column="YHE048" jdbcType="VARCHAR" property="yhe048" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.efx.Science.model.cdyheWithBLOBs">
     <result column="YHE029" jdbcType="LONGVARCHAR" property="yhe029" />
     <result column="YHE030" jdbcType="LONGVARCHAR" property="yhe030" />
     <result column="YHE031" jdbcType="LONGVARCHAR" property="yhe031" />
     <result column="YHE039" jdbcType="LONGVARCHAR" property="yhe039" />
   </resultMap>
-  <resultMap id="BaseResultMap1" type="com.efx.Science.model.cdyheWithBLOBs"  extends="ResultMapWithBLOBs">
+  <resultMap id="BaseResultMap1" type="com.efx.Science.model.cdyhe"  extends="BaseResultMap">
     <association property="yhb" column="YHE002" select="com.efx.Science.dao.cdyhbMapper.selectByPrimaryKey"/>
     <association property="smd" column="YHE003" select="com.efx.Science.dao.cdsmdMapper.selectByPrimaryKey"/>
     <association property="hba" column="YHE004" select="com.efx.Science.dao.cdhbaMapper.selectByPrimaryKey"/>
     <association property="yhc" column="YHE005" select="com.efx.Science.dao.cdyhcMapper.selectByPrimaryKey"/>
-    <collection  property="yhflist"  column="YHE001"  select="com.efx.Science.dao.cdyhfMapper.selectByflid"/>
+    <collection  property="yhflist"  column="YHE001"  select="com.efx.Science.dao.cdyhfMapper.selectByflidD"/>
+    <collection  property="yhflistA"   column="YHE001"   select="com.efx.Science.dao.cdyhfMapper.selectByflidA"/>
+    <collection  property="yhflistB"   column="YHE001"  select="com.efx.Science.dao.cdyhfMapper.selectByflidB"/>
+    <collection  property="yhflistC"   column="YHE001"  select="com.efx.Science.dao.cdyhfMapper.selectByflidC"/>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -122,19 +123,15 @@
     YHE001, YHE002, YHE003, YHE004, YHE005, YHE006, YHE007, YHE008, YHE009, YHE010, YHE011, 
     YHE012, YHE013, YHE014, YHE015, YHE016, YHE017, YHE018, YHE019, YHE020, YHE021, YHE022, 
     YHE023, YHE024, YHE025, YHE026, YHE027, YHE028, YHE032, YHE033, YHE034, YHE035, YHE036, 
-    YHE037, YHE038, YHE040, YHE041, YHE042, YHE043, YHE044, YHE045, YHE046, YHE047, YHE048
+    YHE037, YHE038, YHE040, YHE041, YHE042, YHE043, YHE044, YHE045, YHE046, YHE047, YHE048,
+        YHE029, YHE030, YHE031, YHE039
   </sql>
-  <sql id="Blob_Column_List">
-    YHE029, YHE030, YHE031, YHE039
-  </sql>
-  <select id="selectByExampleWithBLOBs" parameterType="com.efx.Science.model.cdyheExample" resultMap="ResultMapWithBLOBs">
+  <select id="selectByExampleWithBLOBs" parameterType="com.efx.Science.model.cdyheExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from cdyhe
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -160,8 +157,6 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap1">
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from cdyhe
     where YHE001 = #{yhe001,jdbcType=INTEGER}
   </select>
@@ -175,7 +170,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.efx.Science.model.cdyheWithBLOBs">
+  <insert id="insert" parameterType="com.efx.Science.model.cdyhe">
     insert into cdyhe (YHE001, YHE002, YHE003, 
       YHE004, YHE005, YHE006, 
       YHE007, YHE008, YHE009, 
@@ -207,7 +202,7 @@
       #{yhe030,jdbcType=LONGVARCHAR}, #{yhe031,jdbcType=LONGVARCHAR}, #{yhe039,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.efx.Science.model.cdyheWithBLOBs">
+  <insert id="insertSelective" parameterType="com.efx.Science.model.cdyhe">
     insert into cdyhe
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="yhe001 != null">
@@ -764,7 +759,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.efx.Science.model.cdyheWithBLOBs">
+  <update id="updateByPrimaryKeySelective" parameterType="com.efx.Science.model.cdyhe">
     update cdyhe
     <set>
       <if test="yhe002 != null">
@@ -911,7 +906,7 @@
     </set>
     where YHE001 = #{yhe001,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.efx.Science.model.cdyheWithBLOBs">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.efx.Science.model.cdyhe">
     update cdyhe
     set YHE002 = #{yhe002,jdbcType=INTEGER},
       YHE003 = #{yhe003,jdbcType=INTEGER},
@@ -1014,7 +1009,7 @@
     <if test="distinct" >
       distinct
     </if>
-    <include refid="Base_Column_List" />, <include refid="Blob_Column_List" />
+    <include refid="Base_Column_List" />
     from cdyhe
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -1124,7 +1119,7 @@
   </select>
   <select id="selectByExampleAndPage1" resultMap="BaseResultMap1" parameterType="com.efx.Science.model.cdyheExample" flushCache="true" useCache="false">
     select
-    <include refid="Base_Column_List" />, <include refid="Blob_Column_List" />
+    <include refid="Base_Column_List" />
     from cdyhe left join cdsmd on cdyhe.yhe003=cdsmd.smd001
     <where>
       <if test="cdyheExample != null">
@@ -1174,7 +1169,7 @@
   </select>
 
   <select id="selectByExample1" parameterType="com.efx.Science.model.cdyheExample" resultMap="BaseResultMap1">
-    select <include refid="Base_Column_List" />,<include refid="Blob_Column_List" /> from cdyhe left join cdsmd on cdyhe.yhe003=cdsmd.smd001
+    select <include refid="Base_Column_List" /> from cdyhe left join cdsmd on cdyhe.yhe003=cdsmd.smd001
     <where>
       <if test="cdyheExample != null">
         <foreach collection="cdyheExample.oredCriteria" item="criteria" separator="or">

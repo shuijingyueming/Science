@@ -36,7 +36,7 @@ public class CdyheServiceImpl implements CdyheService {
 
 
     @Override
-    public cdyheWithBLOBs getByid(Integer id) {
+    public cdyhe getByid(Integer id) {
         return yheMapper.selectByPrimaryKey(id);
     }
 
@@ -52,12 +52,12 @@ public class CdyheServiceImpl implements CdyheService {
     }
 
     @Override
-    public boolean update(cdyheWithBLOBs yhe) {
+    public boolean update(cdyhe yhe) {
         return yheMapper.updateByPrimaryKeySelective(yhe)>0?true:false;
     }
 
     @Override
-    public cdyheWithBLOBs insert(cdyheWithBLOBs yhe) {
+    public cdyhe insert(cdyhe yhe) {
         yheMapper.insertSelective(yhe);
         return yhe;
     }
@@ -86,12 +86,12 @@ public class CdyheServiceImpl implements CdyheService {
 
     @Override
     public void updatebytime() {
-        cdyheWithBLOBs yhe = new cdyheWithBLOBs();
+        cdyhe yhe = new cdyhe();
         yhe.setYhe007("F");
         cdyheExample e1 = new cdyheExample();
         Criteria c = e1.createCriteria();
-        c.andSql("(Yhe007='G'or Yhe007='H')");
-        c.andSql("(DATEDIFF(CURDATE(),yhe008)>=28)");
+        c.andSql("(Yhe007='G' or Yhe007='H')");
+        c.andSql("(DATEDIFF(CURDATE(),yhe008)>=0)");
         yheMapper.updateByExampleSelective(yhe,e1);
     }
 
@@ -222,11 +222,13 @@ public class CdyheServiceImpl implements CdyheService {
         if(pb.getOthersql6()!=null)  c.andYhe002EqualTo(Integer.valueOf(pb.getOthersql6()));
         if(pb.getOthersql1()!=null)  {
             if(pb.getOthersql1().equals("A")){
-                c.andSql("((yhe007!='E' or yhe007!='F')  and yhe008>CURDATE())");
-            }else if(pb.getOthersql1().equals("F")){
-                c.andYhe007EqualTo(pb.getOthersql1());
+                c.andSql("(yhe007='A' or yhe007='B' or yhe007='G' or yhe007='K' or yhe007='M' or yhe007='N')");
+            }else if(pb.getOthersql1().equals("E")){
+                if(pb.getOthersql5()!=null) c.andSql("(yhe007='E' or yhe007='Q')");
+                if(pb.getOthersql6()!=null) c.andSql("(yhe007='E' or yhe007='R')");
             }else{
-                c.andSql("(yhe007='E' or yhe008<CURDATE())");
+                if(pb.getOthersql5()!=null) c.andSql("(yhe007='F' or yhe007='R' or yhe007='G' or yhe007='H')");
+                if(pb.getOthersql6()!=null) c.andSql("(yhe007='F' or yhe007='Q' or yhe007='G' or yhe007='H')");
             }
         }
         e1.setOrderByClause("yhe008 desc,yhe001 desc");
@@ -276,7 +278,7 @@ public class CdyheServiceImpl implements CdyheService {
         //check page
         page = page<1 ? 1 : ((page>count)? count : page);
         //query
-        List<cdyheWithBLOBs> list = yheMapper.selectByExampleAndPage1(e1,e2, new RowBounds((page-1)*size, size));
+        List<cdyhe> list = yheMapper.selectByExampleAndPage1(e1,e2, new RowBounds((page-1)*size, size));
         //save to PageBean
         pageBean.setCurrentPage(page);
         pageBean.setPageCount(count);
@@ -374,7 +376,7 @@ public class CdyheServiceImpl implements CdyheService {
         //check page
         page = page<1 ? 1 : ((page>count)? count : page);
         //query
-        List<cdyheWithBLOBs> list = yheMapper.selectByExampleAndPage(example, new RowBounds((page-1)*size, size));
+        List<cdyhe> list = yheMapper.selectByExampleAndPage(example, new RowBounds((page-1)*size, size));
         //save to PageBean
         pageBean.setCurrentPage(page);
         pageBean.setPageCount(count);

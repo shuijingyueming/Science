@@ -152,7 +152,7 @@ public class BaseController {
         String fpath = LoginController.class.getClass().getResource("/").getPath();
         fpath = fpath.substring(1,fpath.length())+"static/upload/";
         //删除原文件
-        if (oldFilePath != null) {
+        if (oldFilePath != null && oldFilePath != "") {
             File oldFile = new File(fpath+oldFilePath);
             oldFile.delete();
         }

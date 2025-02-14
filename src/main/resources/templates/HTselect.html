@@ -339,8 +339,8 @@
         html+= '<div class="form-group"><label class="layui-form-label">账号/姓名：</label>';
         html+= '<span class="jspan">'+item1.smd007+'</span>';
         html+= '</div></div></div>';
-        $("#shtg").attr("onclick","xgzt("+item1.smd001+","+item1.smd003+",'M')")
-        $("#shbh").attr("onclick","xgzt("+item1.smd001+","+item1.smd003+",'E')")
+        $("#shtg").attr("onclick","xgzt("+item1.smd001+",'"+item1.smd003+"','M')")
+        $("#shbh").attr("onclick","xgzt("+item1.smd001+",'"+item1.smd003+"','E')")
         $("#xqmode").find(".modal-body").append(html);
     }
 

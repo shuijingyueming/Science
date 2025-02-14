@@ -31,5 +31,8 @@ public interface cdyhfMapper {
 
     List<cdyhf> selectByExampleAndPage(cdyhfExample example, RowBounds rowBounds);
 
-    cdyhf selectByflid(Integer id);
+    cdyhf selectByflidA(@Param("id") Integer id);
+    cdyhf selectByflidB(@Param("id") Integer id);
+    cdyhf selectByflidC(@Param("id") Integer id);
+    cdyhf selectByflidD(@Param("id") Integer id);
 }

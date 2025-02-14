@@ -3,7 +3,6 @@ package com.efx.Science.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.efx.Science.model.PageBean;
 import com.efx.Science.model.cdyhe;
-import com.efx.Science.model.cdyheWithBLOBs;
 
 import java.text.ParseException;
 import java.util.List;
@@ -17,13 +16,13 @@ import java.util.List;
  * @since 2023-03-15
  */
 public interface CdyheService extends IService<cdyhe> {
-    cdyheWithBLOBs getByid(Integer id);
+    cdyhe getByid(Integer id);
 
     PageBean selectPageBean(PageBean pb);
 
-    boolean update(cdyheWithBLOBs yhe);
+    boolean update(cdyhe yhe);
 
-    cdyheWithBLOBs insert(cdyheWithBLOBs yhe);
+    cdyhe insert(cdyhe yhe);
 
     cdyhe selectByName(String name);
 
