@@ -202,7 +202,7 @@
       #{yhe030,jdbcType=LONGVARCHAR}, #{yhe031,jdbcType=LONGVARCHAR}, #{yhe039,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.efx.Science.model.cdyhe">
+  <insert id="insertSelective" parameterType="com.efx.Science.model.cdyhe" useGeneratedKeys="true" keyProperty="yhe001">
     insert into cdyhe
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="yhe001 != null">

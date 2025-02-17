@@ -189,7 +189,7 @@ public class WXController extends BaseController {
         cdsmd smd = smdService.getByid(item.getYhe003());
         cdyhb yhb = yhbService.getByid(item.getYhe002());
         item.setYhe009(request.getParameter("t2"));
-        item.setYhe010(Integer.valueOf(request.getParameter("t14")));
+        if(!request.getParameter("t14").isEmpty())item.setYhe010(Integer.valueOf(request.getParameter("t14")));
         yhb.setYhb015(yhb.getYhb015()+1);
         smd.setSmd013(smd.getSmd013()+1);
         item.setYhe042(request.getParameter("t42"));
@@ -198,7 +198,7 @@ public class WXController extends BaseController {
         item.setYhe045(request.getParameter("t45"));
         if(yhb.getYhb015()<=yhb.getYhb016()&&smd.getSmd013()<=smd.getSmd009()) {
             yhb.setYhb012(yhb.getYhb012() + 1);
-            item.setYhe011(item.getYhe010() < 10 ? hba.getHba027() :
+            if(item.getYhe010()!=null)item.setYhe011(item.getYhe010() < 10 ? hba.getHba027() :
                     (item.getYhe010() < 20 ? hba.getHba027() + hba.getHba028() * (item.getYhe010() - 10) :
                             (item.getYhe010() < 30 ? hba.getHba027() + hba.getHba028() * 10 + hba.getHba029() * (item.getYhe010() - 20) :
                                     (item.getYhe010() < 45 ? hba.getHba027() + hba.getHba028() * 10 + hba.getHba029() * (item.getYhe010() - 30) :
@@ -358,6 +358,22 @@ public class WXController extends BaseController {
             smd.setFwrc(yheService.countByfwrc(smd.getSmd001(), null, null,null));
             smd.setHbaList(hbaService.getAll(null,smd.getSmd001().toString(),"B"));
         }
+        result.put("list", list);
+        return JSON.toJSONString(result);
+    }
+
+
+    /**
+     * 详情
+     * 王新苗
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping(value = "/wxxk", method = RequestMethod.POST)
+    public String wxxk(HttpServletRequest request) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<cdyhb> list=yhbService.getAll();
         result.put("list", list);
         return JSON.toJSONString(result);
     }
