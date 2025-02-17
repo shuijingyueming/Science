@@ -417,6 +417,18 @@ public class WXController extends BaseController {
      * 查询更多
      */
     @ResponseBody
+    @RequestMapping(value = "wxnew1")
+    public String wxnew1(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        cdyhg item=yhgService.getBylx(request.getParameter("type"),"A");
+        result.put("item", item);
+        return JSON.toJSONString(result);
+    }
+
+    /**
+     * 查询更多
+     */
+    @ResponseBody
     @RequestMapping(value = "wxnew")
     public String wxnew(HttpServletRequest request,HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();

@@ -80,6 +80,16 @@ public class CdyhgServiceImpl implements CdyhgService {
         return yhgMapper.selectByExample(null);
     }
 
+    @Override
+    public cdyhg getBylx(String type, String lx) {
+        cdyhgExample e1 = new cdyhgExample();
+        Criteria c = e1.createCriteria();
+        if(type!=null)c.andYhg009EqualTo(type);
+        if(lx!=null)c.andYhg003IsNotNull();
+        List<cdyhg> list = yhgMapper.selectByExample(e1);
+        return list.size()>0?list.get(0):null;
+    }
+
 
     public PageBean queryByPage(PageBean pageBean, cdyhgExample example) {
         int page = (int) pageBean.getCurrentPage();

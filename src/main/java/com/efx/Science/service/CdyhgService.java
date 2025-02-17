@@ -28,4 +28,6 @@ public interface CdyhgService extends IService<cdyhg> {
     void delete(String id);
 
     List<cdyhg> getAll();
+
+    cdyhg getBylx(String type, String lx);
 }
