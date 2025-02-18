@@ -28,4 +28,6 @@ public interface CdyhfService extends IService<cdyhf> {
     void delete(String id);
 
     List<cdyhf> getAll(String fid, String type);
+
+    void deletes(List<String> list);
 }

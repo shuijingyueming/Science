@@ -62,7 +62,8 @@
                                 <div class="row">
                                     <div class="col-md-6 col-xl-4">
                                         <div><label class="col-md-6 col-xl-4 col-form-label" style="padding-right:20px;padding-left:20px;">账户名称</label>
-                                            <input type="text" class="form-control" id="z2" name="z2" placeholder="请输入账户名称" required/></div>
+                                            <input type="text" class="form-control" id="z2" name="z2" placeholder="请输入账户名称" required/>
+                                        </div>
                                     </div>
                                     <div class="col-md-6 col-xl-4">
                                         <div><label class="col-md-6 col-xl-4 col-form-label" style="padding-right:20px;padding-left:20px;">初始密码</label>
@@ -289,10 +290,24 @@
                 $(element).parent("div").parent("div").append(error);
                 $(element).parent("div").parent("div").find("label").addClass("col-12");
             },
-            rules : {z2: { required : true, },z4: { required : true, },z5: { required : true, },t2: { required : true, },t10: { required : true, },t11: { required : true, },t4: { required : true, },t5: { required : true, },},
+            rules : {z2: { required : true, remote:{
+                        url: "zhname", //后台处理程序
+                        type: "post",  //数据发送方式
+                        async : false,
+                        dataType: "json",       //接受数据格式
+                        data:{
+                            "name":function(){
+                                return $("#z2").val().trim();
+                            },
+                            "id":function(){
+                                return "";
+                            }//要传递的数据
+                        }
+                    }},p2: { required : true, },z4: { required : true, },z5: { required : true, },t2: { required : true, },t10: { required : true, },t11: { required : true, },t4: { required : true, },t5: { required : true, },},
             messages: {},
             submitHandler: function(form) {
                 var formData = new FormData();
+                formData.append("p2",$("#p2").val());
                 formData.append("z2",$("#z2").val());
                 formData.append("z4",$("#z4").val());
                 formData.append("z5",$("#z5").val());

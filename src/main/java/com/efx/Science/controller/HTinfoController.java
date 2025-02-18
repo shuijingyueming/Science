@@ -513,7 +513,7 @@ public class HTinfoController extends BaseController {
         cduse use = new cduse();
         //修改
         use.setUse002(request.getParameter("z2"));
-        use.setUse003(EncrpytUtil.getSHA256("123456"));
+        use.setUse003(EncrpytUtil.getSHA256(request.getParameter("p2")));
         use.setUse004(request.getParameter("z4"));
         use.setUse005(request.getParameter("z5"));
         use.setUse013("M");
@@ -2038,48 +2038,78 @@ public class HTinfoController extends BaseController {
             }
         }
         item.setYhe001(Integer.valueOf(request.getParameter("fid")));
-        item.setYhe002(Integer.valueOf(request.getParameter("skid")));
+//        item.setYhe002(Integer.valueOf(request.getParameter("skid")));
         cduse use=getUse(request);
         cdyhf yhf = new cdyhf();
         yhf.setYhf002(item.getYhe001());
         yhf.setYhf006(request.getParameter("lx"));
         MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
         Date date = new Date();
-        MultipartFile file = multipartHttpServletRequest.getFile("w2");
-        if(null!=file&&null!=file.getOriginalFilename()&&!file.getOriginalFilename().toString().isEmpty()){
-            yhf.setYhf001(UUID.randomUUID().toString().replaceAll("-",""));
-            yhf.setYhf003("A");
-            String filename =yhf.getYhf003()+ sdf.format(date)+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-            yhf.setYhf004(filename);
-            yhf.setYhf005("x"+item.getYhe002()+"/"+sdf2.format(date));
-            uploadpic(yhf.getYhf005()+"/"+yhf.getYhf004(),file,null);
-            yhf.setYhf007(use.getUse001());
-            yhf.setYhf008(new Date());
-            yhfService.insert(yhf);
+        List<MultipartFile> files = multipartHttpServletRequest.getFiles("w2");
+        if(null!=files){
+            for(int i=0;i<files.size();i++){
+                if(null!=files.get(i).getOriginalFilename()&&!files.get(i).getOriginalFilename().toString().isEmpty()){
+                    yhf.setYhf001(UUID.randomUUID().toString().replaceAll("-",""));
+                    yhf.setYhf003("A");
+                    String filename ="A"+yhf.getYhf003()+ sdf.format(date)+i+files.get(i).getOriginalFilename().substring(files.get(i).getOriginalFilename().lastIndexOf("."));
+                    yhf.setYhf004(filename);
+                    yhf.setYhf005("x"+item.getYhe002()+"/"+sdf2.format(date));
+                    uploadpic(yhf.getYhf005()+"/"+yhf.getYhf004(),files.get(i),null);
+                    yhf.setYhf007(use.getUse001());
+                    yhf.setYhf008(new Date());
+                    yhfService.insert(yhf);
+                }
+
+            }
         }
-        MultipartFile file1 = multipartHttpServletRequest.getFile("w3");
-        if(null!= file1 &&null!= file1.getOriginalFilename()&&!file1.getOriginalFilename().toString().isEmpty()){
-            yhf.setYhf001(UUID.randomUUID().toString().replaceAll("-",""));
-            yhf.setYhf003("B");
-            String filename =yhf.getYhf003()+ sdf.format(date)+ file1.getOriginalFilename().substring(file1.getOriginalFilename().lastIndexOf("."));
-            yhf.setYhf004(filename);
-            yhf.setYhf005("x"+item.getYhe002()+"/"+sdf2.format(date));
-            uploadpic(yhf.getYhf005()+"/"+yhf.getYhf004(), file1,null);
-            yhf.setYhf007(use.getUse001());
-            yhf.setYhf008(new Date());
-            yhfService.insert(yhf);
+        List<MultipartFile> files1 = multipartHttpServletRequest.getFiles("w3");
+        if(null!=files1){
+            for(int i=0;i<files1.size();i++){
+                if(null!=files1.get(i).getOriginalFilename()&&!files1.get(i).getOriginalFilename().toString().isEmpty()){
+                    yhf.setYhf001(UUID.randomUUID().toString().replaceAll("-",""));
+                    yhf.setYhf003("B");
+                    String filename ="B"+yhf.getYhf003()+ sdf.format(date)+i+files1.get(i).getOriginalFilename().substring(files1.get(i).getOriginalFilename().lastIndexOf("."));
+                    yhf.setYhf004(filename);
+                    yhf.setYhf005("x"+item.getYhe002()+"/"+sdf2.format(date));
+                    uploadpic(yhf.getYhf005()+"/"+yhf.getYhf004(),files1.get(i),null);
+                    yhf.setYhf007(use.getUse001());
+                    yhf.setYhf008(new Date());
+                    yhfService.insert(yhf);
+                }
+
+            }
         }
-        MultipartFile file2 = multipartHttpServletRequest.getFile("w4");
-        if(null!=file2&&null!=file2.getOriginalFilename()&&!file2.getOriginalFilename().toString().isEmpty()){
-            yhf.setYhf001(UUID.randomUUID().toString().replaceAll("-",""));
-            yhf.setYhf003("C");
-            String filename = yhf.getYhf003()+sdf.format(date)+file2.getOriginalFilename().substring(file2.getOriginalFilename().lastIndexOf("."));
-            yhf.setYhf004(filename);
-            yhf.setYhf005("x"+item.getYhe002()+"/"+sdf2.format(date));
-            uploadpic(yhf.getYhf005()+"/"+yhf.getYhf004(),file2,null);
-            yhf.setYhf007(use.getUse001());
-            yhf.setYhf008(new Date());
-            yhfService.insert(yhf);
+        List<MultipartFile> files2 = multipartHttpServletRequest.getFiles("w4");
+        if(null!=files2){
+            for(int i=0;i<files2.size();i++){
+                if(null!=files2.get(i).getOriginalFilename()&&!files2.get(i).getOriginalFilename().toString().isEmpty()){
+                    yhf.setYhf001(UUID.randomUUID().toString().replaceAll("-",""));
+                    yhf.setYhf003("C");
+                    String filename ="C"+yhf.getYhf003()+ sdf.format(date)+i+files2.get(i).getOriginalFilename().substring(files2.get(i).getOriginalFilename().lastIndexOf("."));
+                    yhf.setYhf004(filename);
+                    yhf.setYhf005("x"+item.getYhe002()+"/"+sdf2.format(date));
+                    uploadpic(yhf.getYhf005()+"/"+yhf.getYhf004(),files2.get(i),null);
+                    yhf.setYhf007(use.getUse001());
+                    yhf.setYhf008(new Date());
+                    yhfService.insert(yhf);
+                }
+
+            }
+        }
+
+        String delimg=request.getParameter("delimg");
+//        System.out.println("delimg:"+delimg);
+        if(!delimg.isEmpty()){
+            String[] ids=delimg.split("#");
+            @SuppressWarnings("unchecked")
+            List<String> list = (List<String>)(List<?>) Arrays.asList(ids);
+            list.removeAll(Collections.singleton(null));
+            if(list!=null&&list.size()>0){
+                for(String n:list){
+                    if(n!="")uploadpic(null,null,n);
+                }
+                yhfService.deletes(list);
+            }
         }
         String log = "修改了名字为：【" + request.getParameter("t1") + "】的课程预约信息";
 

@@ -126,7 +126,7 @@
     YHE037, YHE038, YHE040, YHE041, YHE042, YHE043, YHE044, YHE045, YHE046, YHE047, YHE048,
         YHE029, YHE030, YHE031, YHE039
   </sql>
-  <select id="selectByExampleWithBLOBs" parameterType="com.efx.Science.model.cdyheExample" resultMap="BaseResultMap">
+  <select id="selectByExampleWithBLOBs" parameterType="com.efx.Science.model.cdyheExample" resultMap="BaseResultMap1">
     select
     <if test="distinct">
       distinct
@@ -140,7 +140,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByExample" parameterType="com.efx.Science.model.cdyheExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.efx.Science.model.cdyheExample" resultMap="BaseResultMap1">
     select
     <if test="distinct">
       distinct

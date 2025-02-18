@@ -235,7 +235,8 @@
                     <input type="hidden" id="lx" th:value="${session.umsg.jstype}"/>
                     <input type="hidden" id="tname" value=""/>
                     <input type="hidden" id="zt" value=""/>
-                    <input type="hidden" id="xkid" value=""/>
+                    <input type="hidden" id="xkid1" value=""/>
+                    <input type="hidden" id="delimg" name="delimg"/>
                     <div class="modal-body" style="min-height:580px;">
                         <th:block th:if="${session.umsg.jstype=='C'}">
                             <div class="row ">
@@ -524,37 +525,44 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="mb-3 col-md-12">
-                                    <input id="ww2" name="ww2" type="hidden">
-                                    <label for="w2" class="form-label">签到表</label>
-                                    <input class="form-control" type="file" id="w2" onchange="showpdwjgs()">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="mb-3 col-md-12">
-                                    <input id="ww3" name="ww3" type="hidden">
-                                    <label for="w3" class="form-label">服务照片</label>
-                                    <input class="form-control" type="file" id="w3" onchange="showpdtpgs()">
-                                    <img alt="..." src="" id="shtp" onclick="$('#w3').click()"
-                                         class="form-control"
-                                         style="width:260px;height: 260px;border:1px solid rgb(229, 229, 229);"/>
-                                </div>
-                            </div>
-                            <div class="mb-3 col-md-12 position-relative" id="upvadiofile" style="margin-top: 20px;padding-left: 8px">
-                                <div class="form-check form-check-inline" style="padding-left: 10px;">
-                                    <button type="button" class="btn btn-primary" onclick="uploadvadio()">服务视频</button>
-                                </div>
-                                <div class="col-10 col-sm-8 col-md-6 col-lg-5 form-check form-check-inline typerow_p" style="padding-left: 10px;">
-                                    <figure style="max-height: 400px;min-height: 300px;height:100%;width:100%;display: flex;">
-                                        <input id="ww4" name="ww4" type="hidden">
-                                        <input type="file" id="w4" accept="video/*" style="display:none;">
-                                        <video class="form-vadio" id="upfilevadio" src="" controls/>
-                                    </figure>
-                                </div>
-                                <div class="col-11 small" style="margin-left:10px;color:#0096FF;">视频不超过100M，视频格式mp4</div>
-                            </div>
                         </th:block>
+                        <div class="row">
+                            <div class="mb-3 col-md-12">
+                                <input id="ww2" name="ww2" type="hidden">
+                                <label for="w2" class="form-label">签到表</label>
+                                <input class="form-control" type="file" id="w2" onchange="showpdtpgs1('w2','#p2')" multiple>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10  col-sm-10"><div class="form-group">
+                                <div id="p2" style="display: flex;justify-content: start;align-items: center;flex-flow: row wrap;"></div>
+                            </div></div>
+                        </div>
+                        <div class="row">
+                            <div class="mb-3 col-md-12">
+                                <input id="ww3" name="ww3" type="hidden">
+                                <label for="w3" class="form-label">服务照片</label>
+                                <input class="form-control" type="file" id="w3" onchange="showpdtpgs1('w3','#p3')" multiple>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10  col-sm-10"><div class="form-group">
+                                <div id="p3" style="display: flex;justify-content: start;align-items: center;flex-flow: row wrap;"></div>
+                            </div></div>
+                        </div>
+                        <div class="mb-3 col-md-12 position-relative" id="upvadiofile" style="margin-top: 20px;padding-left: 8px">
+                            <div class="form-check form-check-inline" style="padding-left: 10px;">
+                                <button type="button" class="btn btn-primary" onclick="uploadvadio()">服务视频</button>
+                            </div>
+                            <div class="col-10 col-sm-8 col-md-6 col-lg-5 form-check form-check-inline typerow_p" style="padding-left: 10px;">
+                                <figure style="max-height: 400px;min-height: 300px;height:100%;width:100%;display: flex;">
+                                    <input id="ww4" name="ww4" type="hidden">
+                                    <input type="file" id="w4" accept="video/*" style="display:none;" multiple>
+                                    <video class="form-vadio" id="upfilevadio" src="" controls/>
+                                </figure>
+                            </div>
+                            <div class="col-11 small" style="margin-left:10px;color:#0096FF;">视频不超过100M，视频格式mp4</div>
+                        </div>
                     </div>
                     <div class="modal-footer" style="height:100px;">
                         <button type="submit" class="btn btn-primary" id="edit-four2">保存</button>
@@ -963,7 +971,7 @@
     var imglist=[];
     var t4=[];
     //判断图片
-    function showpdtpgs1(id,img){
+    function showpdtpgs(id,img){
         var file = document.getElementById(id).files;
         if((imglist.length+file.length)>3){
             layer.msg("最多上传3张图片");
@@ -1369,16 +1377,276 @@
 </script>
 <!--评价-->
 <script type="text/javascript">
+    var imglist1=[];
+    var w2=[];
+
+    var imglist2=[];
+    var w3=[];
+
+    var imglistt3=[];
+    var w4=[];
+
+    //删除图片
+    function imgRemove1(obj,type){
+        let indexp = obj.getAttribute("id").replace(type+"P","");
+        //后台删除图片
+        if(obj.getAttribute("name").indexOf("upload/")>=0){
+            // $("#delimg").val($("#delimg").val()+"#"+(obj.getAttribute("name")).replace("upload/shopimg/",""));
+            $("#delimg").val($("#delimg").val()+"#"+(obj.getAttribute("name")).replace("upload/",""));
+        }
+        // if(obj.getAttribute("name").indexOf("https://fxtgoss.oss-cn-hangzhou.aliyuncs.com/shopimg/")>=0){
+        //     // $("#delimg").val($("#delimg").val()+"#"+(obj.getAttribute("name")).replace("https://fxtgoss.oss-cn-hangzhou.aliyuncs.com/shopimg/",""));
+        //     $("#delimg").val($("#delimg").val()+"#"+(obj.getAttribute("name")).replace("https://fxtgoss.oss-cn-hangzhou.aliyuncs.com/shopimg/",""));
+        // }
+        console.log(type);
+        if(type=="A"){
+            imglist1.splice(indexp,1);
+            insertImg1("#p2",type);
+        }else if(type=="B"){
+            imglis2.splice(indexp,1);
+            insertImg1("#p3",type);
+        }else if(type=="C"){
+            imglist3.splice(indexp,1);
+            insertVid("#p4",type);
+        }
+        console.log(imglist1);
+    }
+
+    //判断图片
+    function showpdtpgs1(id,img){
+        var file = document.getElementById(id).files;
+        let pd =true;
+        if(file){
+            for(var i=0;i<file.length;i++){
+                var imagSize =file[i].size;
+                let index=i;
+                if(imagSize <= 1024 * 1024 * 2){
+                    var reader = new FileReader();
+                    reader.readAsDataURL(file[i]);
+                    reader.onload = (function(i,e) {
+                        const image = new Image()
+                        image.src = e.target.result
+                        return new Promise((resolve) => {
+                            image.onload = () => {
+                                const width = image.width
+                                const height = image.height
+                                if(width>=800||height>=800){
+                                    pd =false;
+                                    layui.use('layer', function(){
+                                        var layer = layui.layer;
+                                        layer.ready(function(){
+                                            layer.msg('分辨率不超过800px');
+                                        });
+                                    });
+                                }
+                                if(index==(file.length-1)){
+                                    if(pd){
+                                        for(var j=0;j<file.length;j++){
+                                            if(id=="w2")imglist1.push(file[j]);
+                                            if(id=="w3")imglist2.push(file[j]);
+                                            if(id=="w4")imglist3.push(file[j]);
+                                        }
+                                        console.log(imglist1);
+                                        insertImg1(img,id=="w2"?'A':(id=="w3"?'B':'C'));
+                                    }
+                                }
+                            }
+                        })
+                    }).bind(reader, i);
+                }else{
+                    pd =false;
+                    layui.use('layer', function(){
+                        var layer = layui.layer;
+                        layer.ready(function(){
+                            layer.msg("图片大小在2M以内");
+                        });
+                    });
+                }
+            }
+        }
+    }
+
+    function insertImg1(img,zt){
+        $(img).empty();
+        var html="";
+        if(zt=="A"){
+            w2=[];
+            for(var i=0;i<imglist1.length;i++){
+                html="";
+                var data = imglist1[i];
+                if(typeof(imglist1[i])=="object"){
+                    let data1 ="";
+                    w2.push(imglist1[i])
+                    var reader = new FileReader();
+                    reader.readAsDataURL(imglist1[i]);
+                    reader.onload = (function(i,e) {
+                        data1 = e.target.result;
+                        const image = new Image()
+                        image.src = e.target.result
+                        return new Promise((resolve) => {
+                            image.onload = () => {
+                                // const width = image.width
+                                // const height = image.height
+                                // if(width==414&&height==280){
+                                html="<div class='item'>";
+                                html+="<img src='"+data1+"' style='width:150px;' />";
+                                html+="<span class='closep' id=\'AP"+i+"\' name='' onclick='imgRemove1(this,\""+zt+"\")'>X</span>";
+                                html+="</div>";
+                                $(img).append(html);
+                                // }else{
+                                //     layer.open({content: '分辨率必须是414*280',btn: '我知道了'});
+                                // }
+                            }
+                        })
+                    }).bind(reader, i);
+                }else{
+                    html="<div class='item'>";
+                    html+="<img src='"+data+"' style='width:150px;' />";
+                    html+="<span class='closep' id=\'AP"+i+"\' name=\'"+data+"\' onclick=\'imgRemove1(this,\""+zt+"\")\'>X</span>";
+                    html+="</div>";
+                    $(img).append(html);
+                }
+            }
+        }else if(zt=="B"){
+            w3=[];
+            for(var i=0;i<imglist2.length;i++){
+                html="";
+                var data = imglist2[i];
+                if(typeof(imglist2[i])=="object"){
+                    let data1 ="";
+                    w3.push(imglist2[i])
+                    var reader = new FileReader();
+                    reader.readAsDataURL(imglist2[i]);
+                    reader.onload = (function(i,e) {
+                        data1 = e.target.result;
+                        const image = new Image()
+                        image.src = e.target.result
+                        return new Promise((resolve) => {
+                            image.onload = () => {
+                                // const width = image.width
+                                // const height = image.height
+                                // if(width==414&&height==280){
+                                html="<div class='item'>";
+                                html+="<img src='"+data1+"' style='width:150px;' />";
+                                html+="<span class='closep' id=\'BP"+i+"\' name='' onclick='imgRemove1(this,\""+zt+"\")'>X</span>";
+                                html+="</div>";
+                                $(img).append(html);
+                                // }else{
+                                //     layer.open({content: '分辨率必须是414*280',btn: '我知道了'});
+                                // }
+                            }
+                        })
+                    }).bind(reader, i);
+                }else{
+                    html="<div class='item'>";
+                    html+="<img src='"+data+"' style='width:150px;' />";
+                    html+="<span class='closep' id=\'BP"+i+"\' name=\'"+data+"\' onclick='imgRemove1(this,\""+zt+"\")'>X</span>";
+                    html+="</div>";
+                    $(img).append(html);
+                }
+            }
+        }else if(zt=="C"){
+            w4=[];
+            for(var i=0;i<imglist3.length;i++){
+                html="";
+                var data = imglist3[i];
+                if(typeof(imglist3[i])=="object"){
+                    let data1 ="";
+                    w4.push(imglist3[i])
+                    var reader = new FileReader();
+                    reader.readAsDataURL(imglist3[i]);
+                    reader.onload = (function(i,e) {
+                        data1 = e.target.result;
+                        const image = new Image()
+                        image.src = e.target.result
+                        return new Promise((resolve) => {
+                            image.onload = () => {
+                                // const width = image.width
+                                // const height = image.height
+                                // if(width==414&&height==280){
+                                html="<div class='item'>";
+                                html+="<img src='"+data1+"' style='width:150px;' />";
+                                html+="<span class='closep' id=\'CP"+i+"\' name='' onclick='imgRemove1(this,\""+zt+"\")'>X</span>";
+                                html+="</div>";
+                                $(img).append(html);
+                                // }else{
+                                //     layer.open({content: '分辨率必须是414*280',btn: '我知道了'});
+                                // }
+                            }
+                        })
+                    }).bind(reader, i);
+                }else{
+                    html="<div class='item'>";
+                    html+="<img src='"+data+"' style='width:150px;' />";
+                    html+="<span class='closep' id=\'CP"+i+"\' name=\'"+data+"\' onclick='imgRemove1(this,\""+zt+"\")'>X</span>";
+                    html+="</div>";
+                    $(img).append(html);
+                }
+            }
+        }
+    }
+
+    function insertVid1(img){
+        $(img).empty();
+        var html="";
+        w4=[];
+        for(var i=0;i<imglist3.length;i++){
+            html="";
+            var data = imglist3[i];
+            if(typeof(imglist3[i])=="object"){
+                let data1 ="";
+                w4.push(imglist3[i])
+                var reader = new FileReader();
+                reader.readAsDataURL(imglist3[i]);
+                reader.onload = (function(i,e) {
+                    data1 = e.target.result;
+                    const image = new Video()
+                    image.src = e.target.result
+                    return new Promise((resolve) => {
+                        image.onload = () => {
+                            // const width = image.width
+                            // const height = image.height
+                            // if(width==414&&height==280){
+                            html="<div class='item'>";
+                            html+="<video src='"+data1+"' style='width:150px;' />";
+                            html+="<span class='closep' id=\'P"+i+"\' name='' onclick='imgRemove1(this,'C')'>X</span>";
+                            html+="</div>";
+                            $(img).append(html);
+                            // }else{
+                            //     layer.open({content: '分辨率必须是414*280',btn: '我知道了'});
+                            // }
+                        }
+                    })
+                }).bind(reader, i);
+            }else{
+                html="<div class='item'>";
+                html+="<video src='"+data+"' style='width:150px;' />";
+                html+="<span class='closep' id=\'P"+i+"\' name=\'"+data+"\' onclick=\'imgRemove1(this,\'C\')\'>X</span>";
+                html+="</div>";
+                $(img).append(html);
+            }
+        }
+    }
+
     function topj(obj,name) {
         if (obj != null && obj != '') {
+            imglist1=[];
+            w2=[];
+
+            imglis2=[];
+            w3=[];
+
+            imglist3=[];
+            w4=[];
             let josnobj = null;
             if (obj.indexOf("Hash") > 0) {
                 josnobj = striongTOjsonString(obj);
             } else {
                 josnobj = jsStringTojsonString(obj);
             }
+            console.log(josnobj)
             $("#fid").val(josnobj.yhe001);
-            $("#xkid").val(josnobj.yhe002);
+            $("#xkid1").val(josnobj.yhe002);
             $("#tname").val(name);
             $("#zt").val(josnobj.yhe007);
             if($("#lx").val()=="C") {
@@ -1486,6 +1754,40 @@
                 $("#p17").val(josnobj.yhe016)
                 $("#p18").val(josnobj.yhe017)
                 $("#p19").val(getTime(josnobj.yhe020,'YY/MM/DD'));
+                var data1="";
+                if(josnobj.yhflistA!=null){
+                    for(var i=0;i<josnobj.yhflistA.length;i++){
+                        data1=josnobj.yhflistA[i].yhf005+josnobj.yhflistA[i].yhf004
+                        imglist1.push(data1);
+                        html="<div class='item'>";
+                        html+="<img src='"+data1+"' style='width:150px;'/>";
+                        html+="<div class='closep' id=\'P"+i+"\' name=\'"+data1+"\' onclick=\'imgRemove1(this,\'A\')\'>X</div>";
+                        html+="</div>";
+                        $("#p2").append(html);
+                    }
+                }
+                if(josnobj.yhflistB!=null){
+                    for(var i=0;i<josnobj.yhflistB.length;i++){
+                        data1=josnobj.yhflistB[i].yhf005+josnobj.yhflistB[i].yhf004
+                        imglist2.push(data1);
+                        html="<div class='item'>";
+                        html+="<img src='"+data1+"' style='width:150px;'/>";
+                        html+="<div class='closep' id=\'P"+i+"\' name=\'"+data1+"\' onclick=\'imgRemove1(this,\'B\')\'>X</div>";
+                        html+="</div>";
+                        $("#p3").append(html);
+                    }
+                }
+                if(josnobj.yhflistC!=null){
+                    for(var i=0;i<josnobj.yhflistC.length;i++){
+                        data1=josnobj.yhflistB[i].yhflistC+josnobj.yhflistC[i].yhf004
+                        imglist3.push(data1);
+                        html="<div class='item'>";
+                        html+="<video src='"+data1+"' style='width:150px;'/>";
+                        html+="<div class='closep' id=\'P"+i+"\' name=\'"+data1+"\' onclick=\'imgRemove1(this,\'C\')\'>X</div>";
+                        html+="</div>";
+                        $("#p4").append(html);
+                    }
+                }
             }
             $("#ftype2").text("编辑");
         }else{
@@ -1506,7 +1808,7 @@
             load_index = layer.load(1);
             var formData = new FormData();
             formData.append("fid",$("#fid").val().trim());
-            formData.append("xkid",$("#xkid").val().trim());
+            formData.append("xkid1",$("#xkid1").val().trim());
             formData.append("p1",$("input[name='p1']:checked").val());
             formData.append("p2",$("input[name='p2']:checked").val());
             formData.append("p3",$("input[name='p3']:checked").val());
@@ -1529,9 +1831,19 @@
             formData.append("t1",$("#tname").val());
             formData.append("lx",$("#lx").val());
             formData.append("zt",$("#zt").val());
-            formData.append("w2", document.getElementById("w2").files[0]);
-            formData.append("w3", document.getElementById("w3").files[0]);
-            formData.append("w4", document.getElementById("w4").files[0]);
+            formData.append("delimg",$("#delimg").val());
+            formData.delete("w2");
+            for(var i=0;i<w2.length;i++){
+                formData.append("w2",w2[i]);
+            }
+            formData.delete("w3");
+            for(var i=0;i<w3.length;i++){
+                formData.append("w3",w3[i]);
+            }
+            formData.delete("w4");
+            for(var i=0;i<w4.length;i++){
+                formData.append("w4",w4[i]);
+            }
             $.ajax({
                 url: 'toHt/xgselection2', // 服务器端处理上传文件的URL
                 type: 'POST',
@@ -1565,62 +1877,6 @@
             $("#ftype3").text("编辑");
         }else{
             $("#ftype3").text("添加");
-        }
-    }
-
-    //判断
-    function showpdwjgs(){
-        var filePath = ['.jpg','.png'];
-        var file = document.getElementById("w2").files[0];
-        if(file){
-            var filename = file.name;
-            var filejw = filename.substring(filename.lastIndexOf("."));
-            var pd = false;
-            for(var i=0;i<filePath.length;i++){
-                if(filejw==filePath[i]){
-                    pd =  true;
-                    return;
-                }
-            }
-            if(!pd){
-                file.value="";
-                $("#w2").val("");
-                layer.msg("只能上传以.jpg、.png结尾的图片");
-                return;
-            }
-        }
-    }
-
-    //判断图片
-    function showpdtpgs(){
-        var filePath = ['.jpg','.png'];
-        var file = document.getElementById("w3").files[0];
-        if(file){
-            var filename = file.name;
-            var filejw = filename.substring(filename.lastIndexOf("."));
-            var pd = false;
-            for(var i=0;i<filePath.length;i++){
-                if(filejw==filePath[i]){
-                    var reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = function(e) {
-                        var data = e.target.result;
-                        $("#shtp").attr("src",data);
-                    };
-                    pd =  true;
-                    return;
-                }
-            }
-            if(!pd){
-                file.value="";
-                $("#w3").val("");
-                layer.msg("只能上传以.jpg、.png结尾的图片");
-                return;
-            }
-        }else{
-            if($("#id").val()==""){
-                $("#shtp").attr("src","");
-            }
         }
     }
 

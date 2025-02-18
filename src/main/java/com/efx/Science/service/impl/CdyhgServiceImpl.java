@@ -67,6 +67,7 @@ public class CdyhgServiceImpl implements CdyhgService {
         Criteria c = e1.createCriteria();
         c.andYhg010EqualTo(name);
         List<cdyhg> list = yhgMapper.selectByExample(e1);
+        e1.setOrderByClause("yhg003 desc,yhg001 desc");
         return list.size()>0?list.get(0):null;
     }
 

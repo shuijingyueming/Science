@@ -83,6 +83,14 @@ public class CdyhfServiceImpl implements CdyhfService {
         return yhfMapper.selectByExample(e1);
     }
 
+    @Override
+    public void deletes(List<String> list) {
+        cdyhfExample e1 = new cdyhfExample();
+        Criteria c = e1.createCriteria();
+        c.andYhf001In(list);
+        yhfMapper.deleteByExample(e1);
+    }
+
 
     public PageBean queryByPage(PageBean pageBean, cdyhfExample example) {
         int page = (int) pageBean.getCurrentPage();

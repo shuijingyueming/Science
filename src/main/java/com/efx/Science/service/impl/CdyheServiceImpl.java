@@ -337,6 +337,8 @@ public class CdyheServiceImpl implements CdyheService {
         }else if(type.equals("C")){
             c.andYhe002EqualTo(id);
             c.andYhe007EqualTo("B");
+        }else{
+            c.andSql("(yhe007='A' or yhe007='B')");
         }
         return yheMapper.selectByExample(e1);
     }
