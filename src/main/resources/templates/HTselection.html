@@ -707,17 +707,13 @@
                             </div>
                         </div>
                         <div class="row col-auto">
-                            <div>
-                                <div class="col-lg-4 col-md-6 col-sm-8">
-                                    <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">授课地点</label>
-                                    <input type="text" class="form-control col-auto" id="t2" name="t2" placeholder="请输入授课地点"/>
-                                </div>
+                            <div class="col-lg-4 col-md-6 col-sm-8">
+                                <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">授课地点</label>
+                                <input type="text" class="form-control col-auto" id="t2" name="t2" placeholder="请输入授课地点"/>
                             </div>
-                            <div>
-                                <div class="col-lg-2 col-md-3 col-sm-4">
-                                    <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">预计活动人数</label>
-                                    <input type="number" class="form-control col-auto" id="t14" name="t14" placeholder="请输入预计活动人数"/>
-                                </div>
+                            <div class="col-lg-2 col-md-3 col-sm-4">
+                                <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">预计活动人数</label>
+                                <input type="number" class="form-control col-auto" id="t14" name="t14" placeholder="请输入预计活动人数"/>
                             </div>
                         </div>
                         <div class="row col-auto" th:style="${session.umsg.jstype=='C'?'':'display: none'}">
@@ -735,14 +731,16 @@
                                 <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">预约日期备注</label>
                                 <input type="text" class="form-control col-auto" id="t42" name="t42" placeholder="请输入预约日期备注"/>
                             </div>
-                            <div class="col-lg-2 col-md-3 col-sm-4">
+                        </div>
+                        <div class="row col-auto">
+                            <div class="col-lg-4 col-md-6 col-sm-8">
                                 <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">其他要求</label>
                                 <textarea class="form-control" style="resize: none;" rows="3" id="t43" name="t43"></textarea>
                             </div>
                         </div>
                         <div class="row col-auto">
                             <div class="col-lg-4 col-md-8 col-sm-10">
-                                <label for="up" class="form-label">场地照片</label>
+                                <label for="up" class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">场地照片</label>
                                 <input type="file" class="form-control" id="up" name="up" value="/home/images/logo.png" onchange="showpdtpgs('up','#p1')" multiple/>
                             </div>
                         </div>
