@@ -43,6 +43,7 @@
 <input type="hidden" id="kcid" name="kcid" th:value="${kcid}"/>
 <input type="hidden" id="name" name="name" th:value="${name}"/>
 <input type="hidden" id="pkyear" name="pkyear" th:value="${pkyear}"/>
+<input type="hidden" id="lx" name="lx" th:value="${session.umsg.jstype}"/>
 <!---->
 <!--<input type="hidden" id="jdid" name="jdid" th:value="${jdid}"/>-->
 <div class="container-fluid">
@@ -75,13 +76,15 @@
                                         </div>
                                     </div>
                                 </div>
+                                <th:block th:if="${session.umsg.jstype=='B'}">
                                 <div class="col-auto">
                                     <button type="button" class="btn btn-info me-1" onclick="pktj()">排课条件</button>
                                 </div>
                                 <!--button-->
                                 <div class="col-auto">
-                                    <button type="button" class="btn btn-primary me-1" onclick="pksubmit()">保存排课</button>
+                                    <button type="button" class="btn btn-primary me-1" onclick="pksubmit()">提交排课</button>
                                 </div>
+                                    </th:block>
                             </div>
                     </div>
 
@@ -551,117 +554,120 @@
 
     //单日点击修改
     function editday(date){
-      $("#dayedit_time").val(date);
-      $("#dayedit_d").text(date+" "+moment(date).format('dddd'));
-      let sw="",xw="",ws="";
-      for(let i=0;i<arr.length;i++){
-          if(arr[i].start==date){
-              if(arr[i].title.indexOf("上午")>=0) sw = arr[i];
-              else if(arr[i].title.indexOf("下午")>=0) xw = arr[i];
-              else if(arr[i].title.indexOf("晚上")>=0) ws = arr[i];
-          }
-      }
-      if(sw!=""){
-          $("#dayedit_a").prop("checked",true);
-          $("#dayedit_a_z").prop("checked",sw.zt=="Y");
-          $("#dayedit_a_txt").text("预约 "+sw.title.replace("上午 ",""));
-      }else {
-          $("#dayedit_a").prop("checked",false);
-          $("#dayedit_a_z").prop("checked",false);
-          $("#dayedit_a_txt").text("");
-      }
-      if(xw!=""){
-          $("#dayedit_b").prop("checked",true);
-          $("#dayedit_b_z").prop("checked",xw.zt=='Y');
-          $("#dayedit_b_txt").text("预约 "+xw.title.replace("下午 ",""));
-      }else{
-          $("#dayedit_b").prop("checked",false);
-          $("#dayedit_b_z").prop("checked",false);
-          $("#dayedit_b_txt").text("");
-      }
-      if(ws!=""){
-          $("#dayedit_c").prop("checked",true);
-          $("#dayedit_c_z").prop("checked",ws.zt=='Y');
-          $("#dayedit_c_txt").text("预约 "+ws.title.replace("晚上 ",""));
-      }else {
-          $("#dayedit_c").prop("checked",false);
-          $("#dayedit_c_z").prop("checked",false);
-          $("#dayedit_c_txt").text("");
-      }
-      $('#modal-view-event').modal('show');
+        if($('#lx').val()=="B"){
+
+            $("#dayedit_time").val(date);
+            $("#dayedit_d").text(date+" "+moment(date).format('dddd'));
+            let sw="",xw="",ws="";
+            for(let i=0;i<arr.length;i++){
+                if(arr[i].start==date){
+                    if(arr[i].title.indexOf("上午")>=0) sw = arr[i];
+                    else if(arr[i].title.indexOf("下午")>=0) xw = arr[i];
+                    else if(arr[i].title.indexOf("晚上")>=0) ws = arr[i];
+                }
+            }
+            if(sw!=""){
+                $("#dayedit_a").prop("checked",true);
+                $("#dayedit_a_z").prop("checked",sw.zt=="Y");
+                $("#dayedit_a_txt").text("预约 "+sw.title.replace("上午 ",""));
+            }else {
+                $("#dayedit_a").prop("checked",false);
+                $("#dayedit_a_z").prop("checked",false);
+                $("#dayedit_a_txt").text("");
+            }
+            if(xw!=""){
+                $("#dayedit_b").prop("checked",true);
+                $("#dayedit_b_z").prop("checked",xw.zt=='Y');
+                $("#dayedit_b_txt").text("预约 "+xw.title.replace("下午 ",""));
+            }else{
+                $("#dayedit_b").prop("checked",false);
+                $("#dayedit_b_z").prop("checked",false);
+                $("#dayedit_b_txt").text("");
+            }
+            if(ws!=""){
+                $("#dayedit_c").prop("checked",true);
+                $("#dayedit_c_z").prop("checked",ws.zt=='Y');
+                $("#dayedit_c_txt").text("预约 "+ws.title.replace("晚上 ",""));
+            }else {
+                $("#dayedit_c").prop("checked",false);
+                $("#dayedit_c_z").prop("checked",false);
+                $("#dayedit_c_txt").text("");
+            }
+            $('#modal-view-event').modal('show');
+        }
     }
 
     //单个日期设定保存
     function day_save(){
-        let swtemp = true;
-        let xwtemp = true;
-        let wstemp = true;
-       //按日期获得预约数组内的数据
-        for(let i=0;i<arr.length;i++){
-            //有相同日期的
-            if(arr[i].start==$('#dayedit_time').val()){
-                if(arr[i].title.indexOf("上午")>=0){
-                    if(!$("#dayedit_a").prop("checked")) {
-                        //另外保存到条件内
-                        dayarr.push({id:arr[i].id,title:"上午 (0)",start:arr[i].start,cz:"D",zt:"N"});
-                        arr[i] = "";
-                    }else{
-                        if(arr[i].zt!=($("#dayedit_a_z").prop("checked")?"Y":"N")){
-                            dayarr.push({id:arr[i].id,title:"上午 (0)",start:arr[i].start,cz:"X",zt:($("#dayedit_a_z").prop("checked")?"Y":"N")});
-                            arr[i].zt = $("#dayedit_a_z").prop("checked")?"Y":"N";
+            let swtemp = true;
+            let xwtemp = true;
+            let wstemp = true;
+            //按日期获得预约数组内的数据
+            for(let i=0;i<arr.length;i++){
+                //有相同日期的
+                if(arr[i].start==$('#dayedit_time').val()){
+                    if(arr[i].title.indexOf("上午")>=0){
+                        if(!$("#dayedit_a").prop("checked")) {
+                            //另外保存到条件内
+                            dayarr.push({id:arr[i].id,title:"上午 (0)",start:arr[i].start,cz:"D",zt:"N"});
+                            arr[i] = "";
+                        }else{
+                            if(arr[i].zt!=($("#dayedit_a_z").prop("checked")?"Y":"N")){
+                                dayarr.push({id:arr[i].id,title:"上午 (0)",start:arr[i].start,cz:"X",zt:($("#dayedit_a_z").prop("checked")?"Y":"N")});
+                                arr[i].zt = $("#dayedit_a_z").prop("checked")?"Y":"N";
+                            }
                         }
-                    }
-                    swtemp = false;
-                }else if(arr[i].title.indexOf("下午")>=0){
-                    if(!$("#dayedit_b").prop("checked")) {
-                        //另外保存到条件内
-                        dayarr.push({id:arr[i].id,title:"下午 (0)",start:arr[i].start,cz:"D",zt:"N"});
-                        arr[i] = "";
-                    }else {
-                        if(arr[i].zt!=($("#dayedit_b_z").prop("checked")?"Y":"N")){
-                            dayarr.push({id:arr[i].id,title:"下午 (0)",start:arr[i].start,cz:"X",zt:($("#dayedit_b_z").prop("checked")?"Y":"N")});
-                            arr[i].zt = $("#dayedit_b_z").prop("checked")?"Y":"N";
+                        swtemp = false;
+                    }else if(arr[i].title.indexOf("下午")>=0){
+                        if(!$("#dayedit_b").prop("checked")) {
+                            //另外保存到条件内
+                            dayarr.push({id:arr[i].id,title:"下午 (0)",start:arr[i].start,cz:"D",zt:"N"});
+                            arr[i] = "";
+                        }else {
+                            if(arr[i].zt!=($("#dayedit_b_z").prop("checked")?"Y":"N")){
+                                dayarr.push({id:arr[i].id,title:"下午 (0)",start:arr[i].start,cz:"X",zt:($("#dayedit_b_z").prop("checked")?"Y":"N")});
+                                arr[i].zt = $("#dayedit_b_z").prop("checked")?"Y":"N";
+                            }
                         }
-                    }
-                    xwtemp = false;
-                }else if(arr[i].title.indexOf("晚上")>=0){
-                    if(!$("#dayedit_c").prop("checked")) {
-                        //另外保存到条件内 cz操作为del
-                        dayarr.push({id:arr[i].id,title:"晚上 (0)",start:arr[i].start,cz:"D",zt:"N"});
-                        arr[i] = "";
-                    }else {
-                        if(arr[i].zt!=($("#dayedit_c_z").prop("checked")?"Y":"N")){
-                            dayarr.push({id:arr[i].id,title:"晚上 (0)",start:arr[i].start,cz:"X",zt:($("#dayedit_c_z").prop("checked")?"Y":"N")});
-                            arr[i].zt = $("#dayedit_c_z").prop("checked")?"Y":"N";
+                        xwtemp = false;
+                    }else if(arr[i].title.indexOf("晚上")>=0){
+                        if(!$("#dayedit_c").prop("checked")) {
+                            //另外保存到条件内 cz操作为del
+                            dayarr.push({id:arr[i].id,title:"晚上 (0)",start:arr[i].start,cz:"D",zt:"N"});
+                            arr[i] = "";
+                        }else {
+                            if(arr[i].zt!=($("#dayedit_c_z").prop("checked")?"Y":"N")){
+                                dayarr.push({id:arr[i].id,title:"晚上 (0)",start:arr[i].start,cz:"X",zt:($("#dayedit_c_z").prop("checked")?"Y":"N")});
+                                arr[i].zt = $("#dayedit_c_z").prop("checked")?"Y":"N";
+                            }
                         }
+                        wstemp = false;
                     }
-                    wstemp = false;
                 }
             }
-        }
-        //原数组不存在，则添加
-        if(swtemp&&$("#dayedit_a").prop("checked")) {
-            arr.push({id:"A",title:"上午 (0)",start:$('#dayedit_time').val(),zt:($("#dayedit_a_z").prop("checked")?"Y":"N")});
-            //另外保存到条件内 cz操作为add
-            dayarr.push({id:"A",title:"上午 (0)",start:$('#dayedit_time').val(),cz:"A",zt:($("#dayedit_a_z").prop("checked")?"Y":"N")});
-        }
-        if(xwtemp&&$("#dayedit_b").prop("checked")) {
-            arr.push({id:"A",title:"下午 (0)",start:$('#dayedit_time').val(),className: 'bg-purple',zt:($("#dayedit_b_z").prop("checked")?"Y":"N")});
-            dayarr.push({id:"A",title:"下午 (0)",start:$('#dayedit_time').val(),cz:"A",zt:($("#dayedit_b_z").prop("checked")?"Y":"N")});
-        }
-        if(wstemp&&$("#dayedit_c").prop("checked")) {
-            arr.push({id:"A",title:"晚上 (0)",start:$('#dayedit_time').val(),className: 'bg-danger',zt:($("#dayedit_c_z").prop("checked")?"Y":"N")});
-            dayarr.push({id:"A",title:"晚上 (0)",start:$('#dayedit_time').val(),cz:"A",zt:($("#dayedit_c_z").prop("checked")?"Y":"N")});
-        }
-        //移除空元素
-        arr = $.grep(arr, function(value) {
-            return value && value !== '';
-        });
-        calendar.removeAllEventSources();
-        calendar.addEventSource(arr);
-        calendar.refetchEvents();
-        //console.log(arr);
-        $('#modal-view-event').modal('hide');
+            //原数组不存在，则添加
+            if(swtemp&&$("#dayedit_a").prop("checked")) {
+                arr.push({id:"A",title:"上午 (0)",start:$('#dayedit_time').val(),zt:($("#dayedit_a_z").prop("checked")?"Y":"N")});
+                //另外保存到条件内 cz操作为add
+                dayarr.push({id:"A",title:"上午 (0)",start:$('#dayedit_time').val(),cz:"A",zt:($("#dayedit_a_z").prop("checked")?"Y":"N")});
+            }
+            if(xwtemp&&$("#dayedit_b").prop("checked")) {
+                arr.push({id:"A",title:"下午 (0)",start:$('#dayedit_time').val(),className: 'bg-purple',zt:($("#dayedit_b_z").prop("checked")?"Y":"N")});
+                dayarr.push({id:"A",title:"下午 (0)",start:$('#dayedit_time').val(),cz:"A",zt:($("#dayedit_b_z").prop("checked")?"Y":"N")});
+            }
+            if(wstemp&&$("#dayedit_c").prop("checked")) {
+                arr.push({id:"A",title:"晚上 (0)",start:$('#dayedit_time').val(),className: 'bg-danger',zt:($("#dayedit_c_z").prop("checked")?"Y":"N")});
+                dayarr.push({id:"A",title:"晚上 (0)",start:$('#dayedit_time').val(),cz:"A",zt:($("#dayedit_c_z").prop("checked")?"Y":"N")});
+            }
+            //移除空元素
+            arr = $.grep(arr, function(value) {
+                return value && value !== '';
+            });
+            calendar.removeAllEventSources();
+            calendar.addEventSource(arr);
+            calendar.refetchEvents();
+            //console.log(arr);
+            $('#modal-view-event').modal('hide');
     }
 
     function addrq(){

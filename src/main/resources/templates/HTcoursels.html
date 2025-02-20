@@ -33,6 +33,10 @@
     <link rel="stylesheet" type="text/css" href="css/animate.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.min.css">
     <link rel="stylesheet" type="text/css" href="css/page.css">
+    <!-- 富文本编辑器 -->
+    <link href="kindeditor/themes/default/default.css" rel="stylesheet" />
+    <script src="kindeditor/kindeditor-all-min.js"></script>
+    <script src="kindeditor/lang/zh_CN.js"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -45,6 +49,7 @@
                             <input type="hidden" id="pages" name="pages" th:value="${pages}"/>
                             <input type="hidden" id="kcid" name="kcid" th:value="${kcid}"/>
                             <input type="hidden" id="name" name="name" th:value="${name}"/>
+                            <input type="hidden" id="jstype" name="jstype" th:value="${session.umsg.jstype}"/>
                             <!--text input-->
                             <div class="row g-3">
                                 <div class="col-auto">
@@ -85,10 +90,12 @@
                                             <a href="javascript:void(0);" th:onclick="toxq([[${item.toString()}]],[[${item.yhc004}]])" class="btn btn-table"
                                                data-bs-toggle="modal" data-bs-target="#xqmode">详情</a>
                                             <div class="ivu-divider-vertical"></div>
-                                            <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]])" class="btn btn-table"
-                                               data-bs-toggle="modal" data-bs-target="#editmode">编辑</a>
-                                            <div class="ivu-divider-vertical"></div>
-                                            <a href="javascript:void(0);" th:onclick="del([[${item.yhc001}]])" class="btn btn-table">删除</a>
+                                            <th:block th:if="${session.umsg.jstype=='B'}">
+                                                <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]],[[${item.yhc004}]])" class="btn btn-table"
+                                                   data-bs-toggle="modal" data-bs-target="#editmode">编辑</a>
+                                                <div class="ivu-divider-vertical"></div>
+                                                <a href="javascript:void(0);" th:onclick="del([[${item.yhc001}]])" class="btn btn-table">删除</a>
+                                            </th:block>
                                         </div>
                                     </td>
                                 </tr>
@@ -142,7 +149,7 @@
                         </div>
                     </div>
                     <div class="modal-footer" style="height:100px;">
-                        <button type="submit" class="btn btn-primary" id="edit-four">保存</button>
+                        <button type="submit" class="btn btn-primary" id="edit-four">提交</button>
                     </div>
                 </form>
             </div>
@@ -260,10 +267,14 @@
                 processData: false, // 不处理发送的数据
                 success: function (res) {
                     var d = eval(res);
-                    layer.msg("删除成功");
-                    setTimeout(function(){
-                        pagerefalsh();
-                    },1000);
+                    if(d.msg=="0"){
+                        layer.msg("删除成功");
+                        setTimeout(function(){
+                            pagerefalsh();
+                        },1000);
+                    }else{
+                        layer.msg("该老师已教授课程，无法删除");
+                    }
                     layer.close(load_index);
                 },
                 error: function () { console.log('提交失败'); }
@@ -295,7 +306,7 @@
 
     }
 
-    function edit(obj){
+    function edit(obj,html1){
         if(obj!=null&&obj!=''){
             let josnobj = null;
             if(obj.indexOf("Hash")>0){
@@ -306,7 +317,7 @@
             $("#fid").val(josnobj.yhc001);
             $("#t3").val(josnobj.yhc003);
             // $("#t4").val(josnobj.yhc004);
-            KE.html(josnobj.yhc004);
+            KE.html(html1);
             $("#ftype").text("编辑");
         }else{
             $("#ftype").text("添加");

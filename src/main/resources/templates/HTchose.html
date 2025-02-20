@@ -46,15 +46,29 @@
                         <form class="search-form" method="post" role="form" action="toHt/tochose">
                             <input type="hidden" id="pages" name="pages" th:value="${pageobj.currentPage}"/>
                             <input type="hidden" id="counts" name="counts" th:value="${pageobj.pageCount}"/>
+                            <input type="hidden" id="jstype" name="jstype" th:value="${session.umsg.jstype}"/>
                             <!--text input-->
                             <div class="row g-3">
                                 <div class="col-auto">
                                     <div class="row">
                                         <label class="col-auto col-form-label"
-                                               style="padding-right:0;padding-left:10px;">名称</label>
+                                               style="padding-right:0;padding-left:10px;">单位名称</label>
                                         <div class="col-auto">
                                             <input type="text" class="form-control" id="name" name="name" th:value="${pageobj.othersql}"
-                                                   placeholder="请输入名称"/>
+                                                   placeholder="请输入单位名称"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="row">
+                                        <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">层级名称</label>
+                                        <div class="col-auto">
+                                            <select id="flid" name="flid" class="form-control selectpicker">
+                                                <option value="" selected></option>
+                                                <th:block th:each="item,stat:${yhalist}">
+                                                    <option th:value="${item.yha001}"  th:selected="${pageobj.othersql1==#strings.toString(item.yha001)?true:false}">[[${item.yha002}]]</option>
+                                                </th:block>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -84,6 +98,7 @@
                                     <th>年成功场次</th>
                                     <th>年预约场次</th>
                                     <th>场次总量设定</th>
+                                    <th>场次余量</th>
                                     <th>交通补贴费用</th>
                                     <th style="max-width:80px;" th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">操作</th>
                                 </tr>
@@ -103,6 +118,7 @@
                                     <td th:text="${item.yhb015}"></td>
                                     <td th:text="${item.yhb016}"></td>
                                     <td th:text="${item.yhb017}"></td>
+                                    <td th:text="${item.yhb016!=null?item.yhb016-item.yhb015:0}"></td>
                                     <td th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">
                                         <div class="btn-group btn-group-sm">
                                             <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]])" class="btn btn-table"
@@ -184,7 +200,7 @@
                         </div>
                     </div>
                     <div class="modal-footer" style="height:100px;">
-                        <button type="submit" class="btn btn-primary" id="edit-four">保存</button>
+                        <button type="submit" class="btn btn-primary" id="edit-four">提交</button>
                     </div>
                 </form>
             </div>
@@ -251,6 +267,7 @@
     function usefanye(pageindex){
         var params = [
             ["pages",pageindex],
+            ["flid",$("#flid").val()],
             ["name",$.trim($("#name").val())]];
         form_submit("toHt/tochose","post",params,"_self");
     }
@@ -259,6 +276,7 @@
         var params = [
             ["kcid",kcid],
             ["pages",$("#pages").val()],
+            ["flid",$("#flid").val()],
             ["name", $("#name").val()]];
         form_submit("toHt/tochosels","post",params,"_self");
     }
@@ -266,6 +284,7 @@
     function xzmb(){
         var params = [  ["type","E"],
             ["pages",$("#pages").val()],
+            ["flid",$("#flid").val()],
             ["name", $("#name").val()]];
         form_submit("toHt/tochose","post",params,"_self");
     }
@@ -465,7 +484,7 @@
             $(element).parent("div").parent("div").find("label").addClass("col-12");
             // $(element).parent("div").parent("div").find("label").attr("style","margin-left:5px;");
         },
-        rules : {t2: { required : true, },t4: { required : true, },t5: { required : true, },},
+        rules : {t2: { required : true, },t4: { required : true, },t5: { required : true, },t6: { required : true, },t7: { required : true, },},
         messages: {},
         submitHandler: function(form) {
             load_index = layer.load(1);

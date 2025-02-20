@@ -33,4 +33,6 @@ public interface cdyhcMapper {
     int updateByPrimaryKeyWithBLOBs(cdyhc record);
 
     int updateByPrimaryKey(cdyhc record);
+
+    cdyhc selectBykcid(Integer id);
 }

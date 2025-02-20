@@ -119,7 +119,7 @@ public class cdsmd {
 
     private String smd015;
 
-    private Float smd016;
+    private String smd016;
 
     private String smd017;
 
@@ -245,12 +245,12 @@ public class cdsmd {
         this.smd015 = smd015;
     }
 
-    public Float getSmd016() {
+    public String getSmd016() {
         return smd016;
     }
 
-    public void setSmd016(Float smd016) {
-        this.smd016 = smd016;
+    public void setSmd016(String smd016) {
+        this.smd016 = smd016 == null ? null : smd016.trim();
     }
 
     public String getSmd017() {

@@ -56,6 +56,10 @@ public interface cdyheMapper {
 
     Integer countByExample2(@Param("cdyheExample")cdyheExample e1, @Param("cdyhbExample")cdyhbExample e2);
 
+    List<cdyhe> selectByExample2(@Param("cdyheExample")cdyheExample e1, @Param("cdyhbExample")cdyhbExample e2);
+
+    List<cdyhe> selectByExampleAndPage2(@Param("cdyheExample")cdyheExample e1, @Param("cdyhbExample")cdyhbExample e2, RowBounds rowBounds);
+
     Integer countByExamplefwrcX(cdyheExample e1);
 
     Integer countByExamplefwrc2(@Param("cdyheExample")cdyheExample e1, @Param("cdyhbExample")cdyhbExample e2);

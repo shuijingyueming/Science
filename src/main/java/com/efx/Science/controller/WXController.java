@@ -182,7 +182,9 @@ public class WXController extends BaseController {
         Map<String, Object> result = new HashMap<String, Object>();
         cdhba hba = hbaService.getByid(Integer.valueOf(request.getParameter("kcid")));
         Integer xkid= Integer.valueOf(request.getParameter("xkid"));
+        Integer id= !request.getParameter("cjid").isEmpty()?0:Integer.valueOf(request.getParameter("xkid"));
         cdyhe item = new cdyhe();
+        item.setYhe040(id);
         item.setYhe002(xkid);
         item.setYhe004(hba.getHba001());
         item.setYhe003(hba.getHba022());

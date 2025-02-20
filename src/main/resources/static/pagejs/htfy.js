@@ -155,6 +155,7 @@ function jsStringTojsonString(obj){
     obj = obj.replaceAll(":\"{",":{");
     obj = obj.replaceAll("}\"}","}}");
     obj = obj.replaceAll("}\",","},");
+    console.log(obj)
     return JSON.parse(obj);
 }
 

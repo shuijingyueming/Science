@@ -6,7 +6,7 @@
     <meta http-equiv="pragma" content="no-cache"/>
     <meta http-equiv="cache-control" content="no-cache"/>
     <meta http-equiv="expires" content="0"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, yher-scalable=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="keywords" content="">
     <meta name="description" content="">
@@ -76,6 +76,7 @@
                             <input type="hidden" id="pages" name="pages" th:value="${pageobj.currentPage}"/>
                             <input type="hidden" id="counts" name="counts" th:value="${pageobj.pageCount}"/>
                             <input type="hidden" id="jstype" name="jstype" th:value="${session.umsg.jstype}"/>
+                            <input type="hidden" id="ztype" name="ztype" th:value="${pageobj.othersql2}"/>
                             <!--text input-->
                             <div class="row g-3">
                                 <!--<div class="col-auto">
@@ -94,6 +95,19 @@
                                                 <option value="" selected>请选择</option>
                                                 <th:block th:each="item,stat:${smdlist}">
                                                     <option th:value="${item.smd001}"  th:selected="${pageobj.othersql5==#strings.toString(item.smd001)?true:false}">[[${item.smd003}]]</option>
+                                                </th:block>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto" th:style="${session.umsg.jstype=='C'?'display: none':''}">
+                                    <div class="row">
+                                        <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">层级名称</label>
+                                        <div class="col-auto">
+                                            <select id="flid" name="flid" class="form-control selectpicker">
+                                                <option value="" selected></option>
+                                                <th:block th:each="item,stat:${yhalist}">
+                                                    <option th:value="${item.yha001}"  th:selected="${pageobj.othersql1==#strings.toString(item.yha001)?true:false}">[[${item.yha002}]]</option>
                                                 </th:block>
                                             </select>
                                         </div>
@@ -147,17 +161,22 @@
                                     <td th:text="${item.yhe009}"></td>
                                     <td th:text="${#dates.format(item.yhe008,'yyyy-MM-dd')}"></td>
                                     <td th:text="${#dates.format(item.yhe020,'yyyy-MM-dd')}"></td>
-                                    <td th:style="${item.yhe007=='A'||item.yhe007=='B'||item.yhe007=='J'||item.yhe007=='K'?'color:#A46BFF':
-                                                   (item.yhe007=='C'||item.yhe007=='D'?'color:#FFAA00;':(item.yhe007=='G'||item.yhe007=='H'?'color:#6ABF47;':
-                                                   (item.yhe007=='M'||item.yhe007=='N'||item.yhe007=='O'||item.yhe007=='P'?'color:#787878;':
+                                    <td th:style="${item.yhe007=='M'||item.yhe007=='N'||item.yhe007=='A'||item.yhe007=='B'||item.yhe007=='J'||item.yhe007=='K'?'color:#A46BFF':
+                                                   (item.yhe007=='C'||item.yhe007=='D'||item.yhe007=='S'||item.yhe007=='T'?'color:#FFAA00;':(item.yhe007=='G'||item.yhe007=='H'?'color:#6ABF47;':
+                                                   (item.yhe007=='O'||item.yhe007=='P'?'color:#787878;':
                                                    (item.yhe007=='E'?'color:#36AFF5;':'color:#5776F2;'))))}"
                                         th:text="${item.yhe007=='A'||item.yhe007=='B'?'预约待确认':(item.yhe007=='J'||item.yhe007=='K'?'修改待确认':
-                                                  (item.yhe007=='C'||item.yhe007=='D'?'预约退回':(item.yhe007=='G'||item.yhe007=='H'?'已接受预约':
-                                                  (item.yhe007=='M'||item.yhe007=='N'?'取消预约':(item.yhe007=='O'||item.yhe007=='P'?'确认取消':
-                                                  (item.yhe007=='E'?'完结已传':'完结未传'))))))}"></td>
+                                                  (item.yhe007=='C'||item.yhe007=='D'?'预约退回': (item.yhe007=='S'||item.yhe007=='T'?'修改驳回':(item.yhe007=='G'||item.yhe007=='H'?'已接受预约':
+                                                  (item.yhe007=='M'||item.yhe007=='N'?'取消待确认':(item.yhe007=='O'||item.yhe007=='P'?'确认取消':
+                                                  (item.yhe007=='E'?'完结已传':'完结未传')))))))}"></td>
                                     <td>
                                         <div class="btn-group btn-group-sm">
-                                            <th:block th:if="${item.yhe007=='G'||item.yhe007=='H'||item.yhe007=='J'||item.yhe007=='K'}">
+                                            <!--<a href="javascript:void(0);" th:onclick="toxq([[${item.toString()}]],[[${item.hba.toString()}]],[[${item.yhb.toString()}]],[[${item.smd.toString()}]],[[${item.yhflist.toString()}]],[[${item.yhflistA.toString()}]],[[${item.yhflistB.toString()}]],[[${item.yhflistC.toString()}]])" class="btn btn-table" data-bs-toggle="modal" data-bs-target="#xqmode">详情</a>
+                                            -->
+                                            <th:block th:if="${item.yhe007=='C'||item.yhe007=='D'||item.yhe007=='S'||item.yhe007=='T'}">
+                                                <a href="javascript:void(0);" th:onclick="tobh([[${item.toString()}]])" class="btn btn-table" data-bs-toggle="modal" data-bs-target="#xqmode">驳回理由</a>
+                                            </th:block>
+                                            <th:block th:if="${item.yhe007=='G'||item.yhe007=='H'||item.yhe007=='S'||item.yhe007=='T'||item.yhe007=='J'||item.yhe007=='K'}">
                                                 <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]],[[${item.yhb.yhb004}]])" class="btn btn-table" data-bs-toggle="modal" data-bs-target="#editmode">编辑</a>
                                             </th:block>
                                             <th:block th:if="${session.umsg.jstype=='B'}">
@@ -167,16 +186,17 @@
                                                     <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['C']])">退回</a>
                                                 </th:block>
                                                 <th:block th:if="${item.yhe007=='J'}">
-                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['G']])">确认修改</a>
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['G']])">接受修改</a>
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['T']])">驳回</a>
                                                 </th:block>
                                                 <th:block th:if="${item.yhe007=='M'}">
                                                     <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['O']])">确认取消</a>
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['T']])">驳回</a>
                                                 </th:block>
-
-                                                <th:block th:if="${item.yhe007!='K'&&item.yhe007!='E'&&item.yhe007!='F'&&item.yhe007!='Q'&&item.yhe007!='R'}">
-                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['D']])">取消预约</a>
+                                                <th:block th:if="${item.yhe007=='B'||item.yhe007=='H'||item.yhe007=='K'}">
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['N']])">取消预约</a>
                                                 </th:block>
-                                                <th:block th:if="${item.yhe007=='B'||item.yhe007=='D'||item.yhe007=='P'}">
+                                                <th:block th:if="${item.yhe007=='P'}">
                                                     <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#" th:onclick="del([[${item.yhe001}]],[[${item.yhb.yhb004}]])">删除</a>
                                                 </th:block>
                                             </th:block>
@@ -186,22 +206,23 @@
                                                     <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['D']])">退回</a>
                                                 </th:block>
                                                 <th:block th:if="${item.yhe007=='K'}">
-                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['H']])">确认修改</a>
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['H']])">接受修改</a>
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['S']])">驳回</a>
                                                 </th:block>
                                                 <th:block th:if="${item.yhe007=='N'}">
                                                     <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['P']])">确认取消</a>
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['S']])">驳回</a>
                                                 </th:block>
-
-                                                <th:block th:if="${item.yhe007!='D'&&item.yhe007!='E'&&item.yhe007!='F'&&item.yhe007!='Q'&&item.yhe007!='R'}">
-                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['D']])">取消预约</a>
+                                                <th:block th:if="${item.yhe007=='A'||item.yhe007=='G'||item.yhe007=='G'}">
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['M']])">取消预约</a>
                                                 </th:block>
-                                                <th:block th:if="${item.yhe007=='A'||item.yhe007=='C'||item.yhe007=='O'}">
+                                               <th:block th:if="${item.yhe007=='O'}">
                                                     <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#" th:onclick="del([[${item.yhe001}]],[[${item.yhb.yhb004}]])">删除</a>
                                                 </th:block>
                                             </th:block>
                                             <th:block th:if="${session.umsg.jstype!='A'}">
                                                 <th:block th:if="${item.yhe007=='F'||item.yhe007=='Q'||item.yhe007=='R'}">
-                                                    <a href="javascript:void(0);" th:onclick="topj([[${item.toString()}]])" class="btn btn-table" data-bs-toggle="modal" data-bs-target="#pjmode">评价</a>
+                                                    <a href="javascript:void(0);" th:onclick="topj([[${item.toString()}]],[[${item.yhflistA.toString()}]],[[${item.yhflistB.toString()}]],[[${item.yhflistC.toString()}]])" class="btn btn-table" data-bs-toggle="modal" data-bs-target="#pjmode">评价</a>
                                                 </th:block>
                                             </th:block>
                                             <!-- <th:block th:if="${item.yhe007=='G'||item.yhe007=='H'}">
@@ -222,6 +243,22 @@
         </div>
     </div>
 
+    <!-- 详情模态框 -->
+    <div class="modal fade" id="xqmode" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel" aria-hidden="true" >
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="xqmodeLabel">查看详情</h6>
+                    <button type="button" class="btn-close" style="margin-right: 20px;" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div>
+                    <div class="modal-body" style="padding-bottom: 180px;background-color: #FFF;"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <!-- 编辑分类模态框 -->
     <div class="modal fade" id="pjmode" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel"
          aria-hidden="true" style="height:100%;background-color: #FFF;">
@@ -237,6 +274,7 @@
                     <input type="hidden" id="zt" value=""/>
                     <input type="hidden" id="xkid1" value=""/>
                     <input type="hidden" id="delimg" name="delimg"/>
+                    <input type="hidden" id="delid" name="delid"/>
                     <div class="modal-body" style="min-height:580px;">
                         <th:block th:if="${session.umsg.jstype=='C'}">
                             <div class="row ">
@@ -530,7 +568,7 @@
                             <div class="mb-3 col-md-12">
                                 <input id="ww2" name="ww2" type="hidden">
                                 <label for="w2" class="form-label">签到表</label>
-                                <input class="form-control" type="file" id="w2" onchange="showpdtpgs1('w2','#p2')" multiple>
+                                <input class="form-control" type="file" id="w2" onchange="showpdtpgs1('w2','#p2','A')" multiple>
                             </div>
                         </div>
                         <div class="row">
@@ -542,7 +580,7 @@
                             <div class="mb-3 col-md-12">
                                 <input id="ww3" name="ww3" type="hidden">
                                 <label for="w3" class="form-label">服务照片</label>
-                                <input class="form-control" type="file" id="w3" onchange="showpdtpgs1('w3','#p3')" multiple>
+                                <input class="form-control" type="file" id="w3" onchange="showpdtpgs1('w3','#p3','B')" multiple>
                             </div>
                         </div>
                         <div class="row">
@@ -550,22 +588,21 @@
                                 <div id="p3" style="display: flex;justify-content: start;align-items: center;flex-flow: row wrap;"></div>
                             </div></div>
                         </div>
-                        <div class="mb-3 col-md-12 position-relative" id="upvadiofile" style="margin-top: 20px;padding-left: 8px">
-                            <div class="form-check form-check-inline" style="padding-left: 10px;">
-                                <button type="button" class="btn btn-primary" onclick="uploadvadio()">服务视频</button>
+                        <div class="row">
+                            <div class="mb-3 col-md-12">
+                                <input id="ww4" name="ww4" type="hidden">
+                                <label for="w3" class="form-label">服务视频</label>
+                                <input class="form-control" type="file" id="w4" onchange="showpdtpgs1('w4','#p4','C')" multiple>
                             </div>
-                            <div class="col-10 col-sm-8 col-md-6 col-lg-5 form-check form-check-inline typerow_p" style="padding-left: 10px;">
-                                <figure style="max-height: 400px;min-height: 300px;height:100%;width:100%;display: flex;">
-                                    <input id="ww4" name="ww4" type="hidden">
-                                    <input type="file" id="w4" accept="video/*" style="display:none;" multiple>
-                                    <video class="form-vadio" id="upfilevadio" src="" controls/>
-                                </figure>
-                            </div>
-                            <div class="col-11 small" style="margin-left:10px;color:#0096FF;">视频不超过100M，视频格式mp4</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10  col-sm-10"><div class="form-group">
+                                <div id="p4" style="display: flex;justify-content: start;align-items: center;flex-flow: row wrap;"></div>
+                            </div></div>
                         </div>
                     </div>
                     <div class="modal-footer" style="height:100px;">
-                        <button type="submit" class="btn btn-primary" id="edit-four2">保存</button>
+                        <button type="submit" class="btn btn-primary" id="edit-four2">提交</button>
                     </div>
                 </form>
             </div>
@@ -584,7 +621,7 @@
                     <input type="hidden" id="fid" value=""/>
                     <input type="hidden" id="fname" value=""/>
                     <div class="modal-body" style="min-height:580px;">
-                        <div class="row col-xl-6 col-md-9 col-sm-10 col-12" th:style="${session.umsg.jstype=='C'?'':'display:none'}">
+                        <div class="row col-xl-6 col-md-9 col-sm-10 col-12" th:style="${session.umsg.jstype=='B'?'':'display:none'}">
                             <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">选择老师</label>
                             <div class="col-xl-5 col-md-8 col-sm-8 col-12">
                               <select id="z11" name="z11" class="form-control selectpicker col-xl-12 col-md-12 col-sm-12 col-12" data-live-search="true">
@@ -592,7 +629,7 @@
                              </select>
                             </div>
                         </div>
-                        <div class="row col-xl-6 col-md-9 col-sm-10 col-12"  th:style="${session.umsg.jstype=='C'?'':'display:none;margin-top: 20px;'}">
+                        <div class="row col-xl-6 col-md-9 col-sm-10 col-12"  th:style="${session.umsg.jstype=='B'?'':'display:none;margin-top: 20px;'}">
                             <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">志愿者人数</label>
                             <div class="col-xl-5 col-md-8 col-sm-8 col-12">
                               <input type="number" class="form-control col-xl-12 col-md-12 col-sm-12 col-12" id="z7" name="z7" placeholder="请输入志愿者人数"/>
@@ -606,7 +643,7 @@
                         </div>
                     </div>
                     <div class="modal-footer" style="height:100px;">
-                        <button type="submit" class="btn btn-primary" id="edit-four">保存</button>
+                        <button type="submit" class="btn btn-primary" id="edit-four">提交</button>
                     </div>
                 </form>
             </div>
@@ -628,7 +665,7 @@
                             <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">选课方</label>
                             <div class="col-10 col-sm-8 col-md-6 col-lg-4">
                                 <select id="t3" name="t3"  class="form-control selectpicker" data-live-search="true">
-                                    <option value="" selected>请选择</option>
+                                    <option value="" selected></option>
                                     <th:block th:each="item,stat:${yhblist}">
                                         <option th:value="${item.yhb001}"  th:selected="${session.umsg.jstype=='C'&&pageobj.othersql6==#strings.toString(item.yhb001)?true:false}">[[${item.yhb004}]]</option>
                                     </th:block>
@@ -650,7 +687,7 @@
                             <div class="col-lg-4 col-md-6 col-sm-8">
                                 <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">课程</label>
                                 <div class="form-controls">
-                                    <select id="t4" name="t4" class="form-control selectpicker">
+                                    <select id="t4" name="t4" class="form-control selectpicker"  data-live-search="true">
                                         <option value=""></option>
                                     </select>
                                 </div>
@@ -662,17 +699,29 @@
                                 <input type="text" class="form-control col-auto" disabled="false" id="t8" name="t8" />
                             </div>
                         </div>
-                        <div class="row col-auto">
-                            <div class="col-lg-4 col-md-6 col-sm-8">
-                                <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">授课地点</label>
-                                <input type="text" class="form-control col-auto" id="t2" name="t2" placeholder="请输入授课地点"/>
-                            </div>
-                            <div class="col-lg-2 col-md-3 col-sm-4">
-                                <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">预计活动人数</label>
-                                <input type="number" class="form-control col-auto" id="t14" name="t14" placeholder="请输入预计活动人数"/>
+                        <div class="row col-auto" th:style="${session.umsg.jstype=='C'?'margin-top: 20px;display: none':'margin-top: 20px;'}">
+                        <div class="col-lg-4 col-md-6 col-sm-8">
+                                <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">选择老师</label>
+                                <select id="t11" name="t11" class="form-control selectpicker col-xl-12 col-md-12 col-sm-12 col-12" data-live-search="true">
+                            <option value=""></option>
+                        </select>
                             </div>
                         </div>
                         <div class="row col-auto">
+                            <div>
+                                <div class="col-lg-4 col-md-6 col-sm-8">
+                                    <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">授课地点</label>
+                                    <input type="text" class="form-control col-auto" id="t2" name="t2" placeholder="请输入授课地点"/>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="col-lg-2 col-md-3 col-sm-4">
+                                    <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">预计活动人数</label>
+                                    <input type="number" class="form-control col-auto" id="t14" name="t14" placeholder="请输入预计活动人数"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-auto" th:style="${session.umsg.jstype=='C'?'':'display: none'}">
                             <div class="col-lg-4 col-md-6 col-sm-8">
                                 <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">联系人</label>
                                 <input type="text" class="form-control col-auto" id="t44" name="t44" placeholder="请输入联系人"/>
@@ -695,12 +744,12 @@
                         <div class="row col-auto">
                             <div class="col-lg-4 col-md-8 col-sm-10">
                                 <label for="up" class="form-label">场地照片</label>
-                                <input type="file" class="form-control" id="up" name="up" value="/home/images/logo.png" onchange="showpdtpgs1('up','#p4')" multiple/>
+                                <input type="file" class="form-control" id="up" name="up" value="/home/images/logo.png" onchange="showpdtpgs('up','#p1')" multiple/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-10 col-sm-11">
-                                <div id="p4" style="display: flex;justify-content: start;align-items: center;flex-flow: row wrap;padding: 20px;"></div>
+                                <div id="p1" style="display: flex;justify-content: start;align-items: center;flex-flow: row wrap;padding: 20px;"></div>
                            </div>
                         </div>
                         <div class="xqbox" style="min-height:580px;display: none">
@@ -763,7 +812,7 @@
                         </div>
                     </div>
                     <div class="modal-footer" style="height:100px;">
-                        <button type="submit" class="btn btn-primary" id="edit-four1">保存</button>
+                        <button type="submit" class="btn btn-primary" id="edit-four1">提交</button>
                     </div>
                 </form>
             </div>
@@ -865,10 +914,20 @@
     //翻页
     function usefanye(pageindex){
         var params = [
-            ["pages",pageindex],
+            ["pages",pageindex],["flid",$.trim($("#flid").val())],["ztype",$.trim($("#ztype").val())],
             ["skid",$.trim($("#skid").val())],["xkid",$.trim($("#xkid").val())]];
         form_submit("toHt/toselection","post",params,"_self");
     }
+
+    function todc(){
+        var params = [
+            ["type","DC"],
+            ["pages",$("#pages").val()],
+            ["flid",$.trim($("#flid").val())],["ztype",$.trim($("#ztype").val())],
+            ["skid",$.trim($("#skid").val())],["xkid",$.trim($("#xkid").val())]];
+        form_submit("toHt/toselection","post",params,"_blank");
+    }
+
     function del(id,uname){
         if (confirm("您确定删除吗?")) {
             load_index = layer.load(1);
@@ -904,12 +963,197 @@
         window.history.back();
     }
 
+    function tobh(obj){
+        let item = null;
+        if(obj.indexOf("Hash")>0){
+            item = striongTOjsonString(obj);
+        }else{
+            item = jsStringTojsonString(obj);
+        }
 
+        $("#xqmode").find(".modal-body").empty();
+        let html="";
+        html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
+        html+= '<label class="layui-form-label">驳回原因：</label>';
+        html+= '<span class="jspan">'+item.yhe030+'</span>';
+        html+= '</div></div>';
+        $("#xqmode").find(".modal-body").append(html);
+    }
+
+    function toxq(obj,i1,i2,i3,list,list1,list2,list3){
+        let item = null;
+        if(obj.indexOf("Hash")>0){
+            item = striongTOjsonString(obj);
+        }else{
+            item = jsStringTojsonString(obj);
+        }
+        let item1 = null;
+        if(i1.indexOf("Hash")>0){
+            item1 = striongTOjsonString(i1);
+        }else{
+            item1 = jsStringTojsonString(i1);
+        }
+        let item2 = null;
+        if(i2.indexOf("Hash")>0){
+            item2 = striongTOjsonString(i2);
+        }else{
+            item2 = jsStringTojsonString(i2);
+        }
+        let item3 = null;
+        if(i1.indexOf("Hash")>0){
+            item3 = striongTOjsonString(i3);
+        }else{
+            item3 = jsStringTojsonString(i3);
+        }
+        list = list.substring(1,list.length-1);
+        let listD1=list.split("cdyhf");
+        let listD=[];
+        for(var i=0;i<listD1.length;i++){
+            if(listD1[i]!=""){
+                listD1[i] = listD1[i].replaceAll("],","]");
+                if (listD1[i].indexOf("Hash") > 0) {
+                    listD.push(striongTOjsonString(listD1[i]));
+                } else {
+                    listD.push(jsStringTojsonString(listD1[i]));
+                }
+            }
+        }
+        list1 = list1.substring(1,list1.length-1);
+        let listA1=list1.split("cdyhf");
+        let listA=[];
+        for(var i=0;i<listA1.length;i++){
+            if(listA1[i]!=""){
+                listA1[i] = listA1[i].replaceAll("],","]");
+                if (listA1[i].indexOf("Hash") > 0) {
+                    listA.push(striongTOjsonString(listA1[i]));
+                } else {
+                    listA.push(jsStringTojsonString(listA1[i]));
+                }
+            }
+        }
+        list2 = list2.substring(1,list2.length-1);
+        let listB1=list2.split("cdyhf");
+        let listB=[];
+        for(var i=0;i<listB1.length;i++){
+            if(listB1[i]!=""){
+                listB1[i] = listB1[i].replaceAll("],","]");
+                if (listB1[i].indexOf("Hash") > 0) {
+                    listB.push(striongTOjsonString(listB1[i]));
+                } else {
+                    listB.push(jsStringTojsonString(listB1[i]));
+                }
+            }
+        }
+        list3 = list3.substring(1,list3.length-1);
+        let listC1=list3.split("cdyhf");
+        let listC=[];
+        for(var i=0;i<listC1.length;i++){
+            if(listC1[i]!=""){
+                listC1[i] = listC1[i].replaceAll("],","]");
+                if (listC1[i].indexOf("Hash") > 0) {
+                    listC.push(striongTOjsonString(listC1[i]));
+                } else {
+                    listC.push(jsStringTojsonString(listC1[i]));
+                }
+            }
+        }
+
+        $("#xqmode").find(".modal-body").empty();
+        let html="";
+        html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
+        html+= '<label class="layui-form-label">课程名称：</label>';
+        html+= '<span class="jspan">'+item1.hba002+'</span>';
+        html+= '</div>';
+        html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
+        html+= '<label class="layui-form-label">课程代码：</label>';
+        html+= '<span class="jspan">'+item1.hba035+'</span>';
+        html+= '</div>';
+        html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
+        html+= '<label class="layui-form-label">选课方名称：</label>';
+        html+= '<span class="jspan">'+item2.yhb004+'</span>';
+        html+= '</div>';
+        html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
+        html+= '<label class="layui-form-label"授课方名称：</label>';
+        html+= '<span class="jspan">'+item3.smd003+'</span>';
+        html+= '</div>';
+        html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
+        html+= '<label class="layui-form-label">授课地点：</label>';
+        html+= '<span class="jspan">'+item.yhe009+'</span>';
+        html+= '</div>';
+        html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
+        html+= '<label class="layui-form-label">活动日期：</label>';
+        html+= '<span class="jspan">'+getTime(item.yhe008,'YY/MM/DD')+'</span>';
+        html+= '</div>';
+        html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
+        html+= '<label class="layui-form-label">预约日期备注：</label>';
+        html+= '<span class="jspan">'+item.yhe042+'</span>';
+        html+= '</div>';
+        html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
+        html+= '<label class="layui-form-label">活动人数：</label>';
+        html+= '<span class="jspan">'+item.yhe010+'</span>';
+        html+= '</div>';
+        html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
+        html+= '<label class="layui-form-label">其他要求：</label>';
+        html+= '<span class="jspan">'+item.yhe043+'</span>';
+        html+= '</div>';
+        if($("#jstype").val()=="C"){
+            html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
+            html+= '<label class="layui-form-label">联系人：</label>';
+            html+= '<span class="jspan">'+(item1.hba016)+'</span>';
+            html+= '</div>';
+            html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
+            html+= '<label class="layui-form-label">联系人电话：</label>';
+            html+= '<span class="jspan">'+(item1.hba017)+'</span>';
+            html+= '</div>';
+        }else{
+            html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
+            html+= '<label class="layui-form-label">联系人：</label>';
+            html+= '<span class="jspan">'+(item.yhe044!=null?item.yhe044:item2.yhb006)+'</span>';
+            html+= '</div>';
+            html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
+            html+= '<label class="layui-form-label">联系人电话：</label>';
+            html+= '<span class="jspan">'+(item.yhe045!=null?item.yhe045:item2.yhb007)+'</span>';
+            html+= '</div>';
+        }
+        if(list.length>0){
+            html+= "<div class='row'><div class='form-group col-xl-3 col-md-5 col-sm-12'>";
+            html+= "<label class='layui-form-label'>场地照片：</label>";
+            for (let i=0;i<list.length;i++){
+                html+= "<img class='form-control' src='upload/"+list[i].yhf005+"/"+list[i].yhf004+"' style='width: 300px;'/>";
+            }
+            html+= "</div>";
+        }
+        if(list1.length>0){
+            html+= "<div class='row'><div class='form-group col-xl-3 col-md-5 col-sm-12'>";
+            html+= "<label class='layui-form-label'>签到：</label>";
+            for (let i=0;i<list1.length;i++){
+                html+= "<img class='form-control' src='upload/"+list1[i].yhf005+"/"+list1[i].yhf004+"' style='width: 300px;'/>";
+            }
+            html+= "</div>";
+        }
+        if(list2.length>0){
+            html+= "<div class='row'><div class='form-group col-xl-3 col-md-5 col-sm-12'>";
+            html+= "<label class='layui-form-label'>服务照片：</label>";
+            for (let i=0;i<list2.length;i++){
+                html+= "<img class='form-control' src='upload/"+list2[i].yhf005+"/"+list2[i].yhf004+"' style='width: 300px;'/>";
+            }
+            html+= "</div>";
+        }
+        if(list3.length>0){
+            html+= "<div class='row'><div class='form-group col-xl-3 col-md-5 col-sm-12'>";
+            html+= "<label class='layui-form-label'>服务视频：</label>";
+            for (let i=0;i<list3.length;i++){
+                html+= "<video class='form-control' src='upload/"+list3[i].yhf005+"/"+list3[i].yhf004+"' style='width: 300px;'/>";
+            }
+            html+= "</div>";
+        }
+        $("#xqmode").find(".modal-body").append(html);
+    }
 
     function xgzt(id,uname,type){
-        if(type=="D"||type=="D"){
+        if(type=="C"||type=="D"||type=="S"||type=="T"){
             var num = prompt("请输入驳回备注","");
-            if (num!="") {
+            if (num) {
                 load_index = layer.load(1);
                 var formData = new FormData();
                 formData.append("fid",id);
@@ -935,10 +1179,10 @@
                     },
                     error: function () { console.log('提交失败'); }
                 });
-            }else{
+            }/*else{
                 xgzt(id,uname,type);
-            }
-        }else if (confirm("您确定修改吗?")) {
+            }*/
+        }else if (type=="G"||type=="H"?confirm("您确定接受吗"):confirm("您确定修改吗?")) {
             load_index = layer.load(1);
             var formData = new FormData();
             formData.append("fid",id);
@@ -954,7 +1198,11 @@
                 success: function (res) {
                     var d = eval(res);
                     if(d.msg=="0"){
-                        layer.msg("修改成功");
+                        // if(type=="G"||type=="H"){
+                        //     layer.msg("接受成功");
+                        // }else {
+                            layer.msg("修改成功");
+                        // }
                         setTimeout(function(){
                             location.reload();
                         },1000);
@@ -984,7 +1232,6 @@
                 insertImg(img);
             }
         }
-
     }
 
     //删除图片
@@ -995,7 +1242,7 @@
         //     $("#delimg").val($("#delimg").val()+"#"+(obj.getAttribute("name")).replace("upload/hhfile/",""));
         // }
         imglist.splice(indexp,1);
-        insertImg("#p4");
+        insertImg("#p1");
     }
 
     function insertImg(img){
@@ -1101,6 +1348,7 @@
         });
 
     }
+
     $('select[id=t1]').change(function() {
         $.ajax({
             url:'getallcourse?flid='+this.value+'&jgid='+ ($("#jstype").val()=="B"?$('#skid').val():''),
@@ -1113,19 +1361,21 @@
             success:function(data) {
                 var list = eval(data.list);
                 $('select[id=t4]').empty();
+                $("select[id=t4]").append("<option value=''></option>");
                 for(var i=0;i<list.length;i++){
                     $("select[id=t4]").append("<option value='"+list[i].hba001+"' xname='"+list[i].smd.smd003+"'" +
                         " x1='"+list[i].hba002+"'  x3='"+list[i].hba017+"'  x4='"+list[i].hba003+"'  x5='"+list[i].hba008+"'  x9='"+list[i].hba009+"'  x6='"+list[i].hba005+"'  x7='"+list[i].hba015+"' " +
-                        ">"+list[i].hba002+"</option>");
+                        ">"+list[i].hba002+"("+list[i].smd.smd003+")"+"</option>");
                 }
-                $('.selectpicker').selectpicker('remove');
-                $('.selectpicker').selectpicker('refresh');
+                $('select[id=t4]').selectpicker('destroy');
+                $('select[id=t4]').selectpicker('render');
                 tokcxq()
             },
             error:function(){}
         });
 
     });
+
     function tokcxq(){
         if($('#t2').val()!=""&&$('#t14').val()!=""){
             $('.xqbox').show()
@@ -1144,12 +1394,33 @@
     $('#t14').change(function() {
         tokcxq()
     })
+
     $('select[id=t4]').change(function() {
         $("#t8").empty();
         if(this.value!=""){
             $('#modal-event').modal('show');
             kcid = this.value;
             getpkjl();
+            $.ajax({
+                url:'getallcoursels?fid='+this.value,
+                type:'post',
+                async: false,
+                cache: false,
+                processData: false,
+                contentType: false,
+                dataType:'json',
+                success:function(data) {
+                    var list = eval(data.list);
+                    $("select[id=t11]").empty();
+                    $("select[id=t11]").append("<option value=''></option>");
+                    for(var i=0;i<list.length;i++){
+                        $("select[id=t11]").append("<option value='"+list[i].yhc001+"'>"+list[i].yhc003+"</option>");
+                    }
+                    $('select[id=t11]').selectpicker('destroy');
+                    $('select[id=t11]').selectpicker('render');
+                },
+                error:function(){}
+            });
         }
     });
 
@@ -1160,7 +1431,7 @@
             $(element).parent("div").parent("div").find("label").addClass("col-12");
             // $(element).parent("div").parent("div").find("label").attr("style","margin-left:5px;");
         },
-        rules : {t3: { required : true, },t2: { required : true, },t4: { required : true, },t5: { required : true, },},
+        rules : {t3: { required : true, },t2: { required : true, },t4: { required : true, },t8: { required : true, },t14: { required : true, },t5: { required : true, },},
         messages: {},
         submitHandler: function(form) {
             load_index = layer.load(1);
@@ -1174,7 +1445,9 @@
             formData.append("t42",$("#t42").val());
             formData.append("t43",$("#t43").val());
             formData.append("t44",$("#t44").val());
+            formData.append("t11",$("#t11").val());
             formData.append("lx",$("#lx").val());
+            formData.append("fid",$("#fid").val());
             formData.delete("s1");
             for(var i=0;i<t4.length;i++){
                 formData.append("s1",t4[i]);
@@ -1320,8 +1593,8 @@
                         $("select[id=z11]").append("<option value='"+list[i].yhc001+"'>"+list[i].yhc003+"</option>");
                     }
                     $("select[id=z11]").val(josnobj.yhe005);
-                    $('.selectpicker').selectpicker('val','');
-                    $('.selectpicker').selectpicker('refresh');
+                    $('select[id=z11]').selectpicker('destroy');
+                    $('select[id=z11]').selectpicker('render');
                 },
                 error:function(){}
             });
@@ -1393,12 +1666,12 @@
         if(obj.getAttribute("name").indexOf("upload/")>=0){
             // $("#delimg").val($("#delimg").val()+"#"+(obj.getAttribute("name")).replace("upload/shopimg/",""));
             $("#delimg").val($("#delimg").val()+"#"+(obj.getAttribute("name")).replace("upload/",""));
+            $("#delid").val($("#delid").val()+"#"+(obj.getAttribute("tid")));
         }
         // if(obj.getAttribute("name").indexOf("https://fxtgoss.oss-cn-hangzhou.aliyuncs.com/shopimg/")>=0){
         //     // $("#delimg").val($("#delimg").val()+"#"+(obj.getAttribute("name")).replace("https://fxtgoss.oss-cn-hangzhou.aliyuncs.com/shopimg/",""));
         //     $("#delimg").val($("#delimg").val()+"#"+(obj.getAttribute("name")).replace("https://fxtgoss.oss-cn-hangzhou.aliyuncs.com/shopimg/",""));
         // }
-        console.log(type);
         if(type=="A"){
             imglist1.splice(indexp,1);
             insertImg1("#p2",type);
@@ -1407,63 +1680,93 @@
             insertImg1("#p3",type);
         }else if(type=="C"){
             imglist3.splice(indexp,1);
-            insertVid("#p4",type);
+            insertImg1("#p4",type);
         }
-        console.log(imglist1);
     }
 
     //判断图片
-    function showpdtpgs1(id,img){
+    function showpdtpgs1(id,img,zt){
         var file = document.getElementById(id).files;
         let pd =true;
-        if(file){
-            for(var i=0;i<file.length;i++){
-                var imagSize =file[i].size;
-                let index=i;
-                if(imagSize <= 1024 * 1024 * 2){
-                    var reader = new FileReader();
-                    reader.readAsDataURL(file[i]);
-                    reader.onload = (function(i,e) {
-                        const image = new Image()
-                        image.src = e.target.result
-                        return new Promise((resolve) => {
-                            image.onload = () => {
-                                const width = image.width
-                                const height = image.height
-                                if(width>=800||height>=800){
-                                    pd =false;
-                                    layui.use('layer', function(){
-                                        var layer = layui.layer;
-                                        layer.ready(function(){
-                                            layer.msg('分辨率不超过800px');
-                                        });
-                                    });
+        if(zt=="C"){
+            if(file){
+                for(var i=0;i<file.length;i++){
+                    var imagSize =file[i].size;
+                    let index=i;
+                    let fileName = file[i].name; // 获取文件名
+                    file_lastName = fileName.split('.').pop(); // 获取后缀名
+                    filesize = file[i].size/(1024*1024);
+                    if(file_lastName!="mp4"){
+                        showNotify('文件类型不正确，只允许上传后缀名为：mp4，请重新上传！', 'danger', 1500);
+                        $("#w4").val("");
+                    }else if(filesize>100){
+                        showNotify('文件不得超过100M，请重新上传！', 'danger', 1500);
+                        $("#w4").val("");
+                    }else{
+                        var reader = new FileReader();
+                        if(index==(file.length-1)){
+                            if(pd){
+                                for(var j=0;j<file.length;j++){
+                                    if(id=="w2")imglist1.push(file[j]);
+                                    if(id=="w3")imglist2.push(file[j]);
+                                    if(id=="w4")imglist3.push(file[j]);
                                 }
-                                if(index==(file.length-1)){
-                                    if(pd){
-                                        for(var j=0;j<file.length;j++){
-                                            if(id=="w2")imglist1.push(file[j]);
-                                            if(id=="w3")imglist2.push(file[j]);
-                                            if(id=="w4")imglist3.push(file[j]);
+                                insertImg1(img,id=="w2"?'A':(id=="w3"?'B':'C'));
+                            }
+                        }
+                    }
+                }
+            }
+        }else{
+            if(file){
+                for(var i=0;i<file.length;i++){
+                    var imagSize =file[i].size;
+                    let index=i;
+                    if(imagSize <= 1024 * 1024 * 2){
+                        var reader = new FileReader();
+                        reader.readAsDataURL(file[i]);
+                        reader.onload = (function(i,e) {
+                            const image = new Image()
+                            image.src = e.target.result
+                            return new Promise((resolve) => {
+                                image.onload = () => {
+                                    const width = image.width
+                                    const height = image.height
+                                    if(width>=800||height>=800){
+                                        pd =false;
+                                        layui.use('layer', function(){
+                                            var layer = layui.layer;
+                                            layer.ready(function(){
+                                                layer.msg('分辨率不超过800px');
+                                            });
+                                        });
+                                    }
+                                    if(index==(file.length-1)){
+                                        if(pd){
+                                            for(var j=0;j<file.length;j++){
+                                                if(zt=="A")imglist1.push(file[j]);
+                                                if(zt=="B")imglist2.push(file[j]);
+                                            }
+                                            insertImg1(img,zt);
                                         }
-                                        console.log(imglist1);
-                                        insertImg1(img,id=="w2"?'A':(id=="w3"?'B':'C'));
                                     }
                                 }
-                            }
-                        })
-                    }).bind(reader, i);
-                }else{
-                    pd =false;
-                    layui.use('layer', function(){
-                        var layer = layui.layer;
-                        layer.ready(function(){
-                            layer.msg("图片大小在2M以内");
+                            })
+                        }).bind(reader, i);
+                    }else{
+                        pd =false;
+                        $(img).val("");
+                        layui.use('layer', function(){
+                            var layer = layui.layer;
+                            layer.ready(function(){
+                                layer.msg("图片大小在2M以内");
+                            });
                         });
-                    });
+                    }
                 }
             }
         }
+
     }
 
     function insertImg1(img,zt){
@@ -1477,6 +1780,7 @@
                 if(typeof(imglist1[i])=="object"){
                     let data1 ="";
                     w2.push(imglist1[i])
+                    console.log(w2)
                     var reader = new FileReader();
                     reader.readAsDataURL(imglist1[i]);
                     reader.onload = (function(i,e) {
@@ -1490,7 +1794,7 @@
                                 // if(width==414&&height==280){
                                 html="<div class='item'>";
                                 html+="<img src='"+data1+"' style='width:150px;' />";
-                                html+="<span class='closep' id=\'AP"+i+"\' name='' onclick='imgRemove1(this,\""+zt+"\")'>X</span>";
+                                html+="<span class='closep' id=\'AP"+i+"\' tid='' name='' onclick='imgRemove1(this,\""+zt+"\")'>X</span>";
                                 html+="</div>";
                                 $(img).append(html);
                                 // }else{
@@ -1501,8 +1805,8 @@
                     }).bind(reader, i);
                 }else{
                     html="<div class='item'>";
-                    html+="<img src='"+data+"' style='width:150px;' />";
-                    html+="<span class='closep' id=\'AP"+i+"\' name=\'"+data+"\' onclick=\'imgRemove1(this,\""+zt+"\")\'>X</span>";
+                    html+="<img src='"+data.split("#")[1]+"' style='width:150px;' />";
+                    html+="<span class='closep' id=\'AP"+i+"\' tid=\'"+data.split("#")[0]+"\' name=\'"+data.split("#")[1]+"\' onclick=\'imgRemove1(this,\""+zt+"\")\'>X</span>";
                     html+="</div>";
                     $(img).append(html);
                 }
@@ -1528,7 +1832,7 @@
                                 // if(width==414&&height==280){
                                 html="<div class='item'>";
                                 html+="<img src='"+data1+"' style='width:150px;' />";
-                                html+="<span class='closep' id=\'BP"+i+"\' name='' onclick='imgRemove1(this,\""+zt+"\")'>X</span>";
+                                html+="<span class='closep' id=\'BP"+i+"\' tid='' name='' onclick='imgRemove1(this,\""+zt+"\")'>X</span>";
                                 html+="</div>";
                                 $(img).append(html);
                                 // }else{
@@ -1539,8 +1843,8 @@
                     }).bind(reader, i);
                 }else{
                     html="<div class='item'>";
-                    html+="<img src='"+data+"' style='width:150px;' />";
-                    html+="<span class='closep' id=\'BP"+i+"\' name=\'"+data+"\' onclick='imgRemove1(this,\""+zt+"\")'>X</span>";
+                    html+="<img src='"+data.split("#")[1]+"' style='width:150px;' />";
+                    html+="<span class='closep' id=\'BP"+i+"\' tid=\'"+data.split("#")[0]+"\' name=\'"+data.split("#")[1]+"\' onclick='imgRemove1(this,\""+zt+"\")'>X</span>";
                     html+="</div>";
                     $(img).append(html);
                 }
@@ -1553,32 +1857,34 @@
                 if(typeof(imglist3[i])=="object"){
                     let data1 ="";
                     w4.push(imglist3[i])
-                    var reader = new FileReader();
-                    reader.readAsDataURL(imglist3[i]);
-                    reader.onload = (function(i,e) {
-                        data1 = e.target.result;
-                        const image = new Image()
-                        image.src = e.target.result
-                        return new Promise((resolve) => {
-                            image.onload = () => {
-                                // const width = image.width
-                                // const height = image.height
-                                // if(width==414&&height==280){
+                    var file = imglist3[i]; // 获取文件对象
+                    if (file) {
+                        let fileName = file.name; // 获取文件名
+                        file_lastName = fileName.split('.').pop(); // 获取后缀名
+                        filesize = file.size/(1024*1024);
+                        if(file_lastName!="mp4"){
+                            showNotify('文件类型不正确，只允许上传后缀名为：mp4，请重新上传！', 'danger', 1500);
+                            $("#w4").val("");
+                        }else if(filesize>100){
+                            showNotify('文件不得超过100M，请重新上传！', 'danger', 1500);
+                            $("#w4").val("");
+                        }else{
+                            var reader = new FileReader();
+                            reader.onload = function(e) {
+                                data1=e.target.result;
                                 html="<div class='item'>";
-                                html+="<img src='"+data1+"' style='width:150px;' />";
-                                html+="<span class='closep' id=\'CP"+i+"\' name='' onclick='imgRemove1(this,\""+zt+"\")'>X</span>";
+                                html+="<video src='"+data1+"' style='width:150px;' />";
+                                html+="<span class='closep' id=\'CP"+i+"\' tid='' name='' onclick='imgRemove1(this,\""+zt+"\")'>X</span>";
                                 html+="</div>";
                                 $(img).append(html);
-                                // }else{
-                                //     layer.open({content: '分辨率必须是414*280',btn: '我知道了'});
-                                // }
-                            }
-                        })
-                    }).bind(reader, i);
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    }
                 }else{
                     html="<div class='item'>";
-                    html+="<img src='"+data+"' style='width:150px;' />";
-                    html+="<span class='closep' id=\'CP"+i+"\' name=\'"+data+"\' onclick='imgRemove1(this,\""+zt+"\")'>X</span>";
+                    html+="<video src='"+data.split("#")[1]+"' style='width:150px;' />";
+                    html+="<span class='closep' id=\'CP"+i+"\' tid=\'"+data.split("#")[0]+"\' name=\'"+data.split("#")[1]+"\' onclick='imgRemove1(this,\""+zt+"\")'>X</span>";
                     html+="</div>";
                     $(img).append(html);
                 }
@@ -1586,49 +1892,7 @@
         }
     }
 
-    function insertVid1(img){
-        $(img).empty();
-        var html="";
-        w4=[];
-        for(var i=0;i<imglist3.length;i++){
-            html="";
-            var data = imglist3[i];
-            if(typeof(imglist3[i])=="object"){
-                let data1 ="";
-                w4.push(imglist3[i])
-                var reader = new FileReader();
-                reader.readAsDataURL(imglist3[i]);
-                reader.onload = (function(i,e) {
-                    data1 = e.target.result;
-                    const image = new Video()
-                    image.src = e.target.result
-                    return new Promise((resolve) => {
-                        image.onload = () => {
-                            // const width = image.width
-                            // const height = image.height
-                            // if(width==414&&height==280){
-                            html="<div class='item'>";
-                            html+="<video src='"+data1+"' style='width:150px;' />";
-                            html+="<span class='closep' id=\'P"+i+"\' name='' onclick='imgRemove1(this,'C')'>X</span>";
-                            html+="</div>";
-                            $(img).append(html);
-                            // }else{
-                            //     layer.open({content: '分辨率必须是414*280',btn: '我知道了'});
-                            // }
-                        }
-                    })
-                }).bind(reader, i);
-            }else{
-                html="<div class='item'>";
-                html+="<video src='"+data+"' style='width:150px;' />";
-                html+="<span class='closep' id=\'P"+i+"\' name=\'"+data+"\' onclick=\'imgRemove1(this,\'C\')\'>X</span>";
-                html+="</div>";
-                $(img).append(html);
-            }
-        }
-    }
-
-    function topj(obj,name) {
+    function topj(obj,list1,list2,list3) {
         if (obj != null && obj != '') {
             imglist1=[];
             w2=[];
@@ -1644,10 +1908,48 @@
             } else {
                 josnobj = jsStringTojsonString(obj);
             }
-            console.log(josnobj)
+            list1 = list1.substring(1,list1.length-1);
+            let listA1=list1.split("cdyhf");
+            let listA=[];
+            for(var i=0;i<listA1.length;i++){
+                if(listA1[i]!=""){
+                    listA1[i] = listA1[i].replaceAll("],","]");
+                    if (listA1[i].indexOf("Hash") > 0) {
+                        listA.push(striongTOjsonString(listA1[i]));
+                    } else {
+                        listA.push(jsStringTojsonString(listA1[i]));
+                    }
+                }
+            }
+            list2 = list2.substring(1,list2.length-1);
+            let listB1=list2.split("cdyhf");
+            let listB=[];
+            for(var i=0;i<listB1.length;i++){
+                if(listB1[i]!=""){
+                    listB1[i] = listB1[i].replaceAll("],","]");
+                    if (listB1[i].indexOf("Hash") > 0) {
+                        listB.push(striongTOjsonString(listB1[i]));
+                    } else {
+                        listB.push(jsStringTojsonString(listB1[i]));
+                    }
+                }
+            }
+            list3 = list3.substring(1,list3.length-1);
+            let listC1=list3.split("cdyhf");
+            let listC=[];
+            for(var i=0;i<listC1.length;i++){
+                if(listC1[i]!=""){
+                    listC1[i] = listC1[i].replaceAll("],","]");
+                    if (listC1[i].indexOf("Hash") > 0) {
+                        listC.push(striongTOjsonString(listC1[i]));
+                    } else {
+                        listC.push(jsStringTojsonString(listC1[i]));
+                    }
+                }
+            }
             $("#fid").val(josnobj.yhe001);
             $("#xkid1").val(josnobj.yhe002);
-            $("#tname").val(name);
+            // $("#tname").val(name);
             $("#zt").val(josnobj.yhe007);
             if($("#lx").val()=="C") {
                 $("input[name='p1']").each(function(){
@@ -1707,7 +2009,8 @@
                     }
                 });
                 $("#p9").val(josnobj.yhe029)
-            } else {
+            }
+            else {
                 $("input[name='p10']").each(function () {
                     if ($(this).val() == josnobj.yhe033) {
                         $(this).prop("checked", true);
@@ -1754,39 +2057,39 @@
                 $("#p17").val(josnobj.yhe016)
                 $("#p18").val(josnobj.yhe017)
                 $("#p19").val(getTime(josnobj.yhe020,'YY/MM/DD'));
-                var data1="";
-                if(josnobj.yhflistA!=null){
-                    for(var i=0;i<josnobj.yhflistA.length;i++){
-                        data1=josnobj.yhflistA[i].yhf005+josnobj.yhflistA[i].yhf004
-                        imglist1.push(data1);
-                        html="<div class='item'>";
-                        html+="<img src='"+data1+"' style='width:150px;'/>";
-                        html+="<div class='closep' id=\'P"+i+"\' name=\'"+data1+"\' onclick=\'imgRemove1(this,\'A\')\'>X</div>";
-                        html+="</div>";
-                        $("#p2").append(html);
-                    }
+            }
+            var data1="";
+            if(listA!=null){
+                for(var i=0;i<listA.length;i++){
+                    data1="upload/"+listA[i].yhf005+"/"+listA[i].yhf004
+                    imglist1.push(listA[i].yhf001+"#"+data1);
+                    html="<div class='item'>";
+                    html+="<img src='"+data1+"' style='width:150px;'/>";
+                    html+="<div class='closep' id=\'P"+i+"\'  tid=\'"+listA[i].yhf001+"\'  name=\'"+data1+"\' onclick=\'imgRemove1(this,\"A\")\'>X</div>";
+                    html+="</div>";
+                    $("#p2").append(html);
                 }
-                if(josnobj.yhflistB!=null){
-                    for(var i=0;i<josnobj.yhflistB.length;i++){
-                        data1=josnobj.yhflistB[i].yhf005+josnobj.yhflistB[i].yhf004
-                        imglist2.push(data1);
-                        html="<div class='item'>";
-                        html+="<img src='"+data1+"' style='width:150px;'/>";
-                        html+="<div class='closep' id=\'P"+i+"\' name=\'"+data1+"\' onclick=\'imgRemove1(this,\'B\')\'>X</div>";
-                        html+="</div>";
-                        $("#p3").append(html);
-                    }
+            }
+            if(listB!=null){
+                for(var i=0;i<listB.length;i++){
+                    data1="upload/"+listB[i].yhf005+"/"+listB[i].yhf004
+                    imglist2.push(listB[i].yhf001+"#"+data1);
+                    html="<div class='item'>";
+                    html+="<img src='"+data1+"' style='width:150px;'/>";
+                    html+="<div class='closep' id=\'P"+i+"\' tid=\'"+listB[i].yhf001+"\' name=\'"+data1+"\' onclick=\'imgRemove1(this,\"B\")\'>X</div>";
+                    html+="</div>";
+                    $("#p3").append(html);
                 }
-                if(josnobj.yhflistC!=null){
-                    for(var i=0;i<josnobj.yhflistC.length;i++){
-                        data1=josnobj.yhflistB[i].yhflistC+josnobj.yhflistC[i].yhf004
-                        imglist3.push(data1);
-                        html="<div class='item'>";
-                        html+="<video src='"+data1+"' style='width:150px;'/>";
-                        html+="<div class='closep' id=\'P"+i+"\' name=\'"+data1+"\' onclick=\'imgRemove1(this,\'C\')\'>X</div>";
-                        html+="</div>";
-                        $("#p4").append(html);
-                    }
+            }
+            if(josnobj.yhflistC!=null){
+                for(var i=0;i<josnobj.yhflistC.length;i++){
+                    data1="upload/"+listC[i].yhf005+"/"+listC[i].yhf004
+                    imglist3.push(listC[i].yhf001+"#"+data1);
+                    html="<div class='item'>";
+                    html+="<video src='"+data1+"' style='width:150px;'/>";
+                    html+="<div class='closep' id=\'P"+i+"\' tid=\'"+listC[i].yhf001+"\'  name=\'"+data1+"\' onclick=\'imgRemove1(this,\"C\")\'>X</div>";
+                    html+="</div>";
+                    $("#p4").append(html);
                 }
             }
             $("#ftype2").text("编辑");
@@ -1832,7 +2135,9 @@
             formData.append("lx",$("#lx").val());
             formData.append("zt",$("#zt").val());
             formData.append("delimg",$("#delimg").val());
+            formData.append("delid",$("#delid").val());
             formData.delete("w2");
+            console.log(w2)
             for(var i=0;i<w2.length;i++){
                 formData.append("w2",w2[i]);
             }
@@ -1879,34 +2184,5 @@
             $("#ftype3").text("添加");
         }
     }
-
-    function uploadvadio(){
-        $("#w4").trigger('click');
-    }
-
-    $('#w4').on('change', function(){
-        var file = this.files[0]; // 获取文件对象
-        if (file) {
-            let fileName = file.name; // 获取文件名
-            file_lastName = fileName.split('.').pop(); // 获取后缀名
-            filesize = file.size/(1024*1024);
-            if(file_lastName!="mp4"){
-                showNotify('文件类型不正确，只允许上传后缀名为：mp4，请重新上传！', 'danger', 1500);
-                $("#w4").val("");
-                $("#upfilevadio").attr("src","");
-            }else if(filesize>100){
-                showNotify('文件不得超过100M，请重新上传！', 'danger', 1500);
-                $("#w4").val("");
-                $("#upfilevadio").attr("src","");
-            }else{
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    $("#upfilevadio").attr("src",e.target.result);
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-    });
 </script>
 

@@ -125,7 +125,7 @@
       #{yhc005,jdbcType=INTEGER}, #{yhc006,jdbcType=TIMESTAMP}, #{yhc007,jdbcType=VARCHAR}, 
       #{yhc008,jdbcType=VARCHAR}, #{yhc004,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.efx.Science.model.cdyhc">
+  <insert id="insertSelective" parameterType="com.efx.Science.model.cdyhc"  useGeneratedKeys="true" keyProperty="yhc001">
     insert into cdyhc
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="yhc001 != null">
@@ -293,4 +293,10 @@
       YHC008 = #{yhc008,jdbcType=VARCHAR}
     where YHC001 = #{yhc001,jdbcType=INTEGER}
   </update>
+  <select id="selectBykcid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cdyhc
+    where YHC002 = #{id,jdbcType=INTEGER}
+  </select>
 </mapper>

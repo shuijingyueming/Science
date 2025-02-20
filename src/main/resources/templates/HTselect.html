@@ -87,6 +87,7 @@
                                     <th>已授课场次</th>
                                     <th>已授课人次</th>
                                     <th>已预约场次</th>
+                                    <th>场次余量</th>
                                     <th>上线日期</th>
                                     <th>状态</th>
                                     <th style="max-width:80px;" th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">操作</th>
@@ -105,12 +106,15 @@
                                     <td th:text="${item.smd011}"></td>
                                     <td th:text="${item.smd012}"></td>
                                     <td th:text="${item.smd013}"></td>
+                                    <td th:text="${item.smd010!=null?item.smd010-item.smd013:0}"></td>
                                     <td th:text="${#dates.format(item.smd008,'yyyy-MM-dd')}"></td>
                                     <td th:text="${item.smd014=='M'?'正常':(item.smd014=='N'?'封号':(item.smd014=='P'?'待审核':(item.smd014=='E'?'驳回':'')))}"></td>
                                     <td th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">
                                         <div class="btn-group btn-group-sm">
+                                            <a href="javascript:void(0);" th:onclick="toxq([[${item.toString()}]])" class="btn btn-table"
+                                               data-bs-toggle="modal" data-bs-target="#editmode">详情</a>
                                             <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]])" class="btn btn-table"
-                                               data-bs-toggle="modal" data-bs-target="#editmode">编辑</a>
+                                               data-bs-toggle="modal" data-bs-target="#editmode">场次设定</a>
                                             <div class="ivu-divider-vertical"></div>
                                             <th:block th:if="${item.smd014=='M'}">
                                                 <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.smd001}]],[[${item.smd003}]],[['N']])">封号</a>
@@ -239,7 +243,7 @@
                         </div>
                     </div>-->
                     <div class="modal-footer" style="height:100px;">
-                        <button type="submit" class="btn btn-primary" id="edit-four">保存</button>
+                        <button type="submit" class="btn btn-primary" id="edit-four">提交</button>
                     </div>
                 </form>
             </div>
@@ -303,7 +307,7 @@
 
     pdyes($("#pages").val(), $("#counts").val());
 
-    function tosh(obj1){
+    function toxq(obj1){
         let item1 = null;
         if(obj1.indexOf("Hash")>0){
             item1 = striongTOjsonString(obj1);
@@ -313,13 +317,13 @@
         $("#xqmode").find(".modal-body").empty();
         let html="";
         html+= '<div class="row"><div class="col-md-5">';
-        html+= '<div class="form-group"><label class="layui-form-label">身份类别：</label>';
-        html+= '<span class="jspan">'+(item1.smd002=='A'?'机构':(item1.smd002=='B'?'个人':(item1.smd002=='C'?'专家':'')))+'</span>';
+        html+= '<div class="form-group"><label class="layui-form-label">机构名称/个人单位：</label>';
+        html+= '<span class="jspan">'+item1.smd003+'</span>';
         html+= '</div></div></div>';
         html+= '';
         html+= '<div class="row"><div class="col-md-5">';
-        html+= '<div class="form-group"><label class="layui-form-label">机构名称/个人单位：</label>';
-        html+= '<span class="jspan">'+item1.smd003+'</span>';
+        html+= '<div class="form-group"><label class="layui-form-label">身份类别：</label>';
+        html+= '<span class="jspan">'+(item1.smd002=='A'?'机构':(item1.smd002=='B'?'个人':(item1.smd002=='C'?'专家':'')))+'</span>';
         html+= '</div></div></div>';
         html+= '';
         html+= '<div class="row"><div class="col-md-5">';
@@ -339,6 +343,54 @@
         html+= '<div class="form-group"><label class="layui-form-label">账号/姓名：</label>';
         html+= '<span class="jspan">'+item1.smd007+'</span>';
         html+= '</div></div></div>';
+        html+= "<div class='row'><div class='form-group col-xl-3 col-md-5 col-sm-12'>";
+        html+= "<label class='layui-form-label'>营业执照：</label>";
+        html+= "<img class='form-control' src='upload/yyzz/"+item1.smd016+"' style='width: 300px;'/>";
+        html+= "</div>";
+        $("#xqmode").find(".modal-body").append(html);
+    }
+
+
+    function tosh(obj1){
+        let item1 = null;
+        if(obj1.indexOf("Hash")>0){
+            item1 = striongTOjsonString(obj1);
+        }else{
+            item1 = jsStringTojsonString(obj1);
+        }
+        $("#xqmode").find(".modal-body").empty();
+        let html="";
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">机构名称/个人单位：</label>';
+        html+= '<span class="jspan">'+item1.smd003+'</span>';
+        html+= '</div></div></div>';
+        html+= '';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">身份类别：</label>';
+        html+= '<span class="jspan">'+(item1.smd002=='A'?'机构':(item1.smd002=='B'?'个人':(item1.smd002=='C'?'专家':'')))+'</span>';
+        html+= '</div></div></div>';
+        html+= '';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">营业执照/身份证号：</label>';
+        html+= '<span class="jspan">'+item1.smd004+'</span>';
+        html+= '</div></div></div>';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">开户行：</label>';
+        html+= '<span class="jspan">'+item1.smd005+'</span>';
+        html+= '</div></div></div>';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">户名/银行卡号：</label>';
+        html+= '<span class="jspan">'+item1.smd006+'</span>';
+        html+= '</div></div></div>';
+        html+= '';
+        html+= '<div class="row"><div class="col-md-5">';
+        html+= '<div class="form-group"><label class="layui-form-label">账号/姓名：</label>';
+        html+= '<span class="jspan">'+item1.smd007+'</span>';
+        html+= '</div></div></div>';
+        html+= "<div class='row'><div class='form-group col-xl-3 col-md-5 col-sm-12'>";
+        html+= "<label class='layui-form-label'>营业执照：</label>";
+        html+= "<img class='form-control' src='upload/yyzz/"+item1.smd016+"' style='width: 300px;'/>";
+        html+= "</div>";
         $("#shtg").attr("onclick","xgzt("+item1.smd001+",'"+item1.smd003+"','M')")
         $("#shbh").attr("onclick","xgzt("+item1.smd001+",'"+item1.smd003+"','E')")
         $("#xqmode").find(".modal-body").append(html);
@@ -347,7 +399,7 @@
     function xgzt(id,uname,type){
         if(type=="E"){
             var num = prompt("请输入驳回备注","");
-            if (num!="") {
+            if (num){
                 load_index = layer.load(1);
                 var formData = new FormData();
                 formData.append("fid",id);
@@ -373,10 +425,8 @@
                     },
                     error: function () { console.log('提交失败'); }
                 });
-            }else{
-                xgzt(id,uname,type);
             }
-        }else if (confirm("您确定修改吗?")) {
+        }else if (type=="M"?confirm("您确定审核通过吗"):confirm("您确定修改吗?")) {
             load_index = layer.load(1);
             var formData = new FormData();
             formData.append("fid",id);
@@ -392,7 +442,11 @@
                 success: function (res) {
                     var d = eval(res);
                     if(d.msg=="0"){
-                        layer.msg("修改成功");
+                        if(type=="M"){
+                            layer.msg("审核通过");
+                        }else {
+                            layer.msg("修改成功");
+                        }
                         setTimeout(function(){
                             location.reload();
                         },1000);

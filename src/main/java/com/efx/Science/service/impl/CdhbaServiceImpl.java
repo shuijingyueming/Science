@@ -136,6 +136,18 @@ public class CdhbaServiceImpl implements CdhbaService {
         return hbaMapper.selectByPrimaryKey1(kcid);
     }
 
+    @Override
+    public void updateByid(Integer skid) {
+        cdhba hba=new cdhba();
+        hba.setHba026("C");
+        cdhbaExample e1 = new cdhbaExample();
+        Criteria c = e1.createCriteria();
+        c.andHba026EqualTo("cdhba");
+        c.andHba022EqualTo(skid);
+        hbaMapper.updateByExampleSelective(hba,e1);
+
+    }
+
     public PageBean queryByPage1(PageBean pageBean, cdhbaExample e1, cdsmdExample e2) {
         int page = (int) pageBean.getCurrentPage();
         int size = pageBean.getPageSize();

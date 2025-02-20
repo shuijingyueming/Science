@@ -34,4 +34,6 @@ public interface CdhbaService extends IService<cdhba> {
     PageBean selectPageBean1(PageBean pb);
 
     cdhba getByid1(Integer kcid);
+
+    void updateByid(Integer skid);
 }

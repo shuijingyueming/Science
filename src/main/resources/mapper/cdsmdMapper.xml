@@ -17,7 +17,7 @@
     <result column="SMD013" jdbcType="INTEGER" property="smd013" />
     <result column="SMD014" jdbcType="VARCHAR" property="smd014" />
     <result column="SMD015" jdbcType="VARCHAR" property="smd015" />
-    <result column="SMD016" jdbcType="REAL" property="smd016" />
+    <result column="SMD016" jdbcType="VARCHAR" property="smd016" />
     <result column="SMD017" jdbcType="VARCHAR" property="smd017" />
     <result column="SMD018" jdbcType="VARCHAR" property="smd018" />
   </resultMap>
@@ -126,7 +126,7 @@
       #{smd007,jdbcType=VARCHAR}, #{smd008,jdbcType=TIMESTAMP}, #{smd009,jdbcType=INTEGER}, 
       #{smd010,jdbcType=INTEGER}, #{smd011,jdbcType=INTEGER}, #{smd012,jdbcType=INTEGER}, 
       #{smd013,jdbcType=INTEGER}, #{smd014,jdbcType=VARCHAR}, #{smd015,jdbcType=VARCHAR}, 
-      #{smd016,jdbcType=REAL}, #{smd017,jdbcType=VARCHAR}, #{smd018,jdbcType=VARCHAR}
+      #{smd016,jdbcType=VARCHAR}, #{smd017,jdbcType=VARCHAR}, #{smd018,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.efx.Science.model.cdsmd" useGeneratedKeys="true" keyProperty="smd001">
@@ -228,7 +228,7 @@
         #{smd015,jdbcType=VARCHAR},
       </if>
       <if test="smd016 != null">
-        #{smd016,jdbcType=REAL},
+        #{smd016,jdbcType=VARCHAR},
       </if>
       <if test="smd017 != null">
         #{smd017,jdbcType=VARCHAR},
@@ -293,7 +293,7 @@
         SMD015 = #{record.smd015,jdbcType=VARCHAR},
       </if>
       <if test="record.smd016 != null">
-        SMD016 = #{record.smd016,jdbcType=REAL},
+        SMD016 = #{record.smd016,jdbcType=VARCHAR},
       </if>
       <if test="record.smd017 != null">
         SMD017 = #{record.smd017,jdbcType=VARCHAR},
@@ -323,7 +323,7 @@
       SMD013 = #{record.smd013,jdbcType=INTEGER},
       SMD014 = #{record.smd014,jdbcType=VARCHAR},
       SMD015 = #{record.smd015,jdbcType=VARCHAR},
-      SMD016 = #{record.smd016,jdbcType=REAL},
+      SMD016 = #{record.smd016,jdbcType=VARCHAR},
       SMD017 = #{record.smd017,jdbcType=VARCHAR},
       SMD018 = #{record.smd018,jdbcType=VARCHAR}
     <if test="_parameter != null">
@@ -374,7 +374,7 @@
         SMD015 = #{smd015,jdbcType=VARCHAR},
       </if>
       <if test="smd016 != null">
-        SMD016 = #{smd016,jdbcType=REAL},
+        SMD016 = #{smd016,jdbcType=VARCHAR},
       </if>
       <if test="smd017 != null">
         SMD017 = #{smd017,jdbcType=VARCHAR},
@@ -401,7 +401,7 @@
       SMD013 = #{smd013,jdbcType=INTEGER},
       SMD014 = #{smd014,jdbcType=VARCHAR},
       SMD015 = #{smd015,jdbcType=VARCHAR},
-      SMD016 = #{smd016,jdbcType=REAL},
+      SMD016 = #{smd016,jdbcType=VARCHAR},
       SMD017 = #{smd017,jdbcType=VARCHAR},
       SMD018 = #{smd018,jdbcType=VARCHAR}
     where SMD001 = #{smd001,jdbcType=INTEGER}

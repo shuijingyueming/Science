@@ -105,7 +105,7 @@
     values (#{hbb001,jdbcType=INTEGER}, #{hbb002,jdbcType=VARCHAR}, #{hbb003,jdbcType=INTEGER}, 
       #{hbb004,jdbcType=VARCHAR}, #{hbb005,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.efx.Science.model.cdhbb">
+  <insert id="insertSelective" parameterType="com.efx.Science.model.cdhbb" useGeneratedKeys="true" keyProperty="hbb001">
     insert into cdhbb
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="hbb001 != null">

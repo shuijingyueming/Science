@@ -47,8 +47,50 @@ public class CdyheServiceImpl implements CdyheService {
 //        if(pb.getOthersql()!=null) c.andYhe003Like("%"+pb.getOthersql()+"%");
         if(pb.getOthersql5()!=null) c.andYhe003EqualTo(Integer.valueOf(pb.getOthersql5()));
         if(pb.getOthersql6()!=null)  c.andYhe002EqualTo(Integer.valueOf(pb.getOthersql6()));
+        if(pb.getOthersql2()!=null){
+            if(pb.getOthersql2().equals("A")){
+                c.andSql("(yhe007='A' or yhe007='B')");
+            }else if(pb.getOthersql2().equals("B")){
+                c.andSql("(yhe007='C' or yhe007='D')");
+            }else if(pb.getOthersql2().equals("J")){
+                c.andSql("(yhe007='S' or yhe007='T')");
+            }else if(pb.getOthersql2().equals("C")){
+                c.andSql("(yhe007='G' or yhe007='H')");
+            }else if(pb.getOthersql2().equals("D")){
+                c.andSql("(yhe007='J' or yhe007='K')");
+            }else if(pb.getOthersql2().equals("E")){
+                c.andSql("(yhe007='M' or yhe007='N')");
+            }else if(pb.getOthersql2().equals("F")){
+                if(pb.getOthersql3().equals("A")){
+                    c.andSql("(yhe007='F' or yhe007='R' or yhe007='Q')");
+                }else  if(pb.getOthersql3().equals("B")){
+                    c.andSql("(yhe007='F' or yhe007='Q')");
+                }else if(pb.getOthersql3().equals("C")){
+                    c.andSql("(yhe007='F' or yhe007='R')");
+                }
+            }else if(pb.getOthersql2().equals("G")){
+                if(pb.getOthersql3().equals("A")){
+                    c.andYhe007EqualTo("E");
+                }else if(pb.getOthersql3().equals("B")){
+                    c.andSql("(yhe007='E' or yhe007='Q')");
+                }else if(pb.getOthersql3().equals("C")){
+                    c.andSql("(yhe007='E' or yhe007='R')");
+                }
+            }else if(pb.getOthersql2().equals("H")){
+                c.andSql("(yhe007='O' or yhe007='P')");
+            }
+        }
+        cdyhbExample e2 = new cdyhbExample();
+        cdyhbExample.Criteria c1 = e2.createCriteria();
+        if(pb.getOthersql1()!=null)  c1.andYhb002EqualTo(Integer.valueOf(pb.getOthersql1()));
         e1.setOrderByClause("yhe008 desc");
-        return queryByPage(pb,e1);
+        if(pb.getOthersql4()==null) {
+            return queryByPage(pb,e1,e2);
+        }else{
+            pb.setResultList(yheMapper.selectByExample2(e1,e2));
+            return pb;
+        }
+
     }
 
     @Override
@@ -232,7 +274,7 @@ public class CdyheServiceImpl implements CdyheService {
             }
         }
         e1.setOrderByClause("yhe008 desc,yhe001 desc");
-        return queryByPage(pb,e1);
+        return queryByPage(pb,e1,null);
     }
     @Override
     public PageBean selectPageBean1(PageBean pb) throws ParseException {
@@ -247,7 +289,7 @@ public class CdyheServiceImpl implements CdyheService {
         e1.setOrderByClause("yhe008 desc");
         if(pb.getOthersql4()==null) {
             if(pb.getOthersql3()==null) {
-                return queryByPage(pb,e1);
+                return queryByPage(pb,e1,null);
             }else{
                 cdsmdExample e2 = new cdsmdExample();
                 cdsmdExample.Criteria c2 = e2.createCriteria();
@@ -368,17 +410,17 @@ public class CdyheServiceImpl implements CdyheService {
         return yheMapper.countByExamplefwrcX(e1);
     }
 
-    public PageBean queryByPage(PageBean pageBean, cdyheExample example) {
+    public PageBean queryByPage(PageBean pageBean, cdyheExample e1, cdyhbExample e2) {
         int page = (int) pageBean.getCurrentPage();
         int size = pageBean.getPageSize();
         //record sum
-        int sum = (int) yheMapper.countByExample(example);
+        int sum = (int) yheMapper.countByExample2(e1,e2);
         //page count
         int count = sum%size==0 ? sum/size : sum/size+1;
         //check page
         page = page<1 ? 1 : ((page>count)? count : page);
         //query
-        List<cdyhe> list = yheMapper.selectByExampleAndPage(example, new RowBounds((page-1)*size, size));
+        List<cdyhe> list = yheMapper.selectByExampleAndPage2(e1,e2, new RowBounds((page-1)*size, size));
         //save to PageBean
         pageBean.setCurrentPage(page);
         pageBean.setPageCount(count);

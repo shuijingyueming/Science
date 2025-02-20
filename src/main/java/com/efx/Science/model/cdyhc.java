@@ -96,7 +96,6 @@ public class cdyhc {
         sb.append(", yhc006=").append(yhc006);
         sb.append(", yhc007=").append(yhc007);
         sb.append(", yhc008=").append(yhc008);
-        sb.append(", yhc004=").append(yhc004);
         sb.append("]");
         return sb.toString();
     }

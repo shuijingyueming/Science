@@ -44,6 +44,7 @@ public class CdsmdServiceImpl implements CdsmdService {
         Criteria c = e1.createCriteria();
         if(pb.getOthersql()!=null) c.andSmd003Like("%"+pb.getOthersql()+"%");
         if(pb.getOthersql2()!=null) c.andSmd002EqualTo(pb.getOthersql2());
+        if(pb.getOthersql1()!=null) c.andSmd014EqualTo(pb.getOthersql1());
         e1.setOrderByClause("smd001 desc");
         return queryByPage(pb,e1);
     }

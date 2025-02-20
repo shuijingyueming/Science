@@ -1,6 +1,18 @@
 package com.efx.Science.model;
 
+import java.util.List;
+
 public class cdhba {
+
+    private List<cdyhc> yhclist;
+
+    public List<cdyhc> getYhclist() {
+        return yhclist;
+    }
+
+    public void setYhclist(List<cdyhc> yhclist) {
+        this.yhclist = yhclist;
+    }
 
     private Integer rs;
 

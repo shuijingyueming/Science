@@ -43,6 +43,7 @@ public class CdyhbServiceImpl implements CdyhbService {
         cdyhbExample e1 = new cdyhbExample();
         Criteria c = e1.createCriteria();
         if(pb.getOthersql()!=null) c.andYhb004Like("%"+pb.getOthersql()+"%");
+        if(pb.getOthersql1()!=null)c.andYhb002EqualTo(Integer.valueOf(pb.getOthersql1()));
         e1.setOrderByClause("yhb001 desc");
         return queryByPage(pb,e1);
     }

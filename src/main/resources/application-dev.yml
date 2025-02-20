@@ -1,4 +1,3 @@
-
 server:
     port: 80
     max-http-header-size: 104857600
@@ -6,10 +5,10 @@ server:
       max-http-form-post-size: 104857600
 
 #server:
-#  port: 80
+#  port: 443
 #  ssl:
-#   key-store: classpath:xhh.nbefx.com.pfx
-#   key-store-password: 6qmc0rum
+#   key-store: classpath:kx.nbefx.com.pfx
+#   key-store-password: cgppntjw
 #   key-store-type: PKCS12
 
 spring:
@@ -19,6 +18,7 @@ spring:
     url: jdbc:mysql://192.168.1.5:3306/kxxkdata?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
     username: root
     password: ROOT
+#      password: Q1w2e3r4
     jdbcurl: 192.168.1.5
     jdbcdk: 3306
     dataname: kxxkdata

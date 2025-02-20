@@ -71,10 +71,10 @@
                                 <th:block th:if="${pageobj.othersql1=='B'}">
                                     <div class="col-auto" th:style="${session.umsg.jstype=='B'?'display: none':''}">
                                         <div class="row">
-                                            <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;width: 200px">授课方名称</label>
-                                            <div class="col-auto">
+                                            <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px">授课方名称</label>
+                                            <div class="col-auto" style="width: 200px" >
                                                 <select id="skid" name="skid"  class="form-control selectpicker" data-live-search="true">
-                                                    <option value="" selected>请选择</option>
+                                                    <option value=""  selected>请选择</option>
                                                     <th:block th:each="item,stat:${smdlist}">
                                                         <option th:value="${item.smd001}"  th:selected="${pageobj.othersql5==#strings.toString(item.smd001)?true:false}">[[${item.smd003}]]</option>
                                                     </th:block>
@@ -86,8 +86,8 @@
                                 <th:block th:if="${pageobj.othersql1=='C'}">
                                     <div class="col-auto" th:style="${session.umsg.jstype=='C'?'display: none':''}">
                                         <div class="row">
-                                            <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;width: 200px">选课方名称</label>
-                                            <div class="col-auto">
+                                            <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">选课方名称</label>
+                                            <div class="col-auto" style="width: 200px" >
                                                 <select id="skid" name="skid"  class="form-control selectpicker" data-live-search="true">
                                                     <option value="" selected>请选择</option>
                                                     <th:block th:each="item,stat:${yhblist}">
@@ -131,7 +131,7 @@
                                         <th:block th:if="${session.umsg.jstype=='A'&&pageobj.othersql1!='A'}">
                                             <th th:text="${pageobj.othersql1=='B'?(item.smd!=null?item.smd.smd003:''):(item.yhb!=null?item.yhb.yhb004:'')}"></th>
                                         </th:block>
-                                        <td><img class="wimg" th:src="${item.use008!=null?'upload/tximg/'+item.use008:'images/nopic.png'}" style='width:100px;height:auto;object-fit:cover;border:1px solid rgb(229, 229, 229);'></td>
+                                        <td><img class="wimg" th:src="${item.use008!=null?'upload/tximg/'+item.use008:'images/nopic.png'}" style='width:30px;height:auto;object-fit:cover;border:1px solid rgb(229, 229, 229);'></td>
                                         <td th:text="${item.use007}"></td>
                                         <td th:text="${item.use002}"></td>
                                         <td th:text="${item.use004}"></td>
@@ -150,10 +150,6 @@
                                             <th:block th:if="${item.use013=='N'}">
                                                 <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.use001}]],[[${item.use004}]],[['M']])">正常</a>
                                             </th:block>
-                                          <!--  <th:block th:if="${item.use013=='P'}">
-                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#xqmode" th:onclick="tosh([[${item.toString()}]],[[${pageobj.othersql1=='B'?item.smd.toString():item.yhb.toString()}]],[[${pageobj.othersql1=='B'?'':item.yhb.yha.yha002}]])">审核</a>
-                                            </th:block>-->
-                                            <!--  <a href="javascript:void(0);" th:onclick="del([[${item.use001}]])" class="btn btn-table">删除</a>-->
                                         </div>
                                     </td>
                                 </tr>
@@ -199,6 +195,7 @@
                 </div>
                 <form id="uploadForm" enctype="multipart/form-data">
                     <input type="hidden" id="fid" value=""/>
+                    <span>初始密码：123456</span>
                     <div class="modal-body" style="min-height:580px;">
                         <div class="row col-auto" style="margin-top: 20px;">
                             <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">账户名称</label>
@@ -218,6 +215,9 @@
                                 <input type="text" class="form-control" id="t5" name="t5" placeholder="请输入联系手机"/>
                             </div>
                         </div>
+                        <th:block th:if="${pageobj.othersql1=='A'}">
+                            <input type="hidden" id="t11" value=""/>
+                        </th:block>
                         <th:block th:if="${pageobj.othersql1=='B'}">
                         <div class="row col-auto" th:style="${session.umsg.jstype=='B'?'margin-top: 20px;display: none':'margin-top: 20px;'}">
                                 <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">绑定授课</label>
@@ -246,7 +246,7 @@
                         </th:block>
                     </div>
                     <div class="modal-footer" style="height:100px;">
-                        <button type="submit" class="btn btn-primary" id="edit-four">保存</button>
+                        <button type="submit" class="btn btn-primary" id="edit-four">提交</button>
                     </div>
                 </form>
             </div>

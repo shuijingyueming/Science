@@ -127,7 +127,7 @@
       #{yhd014,jdbcType=INTEGER}, #{yhd015,jdbcType=INTEGER}, #{yhd016,jdbcType=INTEGER}, 
       #{yhd017,jdbcType=INTEGER}, #{yhd018,jdbcType=REAL})
   </insert>
-  <insert id="insertSelective" parameterType="com.efx.Science.model.cdyhd">
+  <insert id="insertSelective" parameterType="com.efx.Science.model.cdyhd" useGeneratedKeys="true" keyProperty="yhd001">
     insert into cdyhd
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="yhd001 != null">

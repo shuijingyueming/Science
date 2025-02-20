@@ -71,7 +71,6 @@
                         <ul class="nav nav-subnav">
                             <li><a class="multitabs" href="toHt/tolevel">选课方层级管理</a></li>
                             <li><a class="multitabs" href="toHt/tochose">选课方管理</a></li>
-                            <li><a class="multitabs" href="toHt/toselection">选课预约管理</a></li>
                         </ul>
                     </li>
                     <li class="nav-item nav-item-has-subnav">
@@ -89,6 +88,22 @@
                                     <li><a class="multitabs" href="toHt/tocourse">课程管理</a></li>
                                 </ul>
                             </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item nav-item-has-subnav">
+                        <a href="javascript:void(0)">
+                            <i class="mdi mdi-stove"></i> <span>选课预约管理</span>
+                        </a>
+                        <ul class="nav nav-subnav">
+                            <li><a class="multitabs" href="toHt/toselection?ztype=A">预约待确认</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=B">退回</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=C">已接受</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=D">修改待确认</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=J">驳回</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=E">取消待确认</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=F">待评价</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=G">结束</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=H">已取消</a></li>
                         </ul>
                     </li>
                     <li class="nav-item nav-item-has-subnav">
@@ -123,8 +138,28 @@
                             <li><a class="multitabs" href="toHt/toselect">授课方管理</a></li>
                             <th:block th:if="${session.umsg.jsqx=='M'}">
                             <li><a class="multitabs" href="toHt/tocourse">课程管理</a></li>
-                            <li><a class="multitabs" href="toHt/toselection">选课预约管理</a></li>
                             </th:block>
+                        </ul>
+                    </li>
+                    <li class="nav-item nav-item-has-subnav">
+                        <a class="multitabs" href="toHt/tochose">
+                            <i class="mdi mdi-stove"></i> <span>选课方管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item nav-item-has-subnav">
+                        <a href="javascript:void(0)">
+                            <i class="mdi mdi-stove"></i> <span>选课预约管理</span>
+                        </a>
+                        <ul class="nav nav-subnav">
+                            <li><a class="multitabs" href="toHt/toselection?ztype=A">预约待确认</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=B">退回</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=C">已接受</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=D">修改待确认</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=J">修改驳回</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=E">取消待确认</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=F">待评价</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=G">结束</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=H">已取消</a></li>
                         </ul>
                     </li>
                     <th:block th:if="${session.umsg.jsqx=='M'}">
@@ -158,7 +193,22 @@
                         <ul class="nav nav-subnav">
                             <li><a class="multitabs" href="toHt/toselect">授课方管理</a></li>
                             <li><a class="multitabs" href="toHt/tocourse">课程管理</a></li>
-                            <li><a class="multitabs" href="toHt/toselection">选课预约管理</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item nav-item-has-subnav">
+                        <a href="javascript:void(0)">
+                            <i class="mdi mdi-stove"></i> <span>选课预约管理</span>
+                        </a>
+                        <ul class="nav nav-subnav">
+                            <li><a class="multitabs" href="toHt/toselection?ztype=A">预约待确认</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=B">退回</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=C">已接受</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=D">修改待确认</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=J">修改驳回</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=E">取消待确认</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=F">待评价</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=G">结束</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=H">已取消</a></li>
                         </ul>
                     </li>
                     <li class="nav-item nav-item-has-subnav">

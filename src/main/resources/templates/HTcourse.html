@@ -55,9 +55,9 @@
                             <div class="row g-5">
                                 <div class="col-auto">
                                     <div class="row">
-                                      <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">名称</label>
+                                      <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">课程名称</label>
                                       <div class="col-auto">
-                                        <input type="text" class="form-control" id="name" name="name" th:value="${pageobj.othersql}" placeholder="请输入名称"/>
+                                        <input type="text" class="form-control" id="name" name="name" th:value="${pageobj.othersql}" placeholder="请输入课程名称"/>
                                       </div>
                                     </div>
                                 </div>
@@ -87,6 +87,21 @@
                                       </div>
                                     </div>
                                 </div>
+                                <div class="col-auto" th:style="${session.umsg.jstype=='C'?'display: none':''}">
+                                    <div class="row">
+                                        <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">状态</label>
+                                        <div class="col-auto">
+                                            <select id="flzt" name="flzt" class="form-control selectpicker">
+                                                <option value="" selected></option>
+                                                <option value="A"  th:selected="${pageobj.othersql3=='A'?true:false}">待审核</option>
+                                                <option value="B"  th:selected="${pageobj.othersql3=='B'?true:false}">上架</option>
+                                                <option value="C"  th:selected="${pageobj.othersql3=='C'?true:false}">下架</option>
+                                                <option value="D"  th:selected="${pageobj.othersql3=='D'?true:false}">提交</option>
+                                                <option value="E"  th:selected="${pageobj.othersql3=='E'?true:false}">驳回</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                                 <!--button-->
                                 <div class="col-auto">
                                     <button type="submit" class="btn btn-primary me-1">搜索</button>
@@ -102,9 +117,9 @@
                                 <thead>
                                 <tr>
                                     <th style="max-width:30px;">序号</th>
-                                    <th>课程代码</th>
                                     <th>课程名称</th>
-                                    <th>授课方</th>
+                                    <th>课程代码</th>
+                                    <th>授课方名称</th>
                                     <th>课程分类</th>
                                     <th>联系人名称</th>
                                     <th>联系人手机号</th>
@@ -119,8 +134,8 @@
                                 <tbody id="tablebody">
                                 <tr th:each="item,stat:${pageobj.resultList}">
                                     <td th:text="${stat.index+1}"></td>
-                                    <td th:text="${item.hba035}"></td>
                                     <td th:text="${item.hba002}"></td>
+                                    <td th:text="${item.hba035}"></td>
                                     <td th:text="${item.smd.smd003}"></td>
                                     <td th:text="${item.hbb.hbb002}"></td>
                                     <td th:text="${item.hba016}"></td>
@@ -129,31 +144,35 @@
                                     <td th:text="${item.hba004}"></td>
                                     <td th:text="${item.hba005}"></td>
                                     <td th:text="${item.hba006}"></td>
-                                    <td th:text="${item.hba026=='B'?'正常':(item.hba026=='C'?'下架':(item.hba026=='A'?'待审核':(item.hba026=='E'?'驳回':'')))}"></td>
+                                    <td th:text="${item.hba026=='B'?'上架':(item.hba026=='C'?'下架':(item.hba026=='A'?'待审核':(item.hba026=='E'?'驳回':(item.hba026=='D'?'提交':''))))}"></td>
                                     <td>
                                         <div class="btn-group btn-group-sm">
                                             <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#xqmode" th:onclick="toxq([[${item.toString()}]],[[${item.hba019}]])">详情</a>
                                             <div class="ivu-divider-vertical"></div>
                                             <th:block th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">
-                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.hba001}]],[[${item.hba002}]],[['C']])">审核通过</a>
-                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.hba001}]],[[${item.hba002}]],[['E']])">驳回</a>
+                                                <th:block th:if="${item.hba026=='A'}">
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.hba001}]],[[${item.hba002}]],[['C']])">审核通过</a>
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.hba001}]],[[${item.hba002}]],[['E']])">驳回</a>
+                                                </th:block>
                                             </th:block>
                                             <th:block th:if="${session.umsg.jstype=='B'}">
-                                                <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]])" class="btn btn-table"
+                                                <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]],[[${item.hba019}]])" class="btn btn-table"
                                                    data-bs-toggle="modal" data-bs-target="#editmode">编辑</a>
                                                 <div class="ivu-divider-vertical"></div>
+                                                <th:block th:if="${item.hba026=='D'}">
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.hba001}]],[[${item.hba002}]],[['A']])">提交审核</a>
+                                                </th:block>
                                                 <th:block th:if="${item.hba026=='C'}">
-                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.hba001}]],[[${item.hba002}]],[['B']])">正常</a>
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.hba001}]],[[${item.hba002}]],[['B']])">上架</a>
                                                 </th:block>
                                                 <th:block th:if="${item.hba026=='B'}">
                                                     <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.hba001}]],[[${item.hba002}]],[['C']])">下架</a>
                                                 </th:block>
-                                                <a href="javascript:void(0);" th:onclick="tols([[${item.hba001}]])" class="btn btn-table"
-                                                   data-bs-toggle="modal" data-bs-target="#">老师管理</a>
-                                                <div class="ivu-divider-vertical"></div>
-                                                <a href="javascript:void(0);" th:onclick="topk([[${item.hba001}]])" class="btn btn-table"
-                                                   data-bs-toggle="modal" data-bs-target="#">排课</a>
                                             </th:block>
+                                            <a href="javascript:void(0);" th:onclick="tols([[${item.hba001}]])" class="btn btn-table" data-bs-toggle="modal" data-bs-target="#">老师管理</a>
+                                            <div class="ivu-divider-vertical"></div>
+                                            <a href="javascript:void(0);" th:onclick="topk([[${item.hba001}]])" class="btn btn-table"
+                                               data-bs-toggle="modal" data-bs-target="#" th:text="${session.umsg.jstype=='B'?'排课':'课程日历'}"></a>
                                             <!--<th:block th:if="${session.umsg.jstype=='C'}">
                                                 <a href="javascript:void(0);" th:onclick="toyy([[${item.hba001}]])" class="btn btn-table"
                                                    data-bs-toggle="modal" data-bs-target="#">预约申请</a>
@@ -201,7 +220,7 @@
                     <input type="hidden" id="fid1" value=""/>
                     <div class="modal-body" style="padding-bottom: 180px;background-color: #FFF;"></div>
                     <div class="modal-footer" style="height:100px;">
-                        <button type="submit" class="btn btn-primary" id="edit-four1">保存</button>
+                        <button type="submit" class="btn btn-primary" id="edit-four1">提交</button>
                     </div>
                 </form>
             </div>
@@ -447,7 +466,7 @@
                         </div>
                     </div>
                     <div class="modal-footer" style="height:100px;">
-                        <button type="submit" class="btn btn-primary" id="edit-four">保存</button>
+                        <button type="submit" class="btn btn-primary" id="edit-four">提交</button>
                     </div>
                 </form>
             </div>
@@ -516,7 +535,7 @@
     function usefanye(pageindex){
         var params = [
             ["pages",pageindex],
-            ["name", $("#name").val()],["skid", $("#skid").val()],["flid", $("#flid").val()]];
+            ["name", $("#name").val()],["skid", $("#skid").val()],["flid", $("#flid").val()],["flzt", $("#flzt").val()]];
         form_submit("toHt/tocourse","post",params,"_self");
     }
 
@@ -524,7 +543,7 @@
         var params = [
             ["kcid",kcid],
             ["pages",$("#pages").val()],
-            ["name", $("#name").val()],["skid", $("#skid").val()],["flid", $("#flid").val()]];
+            ["name", $("#name").val()],["skid", $("#skid").val()],["flid", $("#flid").val()],["flzt", $("#flzt").val()]];
         form_submit("toHt/tocourseyy","post",params,"_self");
     }
 
@@ -533,7 +552,7 @@
         var params = [
             ["kcid",kcid],
             ["pages",$("#pages").val()],
-            ["name", $("#name").val()],["skid", $("#skid").val()],["flid", $("#flid").val()]];
+            ["name", $("#name").val()],["skid", $("#skid").val()],["flid", $("#flid").val()],["flzt", $("#flzt").val()]];
         form_submit("toHt/tocoursels","post",params,"_self");
     }
 
@@ -552,6 +571,12 @@
         }
         $("#xqmode").find(".modal-body").empty();
         let html="";
+        if(item.hba026=="E"){
+            html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
+            html+= '<label class="layui-form-label">驳回原因：</label>';
+            html+= '<span class="jspan">'+item.hba025+'</span>';
+            html+= '</div></div>';
+        }
         html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
         html+= '<label class="layui-form-label">课程名称：</label>';
         html+= '<span class="jspan">'+item.hba002+'</span>';
@@ -663,7 +688,7 @@
     function xzmb(){
         var params = [  ["type","E"],
             ["pages",$("#pages").val()],
-            ["name", $("#name").val()],["skid", $("#skid").val()],["flid", $("#flid").val()]];
+            ["name", $("#name").val()],["skid", $("#skid").val()],["flid", $("#flid").val()],["flzt", $("#flzt").val()]];
         form_submit("toHt/tocourse","post",params,"_self");
     }
 
@@ -723,7 +748,7 @@
                 if (data == 'A') {
                     var params = [
                         ["pages", $("#pages").val()],
-                        ["name", $("#name").val()],["skid", $("#skid").val()],["flid", $("#flid").val()]];
+                        ["name", $("#name").val()],["skid", $("#skid").val()],["flid", $("#flid").val()],["flzt", $("#flzt").val()]];
                     // layer.msg("导入成功", {time: 1000}, function () {
                     form_submit("toHt/tocourse", "post", params, "_self");
                     // });
@@ -774,7 +799,7 @@
             }else{
                 xgzt(id,uname,type);
             }
-        }else if (confirm("您确定修改吗?")) {
+        }else if (type=="C"?confirm("您确定审核通过吗"):confirm("您确定修改吗?")) {
             load_index = layer.load(1);
             var formData = new FormData();
             formData.append("fid",id);
@@ -790,7 +815,11 @@
                 success: function (res) {
                     var d = eval(res);
                     if(d.msg=="0"){
-                        layer.msg("修改成功");
+                        if(type=="C"){
+                            layer.msg("审核通过");
+                        }else {
+                            layer.msg("修改成功");
+                        }
                         setTimeout(function(){
                             location.reload();
                         },1000);
@@ -898,7 +927,7 @@
         location.reload();
     }
 
-    function edit(obj){
+    function edit(obj,html){
         if(obj!=null&&obj!=''){
             let josnobj = null;
             if(obj.indexOf("Hash")>0){
@@ -930,7 +959,7 @@
             $("#t16").val(josnobj.hba016);
             $("#t17").val(josnobj.hba017);
             // $("#t19").val(josnobj.hba019);
-            KE.html(josnobj.hba019)
+            KE.html(html)
             $("#tt24").val(josnobj.hba024);
             $("#t27").val(josnobj.hba027);
             $("#t28").val(josnobj.hba028);
@@ -938,7 +967,8 @@
             $("#upfilevadio").attr("src","upload/kcvideo/"+josnobj.hba020);
             $("#shtp").attr("src","upload/kcimg/"+josnobj.hba024);
             $("#t30").val(josnobj.hba030);
-            $('.selectpicker').selectpicker('refresh');
+            $('select[id=t21]').selectpicker('destroy');
+            $('select[id=t21]').selectpicker('render');
             $("#ftype").text("编辑");
         }else{
             $("#ftype").text("添加");
@@ -964,7 +994,7 @@
                             return $("#fid").val().trim();
                         }//要传递的数据
                     }
-                }},t4: { required : true, },t5: { required : true, },t21: { required : true, },t22: { required : true, },},
+                }},t4: { required : true, },t5: { required : true, },t21: { required : true, },t22: { required : true, },t16: { required : true, },t17: { required : true, }},
         messages: {},
         submitHandler: function(form) {
             load_index = layer.load(1);

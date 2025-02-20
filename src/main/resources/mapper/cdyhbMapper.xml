@@ -138,7 +138,7 @@
       #{yhb020,jdbcType=INTEGER}, #{yhb021,jdbcType=INTEGER}, #{yhb022,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.efx.Science.model.cdyhb">
+  <insert id="insertSelective" parameterType="com.efx.Science.model.cdyhb"  useGeneratedKeys="true" keyProperty="yhb001">
     insert into cdyhb
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="yhb001 != null">

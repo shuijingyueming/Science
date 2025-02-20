@@ -47,6 +47,9 @@
   <resultMap id="BaseResultMap2" type="com.efx.Science.model.cdhba"  extends="BaseResultMap1">
     <result column="rs" jdbcType="INTEGER" property="rs" />
   </resultMap>
+  <resultMap id="BaseResultMap3" type="com.efx.Science.model.cdhba"  extends="BaseResultMap1">
+    <collection  property="yhclist"  column="HBA001"  select="com.efx.Science.dao.cdyhcMapper.selectBykcid"/>
+  </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -194,7 +197,7 @@
       #{hba034,jdbcType=INTEGER}, #{hba035,jdbcType=VARCHAR}, #{hba019,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.efx.Science.model.cdhba">
+  <insert id="insertSelective" parameterType="com.efx.Science.model.cdhba"  useGeneratedKeys="true" keyProperty="hba001">
     insert into cdhba
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="hba001 != null">

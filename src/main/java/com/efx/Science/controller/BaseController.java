@@ -62,28 +62,14 @@ public class BaseController {
 
     //静态公共时间格式对象 调用BaseController.DATE
     protected final static SimpleDateFormat DATE = new SimpleDateFormat("yyyy-MM-dd");
-    protected final static SimpleDateFormat DATE1 = new SimpleDateFormat("yyyyMM");
-    protected final static SimpleDateFormat DATE2 = new SimpleDateFormat("MM.dd");
-    protected final static SimpleDateFormat TIMEHOUR = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     protected final static SimpleDateFormat TIMEMIAO = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    protected final static SimpleDateFormat TIMEMIAO1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
-    protected final static SimpleDateFormat TIME_MIAO = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
     protected final static SimpleDateFormat TIME_ORDER = new SimpleDateFormat("yyyyMMddHHmmssSSS");
     protected final static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-    protected final static DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    protected final static DecimalFormat numberdf = new DecimalFormat("#.0000");
-
-    protected final static SimpleDateFormat DATE3 = new SimpleDateFormat("yyyy/MM/dd");
     protected final static SimpleDateFormat sdf1 = new SimpleDateFormat("yyMMddHHmmss");
-
     protected final static SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMdd");
-    protected final static SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM");
-
-    protected final static SimpleDateFormat sdf4 = new SimpleDateFormat("MM月");
-
-    protected final static SimpleDateFormat sdf5 = new SimpleDateFormat("yyyy年MM月");
-    protected final static SimpleDateFormat sdf6 = new SimpleDateFormat("yyyy年MM月dd日");
-
+    protected final static SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy");
+    protected final static SimpleDateFormat sdf4 = new SimpleDateFormat("yyyy年MM月dd日");
+    protected final static DecimalFormat numberdf = new DecimalFormat("#.0000");
     protected final static DecimalFormat numberdf1 = new DecimalFormat("#.##");
 
     /**

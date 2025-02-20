@@ -27,88 +27,97 @@
 </head>
 <body>
 <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <header class="card-header"><div class="card-title">[[${item.smd014=='E'?'驳回：'+item.smd015:(item.smd014=='P'?'审核中':(item.smd014=='M'?'通过':''))}]]</div></header>
-                    <div class="card-body">
-                        <form id="uploadForm" enctype="multipart/form-data">
-                            <input type="hidden" id="fid" th:value="${item.smd001}" />
-                            <div class="modal-body">
-                                <div class="row">
-                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">身份类别</label>
-                                    <div class="col-auto">
-                                        <input class="form-check-input" id="r31" name="t3" value="A" type="radio" th:checked="${item.smd002=='A'?true:false}" >
-                                        <label for="r32" class="form-check-label" style="padding-right:20px;">机构</label>
-                                        <input  class="form-check-input" id="r32" name="t3" value="B" type="radio" th:checked="${item.smd002=='B'?true:false}">
-                                        <label for="r32" class="form-check-label" style="padding-right:20px;">个人</label>
-                                        <input class="form-check-input" id="r33" name="t3" value="C" type="radio" th:checked="${item.smd002=='C'?true:false}">
-                                        <label for="r33" class="form-check-label" style="padding-right:20px;">专家</label>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <header class="card-header"><div class="card-title">[[${item.smd014=='E'?'您的申请已被驳回：'+item.smd015:(item.smd014=='P'?'已提交申请，请等待审核':(item.smd014=='M'?'通过':''))}]]</div></header>
+                <div class="card-body">
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <input type="hidden" id="fid" th:value="${item.smd001}" />
+                        <div class="modal-body">
+                            <div class="row">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">身份类别</label>
+                                <div class="col-auto">
+                                    <input class="form-check-input" id="r31" name="t3" value="A" type="radio" th:checked="${item.smd002=='A'?true:false}" >
+                                    <label for="r32" class="form-check-label" style="padding-right:20px;">机构</label>
+                                    <input  class="form-check-input" id="r32" name="t3" value="B" type="radio" th:checked="${item.smd002=='B'?true:false}">
+                                    <label for="r32" class="form-check-label" style="padding-right:20px;">个人</label>
+                                    <input class="form-check-input" id="r33" name="t3" value="C" type="radio" th:checked="${item.smd002=='C'?true:false}">
+                                    <label for="r33" class="form-check-label" style="padding-right:20px;">专家</label>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px;">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;" id="x1">机构</label>
+                                <div class="col-xl-4 col-md-8 col-sm-12">
+                                    <input type="text" class="form-control" id="t2" name="t2"  th:value="${item.smd003}"  placeholder="请输入机构名称"/>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px;">
+                                <div class="row col-xl-6 col-md-7 col-sm-6 col-12">
+                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;" id="x2">营业执照</label>
+                                    <div class="col-xl-8 col-md-7 col-sm-12">
+                                        <input type="text" class="form-control" id="t4" name="t4" th:value="${item.smd004}" placeholder="请输入营业执照"/>
                                     </div>
                                 </div>
-                                <div class="row" style="margin-top: 20px;">
-                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;" id="x1">机构</label>
-                                    <div class="col-xl-4 col-md-8 col-sm-12">
-                                        <input type="text" class="form-control" id="t2" name="t2"  th:value="${item.smd003}"  placeholder="请输入机构名称"/>
+                            </div>
+                            <div class="row" style="margin-top: 20px;">
+                                <div class="row col-xl-4 col-md-5 col-sm-4">
+                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">开户行</label>
+                                    <div class="col-xl-7 col-md-8 col-sm-12">
+                                        <input type="text" class="form-control" id="t5" name="t5"th:value="${item.smd005}"  placeholder="请输入开户行"/>
                                     </div>
                                 </div>
-                                <div class="row" style="margin-top: 20px;">
-                                    <div class="row col-xl-6 col-md-7 col-sm-6 col-12">
-                                        <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;" id="x2">营业执照</label>
-                                        <div class="col-xl-8 col-md-7 col-sm-12">
-                                            <input type="number" class="form-control" id="t4" name="t4" th:value="${item.smd004}" placeholder="请输入营业执照"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row" style="margin-top: 20px;">
-                                    <div class="row col-xl-4 col-md-5 col-sm-4">
-                                        <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">开户行</label>
-                                        <div class="col-xl-7 col-md-8 col-sm-12">
-                                            <input type="number" class="form-control" id="t5" name="t5"th:value="${item.smd005}"  placeholder="请输入开户行"/>
-                                        </div>
-                                    </div>
-                                    <div class="row col-xl-4 col-md-5 col-sm-4 col-12">
+                                <div class="row col-xl-4 col-md-5 col-sm-4 col-12">
                                     <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;" id="x3">账号</label>
                                     <div class="col-xl-7 col-md-7 col-sm-12">
-                                        <input type="number" class="form-control" id="t7" name="t7"th:value="${item.smd007}"  placeholder="请输入账号"/>
+                                        <input type="text" class="form-control" id="t7" name="t7"th:value="${item.smd007}"  placeholder="请输入账号"/>
                                     </div>
-                                </div>
-                                    <div class="row col-xl-7 col-md-7 col-sm-8">
-                                       <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;" id="x4">户名</label>
-                                       <div class="col-xl-7 col-md-8 col-sm-12">
-                                        <input type="number" class="form-control" id="t6" name="t6"th:value="${item.smd006}"  placeholder="请输入户名"/>
-                                       </div>
-                                    </div>
-                                </div>
-                                <div class="row" style="margin-top: 20px;">
-                                    <div class="row col-xl-3 col-md-4 col-sm-4 col-12">
-                                        <label class="col-auto col-form-label" >年场次数</label>
-                                        <div class="col-xl-8 col-md-8 col-sm-8">
-                                            <input type="number" class="form-control " id="t9" name="t9" th:value="${item.smd009}" placeholder="请输入年度场次限数" disabled="false" />
-                                        </div>
-                                    </div>
-                                    <div class="row col-xl-3 col-md-4 col-sm-4 col-12">
-                                        <label class="col-auto col-form-label" >年人次数</label>
-                                        <div class="col-xl-8 col-md-8 col-sm-8">
-                                            <input type="number" class="form-control" id="t10" name="t10" th:value="${item.smd010}" placeholder="请输入年度人次限数" disabled="false" />
-                                        </div>
-                                    </div>
-                                   <!-- <div class="row col-xl-3 col-md-4 col-sm-4 col-12">
-                                        <label class="col-auto col-form-label" >上线日期</label>
-                                        <div class="col-xl-8 col-md-8 col-sm-8">
-                                            <input type="date" class="form-control" id="t8" name="t8" th:value="${#dates.format(item.smd008,'yyyy-MM-dd')}" placeholder="请输入上线日期" disabled="false" />
-                                        </div>
-                                    </div>-->
                                 </div>
                             </div>
-                            <div class="modal-footer" style="height:100px;">
-                                <button type="submit" class="btn btn-primary" id="edit-four">保存</button>
+                            <div class="row col-xl-7 col-md-7 col-sm-8">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;" id="x4">户名</label>
+                                <div class="col-xl-7 col-md-8 col-sm-12">
+                                    <input type="text" class="form-control" id="t6" name="t6"th:value="${item.smd006}"  placeholder="请输入户名"/>
+                                </div>
                             </div>
-                        </form>
-                    </div>
+                            <div class="row" style="margin-top: 20px;">
+                                <div class="row col-xl-3 col-md-4 col-sm-4 col-12">
+                                    <label class="col-auto col-form-label" >年场次数</label>
+                                    <div class="col-xl-8 col-md-8 col-sm-8">
+                                        <input type="number" class="form-control " id="t9" name="t9" th:value="${item.smd009}" placeholder="请输入年度场次限数" disabled="false" />
+                                    </div>
+                                </div>
+                                <div class="row col-xl-3 col-md-4 col-sm-4 col-12">
+                                    <label class="col-auto col-form-label" >年人次数</label>
+                                    <div class="col-xl-8 col-md-8 col-sm-8">
+                                        <input type="number" class="form-control" id="t10" name="t10" th:value="${item.smd010}" placeholder="请输入年度人次限数" disabled="false" />
+                                    </div>
+                                </div>
+                                <!-- <div class="row col-xl-3 col-md-4 col-sm-4 col-12">
+                                     <label class="col-auto col-form-label" >上线日期</label>
+                                     <div class="col-xl-8 col-md-8 col-sm-8">
+                                         <input type="date" class="form-control" id="t8" name="t8" th:value="${#dates.format(item.smd008,'yyyy-MM-dd')}" placeholder="请输入上线日期" disabled="false" />
+                                     </div>
+                                 </div>-->
+                            </div>
+                            <div class="row col-xl-4 col-md-6 col-sm-12 col-12">
+                                <input id="tt24" name="tt24" th:value="${item.smd016}"  type="hidden">
+                                <label for="t24" class="col-auto form-label">营业执照</label>
+                                <div class="col-xl-8 col-md-8 col-sm-6 col-6">
+                                    <input class="form-control" type="file" id="t24" onchange="showpdtpgs()">
+                                    <img th:src="${'upload/yyzz/'+item.smd016}" id="shtp" onclick="$('#t24').click()" class="form-control"
+                                         style="width:100%;border:1px solid rgb(229, 229, 229);"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="height:100px;" th:if="${item.smd014!='P'}">
+                            <button type="submit" class="btn btn-primary" id="edit-four">提交</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
 </div>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/popper.min.js"></script>
@@ -176,6 +185,39 @@
             }
     });
 
+    //判断图片
+    function showpdtpgs(){
+        var filePath = ['.jpg','.png'];
+        var file = document.getElementById("t24").files[0];
+        if(file){
+            var filename = file.name;
+            var filejw = filename.substring(filename.lastIndexOf("."));
+            var pd = false;
+            for(var i=0;i<filePath.length;i++){
+                if(filejw==filePath[i]){
+                    var reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function(e) {
+                        var data = e.target.result;
+                        $("#shtp").attr("src",data);
+                    };
+                    pd =  true;
+                    return;
+                }
+            }
+            if(!pd){
+                file.value="";
+                $("#file").val("");
+                layer.msg("只能上传以.jpg、.png结尾的图片");
+                return;
+            }
+        }else{
+            if($("#id").val()==""){
+                $("#shtp").attr("src","");
+            }
+        }
+    }
+
     $("#uploadForm").validate({
         errorPlacement: function(error, element) {
             //替换错误显示位置，error表示错误信息
@@ -198,6 +240,8 @@
             /*formData.append("t8",$("#t8").val());*/
             formData.append("t9",$("#t9").val());
             formData.append("t10",$("#t10").val());
+            formData.append("tt24", $("#tt24").val());
+            formData.append("t24", document.getElementById("t24").files[0]);
             formData.append("zt","X");
             $.ajax({
                 url: 'toHt/xgselect', // 服务器端处理上传文件的URL

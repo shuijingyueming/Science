@@ -71,11 +71,11 @@ $(document).ready(function () {
         "paging": false,
         dom: 'Bfrtip',
         buttons: [
-            {
+            $("#jstype").val()=="A"?{
                 iTname: '#editmode', text: '添加', action: function (e, dt, node, config) {
                     edit();
                 }
-            },
+            }:undefined,
             // {text: '下载模板',action: function ( e, dt, node, config ) {xzmb();}},
             // {text: '导入',action: function ( e, dt, node, config ) {drlevel();}}
         ],
@@ -132,11 +132,11 @@ $(document).ready(function () {
                     reback();
                 }
             },
-            {
+            $("#jstype").val()=="B"?{
                 iTname: '#editmode', text: '添加', action: function (e, dt, node, config) {
                     edit();
                 }
-            },
+            }:undefined,
         ],
         "columnDefs": [{
             "orderable": false,
@@ -168,14 +168,10 @@ $(document).ready(function () {
         "paging": false,
         dom: 'Bfrtip',
         buttons: [
-            $("#jstype").val()!="A"?{
+            $("#jstype").val()!="A"&&$("#ztype").val()=="A"?{
                 iTname: '#yymode', text: '课程预约'
             }:undefined,
-            /*{
-                 iTname: '#editmode', text: '添加', action: function (e, dt, node, config) {
-                     edit();
-                 }
-             },*/
+            $("#jstype").val()!="A"&&$("#ztype").val()=="C"?{text: '导出', action: function (e, dt, node, config) {todc();}}:undefined,
         ],
         "columnDefs": [{
             "orderable": false,

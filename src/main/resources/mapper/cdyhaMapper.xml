@@ -113,7 +113,7 @@
       #{yha007,jdbcType=REAL}, #{yha008,jdbcType=VARCHAR}, #{yha009,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.efx.Science.model.cdyha">
+  <insert id="insertSelective" parameterType="com.efx.Science.model.cdyha"  useGeneratedKeys="true" keyProperty="yha001">
     insert into cdyha
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="yha001 != null">
