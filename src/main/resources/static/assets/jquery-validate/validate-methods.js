@@ -233,6 +233,10 @@ $(function () {
         var regex = new RegExp('(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[^a-zA-Z0-9]).{8,20}');
         return this.optional(element)||regex.test(value);
     }, "密码中必须包含字母、数字、特殊字符,至少8个字符，最多20个字符");
+
+    jQuery.validator.addMethod("isPass1", function (value, element) {
+        return this.optional(element)||value.length>=6;
+    }, "密码至少6个字符");
 });
 
 //身份证号码的验证规则

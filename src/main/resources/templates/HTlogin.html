@@ -160,7 +160,7 @@
                         <div class="d-flex justify-content-between col-10" style="margin:0 auto;">
                             <button class="btn btn-secondary disabled" data-wizard="prev" type="button">上一步</button>
                             <button class="btn btn-secondary" data-wizard="next" type="button">下一步</button>
-                            <button class="btn btn-primary d-none" data-wizard="finish">完成</button>
+                            <button id="wcbox" class="btn btn-primary d-none" data-wizard="finish">完成</button>
                         </div>
                     </form>
 
@@ -310,7 +310,7 @@
                                 return "";
                             }//要传递的数据
                         }
-                    }},p2: { required : true, },z4: { required : true, },z5: { required : true, },t2: { required : true, },t10: { required : true, },t24: { required : true, },t11: { required : true, },t4: { required : true, },t5: { required : true, },},
+                    }},p2: { required : true,isPass1: true },z4: { required : true, },z5: { required : true, isMobile1: true,},t2: { required : true, },t10: { required : true, },t24: { required : true, },t11: { required : true, },t4: { required : true, },t5: { required : true, },},
             messages: {},
             submitHandler: function(form) {
                 var formData = new FormData();
@@ -357,7 +357,8 @@
             });
         }).ajaxStop(function(){
             loader.destroy();
-            $("button:submit").html('提交审核').attr("disabled", false);
+            $("button:submit").html('立即登录').attr("disabled", false);
+            $("#wcbox").html('提交审核');
         });
 
         var encrypt = new JSEncrypt();
@@ -380,7 +381,7 @@
             let username = $("#uname").val().trim();
             let userpwd = $("#pword").val().trim();
             let ycode = $("#ycode").val().trim();
-            let params = {"username":encrypt.encrypt(username), "userpwd":encrypt.encrypt(userpwd), "ycode":ycode};
+            let params = {"username":username, "userpwd":encrypt.encrypt(userpwd), "ycode":ycode};
 
             $.post("checkLogin", params, function(data) {
                 let dp = eval("("+data+")");

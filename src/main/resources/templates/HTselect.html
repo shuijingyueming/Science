@@ -112,7 +112,7 @@
                                     <td th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">
                                         <div class="btn-group btn-group-sm">
                                             <a href="javascript:void(0);" th:onclick="toxq([[${item.toString()}]])" class="btn btn-table"
-                                               data-bs-toggle="modal" data-bs-target="#editmode">详情</a>
+                                               data-bs-toggle="modal" data-bs-target="#xqmode">详情</a>
                                             <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]])" class="btn btn-table"
                                                data-bs-toggle="modal" data-bs-target="#editmode">场次设定</a>
                                             <div class="ivu-divider-vertical"></div>
@@ -151,7 +151,7 @@
                     <div class="modal-body" style="min-height:580px;">
 
                     </div>
-                    <div class="modal-footer" style="height:100px;">
+                    <div id="shbox" class="modal-footer" style="height:100px;">
                         <button type="button" class="btn btn-primary" id="shtg">通过</button>
                         <button type="button" class="btn btn-primary" id="shbh">驳回</button>
                     </div>
@@ -308,6 +308,7 @@
     pdyes($("#pages").val(), $("#counts").val());
 
     function toxq(obj1){
+        $("#shbox").hide();
         let item1 = null;
         if(obj1.indexOf("Hash")>0){
             item1 = striongTOjsonString(obj1);
@@ -352,6 +353,7 @@
 
 
     function tosh(obj1){
+        $("#shbox").show();
         let item1 = null;
         if(obj1.indexOf("Hash")>0){
             item1 = striongTOjsonString(obj1);

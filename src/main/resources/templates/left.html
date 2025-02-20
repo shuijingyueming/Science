@@ -141,11 +141,13 @@
                             </th:block>
                         </ul>
                     </li>
+                    <th:block th:if="${session.umsg.jsqx=='M'}">
                     <li class="nav-item nav-item-has-subnav">
                         <a class="multitabs" href="toHt/tochose">
                             <i class="mdi mdi-stove"></i> <span>选课方管理</span>
                         </a>
                     </li>
+
                     <li class="nav-item nav-item-has-subnav">
                         <a href="javascript:void(0)">
                             <i class="mdi mdi-stove"></i> <span>选课预约管理</span>
@@ -162,7 +164,6 @@
                             <li><a class="multitabs" href="toHt/toselection?ztype=H">已取消</a></li>
                         </ul>
                     </li>
-                    <th:block th:if="${session.umsg.jsqx=='M'}">
                     <li class="nav-item nav-item-has-subnav">
                         <a href="javascript:void(0)">
                             <i class="mdi mdi-stove"></i> <span>消息管理</span>

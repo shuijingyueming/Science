@@ -157,7 +157,6 @@ public class LoginController extends BaseController {
         String name = request.getParameter("username");
         String pwd = request.getParameter("userpwd");
         String ycode = request.getParameter("ycode");
-        name = EncrpytUtil.decode(name);
         pwd = EncrpytUtil.decode(pwd);
         pwd = EncrpytUtil.getSHA256(pwd);
         HashMap map = new HashMap();
