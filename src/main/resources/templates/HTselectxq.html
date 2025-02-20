@@ -105,8 +105,9 @@
                                 <label for="t24" class="col-auto form-label">营业执照</label>
                                 <div class="col-xl-8 col-md-8 col-sm-6 col-6">
                                     <input class="form-control" type="file" id="t24" onchange="showpdtpgs()">
-                                    <img th:src="${'upload/yyzz/'+item.smd016}" id="shtp" onclick="$('#t24').click()" class="form-control"
-                                         style="width:100%;border:1px solid rgb(229, 229, 229);"/>
+                                    <!--onclick="$('#t24').click()"-->
+                                    <image th:src="${'upload/yyzz/'+item.smd016}" id="shtp" class="form-control"
+                                         style="width:280px;border:none;"/>
                                 </div>
                             </div>
                         </div>
@@ -185,39 +186,6 @@
             }
     });
 
-    //判断图片
-    function showpdtpgs(){
-        var filePath = ['.jpg','.png'];
-        var file = document.getElementById("t24").files[0];
-        if(file){
-            var filename = file.name;
-            var filejw = filename.substring(filename.lastIndexOf("."));
-            var pd = false;
-            for(var i=0;i<filePath.length;i++){
-                if(filejw==filePath[i]){
-                    var reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = function(e) {
-                        var data = e.target.result;
-                        $("#shtp").attr("src",data);
-                    };
-                    pd =  true;
-                    return;
-                }
-            }
-            if(!pd){
-                file.value="";
-                $("#file").val("");
-                layer.msg("只能上传以.jpg、.png结尾的图片");
-                return;
-            }
-        }else{
-            if($("#id").val()==""){
-                $("#shtp").attr("src","");
-            }
-        }
-    }
-
     $("#uploadForm").validate({
         errorPlacement: function(error, element) {
             //替换错误显示位置，error表示错误信息
@@ -261,6 +229,39 @@
 
         }
     });
+
+    //判断图片
+    function showpdtpgs(){
+        var filePath = ['.jpg','.jpeg','.png'];
+        var file = document.getElementById("t24").files[0];
+        if(file){
+            var filename = file.name;
+            var filejw = filename.substring(filename.lastIndexOf("."));
+            var pd = false;
+            for(var i=0;i<filePath.length;i++){
+                if(filejw==filePath[i]){
+                    var reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function(e) {
+                        var data = e.target.result;
+                        $("#shtp").attr("src",data);
+                    };
+                    pd =  true;
+                    return;
+                }
+            }
+            if(!pd){
+                file.value="";
+                $("#file").val("");
+                layer.msg("只能上传以.jpg、.jpeg、.png结尾的图片");
+                return;
+            }
+        }else{
+            if($("#id").val()==""){
+                $("#shtp").attr("src","");
+            }
+        }
+    }
 </script>
 </body>
 </html>
