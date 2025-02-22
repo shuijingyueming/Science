@@ -75,8 +75,11 @@ public class CdyhbServiceImpl implements CdyhbService {
     }
 
     @Override
-    public List<cdyhb> getAll() {
-        return yhbMapper.selectByExample(null);
+    public List<cdyhb> getAll(String cjid) {
+        cdyhbExample e1 = new cdyhbExample();
+        Criteria c = e1.createCriteria();
+        if(cjid!=null)c.andYhb002EqualTo(Integer.valueOf(cjid));
+        return yhbMapper.selectByExample(e1);
     }
 
     @Override

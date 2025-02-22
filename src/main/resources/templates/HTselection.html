@@ -77,6 +77,7 @@
                             <input type="hidden" id="counts" name="counts" th:value="${pageobj.pageCount}"/>
                             <input type="hidden" id="jstype" name="jstype" th:value="${session.umsg.jstype}"/>
                             <input type="hidden" id="ztype" name="ztype" th:value="${pageobj.othersql2}"/>
+                            <input type="hidden" id="fhlx" name="fhlx" th:value="${fhlx}"/>
                             <!--text input-->
                             <div class="row g-3">
                                 <!--<div class="col-auto">
@@ -100,8 +101,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-auto" th:style="${session.umsg.jstype=='C'?'display: none':''}">
-                                    <div class="row">
+                                <div class="col-auto" th:style="${session.umsg.jstype=='C'||(fhlx!=null&&(#strings.indexOf(fhlx,'LE')>=0||#strings.indexOf(fhlx,'XK')>=0))?'display: none':''}">
+                                 <div class="row">
                                         <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">层级名称</label>
                                         <div class="col-auto">
                                             <select id="flid" name="flid" class="form-control selectpicker">
@@ -113,7 +114,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-auto" th:style="${session.umsg.jstype=='C'?'display: none':''}">
+                                    <div class="col-auto" th:style="${session.umsg.jstype=='C'||(fhlx!=null&&#strings.indexOf(fhlx,'XK')>=0)?'display: none':''}">
                                     <div class="row">
                                         <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">选课方名称</label>
                                         <div class="col-auto">
@@ -127,7 +128,7 @@
                                     </div>
                                 </div>
                                 <!--button-->
-                                <div class="col-auto">
+                                <div class="col-auto" th:style="${session.umsg.jstype=='B'&&fhlx!=null&&#strings.indexOf(fhlx,'XK')>=0?'display: none':''}">
                                     <button type="submit" class="btn btn-primary me-1">搜索</button>
                                 </div>
                             </div>
@@ -157,63 +158,58 @@
                                     <td th:text="${item.yhb!=null?item.yhb.yhb004:''}"></td>
                                     <td th:text="${item.smd!=null?item.smd.smd003:''}"></td>
                                     <td th:text="${item.hba.hba002}"></td>
-                                    <td th:text="${item.yhc!=null?item.yhc.yhc002:''}"></td>
+                                    <td th:text="${item.yhc!=null?item.yhc.yhc003:''}"></td>
                                     <td th:text="${item.yhe009}"></td>
                                     <td th:text="${#dates.format(item.yhe008,'yyyy-MM-dd')}"></td>
                                     <td th:text="${#dates.format(item.yhe020,'yyyy-MM-dd')}"></td>
-                                    <td th:style="${item.yhe007=='M'||item.yhe007=='N'||item.yhe007=='A'||item.yhe007=='B'||item.yhe007=='J'||item.yhe007=='K'?'color:#A46BFF':
-                                                   (item.yhe007=='C'||item.yhe007=='D'||item.yhe007=='S'||item.yhe007=='T'?'color:#FFAA00;':(item.yhe007=='G'||item.yhe007=='H'?'color:#6ABF47;':
+                                    <td th:style="${item.yhe007=='M'||item.yhe007=='N'||item.yhe007=='A'||item.yhe007=='B'?'color:#A46BFF':
+                                                   (item.yhe007=='C'||item.yhe007=='D'?'color:#FFAA00;':(item.yhe007=='G'||item.yhe007=='H'?'color:#6ABF47;':
                                                    (item.yhe007=='O'||item.yhe007=='P'?'color:#787878;':
                                                    (item.yhe007=='E'?'color:#36AFF5;':'color:#5776F2;'))))}"
-                                        th:text="${item.yhe007=='A'||item.yhe007=='B'?'预约待确认':(item.yhe007=='J'||item.yhe007=='K'?'修改待确认':
-                                                  (item.yhe007=='C'||item.yhe007=='D'?'预约退回': (item.yhe007=='S'||item.yhe007=='T'?'修改驳回':(item.yhe007=='G'||item.yhe007=='H'?'已接受预约':
+                                        th:text="${item.yhe007=='A'||item.yhe007=='B'?'预约待确认':
+                                                  (item.yhe007=='C'||item.yhe007=='D'?'预约退回': (item.yhe007=='G'||item.yhe007=='H'?'已接受预约':
                                                   (item.yhe007=='M'||item.yhe007=='N'?'取消待确认':(item.yhe007=='O'||item.yhe007=='P'?'确认取消':
-                                                  (item.yhe007=='E'?'完结已传':'完结未传')))))))}"></td>
+                                                  (item.yhe007=='E'?'完结已传':(item.yhe007=='R'?'授课方已评价':(item.yhe007=='Q'?'选课方已评价':'完结未传')))))))}"></td>
                                     <td>
                                         <div class="btn-group btn-group-sm">
                                             <a href="javascript:void(0);" th:onclick="toxq([[${item.toString()}]],[[${item.yhe008}]],[[${item.hba.toString()}]],[[${item.yhb.toString()}]],[[${item.smd.toString()}]],[[${item.yhflist.toString()}]],[[${item.yhflistA.toString()}]],[[${item.yhflistB.toString()}]],[[${item.yhflistC.toString()}]])" class="btn btn-table" data-bs-toggle="modal" data-bs-target="#xqmode">详情</a>
                                             <th:block th:if="${item.yhe007=='C'||item.yhe007=='D'||item.yhe007=='S'||item.yhe007=='T'}">
                                                 <a href="javascript:void(0);" th:onclick="tobh([[${item.toString()}]])" class="btn btn-table" data-bs-toggle="modal" data-bs-target="#xqmode">驳回理由</a>
                                             </th:block>
-                                            <th:block th:if="${item.yhe007=='G'||item.yhe007=='H'||item.yhe007=='S'||item.yhe007=='T'||item.yhe007=='J'||item.yhe007=='K'}">
-                                                <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]],[[${item.yhb.yhb004}]])" class="btn btn-table" data-bs-toggle="modal" data-bs-target="#editmode">编辑</a>
-                                            </th:block>
                                             <th:block th:if="${session.umsg.jstype=='B'}">
+                                                <th:block th:if="${item.yhe007=='B'}">
+                                                    <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]],[[${item.hba.hba021}]],[[${item.yhb.yhb002}]],[[${item.yhe008}]],[[${item.yhflist.toString()}]])" class="btn btn-table" data-bs-toggle="modal" data-bs-target="#yymode">编辑</a>
+                                                </th:block>
                                                 <div class="ivu-divider-vertical"></div>
                                                 <th:block th:if="${item.yhe007=='A'}">
                                                     <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['G']])">接受</a>
                                                     <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['C']])">退回</a>
                                                 </th:block>
-                                                <th:block th:if="${item.yhe007=='J'}">
-                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['G']])">接受修改</a>
-                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['T']])">驳回</a>
-                                                </th:block>
                                                 <th:block th:if="${item.yhe007=='M'}">
-                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['O']])">确认取消</a>
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['O']])">确认终止</a>
                                                     <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['T']])">驳回</a>
                                                 </th:block>
                                                 <th:block th:if="${item.yhe007=='B'||item.yhe007=='H'||item.yhe007=='K'}">
-                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['N']])">取消预约</a>
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['N']])">终止预约</a>
                                                 </th:block>
                                                 <th:block th:if="${item.yhe007=='P'}">
                                                     <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#" th:onclick="del([[${item.yhe001}]],[[${item.yhb.yhb004}]])">删除</a>
                                                 </th:block>
                                             </th:block>
                                             <th:block th:if="${session.umsg.jstype=='C'}">
+                                                <th:block th:if="${item.yhe007=='A'}">
+                                                    <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]],[[${item.hba.hba021}]],[[${item.yhb.yhb002}]],[[${item.yhb.yhb001}]],[[${item.yhe008}]],[[${item.yhflist.toString()}]])" class="btn btn-table" data-bs-toggle="modal" data-bs-target="#yymode">编辑</a>
+                                                </th:block>
                                                 <th:block th:if="${item.yhe007=='B'}">
                                                     <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['H']])">接受</a>
                                                     <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['D']])">退回</a>
                                                 </th:block>
-                                                <th:block th:if="${item.yhe007=='K'}">
-                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['H']])">接受修改</a>
-                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['S']])">驳回</a>
-                                                </th:block>
                                                 <th:block th:if="${item.yhe007=='N'}">
-                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['P']])">确认取消</a>
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['P']])">确认终止</a>
                                                     <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['S']])">驳回</a>
                                                 </th:block>
                                                 <th:block th:if="${item.yhe007=='A'||item.yhe007=='G'||item.yhe007=='G'}">
-                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['M']])">取消预约</a>
+                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.yhe001}]],[[${item.yhb.yhb004}]],[['M']])">终止预约</a>
                                                 </th:block>
                                                <th:block th:if="${item.yhe007=='O'}">
                                                     <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#" th:onclick="del([[${item.yhe001}]],[[${item.yhb.yhb004}]])">删除</a>
@@ -224,10 +220,6 @@
                                                     <a href="javascript:void(0);" th:onclick="topj([[${item.toString()}]],[[${item.yhflistA.toString()}]],[[${item.yhflistB.toString()}]],[[${item.yhflistC.toString()}]])" class="btn btn-table" data-bs-toggle="modal" data-bs-target="#pjmode">评价</a>
                                                 </th:block>
                                             </th:block>
-                                            <!-- <th:block th:if="${item.yhe007=='G'||item.yhe007=='H'}">
-                                                 <a href="javascript:void(0);" th:onclick="tosc([[${item.toString()}]],[[${item.yhb.yhb004}]])" class="btn btn-table" data-bs-toggle="modal" data-bs-target="#editmode2">资料上传</a>
-                                                 <div class="ivu-divider-vertical"></div>
-                                             </th:block>-->
                                         </div>
                                     </td>
                                 </tr>
@@ -280,7 +272,7 @@
                                 <div class="col-md-3">
                                     <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">实际服务人次</label>
                                     <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                        <input type="number" class="form-control col-xl-12 col-md-12 col-sm-12 col-12" id="p17" name="p17" placeholder="请输入实际服务人次"/>
+                                        <input type="number" min="0" class="form-control col-xl-12 col-md-12 col-sm-12 col-12" id="p17" name="p17" placeholder="请输入实际服务人次"/>
                                     </div>
                                 </div>
                             </div>
@@ -444,7 +436,7 @@
                                 <div class="col-md-3">
                                     <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">实际服务人次</label>
                                     <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                        <input type="number" class="form-control col-xl-12 col-md-12 col-sm-12 col-12" id="p18" name="p18" placeholder="请输入实际服务人次"/>
+                                        <input type="number" min="0" class="form-control col-xl-12 col-md-12 col-sm-12 col-12" id="p18" name="p18" placeholder="请输入实际服务人次"/>
                                     </div>
                                 </div>
                             </div>
@@ -608,47 +600,6 @@
         </div>
     </div>
     <!-- 编辑分类模态框 -->
-    <div class="modal fade" id="editmode" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel"
-         aria-hidden="true" style="height:100%;background-color: #FFF;">
-        <div class="modal-dialog modal-fullscreen">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="editmodeLabel"><span id="ftype"></span></h6>
-                    <button type="button" onclick="pagerefalsh()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form id="uploadForm" enctype="multipart/form-data">
-                    <input type="hidden" id="fid" value=""/>
-                    <input type="hidden" id="fname" value=""/>
-                    <div class="modal-body" style="min-height:580px;">
-                        <div class="row col-xl-6 col-md-9 col-sm-10 col-12" th:style="${session.umsg.jstype=='B'?'':'display:none'}">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">选择老师</label>
-                            <div class="col-xl-5 col-md-8 col-sm-8 col-12">
-                              <select id="z11" name="z11" class="form-control selectpicker col-xl-12 col-md-12 col-sm-12 col-12" data-live-search="true">
-                                <option value=""></option>
-                             </select>
-                            </div>
-                        </div>
-                        <div class="row col-xl-6 col-md-9 col-sm-10 col-12"  th:style="${session.umsg.jstype=='B'?'margin-top: 20px;':'display:none;'}">
-                            <label class="col-auto col-form-label" style="padding-right:6px;padding-left:10px;">志愿者人数</label>
-                            <div class="col-xl-5 col-md-8 col-sm-8 col-12">
-                              <input type="number" class="form-control col-xl-12 col-md-12 col-sm-12 col-12" id="z7" name="z7" placeholder="请输入志愿者人数"/>
-                            </div>
-                        </div>
-                        <div class="row col-xl-6 col-md-9 col-sm-10 col-12" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">授课地点</label>
-                            <div class="col-xl-5 col-md-8 col-sm-8 col-12">
-                              <input type="text" class="form-control col-xl-12 col-md-12 col-sm-12 col-12" id="z1" name="z1" placeholder="请输入授课地点"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer" style="height:100px;">
-                        <button type="submit" class="btn btn-primary" id="edit-four">提交</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- 编辑分类模态框 -->
     <div class="modal fade" id="yymode" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel"
          aria-hidden="true" style="height:100%;background-color: #FFF;">
         <div class="modal-dialog modal-fullscreen">
@@ -658,18 +609,35 @@
                     <button type="button" onclick="pagerefalsh()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="uploadForm1" enctype="multipart/form-data">
-                    <input type="hidden" id="fid1" value=""/>
+                    <input type="hidden" id="fid" value=""/>
+                    <input type="hidden" id="fname" value=""/>
                     <div class="modal-body" style="min-height:580px;">
-                        <div class="row col-auto" th:style="${session.umsg.jstype=='C'?'margin-top: 20px;display: none':'margin-top: 20px;'}">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">选课方</label>
-                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                <select id="t3" name="t3"  class="form-control selectpicker" data-live-search="true">
-                                    <option value="" selected></option>
-                                    <th:block th:each="item,stat:${yhblist}">
-                                        <option th:value="${item.yhb001}"  th:selected="${session.umsg.jstype=='C'&&pageobj.othersql6==#strings.toString(item.yhb001)?true:false}">[[${item.yhb004}]]</option>
-                                    </th:block>
-                                </select>
+                        <div class="row col-auto" style="margin-top: 20px">
+                            <th:block th:if="${session.umsg.jstype=='C'}">
+                                <input type="hidden" id="t3" th:value="${pageobj.othersql1}"/>
+                            </th:block>
+                            <th:block th:if="${session.umsg.jstype=='B'}">
+                                <div class="col-lg-4 col-md-6 col-sm-8">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">层级</label>
+                                <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                    <select id="t9" name="t9"  class="form-control selectpicker" data-live-search="true">
+                                        <option value="" selected></option>
+                                        <th:block th:each="item,stat:${yhalist}">
+                                            <option th:value="${item.yha001}">[[${item.yha002}]]</option>
+                                        </th:block>
+                                    </select>
+                                </div>
                             </div>
+                                <div class="col-lg-4 col-md-6 col-sm-8">
+                                    <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">选课方</label>
+                                    <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+                                        <select id="t3" name="t3"  class="form-control selectpicker" data-live-search="true">
+                                            <option value="" selected></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </th:block>
+
                         </div>
                         <div class="row col-auto">
                             <div class="col-lg-2 col-md-3 col-sm-4">
@@ -702,18 +670,24 @@
                         <div class="col-lg-4 col-md-6 col-sm-8">
                                 <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">选择老师</label>
                                 <select id="t11" name="t11" class="form-control selectpicker col-xl-12 col-md-12 col-sm-12 col-12" data-live-search="true">
-                            <option value=""></option>
+                                    <option value=""></option>
                         </select>
                             </div>
                         </div>
                         <div class="row col-auto">
-                            <div class="col-lg-4 col-md-6 col-sm-8">
+                            <div class="col-lg-4 col-md-6 col-sm-8" th:style="${session.umsg.jstype=='C'?'':'display: none'}">
                                 <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">授课地点</label>
                                 <input type="text" class="form-control col-auto" id="t2" name="t2" placeholder="请输入授课地点"/>
                             </div>
                             <div class="col-lg-2 col-md-3 col-sm-4">
                                 <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">预计活动人数</label>
                                 <input type="number" class="form-control col-auto" id="t14" name="t14" placeholder="请输入预计活动人数"/>
+                            </div>
+                        </div>
+                        <div class="row col-xl-6 col-md-9 col-sm-10 col-12"  th:style="${session.umsg.jstype=='B'?'margin-top: 20px;':'display:none;'}">
+                            <label class="col-auto col-form-label" style="padding-right:6px;padding-left:10px;">志愿者人数</label>
+                            <div class="col-xl-5 col-md-8 col-sm-8 col-12">
+                                <input type="number" class="form-control col-xl-12 col-md-12 col-sm-12 col-12" id="t6" name="t6" placeholder="请输入志愿者人数"/>
                             </div>
                         </div>
                         <div class="row col-auto" th:style="${session.umsg.jstype=='C'?'':'display: none'}">
@@ -726,25 +700,25 @@
                                 <input type="text" class="form-control col-auto" id="t45" name="t45" placeholder="请输入联系电话"/>
                             </div>
                         </div>
-                        <div class="row col-auto">
+                        <div class="row col-auto" th:style="${session.umsg.jstype=='C'?'':'display: none'}">
                             <div class="col-lg-4 col-md-6 col-sm-8">
                                 <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">预约日期备注</label>
                                 <input type="text" class="form-control col-auto" id="t42" name="t42" placeholder="请输入预约日期备注"/>
                             </div>
                         </div>
-                        <div class="row col-auto">
+                        <div class="row col-auto" th:style="${session.umsg.jstype=='C'?'':'display: none'}">
                             <div class="col-lg-4 col-md-6 col-sm-8">
                                 <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">其他要求</label>
                                 <textarea class="form-control" style="resize: none;" rows="3" id="t43" name="t43"></textarea>
                             </div>
                         </div>
-                        <div class="row col-auto">
+                        <div class="row col-auto" th:style="${session.umsg.jstype=='C'?'':'display: none'}">
                             <div class="col-lg-4 col-md-8 col-sm-10">
                                 <label for="up" class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">场地照片</label>
                                 <input type="file" class="form-control" id="up" name="up" value="/home/images/logo.png" onchange="showpdtpgs('up','#p1')" multiple/>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" th:style="${session.umsg.jstype=='C'?'':'display: none'}">
                             <div class="col-md-10 col-sm-11">
                                 <div id="p1" style="display: flex;justify-content: start;align-items: center;flex-flow: row wrap;padding: 20px;"></div>
                            </div>
@@ -897,6 +871,321 @@
 
 </body>
 </html>
+<!--图片-->
+<script type="text/javascript">
+
+    var imglist=[];
+    var t4=[];
+    //判断图片
+    function showpdtpgs(id,img){
+        var file = document.getElementById(id).files;
+        if((imglist.length+file.length)>3){
+            layer.msg("最多上传3张图片");
+            return false;
+        }else{
+            if(file){
+                for(var i=0;i<file.length;i++){
+                    imglist.push(file[i]);
+                }
+                insertImg(img);
+            }
+        }
+    }
+
+    //删除图片
+    function imgRemove(obj){
+        let indexp = obj.getAttribute("id").replace("DP","");
+        if(obj.getAttribute("name").indexOf("upload/")>=0){
+            // $("#delimg").val($("#delimg").val()+"#"+(obj.getAttribute("name")).replace("upload/shopimg/",""));
+            $("#delimg").val($("#delimg").val()+"#"+(obj.getAttribute("name")).replace("upload/",""));
+            $("#delid").val($("#delid").val()+"#"+(obj.getAttribute("tid")));
+        }
+        imglist.splice(indexp,1);
+        insertImg("#p1");
+    }
+
+    function insertImg(img){
+        $(img).empty();
+        var html="";
+        for(var i=0;i<imglist.length;i++){
+            var data = imglist[i];
+            if(typeof(imglist[i])=="object"){
+                t4.push(imglist[i])
+                var reader = new FileReader();
+                reader.readAsDataURL(imglist[i]);
+                reader.onload = (function(i,e) {
+                    let data1 = e.target.result;
+                    const image = new Image()
+                    image.src = e.target.result
+                    return new Promise((resolve) => {
+                        image.onload = () => {
+                            // const width = image.width
+                            // const height = image.height
+                            // console.log(width+"---"+height)
+                            // if(width==414&&height==280){
+                            html="<div class='item' style='margin-right: 20px;position: relative;'>";
+                            html+="<img src='"+data1+"' style='width:200px;' />";
+                            html+="<button class='btn btn-link imgTem' id=\'DP"+i+"\'  tid='' name=''' onclick='imgRemove(this)'>X</button>";
+                            html+="</div>";
+                            $(img).append(html);
+                            // }else{
+                            //     layer.open({content: '分辨率必须是414*280',btn: '我知道了'});
+                            // }
+                        }
+                    })
+                }).bind(reader, i);
+            }else{
+                html="<div class='item' style='margin-right: 20px;position: relative;'>";
+                html+="<img src='"+data.split("#")[1]+"' style='width:200px;' />";
+                html+="<button class='btn btn-link imgTem' id=\'DP"+i+"\'  tid=\'"+data.split("#")[0]+"\' name=\'"+data.split("#")[1]+"\'  onclick='imgRemove(this)'>X</button>";
+                html+="</div>";
+                $(img).append(html);
+            }
+        }
+    }
+
+    var imglist1=[];
+    var w2=[];
+
+    var imglist2=[];
+    var w3=[];
+
+    var imglistt3=[];
+    var w4=[];
+
+    //删除图片
+    function imgRemove1(obj,type){
+        let indexp = obj.getAttribute("id").replace(type+"P","");
+        //后台删除图片
+        if(obj.getAttribute("name").indexOf("upload/")>=0){
+            // $("#delimg").val($("#delimg").val()+"#"+(obj.getAttribute("name")).replace("upload/shopimg/",""));
+            $("#delimg").val($("#delimg").val()+"#"+(obj.getAttribute("name")).replace("upload/",""));
+            $("#delid").val($("#delid").val()+"#"+(obj.getAttribute("tid")));
+        }
+        // if(obj.getAttribute("name").indexOf("https://fxtgoss.oss-cn-hangzhou.aliyuncs.com/shopimg/")>=0){
+        //     // $("#delimg").val($("#delimg").val()+"#"+(obj.getAttribute("name")).replace("https://fxtgoss.oss-cn-hangzhou.aliyuncs.com/shopimg/",""));
+        //     $("#delimg").val($("#delimg").val()+"#"+(obj.getAttribute("name")).replace("https://fxtgoss.oss-cn-hangzhou.aliyuncs.com/shopimg/",""));
+        // }
+        if(type=="A"){
+            imglist1.splice(indexp,1);
+            insertImg1("#p2",type);
+        }else if(type=="B"){
+            imglis2.splice(indexp,1);
+            insertImg1("#p3",type);
+        }else if(type=="C"){
+            imglist3.splice(indexp,1);
+            insertImg1("#p4",type);
+        }
+    }
+
+    //判断图片
+    function showpdtpgs1(id,img,zt){
+        var file = document.getElementById(id).files;
+        let pd =true;
+        if(zt=="C"){
+            if(file){
+                for(var i=0;i<file.length;i++){
+                    var imagSize =file[i].size;
+                    let index=i;
+                    let fileName = file[i].name; // 获取文件名
+                    file_lastName = fileName.split('.').pop(); // 获取后缀名
+                    filesize = file[i].size/(1024*1024);
+                    if(file_lastName!="mp4"){
+                        showNotify('文件类型不正确，只允许上传后缀名为：mp4，请重新上传！', 'danger', 1500);
+                        $("#w4").val("");
+                    }else if(filesize>100){
+                        showNotify('文件不得超过100M，请重新上传！', 'danger', 1500);
+                        $("#w4").val("");
+                    }else{
+                        var reader = new FileReader();
+                        if(index==(file.length-1)){
+                            if(pd){
+                                for(var j=0;j<file.length;j++){
+                                    if(id=="w2")imglist1.push(file[j]);
+                                    if(id=="w3")imglist2.push(file[j]);
+                                    if(id=="w4")imglist3.push(file[j]);
+                                }
+                                insertImg1(img,id=="w2"?'A':(id=="w3"?'B':'C'));
+                            }
+                        }
+                    }
+                }
+            }
+        }else{
+            if(file){
+                for(var i=0;i<file.length;i++){
+                    var imagSize =file[i].size;
+                    let index=i;
+                    if(imagSize <= 1024 * 1024 * 2){
+                        var reader = new FileReader();
+                        reader.readAsDataURL(file[i]);
+                        reader.onload = (function(i,e) {
+                            const image = new Image()
+                            image.src = e.target.result
+                            return new Promise((resolve) => {
+                                image.onload = () => {
+                                    const width = image.width
+                                    const height = image.height
+                                    if(width>=800||height>=800){
+                                        pd =false;
+                                        layui.use('layer', function(){
+                                            var layer = layui.layer;
+                                            layer.ready(function(){
+                                                layer.msg('分辨率不超过800px');
+                                            });
+                                        });
+                                    }
+                                    if(index==(file.length-1)){
+                                        if(pd){
+                                            for(var j=0;j<file.length;j++){
+                                                if(zt=="A")imglist1.push(file[j]);
+                                                if(zt=="B")imglist2.push(file[j]);
+                                            }
+                                            insertImg1(img,zt);
+                                        }
+                                    }
+                                }
+                            })
+                        }).bind(reader, i);
+                    }else{
+                        pd =false;
+                        $(img).val("");
+                        layui.use('layer', function(){
+                            var layer = layui.layer;
+                            layer.ready(function(){
+                                layer.msg("图片大小在2M以内");
+                            });
+                        });
+                    }
+                }
+            }
+        }
+
+    }
+
+    function insertImg1(img,zt){
+        $(img).empty();
+        var html="";
+        if(zt=="A"){
+            w2=[];
+            for(var i=0;i<imglist1.length;i++){
+                html="";
+                var data = imglist1[i];
+                if(typeof(imglist1[i])=="object"){
+                    let data1 ="";
+                    w2.push(imglist1[i])
+                    console.log(w2)
+                    var reader = new FileReader();
+                    reader.readAsDataURL(imglist1[i]);
+                    reader.onload = (function(i,e) {
+                        data1 = e.target.result;
+                        const image = new Image()
+                        image.src = e.target.result
+                        return new Promise((resolve) => {
+                            image.onload = () => {
+                                // const width = image.width
+                                // const height = image.height
+                                // if(width==414&&height==280){
+                                html="<div class='item' style='margin-right: 20px;position: relative;'>";
+                                html+="<img src='"+data1+"' style='width:200px;' />";
+                                html+="<button class='btn btn-link imgTem' id=\'AP"+i+"\' tid='' name='' onclick='imgRemove1(this,\""+zt+"\")'>X</button>";
+                                html+="</div>";
+                                $(img).append(html);
+                                // }else{
+                                //     layer.open({content: '分辨率必须是414*280',btn: '我知道了'});
+                                // }
+                            }
+                        })
+                    }).bind(reader, i);
+                }else{
+                    html="<div class='item' style='margin-right: 20px;position: relative;'>";
+                    html+="<img src='"+data.split("#")[1]+"' style='width:200px;' />";
+                    html+="<button class='btn btn-link imgTem' id=\'AP"+i+"\' tid=\'"+data.split("#")[0]+"\' name=\'"+data.split("#")[1]+"\' onclick=\'imgRemove1(this,\""+zt+"\")\'>X</button>";
+                    html+="</div>";
+                    $(img).append(html);
+                }
+            }
+        }else if(zt=="B"){
+            w3=[];
+            for(var i=0;i<imglist2.length;i++){
+                html="";
+                var data = imglist2[i];
+                if(typeof(imglist2[i])=="object"){
+                    let data1 ="";
+                    w3.push(imglist2[i])
+                    var reader = new FileReader();
+                    reader.readAsDataURL(imglist2[i]);
+                    reader.onload = (function(i,e) {
+                        data1 = e.target.result;
+                        const image = new Image()
+                        image.src = e.target.result
+                        return new Promise((resolve) => {
+                            image.onload = () => {
+                                // const width = image.width
+                                // const height = image.height
+                                // if(width==414&&height==280){
+                                html="<div class='item' style='margin-right: 20px;position: relative;'>";
+                                html+="<img src='"+data1+"' style='width:200px;' />";
+                                html+="<button class='btn btn-link imgTem' id=\'BP"+i+"\' tid='' name='' onclick='imgRemove1(this,\""+zt+"\")'>X</button>";
+                                html+="</div>";
+                                $(img).append(html);
+                                // }else{
+                                //     layer.open({content: '分辨率必须是414*280',btn: '我知道了'});
+                                // }
+                            }
+                        })
+                    }).bind(reader, i);
+                }else{
+                    html="<div class='item' style='margin-right: 20px;position: relative;'>";
+                    html+="<img src='"+data.split("#")[1]+"' style='width:200px;' />";
+                    html+="<button class='btn btn-link imgTem' id=\'BP"+i+"\' tid=\'"+data.split("#")[0]+"\' name=\'"+data.split("#")[1]+"\' onclick='imgRemove1(this,\""+zt+"\")'>X</button>";
+                    html+="</div>";
+                    $(img).append(html);
+                }
+            }
+        }else if(zt=="C"){
+            w4=[];
+            for(var i=0;i<imglist3.length;i++){
+                html="";
+                var data = imglist3[i];
+                if(typeof(imglist3[i])=="object"){
+                    let data1 ="";
+                    w4.push(imglist3[i])
+                    var file = imglist3[i]; // 获取文件对象
+                    if (file) {
+                        let fileName = file.name; // 获取文件名
+                        file_lastName = fileName.split('.').pop(); // 获取后缀名
+                        filesize = file.size/(1024*1024);
+                        if(file_lastName!="mp4"){
+                            showNotify('文件类型不正确，只允许上传后缀名为：mp4，请重新上传！', 'danger', 1500);
+                            $("#w4").val("");
+                        }else if(filesize>100){
+                            showNotify('文件不得超过100M，请重新上传！', 'danger', 1500);
+                            $("#w4").val("");
+                        }else{
+                            var reader = new FileReader();
+                            reader.onload = function(e) {
+                                data1=e.target.result;
+                                html="<div class='item' style='margin-right: 20px;position: relative;'>";
+                                html+="<video src='"+data1+"' style='width:200px;' />";
+                                html+="<button class='btn btn-link imgTem' id=\'CP"+i+"\' tid='' name='' onclick='imgRemove1(this,\""+zt+"\")'>X</button>";
+                                html+="</div>";
+                                $(img).append(html);
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    }
+                }else{
+                    html="<div class='item' style='margin-right: 20px;position: relative;'>";
+                    html+="<video src='"+data.split("#")[1]+"' style='width:200px;' />";
+                    html+="<button class='btn btn-link imgTem' id=\'CP"+i+"\' tid=\'"+data.split("#")[0]+"\' name=\'"+data.split("#")[1]+"\' onclick='imgRemove1(this,\""+zt+"\")'>X</button>";
+                    html+="</div>";
+                    $(img).append(html);
+                }
+            }
+        }
+    }
+</script>
 
 <script type="text/javascript">
 
@@ -906,6 +1195,20 @@
     var load_index;
     var kcid;
     var arr=[];
+
+    function tole(){
+        var params = [
+            ["fh",$("#fhlx").val()]
+        ];
+        form_submit("toHt/tolevel","post",params,"_self");
+    }
+
+    function toxk(){
+        var params = [
+            ["fh",$("#fhlx").val()]
+        ];
+        form_submit("toHt/tochose","post",params,"_self");
+    }
 
     pdyes($("#pages").val(), $("#counts").val());
     //翻页
@@ -1112,35 +1415,36 @@
             html+= '<span class="jspan">'+(item.yhe045!=null&&item.yhe045!=""?item.yhe045:item2.yhb007)+'</span>';
             html+= '</div>';
         }
-        if(list.length>0){
+        console.log(list)
+        if(listD.length>0){
             html+= "<div class='row'><div class='form-group col-xl-3 col-md-5 col-sm-12'>";
             html+= "<label class='layui-form-label'>场地照片：</label>";
-            for (let i=0;i<list.length;i++){
-                html+= "<img class='form-control' src='upload/"+list[i].yhf005+"/"+list[i].yhf004+"' style='width: 300px;'/>";
+            for (let i=0;i<listD.length;i++){
+                html+= "<img class='form-control' src='upload/"+listD[i].yhf005+"/"+listD[i].yhf004+"' style='width: 300px;'/>";
             }
             html+= "</div>";
         }
-        if(list1.length>0){
+        if(listA.length>0){
             html+= "<div class='row'><div class='form-group col-xl-3 col-md-5 col-sm-12'>";
             html+= "<label class='layui-form-label'>签到：</label>";
-            for (let i=0;i<list1.length;i++){
-                html+= "<img class='form-control' src='upload/"+list1[i].yhf005+"/"+list1[i].yhf004+"' style='width: 300px;'/>";
+            for (let i=0;i<listA.length;i++){
+                html+= "<img class='form-control' src='upload/"+listA[i].yhf005+"/"+listA[i].yhf004+"' style='width: 300px;'/>";
             }
             html+= "</div>";
         }
-        if(list2.length>0){
+        if(listB.length>0){
             html+= "<div class='row'><div class='form-group col-xl-3 col-md-5 col-sm-12'>";
             html+= "<label class='layui-form-label'>服务照片：</label>";
-            for (let i=0;i<list2.length;i++){
-                html+= "<img class='form-control' src='upload/"+list2[i].yhf005+"/"+list2[i].yhf004+"' style='width: 300px;'/>";
+            for (let i=0;i<listB.length;i++){
+                html+= "<img class='form-control' src='upload/"+listB[i].yhf005+"/"+listB[i].yhf004+"' style='width: 300px;'/>";
             }
             html+= "</div>";
         }
-        if(list3.length>0){
+        if(listC.length>0){
             html+= "<div class='row'><div class='form-group col-xl-3 col-md-5 col-sm-12'>";
             html+= "<label class='layui-form-label'>服务视频：</label>";
-            for (let i=0;i<list3.length;i++){
-                html+= "<video class='form-control' src='upload/"+list3[i].yhf005+"/"+list3[i].yhf004+"' style='width: 300px;'/>";
+            for (let i=0;i<listC.length;i++){
+                html+= "<video class='form-control' src='upload/"+listC[i].yhf005+"/"+listC[i].yhf004+"' style='width: 300px;'/>";
             }
             html+= "</div>";
         }
@@ -1198,12 +1502,14 @@
                         // if(type=="G"||type=="H"){
                         //     layer.msg("接受成功");
                         // }else {
-                            layer.msg("修改成功");
+                        layer.msg("修改成功");
                         // }
                         setTimeout(function(){
                             location.reload();
                         },1000);
                         layer.close(load_index);
+                    }else if(d.msg=="0"){
+                        layer.msg("场次不足");
                     }
                 },
                 error: function () { console.log('提交失败'); }
@@ -1211,77 +1517,8 @@
         }
     }
 </script>
-<!--预约-->
+<!--日期-->
 <script type="text/javascript">
-    var imglist=[];
-    var t4=[];
-    //判断图片
-    function showpdtpgs(id,img){
-        var file = document.getElementById(id).files;
-        if((imglist.length+file.length)>3){
-            layer.msg("最多上传3张图片");
-            return false;
-        }else{
-            if(file){
-                for(var i=0;i<file.length;i++){
-                    imglist.push(file[i]);
-                }
-                insertImg(img);
-            }
-        }
-    }
-
-    //删除图片
-    function imgRemove(obj){
-        let indexp = obj.getAttribute("id").replace("P","");
-        //后台删除图片
-        // if(obj.getAttribute("name").indexOf("upload/hhfile/")>=0){
-        //     $("#delimg").val($("#delimg").val()+"#"+(obj.getAttribute("name")).replace("upload/hhfile/",""));
-        // }
-        imglist.splice(indexp,1);
-        insertImg("#p1");
-    }
-
-    function insertImg(img){
-        $(img).empty();
-        var html="";
-        for(var i=0;i<imglist.length;i++){
-            var data = imglist[i];
-            if(typeof(imglist[i])=="object"){
-                t4.push(imglist[i])
-                var reader = new FileReader();
-                reader.readAsDataURL(imglist[i]);
-                reader.onload = (function(i,e) {
-                    let data1 = e.target.result;
-                    const image = new Image()
-                    image.src = e.target.result
-                    return new Promise((resolve) => {
-                        image.onload = () => {
-                            // const width = image.width
-                            // const height = image.height
-                            // console.log(width+"---"+height)
-                            // if(width==414&&height==280){
-                            html="<div class='item' style='margin-right: 20px;position: relative;'>";
-                            html+="<img src='"+data1+"' style='width:200px;' />";
-                            html+="<button class='btn btn-link imgTem' id=\'P"+i+"\' name='' onclick='imgRemove(this)'>X</button>";
-                            html+="</div>";
-                            $(img).append(html);
-                            // }else{
-                            //     layer.open({content: '分辨率必须是414*280',btn: '我知道了'});
-                            // }
-                        }
-                    })
-                }).bind(reader, i);
-            }else{
-                html="<div class='item'>";
-                html+="<img src='"+data+"' style='width:150px;' />";
-                html+="<span class='closep' id=\'P"+i+"\' name=\'"+data+"\' onclick='imgRemove(this)'>X</span>";
-                html+="</div>";
-                $(img).append(html);
-            }
-        }
-    }
-
     $(document).ready(function(){
         //上月监听
         $(".fc-prev-button").click(function(e){
@@ -1345,132 +1582,6 @@
         });
 
     }
-
-    $('select[id=t1]').change(function() {
-        $.ajax({
-            url:'getallcourse?flid='+this.value+'&jgid='+ ($("#jstype").val()=="B"?$('#skid').val():''),
-            type:'post',
-            async: false,
-            cache: false,
-            processData: false,
-            contentType: false,
-            dataType:'json',
-            success:function(data) {
-                var list = eval(data.list);
-                $('select[id=t4]').empty();
-                $("select[id=t4]").append("<option value=''></option>");
-                for(var i=0;i<list.length;i++){
-                    $("select[id=t4]").append("<option value='"+list[i].hba001+"' xname='"+list[i].smd.smd003+"'" +
-                        " x1='"+list[i].hba002+"'  x3='"+list[i].hba017+"'  x4='"+list[i].hba003+"'  x5='"+list[i].hba008+"'  x9='"+list[i].hba009+"'  x6='"+list[i].hba005+"'  x7='"+list[i].hba015+"' " +
-                        ">"+list[i].hba002+"("+list[i].smd.smd003+")"+"</option>");
-                }
-                $('select[id=t4]').selectpicker('destroy');
-                $('select[id=t4]').selectpicker('render');
-                tokcxq()
-            },
-            error:function(){}
-        });
-
-    });
-
-    function tokcxq(){
-        if($('#t2').val()!=""&&$('#t14').val()!=""){
-            $('.xqbox').show()
-            $('#x1').html($('#t4 option:selected').attr("x1"))
-            $('#x2').html($('#t4 option:selected').attr("xname"))
-            $('#x3').html($('#t4 option:selected').attr("x3"))
-            $('#x4').html($('#t4 option:selected').attr("x4"))
-            $('#x5').html($('#t4 option:selected').attr("x5")+" "+$('#t4 option:selected').attr("x9"))
-            $('#x6').html($('#t4 option:selected').attr("x6"))
-            $('#x7').html($('#t4 option:selected').attr("x7"))
-        }
-    }
-    $('#t2').change(function() {
-        tokcxq()
-    })
-    $('#t14').change(function() {
-        tokcxq()
-    })
-
-    $('select[id=t4]').change(function() {
-        $("#t8").empty();
-        if(this.value!=""){
-            $('#modal-event').modal('show');
-            kcid = this.value;
-            getpkjl();
-            $.ajax({
-                url:'getallcoursels?fid='+this.value,
-                type:'post',
-                async: false,
-                cache: false,
-                processData: false,
-                contentType: false,
-                dataType:'json',
-                success:function(data) {
-                    var list = eval(data.list);
-                    $("select[id=t11]").empty();
-                    $("select[id=t11]").append("<option value=''></option>");
-                    for(var i=0;i<list.length;i++){
-                        $("select[id=t11]").append("<option value='"+list[i].yhc001+"'>"+list[i].yhc003+"</option>");
-                    }
-                    $('select[id=t11]').selectpicker('destroy');
-                    $('select[id=t11]').selectpicker('render');
-                },
-                error:function(){}
-            });
-        }
-    });
-
-    $("#uploadForm1").validate({
-        errorPlacement: function(error, element) {
-            //替换错误显示位置，error表示错误信息
-            $(element).parent("div").parent("div").append(error);
-            $(element).parent("div").parent("div").find("label").addClass("col-12");
-            // $(element).parent("div").parent("div").find("label").attr("style","margin-left:5px;");
-        },
-        rules : {t3: { required : true, },t2: { required : true, },t4: { required : true, },t8: { required : true, },t14: { required : true, },t5: { required : true, },},
-        messages: {},
-        submitHandler: function(form) {
-            load_index = layer.load(1);
-            var formData = new FormData();
-            formData.append("t3",$("#t3").val());
-            formData.append("t2",$("#t2").val());
-            formData.append("t4",$("#t4").val());
-            formData.append("t8",$("#t8").val());
-            formData.append("t14",$("#t14").val());
-            formData.append("t45",$("#t45").val());
-            formData.append("t42",$("#t42").val());
-            formData.append("t43",$("#t43").val());
-            formData.append("t44",$("#t44").val());
-            formData.append("t11",$("#t11").val());
-            formData.append("lx",$("#lx").val());
-            formData.append("fid",$("#fid").val());
-            formData.delete("s1");
-            for(var i=0;i<t4.length;i++){
-                formData.append("s1",t4[i]);
-            }
-            $.ajax({
-                url: 'toHt/xgselection1', // 服务器端处理上传文件的URL
-                type: 'POST',
-                data: formData,
-                dataType:'json',
-                contentType: false, // 不设置内容类型
-                processData: false, // 不处理发送的数据
-                success: function (res) {
-                    var d = eval(res);
-                    $("#fid").val(d.yhe001);
-                    layer.close(load_index);
-                    if(d.msg=="S"){
-                        layer.msg("场次不足");
-                    }else{
-                        layer.msg("提交成功");
-                    }
-                },
-                error: function () { console.log('提交失败'); }
-            });
-
-        }
-    });
 
     var calendarEl = document.getElementById('calendar');
 
@@ -1560,74 +1671,157 @@
 
         return fmt;
     }
-
 </script>
-<!--编辑-->
+<!--预约-->
 <script type="text/javascript">
-    function edit(obj,name){
-        if(obj!=null&&obj!=''){
-            let josnobj = null;
-            if(obj.indexOf("Hash")>0){
-                josnobj = striongTOjsonString(obj);
-            }else{
-                josnobj = jsStringTojsonString(obj);
-            }
-            $("#tname").val(name);
-            $("#fid").val(josnobj.yhe001);
-            $.ajax({
-                url:'getallcoursels?fid='+josnobj.yhe004,
-                type:'post',
-                async: false,
-                cache: false,
-                processData: false,
-                contentType: false,
-                dataType:'json',
-                success:function(data) {
-                    var list = eval(data.list);
-                    $("select[id=z11]").empty();
-                    $("select[id=z11]").append("<option value=''></option>");
-                    for(var i=0;i<list.length;i++){
-                        $("select[id=z11]").append("<option value='"+list[i].yhc001+"'>"+list[i].yhc003+"</option>");
-                    }
-                    $("select[id=z11]").val(josnobj.yhe005);
-                    $('select[id=z11]').selectpicker('destroy');
-                    $('select[id=z11]').selectpicker('render');
-                },
-                error:function(){}
-            });
-            $("#z1").val(josnobj.yhe009);
-            $("#z3").val(josnobj.yhe011);
-            $("#z7").val(josnobj.yhe015);
-            // $("#z8").val(josnobj.yhe016);
-            $("#ftype").text("编辑");
-        }else{
-            $("#ftype").text("添加");
+    $('select[id=t9]').change(function() {
+        toxgxk(this.value,"")
+    });
+    function toxgxk(id,kcid){
+        $.ajax({
+            url:'getallchose?flid='+id,
+            type:'post',
+            async: false,
+            cache: false,
+            processData: false,
+            contentType: false,
+            dataType:'json',
+            success:function(data) {
+                var list = eval(data.list);
+                $('select[id=t3]').empty();
+                $("select[id=t3]").append("<option value=''></option>");
+                for(var i=0;i<list.length;i++){
+                    $("select[id=t3]").append("<option value='"+list[i].yhb001+"'>"+list[i].yhb004+"</option>");
+                    // if($("#t6").val()==""&&kcid==list[i].hba001)$("#t6").val($('#t4 option:selected').attr("x8"))
+                }
+                $('select[id=t3]').val(kcid);
+                $('select[id=t3]').selectpicker('destroy');
+                $('select[id=t3]').selectpicker('render');
+            },
+            error:function(){}
+        });
+    }
+    $('select[id=t1]').change(function() {
+        toxgkc(this.value,"")
+
+    });
+    function toxgkc(id,kcid){
+        $.ajax({
+            url:'getallcourse?flid='+id+'&jgid='+ ($("#jstype").val()=="B"?$('#skid').val():''),
+            type:'post',
+            async: false,
+            cache: false,
+            processData: false,
+            contentType: false,
+            dataType:'json',
+            success:function(data) {
+                var list = eval(data.list);
+                $('select[id=t4]').empty();
+                $("select[id=t4]").append("<option value=''></option>");
+                for(var i=0;i<list.length;i++){
+                    $("select[id=t4]").append("<option value='"+list[i].hba001+"' xname='"+list[i].smd.smd003+"'" +
+                        " x1='"+list[i].hba002+"'  x3='"+list[i].hba017+"'  x4='"+list[i].hba003+"'  x5='"+list[i].hba008+"'  x9='"+list[i].hba009+"'  x6='"+list[i].hba005+"'  x7='"+list[i].hba015+"' x8='"+list[i].hba013+"' " +
+                        ">"+list[i].hba002+"("+list[i].smd.smd003+")"+"</option>");
+                    // if($("#t6").val()==""&&kcid==list[i].hba001)$("#t6").val($('#t4 option:selected').attr("x8"))
+                }
+                $('select[id=t4]').val(kcid);
+                $('select[id=t4]').selectpicker('destroy');
+                $('select[id=t4]').selectpicker('render');
+                tokcxq()
+            },
+            error:function(){}
+        });
+    }
+
+    function tokcxq(){
+        if($('#t2').val()!=""&&$('#t14').val()!=""){
+            // $('.xqbox').show()
+            $('#x1').html($('#t4 option:selected').attr("x1"))
+            $('#x2').html($('#t4 option:selected').attr("xname"))
+            $('#x3').html($('#t4 option:selected').attr("x3"))
+            $('#x4').html($('#t4 option:selected').attr("x4"))
+            $('#x5').html($('#t4 option:selected').attr("x5")+" "+$('#t4 option:selected').attr("x9"))
+            $('#x6').html($('#t4 option:selected').attr("x6"))
+            $('#x7').html($('#t4 option:selected').attr("x7"))
         }
     }
 
-    $("#uploadForm").validate({
+    $('#t2').change(function() {
+        tokcxq()
+    })
+    $('#t14').change(function() {
+        tokcxq()
+    })
+
+    $('select[id=t4]').change(function() {
+        $("#t8").empty();
+        if(this.value!=""){
+            $('#modal-event').modal('show');
+            kcid = this.value;
+            // if($("#t6").val()=="")$("#t6").val($('#t4 option:selected').attr("x8"))
+            getpkjl();
+            toxgls(this.value,"")
+        }
+    });
+    function toxgls(id,lsid){
+        $.ajax({
+            url:'getallcoursels?fid='+id,
+            type:'post',
+            async: false,
+            cache: false,
+            processData: false,
+            contentType: false,
+            dataType:'json',
+            success:function(data) {
+                var list = eval(data.list);
+                $("select[id=t11]").empty();
+                $("select[id=t11]").append("<option value=''></option>");
+                for(var i=0;i<list.length;i++){
+                    $("select[id=t11]").append("<option value='"+list[i].yhc001+"'>"+list[i].yhc003+"</option>");
+                }
+                if(lsid!="null")$('select[id=t11]').val(lsid);
+                $('select[id=t11]').selectpicker('destroy');
+                $('select[id=t11]').selectpicker('render');
+            },
+            error:function(){}
+        });
+    }
+
+
+    $("#uploadForm1").validate({
         errorPlacement: function(error, element) {
             //替换错误显示位置，error表示错误信息
             $(element).parent("div").parent("div").append(error);
             $(element).parent("div").parent("div").find("label").addClass("col-12");
             // $(element).parent("div").parent("div").find("label").attr("style","margin-left:5px;");
         },
-        rules : {t2: { required : true, },t4: { required : true, },t5: { required : true, },},
+        rules : {t3: { required : true, },t2: { required : $("#lx").val()=="C", },t4: { required : true, },t8: { required : true, },t14: { required : true, },t5: { required : true, },},
         messages: {},
         submitHandler: function(form) {
             load_index = layer.load(1);
             var formData = new FormData();
-            formData.append("fid",$("#fid").val().trim());
-            formData.append("z1",$("#z1").val());
-            formData.append("z3",$("#z3").val());
-            formData.append("z7",$("#z7").val());
-            // formData.append("z8",$("#z8").val());
-            formData.append("z11",$("#z11").val());
-
+            formData.append("t3",$("#t3").val());
+            formData.append("t2",$("#t2").val());
+            formData.append("t4",$("#t4").val());
+            formData.append("t8",$("#t8").val());
+            formData.append("t6",$("#t6").val());
+            formData.append("t14",$("#t14").val());
+            formData.append("t45",$("#t45").val());
+            formData.append("t42",$("#t42").val());
+            formData.append("t43",$("#t43").val());
+            formData.append("t44",$("#t44").val());
+            formData.append("t11",$("#t11").val());
             formData.append("lx",$("#lx").val());
-            formData.append("t1",$("#tname").val());
+            formData.append("fid",$("#fid").val());
+
+            formData.append("delimg",$("#delimg").val());
+            formData.append("delid",$("#delid").val());
+            formData.delete("s1");
+            for(var i=0;i<t4.length;i++){
+                formData.append("s1",t4[i]);
+            }
             $.ajax({
-                url: 'toHt/xgselection', // 服务器端处理上传文件的URL
+                url: 'toHt/xgselection1', // 服务器端处理上传文件的URL
                 type: 'POST',
                 data: formData,
                 dataType:'json',
@@ -1635,260 +1829,106 @@
                 processData: false, // 不处理发送的数据
                 success: function (res) {
                     var d = eval(res);
-                    $("#fid").val(d.yhe001);
+                    $("#fid").val(d.d.yhe001);
                     layer.close(load_index);
-                    layer.msg("提交成功");
+                    if(d.msg=="S"){
+                        layer.msg("场次不足");
+                    }else{
+                        layer.msg("提交成功");
+                        var listD=d.list;
+                        if(listD!=null){
+                            var html1="";
+                            $("#p1").empty();
+                            imglist=[];
+                            t4=[];
+                            for(var i=0;i<listD.length;i++){
+                                html1="";
+                                data1="upload/"+listD[i].yhf005+"/"+listD[i].yhf004
+                                imglist.push(listD[i].yhf001+"#"+data1);
+                                html1="<div class='item' style='margin-right: 20px;position: relative;'>";
+                                html1+="<img src='"+data1+"' style='width:200px;' />";
+                                html1+="<button class='btn btn-link imgTem' id=\'DP"+i+"\'  tid=\'"+listD[i].yhf001+"\' tid=\'"+listD[i].yhf001+"\'  name=\'"+data1+"\'  onclick='imgRemove(this)'>X</button>";
+                                html1+="</div>";
+                                $("#p1").append(html1);
+                            }
+                        }
+                    }
                 },
                 error: function () { console.log('提交失败'); }
             });
 
         }
     });
+
+
+
+</script>
+<!--编辑-->
+<script type="text/javascript">
+    function edit(obj,flid,flid1,t1,list){
+        if(obj!=null&&obj!=''){
+            imglist=[];
+            t4=[];
+            let josnobj = null;
+            if(obj.indexOf("Hash")>0){
+                josnobj = striongTOjsonString(obj);
+            }else{
+                josnobj = jsStringTojsonString(obj);
+            }
+            list = list.substring(1,list.length-1);
+            let listD1=list.split("cdyhf");
+            let listD=[];
+            for(var i=0;i<listD1.length;i++){
+                if(listD1[i]!=""){
+                    listD1[i] = listD1[i].replaceAll("],","]");
+                    if (listD1[i].indexOf("Hash") > 0) {
+                        listD.push(striongTOjsonString(listD1[i]));
+                    } else {
+                        listD.push(jsStringTojsonString(listD1[i]));
+                    }
+                }
+            }
+            $("#tname").val(name);
+            $("#fid").val(josnobj.yhe001);
+            $("#t6").val(josnobj.yhe015);
+            $("#t9").val(flid1);
+            toxgxk(flid1,josnobj.yhe002)
+            $('select[id=t9]').selectpicker('destroy');
+            $('select[id=t9]').selectpicker('render');
+            $("#t1").val(flid);
+            toxgkc(flid,josnobj.yhe004)
+            toxgls(josnobj.yhe004,josnobj.yhe005)
+            kcid = josnobj.yhe004;
+            getpkjl();
+            $("#t8").val(getTime(t1,'YY-MM-DD')+" "+josnobj.yhe041);
+            $("#t2").val(josnobj.yhe009);
+            $("#t14").val(josnobj.yhe010);
+            $("#t42").val(josnobj.yhe042);
+            $("#t43").val(josnobj.yhe043);
+            $("#t44").val(josnobj.yhe044);
+            $("#t45").val(josnobj.yhe045);
+            if(listD!=null){
+                var html1="";
+                $("#p1").empty();
+                for(var i=0;i<listD.length;i++){
+                    html1="";
+                    data1="upload/"+listD[i].yhf005+"/"+listD[i].yhf004
+                    imglist.push(listD[i].yhf001+"#"+data1);
+                    html1="<div class='item' style='margin-right: 20px;position: relative;'>";
+                    html1+="<img src='"+data1+"' style='width:200px;' />";
+                    html1+="<button class='btn btn-link imgTem' id=\'DP"+i+"\'  tid=\'"+listD[i].yhf001+"\' tid=\'"+listD[i].yhf001+"\'  name=\'"+data1+"\'  onclick='imgRemove(this)'>X</button>";
+                    html1+="</div>";
+                    $("#p1").append(html1);
+                }
+            }
+            $("#ftype").text("编辑");
+        }else{
+            $("#ftype").text("添加");
+        }
+    }
 </script>
 <!--评价-->
 <script type="text/javascript">
-    var imglist1=[];
-    var w2=[];
-
-    var imglist2=[];
-    var w3=[];
-
-    var imglistt3=[];
-    var w4=[];
-
-    //删除图片
-    function imgRemove1(obj,type){
-        let indexp = obj.getAttribute("id").replace(type+"P","");
-        //后台删除图片
-        if(obj.getAttribute("name").indexOf("upload/")>=0){
-            // $("#delimg").val($("#delimg").val()+"#"+(obj.getAttribute("name")).replace("upload/shopimg/",""));
-            $("#delimg").val($("#delimg").val()+"#"+(obj.getAttribute("name")).replace("upload/",""));
-            $("#delid").val($("#delid").val()+"#"+(obj.getAttribute("tid")));
-        }
-        // if(obj.getAttribute("name").indexOf("https://fxtgoss.oss-cn-hangzhou.aliyuncs.com/shopimg/")>=0){
-        //     // $("#delimg").val($("#delimg").val()+"#"+(obj.getAttribute("name")).replace("https://fxtgoss.oss-cn-hangzhou.aliyuncs.com/shopimg/",""));
-        //     $("#delimg").val($("#delimg").val()+"#"+(obj.getAttribute("name")).replace("https://fxtgoss.oss-cn-hangzhou.aliyuncs.com/shopimg/",""));
-        // }
-        if(type=="A"){
-            imglist1.splice(indexp,1);
-            insertImg1("#p2",type);
-        }else if(type=="B"){
-            imglis2.splice(indexp,1);
-            insertImg1("#p3",type);
-        }else if(type=="C"){
-            imglist3.splice(indexp,1);
-            insertImg1("#p4",type);
-        }
-    }
-
-    //判断图片
-    function showpdtpgs1(id,img,zt){
-        var file = document.getElementById(id).files;
-        let pd =true;
-        if(zt=="C"){
-            if(file){
-                for(var i=0;i<file.length;i++){
-                    var imagSize =file[i].size;
-                    let index=i;
-                    let fileName = file[i].name; // 获取文件名
-                    file_lastName = fileName.split('.').pop(); // 获取后缀名
-                    filesize = file[i].size/(1024*1024);
-                    if(file_lastName!="mp4"){
-                        showNotify('文件类型不正确，只允许上传后缀名为：mp4，请重新上传！', 'danger', 1500);
-                        $("#w4").val("");
-                    }else if(filesize>100){
-                        showNotify('文件不得超过100M，请重新上传！', 'danger', 1500);
-                        $("#w4").val("");
-                    }else{
-                        var reader = new FileReader();
-                        if(index==(file.length-1)){
-                            if(pd){
-                                for(var j=0;j<file.length;j++){
-                                    if(id=="w2")imglist1.push(file[j]);
-                                    if(id=="w3")imglist2.push(file[j]);
-                                    if(id=="w4")imglist3.push(file[j]);
-                                }
-                                insertImg1(img,id=="w2"?'A':(id=="w3"?'B':'C'));
-                            }
-                        }
-                    }
-                }
-            }
-        }else{
-            if(file){
-                for(var i=0;i<file.length;i++){
-                    var imagSize =file[i].size;
-                    let index=i;
-                    if(imagSize <= 1024 * 1024 * 2){
-                        var reader = new FileReader();
-                        reader.readAsDataURL(file[i]);
-                        reader.onload = (function(i,e) {
-                            const image = new Image()
-                            image.src = e.target.result
-                            return new Promise((resolve) => {
-                                image.onload = () => {
-                                    const width = image.width
-                                    const height = image.height
-                                    if(width>=800||height>=800){
-                                        pd =false;
-                                        layui.use('layer', function(){
-                                            var layer = layui.layer;
-                                            layer.ready(function(){
-                                                layer.msg('分辨率不超过800px');
-                                            });
-                                        });
-                                    }
-                                    if(index==(file.length-1)){
-                                        if(pd){
-                                            for(var j=0;j<file.length;j++){
-                                                if(zt=="A")imglist1.push(file[j]);
-                                                if(zt=="B")imglist2.push(file[j]);
-                                            }
-                                            insertImg1(img,zt);
-                                        }
-                                    }
-                                }
-                            })
-                        }).bind(reader, i);
-                    }else{
-                        pd =false;
-                        $(img).val("");
-                        layui.use('layer', function(){
-                            var layer = layui.layer;
-                            layer.ready(function(){
-                                layer.msg("图片大小在2M以内");
-                            });
-                        });
-                    }
-                }
-            }
-        }
-
-    }
-
-    function insertImg1(img,zt){
-        $(img).empty();
-        var html="";
-        if(zt=="A"){
-            w2=[];
-            for(var i=0;i<imglist1.length;i++){
-                html="";
-                var data = imglist1[i];
-                if(typeof(imglist1[i])=="object"){
-                    let data1 ="";
-                    w2.push(imglist1[i])
-                    console.log(w2)
-                    var reader = new FileReader();
-                    reader.readAsDataURL(imglist1[i]);
-                    reader.onload = (function(i,e) {
-                        data1 = e.target.result;
-                        const image = new Image()
-                        image.src = e.target.result
-                        return new Promise((resolve) => {
-                            image.onload = () => {
-                                // const width = image.width
-                                // const height = image.height
-                                // if(width==414&&height==280){
-                                html="<div class='item'>";
-                                html+="<img src='"+data1+"' style='width:150px;' />";
-                                html+="<span class='closep' id=\'AP"+i+"\' tid='' name='' onclick='imgRemove1(this,\""+zt+"\")'>X</span>";
-                                html+="</div>";
-                                $(img).append(html);
-                                // }else{
-                                //     layer.open({content: '分辨率必须是414*280',btn: '我知道了'});
-                                // }
-                            }
-                        })
-                    }).bind(reader, i);
-                }else{
-                    html="<div class='item'>";
-                    html+="<img src='"+data.split("#")[1]+"' style='width:150px;' />";
-                    html+="<span class='closep' id=\'AP"+i+"\' tid=\'"+data.split("#")[0]+"\' name=\'"+data.split("#")[1]+"\' onclick=\'imgRemove1(this,\""+zt+"\")\'>X</span>";
-                    html+="</div>";
-                    $(img).append(html);
-                }
-            }
-        }else if(zt=="B"){
-            w3=[];
-            for(var i=0;i<imglist2.length;i++){
-                html="";
-                var data = imglist2[i];
-                if(typeof(imglist2[i])=="object"){
-                    let data1 ="";
-                    w3.push(imglist2[i])
-                    var reader = new FileReader();
-                    reader.readAsDataURL(imglist2[i]);
-                    reader.onload = (function(i,e) {
-                        data1 = e.target.result;
-                        const image = new Image()
-                        image.src = e.target.result
-                        return new Promise((resolve) => {
-                            image.onload = () => {
-                                // const width = image.width
-                                // const height = image.height
-                                // if(width==414&&height==280){
-                                html="<div class='item'>";
-                                html+="<img src='"+data1+"' style='width:150px;' />";
-                                html+="<span class='closep' id=\'BP"+i+"\' tid='' name='' onclick='imgRemove1(this,\""+zt+"\")'>X</span>";
-                                html+="</div>";
-                                $(img).append(html);
-                                // }else{
-                                //     layer.open({content: '分辨率必须是414*280',btn: '我知道了'});
-                                // }
-                            }
-                        })
-                    }).bind(reader, i);
-                }else{
-                    html="<div class='item'>";
-                    html+="<img src='"+data.split("#")[1]+"' style='width:150px;' />";
-                    html+="<span class='closep' id=\'BP"+i+"\' tid=\'"+data.split("#")[0]+"\' name=\'"+data.split("#")[1]+"\' onclick='imgRemove1(this,\""+zt+"\")'>X</span>";
-                    html+="</div>";
-                    $(img).append(html);
-                }
-            }
-        }else if(zt=="C"){
-            w4=[];
-            for(var i=0;i<imglist3.length;i++){
-                html="";
-                var data = imglist3[i];
-                if(typeof(imglist3[i])=="object"){
-                    let data1 ="";
-                    w4.push(imglist3[i])
-                    var file = imglist3[i]; // 获取文件对象
-                    if (file) {
-                        let fileName = file.name; // 获取文件名
-                        file_lastName = fileName.split('.').pop(); // 获取后缀名
-                        filesize = file.size/(1024*1024);
-                        if(file_lastName!="mp4"){
-                            showNotify('文件类型不正确，只允许上传后缀名为：mp4，请重新上传！', 'danger', 1500);
-                            $("#w4").val("");
-                        }else if(filesize>100){
-                            showNotify('文件不得超过100M，请重新上传！', 'danger', 1500);
-                            $("#w4").val("");
-                        }else{
-                            var reader = new FileReader();
-                            reader.onload = function(e) {
-                                data1=e.target.result;
-                                html="<div class='item'>";
-                                html+="<video src='"+data1+"' style='width:150px;' />";
-                                html+="<span class='closep' id=\'CP"+i+"\' tid='' name='' onclick='imgRemove1(this,\""+zt+"\")'>X</span>";
-                                html+="</div>";
-                                $(img).append(html);
-                            };
-                            reader.readAsDataURL(file);
-                        }
-                    }
-                }else{
-                    html="<div class='item'>";
-                    html+="<video src='"+data.split("#")[1]+"' style='width:150px;' />";
-                    html+="<span class='closep' id=\'CP"+i+"\' tid=\'"+data.split("#")[0]+"\' name=\'"+data.split("#")[1]+"\' onclick='imgRemove1(this,\""+zt+"\")'>X</span>";
-                    html+="</div>";
-                    $(img).append(html);
-                }
-            }
-        }
-    }
-
     function topj(obj,list1,list2,list3) {
         if (obj != null && obj != '') {
             imglist1=[];
@@ -1908,13 +1948,13 @@
             list1 = list1.substring(1,list1.length-1);
             let listA1=list1.split("cdyhf");
             let listA=[];
+            let iA=null;
             for(var i=0;i<listA1.length;i++){
                 if(listA1[i]!=""){
                     listA1[i] = listA1[i].replaceAll("],","]");
                     if (listA1[i].indexOf("Hash") > 0) {
-                        listA.push(striongTOjsonString(listA1[i]));
-                    } else {
-                        listA.push(jsStringTojsonString(listA1[i]));
+                        iA=striongTOjsonString(listA1[i]);
+                        if(iA.yhf006=$("#lx").val())listA.push(iA);
                     }
                 }
             }
@@ -1925,9 +1965,8 @@
                 if(listB1[i]!=""){
                     listB1[i] = listB1[i].replaceAll("],","]");
                     if (listB1[i].indexOf("Hash") > 0) {
-                        listB.push(striongTOjsonString(listB1[i]));
-                    } else {
-                        listB.push(jsStringTojsonString(listB1[i]));
+                        iA=striongTOjsonString(listB1[i])
+                        if(iA.yhf006=$("#lx").val())listB.push(iA);
                     }
                 }
             }
@@ -1938,9 +1977,8 @@
                 if(listC1[i]!=""){
                     listC1[i] = listC1[i].replaceAll("],","]");
                     if (listC1[i].indexOf("Hash") > 0) {
-                        listC.push(striongTOjsonString(listC1[i]));
-                    } else {
-                        listC.push(jsStringTojsonString(listC1[i]));
+                        iA=striongTOjsonString(listC1[i])
+                        if(iA.yhf006=$("#lx").val())listC.push(iA);
                     }
                 }
             }
@@ -2050,41 +2088,45 @@
                         $(this).prop("checked", false);
                     }
                 });
-                $("#p16").val(josnobj.yhe039)
+                if(josnobj.yhe039!="null")$("#p16").val(josnobj.yhe039)
                 $("#p17").val(josnobj.yhe016)
                 $("#p18").val(josnobj.yhe017)
                 $("#p19").val(getTime(josnobj.yhe020,'YY/MM/DD'));
             }
             var data1="";
+            var html="";
             if(listA!=null){
                 for(var i=0;i<listA.length;i++){
+                    html="";
                     data1="upload/"+listA[i].yhf005+"/"+listA[i].yhf004
                     imglist1.push(listA[i].yhf001+"#"+data1);
-                    html="<div class='item'>";
-                    html+="<img src='"+data1+"' style='width:150px;'/>";
-                    html+="<div class='closep' id=\'P"+i+"\'  tid=\'"+listA[i].yhf001+"\'  name=\'"+data1+"\' onclick=\'imgRemove1(this,\"A\")\'>X</div>";
+                    html="<div class='item' style='margin-right: 20px;position: relative;'>";
+                    html+="<img src='"+data1+"' style='width:200px;'/>";
+                    html+="<div class='btn btn-link imgTem' id=\'P"+i+"\'  tid=\'"+listA[i].yhf001+"\'  name=\'"+data1+"\' onclick=\'imgRemove1(this,\"A\")\'>X</div>";
                     html+="</div>";
                     $("#p2").append(html);
                 }
             }
             if(listB!=null){
                 for(var i=0;i<listB.length;i++){
+                    html="";
                     data1="upload/"+listB[i].yhf005+"/"+listB[i].yhf004
                     imglist2.push(listB[i].yhf001+"#"+data1);
-                    html="<div class='item'>";
-                    html+="<img src='"+data1+"' style='width:150px;'/>";
-                    html+="<div class='closep' id=\'P"+i+"\' tid=\'"+listB[i].yhf001+"\' name=\'"+data1+"\' onclick=\'imgRemove1(this,\"B\")\'>X</div>";
+                    html="<div class='item' style='margin-right: 20px;position: relative;'>";
+                    html+="<img src='"+data1+"' style='width:200px;'/>";
+                    html+="<div class='btn btn-link imgTem' id=\'P"+i+"\' tid=\'"+listB[i].yhf001+"\' name=\'"+data1+"\' onclick=\'imgRemove1(this,\"B\")\'>X</div>";
                     html+="</div>";
                     $("#p3").append(html);
                 }
             }
-            if(josnobj.yhflistC!=null){
-                for(var i=0;i<josnobj.yhflistC.length;i++){
+            if(listC!=null){
+                for(var i=0;i<listC.length;i++){
+                    html="";
                     data1="upload/"+listC[i].yhf005+"/"+listC[i].yhf004
                     imglist3.push(listC[i].yhf001+"#"+data1);
-                    html="<div class='item'>";
-                    html+="<video src='"+data1+"' style='width:150px;'/>";
-                    html+="<div class='closep' id=\'P"+i+"\' tid=\'"+listC[i].yhf001+"\'  name=\'"+data1+"\' onclick=\'imgRemove1(this,\"C\")\'>X</div>";
+                    html="<div class='item' style='margin-right: 20px;position: relative;'>";
+                    html+="<video src='"+data1+"' style='width:200px;'/>";
+                    html+="<div class='btn btn-link imgTem' id=\'P"+i+"\' tid=\'"+listC[i].yhf001+"\'  name=\'"+data1+"\' onclick=\'imgRemove1(this,\"C\")\'>X</div>";
                     html+="</div>";
                     $("#p4").append(html);
                 }
@@ -2102,7 +2144,8 @@
             $(element).parent("div").parent("div").find("label").addClass("col-12");
             // $(element).parent("div").parent("div").find("label").attr("style","margin-left:5px;");
         },
-        rules : {p17: { required : $("#lx").val()=="C", },p18: { required : $("#lx").val()=="B", },},
+        rules : {p17: { required : $("#lx").val()=="C", },p1: { required : $("#lx").val()=="C", },p2: { required : $("#lx").val()=="C", },p3: { required : $("#lx").val()=="C", },p4: { required : $("#lx").val()=="C", },p5: { required : $("#lx").val()=="C", },p6: { required : $("#lx").val()=="C", },p7: { required : $("#lx").val()=="C", },p8: { required : $("#lx").val()=="C", },
+            p18: { required : $("#lx").val()=="B", },p10: { required : $("#lx").val()=="B", },p11: { required : $("#lx").val()=="B", },p12: { required : $("#lx").val()=="B", },p13: { required : $("#lx").val()=="B", },p14: { required : $("#lx").val()=="B", },p15: { required : $("#lx").val()=="B", },},
         messages: {},
         submitHandler: function(form) {
             load_index = layer.load(1);
@@ -2158,6 +2201,7 @@
                     $("#fid").val(d.yhe001);
                     layer.close(load_index);
                     layer.msg("提交成功");
+
                 },
                 error: function () { console.log('提交失败'); }
             });
@@ -2165,21 +2209,5 @@
         }
     });
 </script>
-<script type="text/javascript">
-    function tosc(obj,name){
-        if(obj!=null&&obj!=''){
-            let josnobj = null;
-            if(obj.indexOf("Hash")>0){
-                josnobj = striongTOjsonString(obj);
-            }else{
-                josnobj = jsStringTojsonString(obj);
-            }
-            $("#tname").val(name);
-            $("#fid").val(josnobj.yhe001);
-            $("#ftype3").text("编辑");
-        }else{
-            $("#ftype3").text("添加");
-        }
-    }
-</script>
+
 

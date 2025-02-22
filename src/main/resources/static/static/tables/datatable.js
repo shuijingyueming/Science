@@ -38,26 +38,26 @@ $(document).ready(function () {
         "paging": false,
         dom: 'Bfrtip',
         buttons: [
-            {
+            $("#jstype").val()=="A"?{
                 iTname: '#editmode', text: '添加', action: function (e, dt, node, config) {
                     edit();
                 }
-            },
-            {
+            }:undefined,
+            $("#jstype").val()=="A"?{
                 text: '下载模板', action: function (e, dt, node, config) {
                     xzmb();
                 }
-            },
-            {
+            }:undefined,
+            $("#jstype").val()=="A"?{
                 text: '导入', action: function (e, dt, node, config) {
                     drlevel();
                 }
-            },
-            {
+            }:undefined,
+            $("#jstype").val()=="A"?{
                 text: '下载选课方模板', action: function (e, dt, node, config) {
                     xzxkmb();
                 }
-            },
+            }:undefined,
         ],
         "columnDefs": [{
             "orderable": false,
@@ -168,6 +168,8 @@ $(document).ready(function () {
         "paging": false,
         dom: 'Bfrtip',
         buttons: [
+            $("#fhlx").val()=="LE"?{text: '返回', action: function (e, dt, node, config) {tole();}}:undefined,
+            $("#fhlx").val()=="XK"?{text: '返回', action: function (e, dt, node, config) {toxk();}}:undefined,
             $("#jstype").val()!="A"&&$("#ztype").val()=="A"?{
                 iTname: '#yymode', text: '课程预约'
             }:undefined,

@@ -393,13 +393,14 @@
         html+= "<label class='layui-form-label'>营业执照：</label>";
         html+= "<img class='form-control' src='upload/yyzz/"+item1.smd016+"' style='width: 300px;'/>";
         html+= "</div>";
-        $("#shtg").attr("onclick","xgzt("+item1.smd001+",'"+item1.smd003+"','M')")
+        $("#shtg").attr("onclick","xgzt("+item1.smd001+",'"+item1.smd003+"','M','"+item1.smd009+"')")
         $("#shbh").attr("onclick","xgzt("+item1.smd001+",'"+item1.smd003+"','E')")
         $("#xqmode").find(".modal-body").append(html);
     }
 
-    function xgzt(id,uname,type){
+    function xgzt(id,uname,type,sl){
         if(type=="E"){
+
             var num = prompt("请输入驳回备注","");
             if (num){
                 load_index = layer.load(1);
@@ -428,6 +429,8 @@
                     error: function () { console.log('提交失败'); }
                 });
             }
+        }else if(type=="M"&&sl=="null"){
+            layer.msg("请先填写年度场次限数等数据");
         }else if (type=="M"?confirm("您确定审核通过吗"):confirm("您确定修改吗?")) {
             load_index = layer.load(1);
             var formData = new FormData();
@@ -457,6 +460,7 @@
                 },
                 error: function () { console.log('提交失败'); }
             });
+
         }
     }
 
@@ -586,7 +590,7 @@
                 contentType: false, // 不设置内容类型
                 processData: false, // 不处理发送的数据
                 success: function (res) {
-                    var d = eval(res);
+                    var d = eval(res.d);
                     $("#fid").val(d.smd001);
                     layer.close(load_index);
                     layer.msg("提交成功");

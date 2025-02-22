@@ -4,24 +4,17 @@ package com.efx.Science.controller;
 import com.alibaba.fastjson.JSON;
 import com.efx.Science.model.*;
 import com.efx.Science.pub.PubMessage;
-import com.efx.Science.until.ExcelExport;
 import com.efx.Science.wx.WeiCatJK;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.servlet.ModelAndView;
-import org.thymeleaf.TemplateEngine;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.*;
 
@@ -88,6 +81,8 @@ public class WXController extends BaseController {
                     }else{
                         result.put("type", "Y");
                     }
+                }else{
+                    result.put("type", "Y");
                 }
             }else{
                 result.put("type", "O");
@@ -182,7 +177,7 @@ public class WXController extends BaseController {
         Map<String, Object> result = new HashMap<String, Object>();
         cdhba hba = hbaService.getByid(Integer.valueOf(request.getParameter("kcid")));
         Integer xkid= Integer.valueOf(request.getParameter("xkid"));
-        Integer id= !request.getParameter("cjid").isEmpty()?0:Integer.valueOf(request.getParameter("xkid"));
+        Integer id= request.getParameter("cjid").isEmpty()?0:Integer.valueOf(request.getParameter("cjid"));
         cdyhe item = new cdyhe();
         item.setYhe040(id);
         item.setYhe002(xkid);
@@ -375,7 +370,7 @@ public class WXController extends BaseController {
     @RequestMapping(value = "/wxxk", method = RequestMethod.POST)
     public String wxxk(HttpServletRequest request) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
-        List<cdyhb> list=yhbService.getAll();
+        List<cdyhb> list=yhbService.getAll(null);
         result.put("list", list);
         return JSON.toJSONString(result);
     }
@@ -439,9 +434,9 @@ public class WXController extends BaseController {
         else pagebean.setCurrentPage(1);
         if(request.getParameter("size")!=null&&!request.getParameter("size").isEmpty()) pagebean.setPageSize(Integer.valueOf(request.getParameter("size")));
         if(request.getParameter("type")!=null&&!request.getParameter("type").isEmpty())pagebean.setOthersql1(request.getParameter("type"));
-        pagebean.setOthersql2("A");
-        PageBean pb=yhgService.selectPageBean(pagebean);
-        result.put("pb", pb);
+        pagebean.setOthersql2("B");
+        pagebean=yhgService.selectPageBean(pagebean);
+        result.put("pb", pagebean);
         return JSON.toJSONString(result);
     }
 
@@ -456,6 +451,8 @@ public class WXController extends BaseController {
     public String wxnewxq(HttpServletRequest request) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
         cdyhg item=yhgService.getByid(request.getParameter("id"));
+        item.setYhg005(item.getYhg005()+1);
+        yhgService.update(item);
         result.put("item", item);
         return JSON.toJSONString(result);
     }

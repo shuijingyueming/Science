@@ -159,7 +159,7 @@
                                                 <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]],[[${item.hba019}]])" class="btn btn-table"
                                                    data-bs-toggle="modal" data-bs-target="#editmode">编辑</a>
                                                 <div class="ivu-divider-vertical"></div>
-                                                <th:block th:if="${item.hba026=='D'}">
+                                                <th:block th:if="${item.hba026=='D'||item.hba026=='E'}">
                                                     <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode" th:onclick="xgzt([[${item.hba001}]],[[${item.hba002}]],[['A']])">提交审核</a>
                                                 </th:block>
                                                 <th:block th:if="${item.hba026=='C'}">
@@ -466,7 +466,7 @@
                         </div>
                     </div>
                     <div class="modal-footer" style="height:100px;">
-                        <button type="submit" class="btn btn-primary" id="edit-four">提交</button>
+                        <button type="submit" class="btn btn-primary" id="edit-four">保存</button>
                     </div>
                 </form>
             </div>
@@ -768,43 +768,22 @@
     }
 
     function xgzt(id,uname,type){
-        if(type=="E"){
-            var num = prompt("请输入驳回备注","");
-            if (num!="") {
-                load_index = layer.load(1);
-                var formData = new FormData();
-                formData.append("fid",id);
-                formData.append("uname",uname);
-                formData.append("type",type);
-                formData.append("t1",num);
-                $.ajax({
-                    url: 'toHt/xgztcourse', // 服务器端处理上传文件的URL
-                    type: 'POST',
-                    data: formData,
-                    dataType:'json',
-                    contentType: false, // 不设置内容类型
-                    processData: false, // 不处理发送的数据
-                    success: function (res) {
-                        var d = eval(res);
-                        if(d.msg=="0"){
-                            layer.msg("修改成功");
-                            setTimeout(function(){
-                                location.reload();
-                            },1000);
-                            layer.close(load_index);
-                        }
-                    },
-                    error: function () { console.log('提交失败'); }
-                });
-            }else{
-                xgzt(id,uname,type);
-            }
-        }else if (type=="C"?confirm("您确定审核通过吗"):confirm("您确定修改吗?")) {
+        var flag=false;
+        var num = null;
+        if(type=="E") {
+            num = prompt("请输入驳回备注", "");
+        }else{
+            type=="A"?flag=confirm("您确定提交审核吗"):(type=="C"?($("#jstype").val()=="A"?flag=confirm("您确定审核通过吗"):flag=confirm("您确定下架吗")):flag=confirm("您确定上架吗?"));
+        }
+        console.log(num);
+        console.log(flag);
+        if (num!=null||flag) {
             load_index = layer.load(1);
             var formData = new FormData();
             formData.append("fid",id);
             formData.append("uname",uname);
             formData.append("type",type);
+            formData.append("t1",num);
             $.ajax({
                 url: 'toHt/xgztcourse', // 服务器端处理上传文件的URL
                 type: 'POST',
@@ -815,10 +794,18 @@
                 success: function (res) {
                     var d = eval(res);
                     if(d.msg=="0"){
-                        if(type=="C"){
-                            layer.msg("审核通过");
+                        if(type=="A"){
+                            layer.msg("提交成功");
+                        }else  if(type=="C"){
+                            if($("#jstype").val()=="A"){
+                                layer.msg("审核通过");
+                            }else{
+                                layer.msg("下架成过");
+                            }
+                        }else  if(type=="E"){
+                            layer.msg("驳回成功");
                         }else {
-                            layer.msg("修改成功");
+                            layer.msg("上架成功");
                         }
                         setTimeout(function(){
                             location.reload();
@@ -828,6 +815,10 @@
                 },
                 error: function () { console.log('提交失败'); }
             });
+        }else{
+            if(!confirm("您确定取消操作吗")){
+                xgzt(id,uname,type);
+            }
         }
     }
 

@@ -152,6 +152,10 @@ public class HTinfoController extends BaseController {
      */
     @RequestMapping("/backupdownload")
     public void backupdownload(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        if(null==session.getAttribute("user")){
+            SystemTZYM(response,"登录失效");
+        }
         Datamsg.beifenMysql(request, response,config,this.getClass().getResource("/").getPath()+"\\");
         addLog(getUse(request).getUse002(),"进行了数据库下载");
     }
@@ -283,6 +287,11 @@ public class HTinfoController extends BaseController {
     @RequestMapping(value = "/dellog",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     public String dellog(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HashMap result = new HashMap();
+        HttpSession session = request.getSession();
+        if(null==session.getAttribute("user")){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
         PageBean pb = new PageBean();
         if (request.getParameter("start") != null && StringUtils.isNotEmpty(request.getParameter("start"))) {
             pb.setOthersql(request.getParameter("start"));
@@ -309,11 +318,11 @@ public class HTinfoController extends BaseController {
     public ModelAndView staff(HttpServletRequest request,HttpServletResponse response) throws Exception{
         ModelAndView mav = new ModelAndView();
         HttpSession session = request.getSession();
-        int userid = 0;//后台登录用户ID
         if(session.getAttribute("user")==null){
             SystemTZYM(response,"登录失效");
             return null;
         }
+        int userid = 0;//后台登录用户ID
         userid = Decrypt(session.getAttribute("user").toString());
         cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
         mav.addObject("msg", request.getParameter("msg"));
@@ -341,7 +350,7 @@ public class HTinfoController extends BaseController {
         if(pb.getOthersql1().equals("B")){
             mav.addObject("smdlist", smdService.getAll());
         }else if(pb.getOthersql1().equals("C")){
-            mav.addObject("yhblist", yhbService.getAll());
+            mav.addObject("yhblist", yhbService.getAll(null));
         }
         mav.setViewName("staff");
         return mav;
@@ -356,6 +365,10 @@ public class HTinfoController extends BaseController {
     public ModelAndView updateUseXx(HttpServletRequest request, HttpServletResponse response) throws Exception {
         ModelAndView mav = new ModelAndView();
         HttpSession session = request.getSession();
+        if(null==session.getAttribute("user")){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
         cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
         String log = "修改管理员信息:";
         if (user == null) {
@@ -389,6 +402,11 @@ public class HTinfoController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/resstaff",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     public String resyh(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        if(null==session.getAttribute("user")){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
         HashMap result = new HashMap();
         cduse use = useService.getByid(Integer.valueOf(request.getParameter("fid")));
         use.setUse003(EncrpytUtil.getSHA256("123456"));
@@ -407,6 +425,11 @@ public class HTinfoController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/xgztstaff",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     public String xgztstaff(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        if(null==session.getAttribute("user")){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
         HashMap result = new HashMap();
         addLog(getUse(request).getUse002(),"修改了用户名称为：【" + request.getParameter("uname") + "】的状态");
         cduse use = useService.getByid(Integer.valueOf(request.getParameter("fid")));
@@ -443,12 +466,12 @@ public class HTinfoController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/xgstaff")
     public String xgstaff(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap result = new HashMap();
         HttpSession session = request.getSession();
-        if (session.getAttribute("user") == null) {
-            SystemTZYM(response, "登录失效");
+        if(null==session.getAttribute("user")){
+            SystemTZYM(response,"登录失效");
             return null;
         }
+        HashMap result = new HashMap();
         cduse item = new cduse();
         //修改
         item.setUse002(request.getParameter("t2"));
@@ -490,8 +513,8 @@ public class HTinfoController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/xgselect1")
     public String xgselect1(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap result = new HashMap();
         HttpSession session = request.getSession();
+        HashMap result = new HashMap();
         cdsmd item = new cdsmd();
         //修改
         item.setSmd002(request.getParameter("t2"));
@@ -551,8 +574,12 @@ public class HTinfoController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/xgchose1")
     public String xgchose1(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap result = new HashMap();
         HttpSession session = request.getSession();
+        if(null==session.getAttribute("user")){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
+        HashMap result = new HashMap();
         cdyhb item = new cdyhb();
         //修改
         item.setYhb002(Integer.valueOf(request.getParameter("t2")));
@@ -594,12 +621,12 @@ public class HTinfoController extends BaseController {
     @RequestMapping("/tolevel")
     public ModelAndView tolevel(HttpServletRequest request, HttpServletResponse response) throws Exception{
         HttpSession session = request.getSession();
-        ModelAndView mav = new ModelAndView();
-        int userid = 0;//后台登录用户ID
         if(session.getAttribute("user")==null){
             SystemTZYM(response,"登录失效");
             return null;
         }
+        ModelAndView mav = new ModelAndView();
+        int userid = 0;//后台登录用户ID
         //导出模板
         if (request.getParameter("type") != null && request.getParameter("type").equals("E")) {
             String fpath = LoginController.class.getClass().getResource("/").getPath();
@@ -610,12 +637,19 @@ public class HTinfoController extends BaseController {
         cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
         mav.addObject("msg",request.getParameter("msg") );
         PageBean pb = new PageBean();
-        if (request.getParameter("pages") != null && !request.getParameter("pages").toString().isEmpty())
-            pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
-        else
-            pb.setCurrentPage(1);
-        if (request.getParameter("name") != null && !request.getParameter("name").toString().isEmpty()) {
-            pb.setOthersql(request.getParameter("name"));
+        if(request.getParameter("fh")!=null && !request.getParameter("fh").isEmpty()){
+            if(request.getParameter("fh").indexOf("LE")>=0){
+                pb=(PageBean)session.getAttribute("LEpb");
+                session.removeAttribute("LEpb");
+            }
+        }else{
+            if (request.getParameter("pages") != null && !request.getParameter("pages").toString().isEmpty())
+                pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
+            else
+                pb.setCurrentPage(1);
+            if (request.getParameter("name") != null && !request.getParameter("name").toString().isEmpty()) {
+                pb.setOthersql(request.getParameter("name"));
+            }
         }
         mav.addObject("pageobj", yhaService.selectPageBean(pb));
         mav.setViewName("HTlevel");
@@ -631,6 +665,11 @@ public class HTinfoController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/dellevel",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     public String dellevel(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        if(null==session.getAttribute("user")){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
         HashMap result = new HashMap();
         addLog(getUse(request).getUse002(),"删除了层级名称为：【" + request.getParameter("uname") + "】的状态");
         yhaService.delete(Integer.parseInt(request.getParameter("fid")));
@@ -670,13 +709,19 @@ public class HTinfoController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "/xglevel",headers = "content-type=multipart/form-data")
-    public String xglevel(HttpServletRequest request) throws Exception {
+    public String xglevel(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        if(null==session.getAttribute("user")){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
         HashMap result = new HashMap();
         cdyha item = new cdyha();
         //修改
         item.setYha002(request.getParameter("t2"));
         item.setYha004(Integer.valueOf(request.getParameter("t4")));
         item.setYha005(Float.valueOf(request.getParameter("t5")));
+        item.setYha006(item.getYha004());
         if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()){
             String log = "修改了名字为：【" + request.getParameter("t3") + "】的层级信息";
             item.setYha001(Integer.valueOf((request.getParameter("fid"))));
@@ -684,7 +729,6 @@ public class HTinfoController extends BaseController {
             yhaService.update(item);
             result.put("msg","U");
         }else{
-            item.setYha006(item.getYha004());
             String log = "新增了名字为：【" + request.getParameter("t3")+ "】的层级信息";
             addLog(getUse(request).getUse002(),log);
             item = yhaService.insert(item);
@@ -728,13 +772,13 @@ public class HTinfoController extends BaseController {
      */
     @RequestMapping("/tochose")
     public ModelAndView tochose(HttpServletRequest request,HttpServletResponse response) throws Exception{
-        ModelAndView mav = new ModelAndView();
         HttpSession session = request.getSession();
-        int userid = 0;//后台登录用户ID
         if(session.getAttribute("user")==null){
             SystemTZYM(response,"登录失效");
             return null;
         }
+        ModelAndView mav = new ModelAndView();
+        int userid = 0;//后台登录用户ID
         userid = Decrypt(session.getAttribute("user").toString());
         cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
         if(!user.getUse009().equals("C")){
@@ -746,18 +790,25 @@ public class HTinfoController extends BaseController {
             }
             mav.addObject("msg", request.getParameter("msg"));
             PageBean pb = new PageBean();
-            if (request.getParameter("pages") != null && !request.getParameter("pages").isEmpty())
-                pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
-            else
-                pb.setCurrentPage(1);
-            if (request.getParameter("name") != null && !request.getParameter("name").isEmpty()) {
-                pb.setOthersql(request.getParameter("name"));
-            }
-            if (request.getParameter("phone") != null && !request.getParameter("phone").isEmpty()) {
-                pb.setOthersql6(request.getParameter("phone"));
-            }
-            if (request.getParameter("flid") != null && !request.getParameter("flid").isEmpty()) {
-                pb.setOthersql1(request.getParameter("flid"));
+            if(request.getParameter("fh")!=null && !request.getParameter("fh").isEmpty()){
+                if(request.getParameter("fh").indexOf("XK")>=0){
+                    pb=(PageBean)session.getAttribute("XKpb");
+                    session.removeAttribute("XKpb");
+                }
+            }else{
+                if (request.getParameter("pages") != null && !request.getParameter("pages").isEmpty())
+                    pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
+                else
+                    pb.setCurrentPage(1);
+                if (request.getParameter("name") != null && !request.getParameter("name").isEmpty()) {
+                    pb.setOthersql(request.getParameter("name"));
+                }
+                if (request.getParameter("phone") != null && !request.getParameter("phone").isEmpty()) {
+                    pb.setOthersql6(request.getParameter("phone"));
+                }
+                if (request.getParameter("flid") != null && !request.getParameter("flid").isEmpty()) {
+                    pb.setOthersql1(request.getParameter("flid"));
+                }
             }
             mav.addObject("pageobj", yhbService.selectPageBean(pb));
             mav.addObject("yhalist", yhaService.getAll());
@@ -781,12 +832,12 @@ public class HTinfoController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/xgchose")
     public String xgchose(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap result = new HashMap();
         HttpSession session = request.getSession();
         if (session.getAttribute("user") == null) {
             SystemTZYM(response, "登录失效");
             return null;
         }
+        HashMap result = new HashMap();
         cdyhb item = new cdyhb();
         //修改
         item.setYhb002(Integer.valueOf(request.getParameter("t2")));
@@ -828,12 +879,12 @@ public class HTinfoController extends BaseController {
     @RequestMapping("/tocourselx")
     public ModelAndView tocourselx(HttpServletRequest request, HttpServletResponse response) throws Exception{
         HttpSession session = request.getSession();
-        ModelAndView mav = new ModelAndView();
-        int userid = 0;//后台登录用户ID
         if(session.getAttribute("user")==null){
             SystemTZYM(response,"登录失效");
             return null;
         }
+        ModelAndView mav = new ModelAndView();
+        int userid = 0;//后台登录用户ID
         userid = Decrypt(session.getAttribute("user").toString());
         cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
         mav.addObject("msg",request.getParameter("msg") );
@@ -860,6 +911,11 @@ public class HTinfoController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/delcourselx",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     public String delcourselx(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        if(null==session.getAttribute("user")){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
         HashMap result = new HashMap();
         addLog(getUse(request).getUse002(),"删除了课程分类名称为：【" + request.getParameter("uname") + "】的状态");
         if(hbaService.countByflid(Integer.parseInt(request.getParameter("fid")))==0){
@@ -878,7 +934,12 @@ public class HTinfoController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "/xgcourselx",headers = "content-type=multipart/form-data")
-    public String xgcourselx(HttpServletRequest request) throws Exception {
+    public String xgcourselx(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        if(null==session.getAttribute("user")){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
         HashMap result = new HashMap();
         cdhbb item = new cdhbb();
         //修改
@@ -903,12 +964,12 @@ public class HTinfoController extends BaseController {
     @RequestMapping("/tocourse")
     public ModelAndView tocourse(HttpServletRequest request, HttpServletResponse response) throws Exception{
         HttpSession session = request.getSession();
-        ModelAndView mav = new ModelAndView();
-        int userid = 0;//后台登录用户ID
         if(session.getAttribute("user")==null){
             SystemTZYM(response,"登录失效");
             return null;
         }
+        ModelAndView mav = new ModelAndView();
+        int userid = 0;//后台登录用户ID
         userid = Decrypt(session.getAttribute("user").toString());
         cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
         mav.addObject("msg",request.getParameter("msg") );
@@ -949,6 +1010,11 @@ public class HTinfoController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/xgztcourse",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     public String xgztcourse(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        if(null==session.getAttribute("user")){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
         HashMap result = new HashMap();
         addLog(getUse(request).getUse002(),"修改了课程名称为：【" + request.getParameter("uname") + "】的状态");
         cdhba hba=hbaService.getByid(Integer.valueOf(request.getParameter("fid")));
@@ -968,6 +1034,11 @@ public class HTinfoController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/delcourse",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     public String delcourse(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        if(null==session.getAttribute("user")){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
         HashMap result = new HashMap();
         addLog(getUse(request).getUse002(),"删除了课程分类名称为：【" + request.getParameter("uname") + "】的状态");
         if(hbaService.countByflid(Integer.parseInt(request.getParameter("fid")))==0){
@@ -986,7 +1057,12 @@ public class HTinfoController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "/xgcourse",headers = "content-type=multipart/form-data")
-    public String xgcourse(HttpServletRequest request) throws Exception {
+    public String xgcourse(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        if(null==session.getAttribute("user")){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
         HashMap result = new HashMap();
         cdhba item = new cdhba();
         //修改
@@ -1055,12 +1131,12 @@ public class HTinfoController extends BaseController {
     @RequestMapping("/tocourseyy")
     public ModelAndView tocourseyy(HttpServletRequest request, HttpServletResponse response) throws Exception{
         HttpSession session = request.getSession();
-        ModelAndView mav = new ModelAndView();
-        int userid = 0;//后台登录用户ID
         if(session.getAttribute("user")==null){
             SystemTZYM(response,"登录失效");
             return null;
         }
+        ModelAndView mav = new ModelAndView();
+        int userid = 0;//后台登录用户ID
         userid = Decrypt(session.getAttribute("user").toString());
         cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
         int  kcid = Integer.parseInt(request.getParameter("kcid"));
@@ -1077,11 +1153,11 @@ public class HTinfoController extends BaseController {
     @RequestMapping("/tocoursepk")
     public ModelAndView tocoursepk(HttpServletRequest request, HttpServletResponse response) throws Exception{
         HttpSession session = request.getSession();
-        ModelAndView mav = new ModelAndView();
         if(session.getAttribute("user")==null){
             SystemTZYM(response,"登录失效");
             return null;
         }
+        ModelAndView mav = new ModelAndView();
         int userid = 0;//后台登录用户ID
         userid = Decrypt(session.getAttribute("user").toString());
         // cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
@@ -1110,6 +1186,11 @@ public class HTinfoController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/getcoursepk",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     public String getcoursepk(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        if(session.getAttribute("user")==null){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
         HashMap result = new HashMap();
         addLog(getUse(request).getUse002(),"提交保存年排课计划");
         int kcid = Integer.parseInt(request.getParameter("kcid"));
@@ -1134,6 +1215,11 @@ public class HTinfoController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/savecoursepk",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     public String savecoursepk(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        if(session.getAttribute("user")==null){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
         HashMap result = new HashMap();
         addLog(getUse(request).getUse002(),"提交保存年排课计划");
         int kcid = Integer.parseInt(request.getParameter("kcid"));
@@ -1571,12 +1657,12 @@ public class HTinfoController extends BaseController {
     @RequestMapping("/tocoursels")
     public ModelAndView tocoursels(HttpServletRequest request, HttpServletResponse response) throws Exception{
         HttpSession session = request.getSession();
-        ModelAndView mav = new ModelAndView();
-        int userid = 0;//后台登录用户ID
         if(session.getAttribute("user")==null){
             SystemTZYM(response,"登录失效");
             return null;
         }
+        ModelAndView mav = new ModelAndView();
+        int userid = 0;//后台登录用户ID
         userid = Decrypt(session.getAttribute("user").toString());
         cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
         System.out.println(request);
@@ -1598,6 +1684,11 @@ public class HTinfoController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/delcoursels",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     public String delcoursels(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        if(session.getAttribute("user")==null){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
         HashMap result = new HashMap();
         addLog(getUse(request).getUse002(),"删除了课程老师名称为：【" + request.getParameter("uname") + "】的信息");
         if(yheService.countBylsid(Integer.parseInt(request.getParameter("fid")))==0){
@@ -1616,7 +1707,12 @@ public class HTinfoController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "/xgcoursels",headers = "content-type=multipart/form-data")
-    public String xgcoursels(HttpServletRequest request) throws Exception {
+    public String xgcoursels(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        if(session.getAttribute("user")==null){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
         HashMap result = new HashMap();
         cdyhc item = new cdyhc();
         //修改
@@ -1646,13 +1742,13 @@ public class HTinfoController extends BaseController {
      */
     @RequestMapping("/toselect")
     public ModelAndView toselect(HttpServletRequest request,HttpServletResponse response) throws Exception{
-        ModelAndView mav = new ModelAndView();
         HttpSession session = request.getSession();
-        int userid = 0;//后台登录用户ID
         if(session.getAttribute("user")==null){
             SystemTZYM(response,"登录失效");
             return null;
         }
+        ModelAndView mav = new ModelAndView();
+        int userid = 0;//后台登录用户ID
         userid = Decrypt(session.getAttribute("user").toString());
         cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
         if(user.getUse009().equals("A")||user.getUse009().equals("C")){
@@ -1695,6 +1791,11 @@ public class HTinfoController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/xgztselect",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     public String xgztselect(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        if(session.getAttribute("user")==null){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
         HashMap result = new HashMap();
         addLog(getUse(request).getUse002(),"修改了选课方名称为：【" + request.getParameter("uname") + "】的状态");
         cdsmd smd = smdService.getByid(Integer.valueOf(request.getParameter("fid")));
@@ -1723,15 +1824,15 @@ public class HTinfoController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/xgselect")
     public String xgselect(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap result = new HashMap();
         HttpSession session = request.getSession();
-        if (session.getAttribute("user") == null) {
-            SystemTZYM(response, "登录失效");
+        if(session.getAttribute("user")==null){
+            SystemTZYM(response,"登录失效");
             return null;
         }
+        HashMap result = new HashMap();
         cdsmd item = new cdsmd();
         //修改
-        if(getUse(request).getUse002().equals("A")){
+        if(getUse(request).getUse009().equals("A")){
             if(!request.getParameter("t9").isEmpty())item.setSmd009(Integer.valueOf(request.getParameter("t9")));
             if(!request.getParameter("t10").isEmpty())item.setSmd010(Integer.valueOf(request.getParameter("t10")));
         }else{
@@ -1749,11 +1850,11 @@ public class HTinfoController extends BaseController {
                 Date date = new Date();
                 String filename = sdf.format(date)+file1.getOriginalFilename().substring(file1.getOriginalFilename().lastIndexOf("."));
                 item.setSmd016(filename);
-                uploadpic("kcimg/"+filename,file1,"yyzz/"+request.getParameter("tt24"));
+                uploadpic("yyzz/"+filename,file1,"yyzz/"+request.getParameter("tt24"));
             }
+            item.setSmd014("P");
+            item.setSmd015("");
         }
-        item.setSmd014("P");
-        item.setSmd015("");
         if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()){
             String log = "修改了名字为：【" + request.getParameter("t3") + "】的授课方信息";
             item.setSmd001(Integer.valueOf((request.getParameter("fid"))));
@@ -1781,39 +1882,81 @@ public class HTinfoController extends BaseController {
      */
     @RequestMapping("/toselection")
     public ModelAndView toselection(HttpServletRequest request,HttpServletResponse response) throws Exception{
-        ModelAndView mav = new ModelAndView();
         HttpSession session = request.getSession();
-        int userid = 0;//后台登录用户ID
         if(session.getAttribute("user")==null){
             SystemTZYM(response,"登录失效");
             return null;
         }
+        ModelAndView mav = new ModelAndView();
+        int userid = 0;//后台登录用户ID
         userid = Decrypt(session.getAttribute("user").toString());
         cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
         mav.addObject("msg", request.getParameter("msg"));
         PageBean pb = new PageBean();
-        if (request.getParameter("pages") != null && !request.getParameter("pages").isEmpty())
-            pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
-        else
-            pb.setCurrentPage(1);
-        if (request.getParameter("name") != null && !request.getParameter("name").isEmpty()) {
-            pb.setOthersql(request.getParameter("name"));
-        }
-        if(user.getUse009().equals("B")){
-            pb.setOthersql5(String.valueOf(user.getUse011()));
-        }else if (request.getParameter("skid") != null && !request.getParameter("skid").isEmpty()) {
-            pb.setOthersql5(request.getParameter("skid"));
-        }
-        if(user.getUse009().equals("C")){
-            pb.setOthersql6(String.valueOf(user.getUse011()));
-        }else if (request.getParameter("xkid") != null && !request.getParameter("xkid").isEmpty()) {
-            pb.setOthersql6(request.getParameter("xkid"));
-        }
-        if (request.getParameter("flid") != null && !request.getParameter("flid").isEmpty()) {
-            pb.setOthersql1(request.getParameter("flid"));
-        }
-        if (request.getParameter("ztype") != null && !request.getParameter("ztype").isEmpty()) {
-            pb.setOthersql2(request.getParameter("ztype"));
+        if (request.getParameter("fh") != null && !request.getParameter("fh").isEmpty()) {
+            if (request.getParameter("fh").indexOf("LE") >= 0) {
+                PageBean pb1 = new PageBean();
+                if (request.getParameter("pages") != null && !request.getParameter("pages").toString().isEmpty())
+                    pb1.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
+                if (request.getParameter("name") != null && !request.getParameter("name").toString().isEmpty()) {
+                    pb1.setOthersql(request.getParameter("name"));
+                }
+                session.setAttribute("LEpb", pb1);
+                pb.setCurrentPage(1);
+                pb.setOthersql1(request.getParameter("id"));
+                if(user.getUse009().equals("C")){
+                    pb.setOthersql6(String.valueOf(user.getUse011()));
+                }
+            }else  if (request.getParameter("fh").indexOf("XK") >= 0) {
+                PageBean pb1 = new PageBean();
+                if (request.getParameter("pages") != null && !request.getParameter("pages").isEmpty())
+                    pb1.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
+                if (request.getParameter("name") != null && !request.getParameter("name").isEmpty()) {
+                    pb1.setOthersql(request.getParameter("name"));
+                }
+                if (request.getParameter("phone") != null && !request.getParameter("phone").isEmpty()) {
+                    pb1.setOthersql6(request.getParameter("phone"));
+                }
+                if (request.getParameter("flid") != null && !request.getParameter("flid").isEmpty()) {
+                    pb1.setOthersql1(request.getParameter("flid"));
+                }
+                session.setAttribute("XKpb", pb1);
+                pb.setCurrentPage(1);
+                pb.setOthersql6(request.getParameter("id"));
+            }
+            if(user.getUse009().equals("B")){
+                pb.setOthersql5(String.valueOf(user.getUse011()));
+            }
+            if (request.getParameter("ztype") != null && !request.getParameter("ztype").isEmpty()) {
+                pb.setOthersql2(request.getParameter("ztype"));
+            }
+
+            mav.addObject("fhlx", request.getParameter("fh"));
+        }else{
+            if (request.getParameter("pages") != null && !request.getParameter("pages").isEmpty())
+                pb.setCurrentPage(Integer.valueOf(request.getParameter("pages")));
+            else
+                pb.setCurrentPage(1);
+            if (request.getParameter("name") != null && !request.getParameter("name").isEmpty()) {
+                pb.setOthersql(request.getParameter("name"));
+            }
+            if(user.getUse009().equals("B")){
+                pb.setOthersql5(String.valueOf(user.getUse011()));
+            }else if (request.getParameter("skid") != null && !request.getParameter("skid").isEmpty()) {
+                pb.setOthersql5(request.getParameter("skid"));
+            }
+            if(user.getUse009().equals("C")){
+                pb.setOthersql6(String.valueOf(user.getUse011()));
+            }else if (request.getParameter("xkid") != null && !request.getParameter("xkid").isEmpty()) {
+                pb.setOthersql6(request.getParameter("xkid"));
+            }
+            if (request.getParameter("flid") != null && !request.getParameter("flid").isEmpty()) {
+                pb.setOthersql1(request.getParameter("flid"));
+            }
+            if (request.getParameter("ztype") != null && !request.getParameter("ztype").isEmpty()) {
+                pb.setOthersql2(request.getParameter("ztype"));
+            }
+            mav.addObject("fhlx", request.getParameter("fhlx"));
         }
         pb.setOthersql3(user.getUse009());
         System.out.println("type:"+request.getParameter("type"));
@@ -1826,7 +1969,7 @@ public class HTinfoController extends BaseController {
         mav.addObject("pageobj", yheService.selectPageBean(pb));
         mav.addObject("yhalist", yhaService.getAll());
         mav.addObject("smdlist", smdService.getAll());
-        mav.addObject("yhblist", yhbService.getAll());
+        mav.addObject("yhblist", yhbService.getAll(pb.getOthersql1()));
         mav.addObject("hbblist", hbbService.getAll());
         mav.addObject("hbalist", hbaService.getAll(null, user.getUse009().equals("B")?pb.getOthersql5():null,"B"));
             mav.setViewName("HTselection");
@@ -1842,6 +1985,11 @@ public class HTinfoController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/delselection",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     public String delselection(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        if(session.getAttribute("user")==null){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
         HashMap result = new HashMap();
         addLog(getUse(request).getUse002(),"删除了层级名称为：【" + request.getParameter("uname") + "】的状态");
         cdyhe yhe = yheService.getByid(Integer.valueOf(request.getParameter("fid")));
@@ -1865,73 +2013,62 @@ public class HTinfoController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/xgztselection",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     public String xgztselection(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        if(session.getAttribute("user")==null){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
         HashMap result = new HashMap();
         addLog(getUse(request).getUse002(),"修改了选课方名称为：【" + request.getParameter("uname") + "】的课程预约状态");
         cdyhe yhe = yheService.getByid(Integer.valueOf(request.getParameter("fid")));
         yhe.setYhe007(request.getParameter("type"));
-        if(request.getParameter("type").equals("C")||request.getParameter("type").equals("D")||request.getParameter("type").equals("O")||request.getParameter("type").equals("P")){
+        if(request.getParameter("type").equals("G")||request.getParameter("type").equals("H")){
             cdsmd smd = smdService.getByid(yhe.getYhe003());
             cdyhb yhb = yhbService.getByid(yhe.getYhe002());
-            yhb.setYhb015(yhb.getYhb015()-1);
-            smd.setSmd013(smd.getSmd013()-1);
-            yhbService.update(yhb);
-            smdService.update(smd);
-        }
-        if(request.getParameter("t1")!=null){
-            yhe.setYhe030(request.getParameter("t1"));
+            cdyha yha = yhaService.getByid(yhb.getYhb002());
+            if(yha.getYha006()<yha.getYha004()&&yhb.getYhb015()<yhb.getYhb016()&&smd.getSmd013()<smd.getSmd009()){
+                yha.setYha006(yha.getYha006()-1);
+                yhb.setYhb015(yhb.getYhb015()+1);
+                smd.setSmd013(smd.getSmd013()+1);
+                yhbService.update(yhb);
+                smdService.update(smd);
+                cdyhd yhd=yhdService.serachObject(DATE.format(yhe.getYhe008()),yhe.getYhe004());
+                if(yhd!=null){
+                    if(yhe.getYhe041().equals("上午")){
+                        yhd.setYhd010(yhd.getYhd010()+1);
+                    }else if(yhe.getYhe041().equals("下午")){
+                        yhd.setYhd012(yhd.getYhd012()+1);
+                    }else if(yhe.getYhe041().equals("晚上")){
+                        yhd.setYhd014(yhd.getYhd014()+1);
+                    }
+                    yhdService.update(yhd);
+                }
+                yheService.update(yhe);
+                result.put("msg","0");
+            }else{
+                result.put("msg","1");
+            }
         }else{
-            yhe.setYhe030("");
+            if(request.getParameter("type").equals("C")||request.getParameter("type").equals("D")||request.getParameter("type").equals("O")||request.getParameter("type").equals("P")){
+                cdsmd smd = smdService.getByid(yhe.getYhe003());
+                cdyhb yhb = yhbService.getByid(yhe.getYhe002());
+                cdyha yha = yhaService.getByid(yhb.getYhb002());
+                yha.setYha006(yha.getYha006()+1);
+                yhb.setYhb015(yhb.getYhb015()-1);
+                smd.setSmd013(smd.getSmd013()-1);
+                yhbService.update(yhb);
+                smdService.update(smd);
+            }
+            if(request.getParameter("t1")!=null){
+                yhe.setYhe030(request.getParameter("t1"));
+            }else{
+                yhe.setYhe030("");
+            }
+            yheService.update(yhe);
+            result.put("msg","0");
         }
-        yheService.update(yhe);
-        result.put("msg","0");
         return JSON.toJSONString(result);
     }
-
-    /**
-     * 修改账户
-     * 王新苗
-     * @param request
-     * @param response
-     */
-    @ResponseBody
-    @RequestMapping(value = "/xgselection")
-    public String xgselection(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap result = new HashMap();
-        HttpSession session = request.getSession();
-        if (session.getAttribute("user") == null) {
-            SystemTZYM(response, "登录失效");
-            return null;
-        }
-        cdyhe item = new cdyhe();
-        //修改
-        item.setYhe009(request.getParameter("z1"));
-        if(!request.getParameter("z7").isEmpty())item.setYhe015(Integer.valueOf(request.getParameter("z7")));
-//        if(!request.getParameter("z8").isEmpty())item.setYhe016(Integer.valueOf(request.getParameter("z8")));
-        if(!request.getParameter("z11").isEmpty())item.setYhe005(Integer.valueOf(request.getParameter("z11")));
-        cdyhe item1 =yheService.getByid(Integer.valueOf(request.getParameter("fid")));
-        item.setYhe012(item1.getYhb().getYhb017()!=null?item1.getYhb().getYhb017():(item1.getYhb().getYha().getYha005()!=null?item1.getYhb().getYha().getYha005():null));
-        item.setYhe013(item1.getHba().getHba012());
-        item.setYhe014(item1.getHba().getHba006()*item.getYhe015());
-        /*item.setYhe018(item.getYhe016()<10?item1.getHba().getHba027():
-                      (item.getYhe016()<20?item1.getHba().getHba027()+item1.getHba().getHba028()*(item.getYhe016()-10):
-                      (item.getYhe016()<30?item1.getHba().getHba027()+item1.getHba().getHba028()*10+item1.getHba().getHba029()*(item.getYhe016()-20):
-                      (item.getYhe016()<45?item1.getHba().getHba027()+item1.getHba().getHba028()*10+item1.getHba().getHba029()*10+item1.getHba().getHba030()*(item.getYhe016()-30):
-                                           item1.getHba().getHba027()+item1.getHba().getHba028()*10+item1.getHba().getHba029()*10+item1.getHba().getHba030()*15))));
-*/
-        if(request.getParameter("lx").equals("B")){
-            item.setYhe007("K");
-        }else{
-            item.setYhe007("J");
-        }
-        String log = "修改了名字为：【" + request.getParameter("t1") + "】的课程预约信息";
-        item.setYhe001(Integer.valueOf(request.getParameter("fid")));
-        addLog(getUse(request).getUse002(),log);
-        yheService.update(item);
-        result.put("msg", "U");
-        result.put("d",item);
-        return JSON.toJSONString(result);
-    }
-
     /**
      * 修改账户
      * 王新苗
@@ -1941,12 +2078,12 @@ public class HTinfoController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/xgselection1")
     public String xgselection1(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap result = new HashMap();
         HttpSession session = request.getSession();
         if (session.getAttribute("user") == null) {
             SystemTZYM(response, "登录失效");
             return null;
         }
+        HashMap result = new HashMap();
         cdyhe item = new cdyhe();
         //修改
         cduse use=getUse(request);
@@ -1955,51 +2092,45 @@ public class HTinfoController extends BaseController {
         if(!request.getParameter("t4").isEmpty())item.setYhe004(Integer.valueOf(request.getParameter("t4")));
         cdhba hba = hbaService.getByid(Integer.valueOf(request.getParameter("t4")));
         item.setYhe003(hba.getHba022());
+        if(!request.getParameter("t11").isEmpty())item.setYhe005(Integer.valueOf(request.getParameter("t11")));
+
         cdsmd smd = smdService.getByid(item.getYhe003());
         cdyhb yhb = yhbService.getByid(item.getYhe002());
-        if(!request.getParameter("t11").isEmpty())item.setYhe002(Integer.valueOf(request.getParameter("t11")));
-        item.setYhe009(request.getParameter("t2"));
-        if(!request.getParameter("t14").isEmpty())item.setYhe010(Integer.valueOf(request.getParameter("t14")));
-        yhb.setYhb015(yhb.getYhb015()+1);
-        smd.setSmd013(smd.getSmd013()+1);
-        item.setYhe042(request.getParameter("t42"));
-        item.setYhe043(request.getParameter("t43"));
-        item.setYhe044(request.getParameter("t44"));
-        item.setYhe045(request.getParameter("t45"));
-        if(yhb.getYhb015()<=yhb.getYhb016()&&smd.getSmd013()<=smd.getSmd009()){
-            yhb.setYhb012(yhb.getYhb012()+1);
-            if(item.getYhe010()!=null)item.setYhe011(item.getYhe010()<10?hba.getHba027():
-                          (item.getYhe010()<20?hba.getHba027()+hba.getHba028()*(item.getYhe010()-10):
-                          (item.getYhe010()<30?hba.getHba027()+hba.getHba028()*10+hba.getHba029()*(item.getYhe010()-20):
-                          (item.getYhe010()<45?hba.getHba027()+hba.getHba028()*10+hba.getHba029()*(item.getYhe010()-30):
-                                               hba.getHba027()+hba.getHba028()*10+hba.getHba029()*10+hba.getHba030()*15))));
-            item.setYhe012(yhb.getYhb017()!=null?yhb.getYhb017():(yhb.getYha().getYha005()!=null?yhb.getYha().getYha005():null));
-            item.setYhe013(hba.getHba012());
-            item.setYhe015(hba.getHba013());
-            if(item.getYhe015()!=null)item.setYhe014(hba.getHba006()*item.getYhe015());
-            item.setYhe008(DATE.parse(request.getParameter("t8").split(" ")[0]));
-            item.setYhe041(request.getParameter("t8").split(" ")[1]);
+        cdyha yha = yhaService.getByid(yhb.getYhb002());
+        if(yha.getYha006()<yha.getYha004()&&yhb.getYhb015()<yhb.getYhb016()&&smd.getSmd013()<smd.getSmd009()){
+            item.setYhe006(smd.getSmd002());
             if(request.getParameter("lx").equals("B")){
                 item.setYhe007("B");
             }else{
                 item.setYhe007("A");
             }
-            yhb.setYhb015(yhb.getYhb015()+1);
-            cdyhd yhd=yhdService.serachObject(request.getParameter("t8").split(" ")[0],item.getYhe004());
-            if(yhd!=null){
-                if(item.getYhe041().equals("上午")){
-                    yhd.setYhd010(yhd.getYhd010()+1);
-                }else if(item.getYhe041().equals("下午")){
-                    yhd.setYhd012(yhd.getYhd012()+1);
-                }else if(item.getYhe041().equals("晚上")){
-                    yhd.setYhd014(yhd.getYhd014()+1);
-                }
-                yhdService.update(yhd);
+            item.setYhe008(DATE.parse(request.getParameter("t8").split(" ")[0]));
+            item.setYhe041(request.getParameter("t8").split(" ")[1]);
+            item.setYhe009(request.getParameter("t2"));
+            if(!request.getParameter("t14").isEmpty())item.setYhe010(Integer.valueOf(request.getParameter("t14")));
+            if(item.getYhe010()!=null)item.setYhe011(item.getYhe010()<10?hba.getHba027():
+                    (item.getYhe010()<20?hba.getHba027()+hba.getHba028()*(item.getYhe010()-10):
+                            (item.getYhe010()<30?hba.getHba027()+hba.getHba028()*10+hba.getHba029()*(item.getYhe010()-20):
+                                    (item.getYhe010()<45?hba.getHba027()+hba.getHba028()*10+hba.getHba029()*(item.getYhe010()-30):
+                                            hba.getHba027()+hba.getHba028()*10+hba.getHba029()*10+hba.getHba030()*15))));
+            item.setYhe012(yhb.getYhb017()!=null?yhb.getYhb017():(yhb.getYha().getYha005()!=null?yhb.getYha().getYha005():null));
+            item.setYhe013(hba.getHba012());
+            if(!request.getParameter("t6").isEmpty()){
+                item.setYhe015(Integer.valueOf(request.getParameter("t6")));
+            }else{
+                item.setYhe015(hba.getHba013());
             }
-//            String log = "新增了名字为：【" + request.getParameter("t1")+ "】的课程预约信息";
-//            addLog(use.getUse002(),log);
-            if(!request.getParameter("fid").isEmpty())item.setYhe001(Integer.valueOf(request.getParameter("fid")));
-            item = yheService.insert(item);
+            if(item.getYhe015()!=null)item.setYhe014(hba.getHba006()*item.getYhe015());
+            item.setYhe042(request.getParameter("t42"));
+            item.setYhe043(request.getParameter("t43"));
+            item.setYhe044(request.getParameter("t44"));
+            item.setYhe045(request.getParameter("t45"));
+            if(!request.getParameter("fid").isEmpty()){
+                item.setYhe001(Integer.valueOf(request.getParameter("fid")));
+                yheService.update(item);
+            }else{
+                item = yheService.insert(item);
+            }
             Date date = new Date();
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
             List<MultipartFile> t1 = multipartRequest.getFiles("s1");
@@ -2020,10 +2151,26 @@ public class HTinfoController extends BaseController {
                     }
                 }
             }
-            yhbService.update(yhb);
-            smdService.update(smd);
+            String delid=request.getParameter("delid");
+            String delimg=request.getParameter("delimg");
+//        System.out.println("delimg:"+delimg);
+            if(!delimg.isEmpty()){
+                String[] ids=delid.split("#");
+                String[] imgs=delimg.split("#");
+                @SuppressWarnings("unchecked")
+                List<String> list = (List<String>)(List<?>) Arrays.asList(ids);
+                list.removeAll(Collections.singleton(null));
+                if(list!=null&&list.size()>0){
+                    for(String n:imgs){
+                        if(n!="")uploadpic(null,null,n);
+                    }
+                    yhfService.deletes(list);
+                }
+            }
+            List<cdyhf> list=yhfService.getAll(String.valueOf(item.getYhe001()),"D");
             result.put("msg", "I");
             result.put("d",item);
+            result.put("list",list);
         }else{
             result.put("msg", "S");
         }
@@ -2041,12 +2188,12 @@ public class HTinfoController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/xgselection2")
     public String xgselection2(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap result = new HashMap();
         HttpSession session = request.getSession();
         if (session.getAttribute("user") == null) {
             SystemTZYM(response, "登录失效");
             return null;
         }
+        HashMap result = new HashMap();
         String zt=request.getParameter("zt");
         cdyhe item = new cdyhe();
         //修改
@@ -2180,13 +2327,13 @@ public class HTinfoController extends BaseController {
      */
     @RequestMapping("/tonews")
     public ModelAndView tonews(HttpServletRequest request,HttpServletResponse response) throws Exception{
-        ModelAndView mav = new ModelAndView();
         HttpSession session = request.getSession();
-        int userid = 0;//后台登录用户ID
         if(session.getAttribute("user")==null){
             SystemTZYM(response,"登录失效");
             return null;
         }
+        ModelAndView mav = new ModelAndView();
+        int userid = 0;//后台登录用户ID
         userid = Decrypt(session.getAttribute("user").toString());
         cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
         mav.addObject("msg", request.getParameter("msg"));
@@ -2198,7 +2345,12 @@ public class HTinfoController extends BaseController {
         if (request.getParameter("name") != null && !request.getParameter("name").isEmpty()) {
             pb.setOthersql(request.getParameter("name"));
         }
-        pb.setOthersql3(String.valueOf(user.getUse001()));
+        if(user.getUse009().equals("B")){
+            pb.setOthersql3(String.valueOf(user.getUse011()));
+        }
+        if(user.getUse009().equals("C")){
+            pb.setOthersql4(String.valueOf(user.getUse011()));
+        }
         mav.addObject("pageobj", yhgService.selectPageBean(pb));
         mav.setViewName("HTnews");
         return mav;
@@ -2213,9 +2365,15 @@ public class HTinfoController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/xgztnews",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     public String xgztnews(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        if(session.getAttribute("user")==null){
+            SystemTZYM(response,"登录失效");
+            return null;
+        }
         HashMap result = new HashMap();
         addLog(getUse(request).getUse002(),"修改了标题名称为：【" + request.getParameter("uname") + "】的状态");
         cdyhg yhg = yhgService.getByid(request.getParameter("fid"));
+        yhg.setYhg002(request.getParameter("type"));
         yhg.setYhg003(new Date());
         yhgService.update(yhg);
         result.put("msg","0");
@@ -2230,30 +2388,35 @@ public class HTinfoController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/xgnews")
     public String xgnews(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap result = new HashMap();
         HttpSession session = request.getSession();
         if (session.getAttribute("user") == null) {
             SystemTZYM(response, "登录失效");
             return null;
         }
+        HashMap result = new HashMap();
         cdyhg item = new cdyhg();
         //修改
         cduse use=getUse(request);
-        item.setYhg002(request.getParameter("t2"));
         item.setYhg004(String.valueOf(use.getUse001()));
         item.setYhg006(request.getParameter("t3"));
         item.setYhg010(request.getParameter("t4"));
         item.setYhg009(request.getParameter("lx"));
         if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()){
-            String log = "修改了名字为：【" + request.getParameter("t2") + "】的用户信息";
+            String log = "修改了标题为：【" + request.getParameter("t4") + "】的消息信息";
             item.setYhg001((request.getParameter("fid")));
             addLog(use.getUse002(),log);
             yhgService.update(item);
             result.put("msg", "U");
         }else{
-            String log = "新增了名字为：【" + request.getParameter("t2")+ "】的用户信息";
+            if(use.getUse009().equals("B")){
+                item.setYhg007(use.getUse011());
+            }else{
+                item.setYhg008(use.getUse011());
+            }
+            String log = "新增了标题为：【" + request.getParameter("t2")+ "】的消息信息";
             item.setYhg001(UUID.randomUUID().toString().replace("-",""));
             item.setYhg005(0);
+            item.setYhg002("A");
             addLog(use.getUse002(),log);
             item = yhgService.insert(item);
             result.put("msg", "I");
@@ -2269,13 +2432,13 @@ public class HTinfoController extends BaseController {
      */
     @RequestMapping("/tonewsa")
     public ModelAndView tonewsa(HttpServletRequest request,HttpServletResponse response) throws Exception{
-        ModelAndView mav = new ModelAndView();
         HttpSession session = request.getSession();
-        int userid = 0;//后台登录用户ID
         if(session.getAttribute("user")==null){
             SystemTZYM(response,"登录失效");
             return null;
         }
+        ModelAndView mav = new ModelAndView();
+        int userid = 0;//后台登录用户ID
         userid = Decrypt(session.getAttribute("user").toString());
         cduse user = useService.getByid(Decrypt(session.getAttribute("user").toString()));
         mav.addObject("msg", request.getParameter("msg"));
@@ -2287,8 +2450,21 @@ public class HTinfoController extends BaseController {
         if (request.getParameter("name") != null && !request.getParameter("name").isEmpty()) {
             pb.setOthersql(request.getParameter("name"));
         }
+        pb.setOthersql2("B");
+        if (request.getParameter("skid") != null && !request.getParameter("skid").toString().isEmpty()) {
+            pb.setOthersql3(request.getParameter("skid"));
+        }
+        if (request.getParameter("flzt") != null && !request.getParameter("flzt").toString().isEmpty()) {
+            pb.setOthersql4(request.getParameter("flzt"));
+        }
+        if(user.getUse009().equals("B")){
+            pb.setOthersql5(String.valueOf(user.getUse011()));
+        }
+        if(user.getUse009().equals("C")){
+            pb.setOthersql6(String.valueOf(user.getUse011()));
+        }
         mav.addObject("pageobj", yhgService.selectPageBean(pb));
-        mav.setViewName("HTnews");
+        mav.setViewName("HTnewsa");
         return mav;
     }
 }

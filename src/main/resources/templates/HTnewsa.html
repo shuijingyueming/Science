@@ -47,7 +47,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-search mb-2-5">
-                        <form class="search-form" method="post" role="form" action="toHt/tonews">
+                        <form class="search-form" method="post" role="form" action="toHt/tonewsa">
                             <input type="hidden" id="pages" name="pages" th:value="${pageobj.currentPage}"/>
                             <input type="hidden" id="counts" name="counts" th:value="${pageobj.pageCount}"/>
                             <!--text input-->
@@ -79,7 +79,7 @@
                                     <th style="max-width:30px;">序号</th>
                                     <th>标题</th>
                                     <th>发布方单位名称</th>
-                                    <th>发布人</th>
+                                    <th>创建人</th>
                                     <th>浏览量</th>
                                     <th>发布时间</th>
                                     <th style="max-width:80px;">操作</th>
@@ -89,14 +89,18 @@
                                     <tr th:each="item,stat:${pageobj.resultList}">
                                     <td th:text="${stat.index+1}"></td>
                                         <td th:text="${item.yhg010}"></td>
-                                        <td th:text="${item.yhg002}"></td>
+                                        <td th:text="${item.yhg009=='B'?item.smd.smd003:item.yhb.yhb004}"></td>
                                         <td th:text="${item.use.use002}"></td>
                                         <td th:text="${item.yhg005}"></td>
                                         <td th:text="${#dates.format(item.yhg003,'yyyy-MM-dd')}"></td><td>
                                         <div class="btn-group btn-group-sm">
-                                            <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#xqmode" th:onclick="toxq([[${item.toString()}]],[[${item.yhg006}]])">详情</a>
+                                            <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#xqmode" th:onclick="toxq([[${item.toString()}]],[[${item.yhg009=='B'?item.smd.smd003:item.yhb.yhb004}]],[[${item.yhg006}]])">详情</a>
                                             <div class="ivu-divider-vertical"></div>
-                                            <!--  <a href="javascript:void(0);" th:onclick="del([[${item.yhg001}]])" class="btn btn-table">删除</a>-->
+<!--                                            <th:block th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">-->
+<!--                                                <th:block th:if="${item.yhg003=='B'}">-->
+<!--                                                    <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhg001}]],[[${item.yhg010}]],'C')">下架</a>-->
+<!--                                                </th:block>-->
+<!--                                            </th:block>-->
                                         </div>
                                     </td>
                                 </tr>
@@ -226,7 +230,7 @@
 
     pdyes($("#pages").val(), $("#counts").val());
 
-    function toxq(obj,html1){
+    function toxq(obj,name1,html1){
         let item = null;
         if(obj.indexOf("Hash")>0){
             item = striongTOjsonString(obj);
@@ -243,7 +247,7 @@
         html+= '';
         html+= '<div class="row"><div class="col-md-5">';
         html+= '<div class="form-group"><label class="layui-form-label">发布方单位名称：</label>';
-        html+= '<span class="jspan">'+item.yhg002+'</span>';
+        html+= '<span class="jspan">'+name1+'</span>';
         html+= '</div></div></div>';
         html+= '';
         html+= '<div class="row"><div class="col-md-5">';
@@ -375,7 +379,7 @@
                 contentType: false, // 不设置内容类型
                 processData: false, // 不处理发送的数据
                 success: function (res) {
-                    var d = eval(res);
+                    var d = eval(res.d);
                     $("#fid").val(d.yhg001);
                     layer.close(load_index);
                     layer.msg("提交成功");

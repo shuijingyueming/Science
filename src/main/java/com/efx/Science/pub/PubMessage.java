@@ -6,7 +6,7 @@ import java.util.Map;
 public class PubMessage {
     public static Map dlmap = new HashMap();
 
-    public static String serverUrl = "http://localhost";
+    public static String serverUrl = "https://kx.nbefx.com";
 
     //    小程序
     public static String appid = "wx2cc0b9586ebdd013";

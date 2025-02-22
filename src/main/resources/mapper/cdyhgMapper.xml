@@ -13,6 +13,8 @@
     <result column="YHG009" jdbcType="VARCHAR" property="yhg009" />
     <result column="YHG010" jdbcType="VARCHAR" property="yhg010" />
     <association property="use" column="YHG004" select="com.efx.Science.dao.cduseMapper.selectByPrimaryKey"/>
+    <association property="smd" column="YHG007" select="com.efx.Science.dao.cdsmdMapper.selectByPrimaryKey"/>
+    <association property="yhb" column="YHG008" select="com.efx.Science.dao.cdyhbMapper.selectByPrimaryKey"/>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>

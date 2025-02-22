@@ -27,7 +27,7 @@ public interface CdyhbService extends IService<cdyhb> {
 
     void delete(int id);
 
-    List<cdyhb> getAll();
+    List<cdyhb> getAll(String cjid);
 
     Integer countByExample();
 }

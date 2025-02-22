@@ -694,6 +694,12 @@ public class cdyhgExample {
             addCriterion("YHG010 not between", value1, value2, "yhg010");
             return (Criteria) this;
         }
+
+        public Criteria andSql(String value) {
+            addCriterion(value);
+            return (Criteria) this;
+        }
+
     }
 
     public static class Criteria extends GeneratedCriteria {

@@ -100,7 +100,7 @@
                                     <th>场次总量设定</th>
                                     <th>场次余量</th>
                                     <th>交通补贴费用</th>
-                                    <th style="max-width:80px;" th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">操作</th>
+                                    <th style="max-width:80px;">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody id="tablebody">
@@ -117,13 +117,19 @@
                                     <td th:text="${item.yhb014}"></td>
                                     <td th:text="${item.yhb015}"></td>
                                     <td th:text="${item.yhb016}"></td>
-                                    <td th:text="${item.yhb017}"></td>
                                     <td th:text="${item.yhb016!=null?item.yhb016-item.yhb015:0}"></td>
-                                    <td th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">
+                                    <td th:text="${item.yhb017}"></td>
+                                    <td >
                                         <div class="btn-group btn-group-sm">
-                                            <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]])" class="btn btn-table"
-                                               data-bs-toggle="modal" data-bs-target="#editmode">编辑</a>
-                                            <div class="ivu-divider-vertical"></div>
+<!--                                            <a href="javascript:void(0);" th:onclick="toxq([[${item.toString()}]],[[${item.yha.yha002}]])" class="btn btn-table"-->
+<!--                                               data-bs-toggle="modal" data-bs-target="#xqmode">详情</a>-->
+<!--                                            <div class="ivu-divider-vertical"></div>-->
+                                            <th:block th:if="${session.umsg.uname=='admin'||session.umsg.jstype=='A'}">
+                                                <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]])" class="btn btn-table"
+                                                   data-bs-toggle="modal" data-bs-target="#editmode">编辑</a>
+                                                <div class="ivu-divider-vertical"></div>
+                                            </th:block>
+                                            <a href="javascript:void(0);" th:onclick="toyyjl([[${item.yhb001}]])" class="btn btn-table">选课情况</a>
                                             <!--<a href="javascript:void(0);" th:onclick="del([[${item.yhb001}]])" class="btn btn-table">删除</a>-->
                                         </div>
                                     </td>
@@ -138,7 +144,21 @@
             </div>
         </div>
     </div>
+    <!-- 详情模态框 -->
+    <div class="modal fade" id="xqmode" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel" aria-hidden="true" >
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="xqmodeLabel">查看详情</h6>
+                    <button type="button" class="btn-close" style="margin-right: 20px;" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div>
+                    <div class="modal-body" style="padding-bottom: 180px;background-color: #FFF;"></div>
+                </div>
 
+            </div>
+        </div>
+    </div>
     <!-- 编辑分类模态框 -->
     <div class="modal fade" id="editmode" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel"
          aria-hidden="true" style="height:100%;background-color: #FFF;">
@@ -279,6 +299,14 @@
             ["flid",$("#flid").val()],
             ["name", $("#name").val()]];
         form_submit("toHt/tochosels","post",params,"_self");
+    }
+
+    function toyyjl(id){
+        var params = [ ["id",id], ["fh","XK"],
+            ["pages",$("#pages").val()],
+            ["flid",$("#flid").val()],
+            ["name", $("#name").val()]];
+        form_submit("toHt/toselection","post",params,"_self");
     }
 
     function xzmb(){
@@ -454,6 +482,39 @@
     //刷新页面
     function pagerefalsh(){
         location.reload();
+    }
+
+    function toxq(obj,cjname){
+        let item = null;
+        if(obj.indexOf("Hash")>0){
+            item = striongTOjsonString(obj);
+        }else{
+            item = jsStringTojsonString(obj);
+        }
+
+        $("#xqmode").find(".modal-body").empty();
+        let html="";
+        html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
+        html+= '<label class="layui-form-label">单位名称：</label>';
+        html+= '<span class="jspan">'+item.yhb004+'</span>';
+        html+= '</div></div>';
+        html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
+        html+= '<label class="layui-form-label">层级名称：</label>';
+        html+= '<span class="jspan">'+cjname+'</span>';
+        html+= '</div></div>';
+        html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
+        html+= '<label class="layui-form-label">单位地址：</label>';
+        html+= '<span class="jspan">'+item.yhb005+'</span>';
+        html+= '</div></div>';
+        html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
+        html+= '<label class="layui-form-label">联系人：</label>';
+        html+= '<span class="jspan">'+item.yhb006+'</span>';
+        html+= '</div></div>';
+        html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
+        html+= '<label class="layui-form-label">联系电话：</label>';
+        html+= '<span class="jspan">'+item.yhb007+'</span>';
+        html+= '</div></div>';
+        $("#xqmode").find(".modal-body").append(html);
     }
 
     function edit(obj){

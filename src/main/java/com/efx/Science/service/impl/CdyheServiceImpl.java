@@ -52,12 +52,8 @@ public class CdyheServiceImpl implements CdyheService {
                 c.andSql("(yhe007='A' or yhe007='B')");
             }else if(pb.getOthersql2().equals("B")){
                 c.andSql("(yhe007='C' or yhe007='D')");
-            }else if(pb.getOthersql2().equals("J")){
-                c.andSql("(yhe007='S' or yhe007='T')");
             }else if(pb.getOthersql2().equals("C")){
                 c.andSql("(yhe007='G' or yhe007='H')");
-            }else if(pb.getOthersql2().equals("D")){
-                c.andSql("(yhe007='J' or yhe007='K')");
             }else if(pb.getOthersql2().equals("E")){
                 c.andSql("(yhe007='M' or yhe007='N')");
             }else if(pb.getOthersql2().equals("F")){
@@ -72,9 +68,9 @@ public class CdyheServiceImpl implements CdyheService {
                 if(pb.getOthersql3().equals("A")){
                     c.andYhe007EqualTo("E");
                 }else if(pb.getOthersql3().equals("B")){
-                    c.andSql("(yhe007='E' or yhe007='Q')");
-                }else if(pb.getOthersql3().equals("C")){
                     c.andSql("(yhe007='E' or yhe007='R')");
+                }else if(pb.getOthersql3().equals("C")){
+                    c.andSql("(yhe007='E' or yhe007='Q')");
                 }
             }else if(pb.getOthersql2().equals("H")){
                 c.andSql("(yhe007='O' or yhe007='P')");
@@ -83,7 +79,7 @@ public class CdyheServiceImpl implements CdyheService {
         cdyhbExample e2 = new cdyhbExample();
         cdyhbExample.Criteria c1 = e2.createCriteria();
         if(pb.getOthersql1()!=null)  c1.andYhb002EqualTo(Integer.valueOf(pb.getOthersql1()));
-        e1.setOrderByClause("yhe008 desc");
+        e1.setOrderByClause("yhe008 desc,yhe001 desc");
         if(pb.getOthersql4()==null) {
             return queryByPage(pb,e1,e2);
         }else{
@@ -264,7 +260,9 @@ public class CdyheServiceImpl implements CdyheService {
         if(pb.getOthersql6()!=null)  c.andYhe002EqualTo(Integer.valueOf(pb.getOthersql6()));
         if(pb.getOthersql1()!=null)  {
             if(pb.getOthersql1().equals("A")){
-                c.andSql("(yhe007='A' or yhe007='B' or yhe007='G' or yhe007='K' or yhe007='M' or yhe007='N')");
+                c.andSql("(yhe007='A' or yhe007='B' or  yhe007='M' or yhe007='N')");
+            }else if(pb.getOthersql1().equals("B")){
+                c.andSql("( yhe007='C' or yhe007='D' or yhe007='S' or yhe007='T' )");
             }else if(pb.getOthersql1().equals("E")){
                 if(pb.getOthersql5()!=null) c.andSql("(yhe007='E' or yhe007='Q')");
                 if(pb.getOthersql6()!=null) c.andSql("(yhe007='E' or yhe007='R')");

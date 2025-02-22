@@ -5,6 +5,7 @@ import java.util.List;
 
 public class cdyhe {
 
+    private cduse use;
     private cdyhb yhb;
     private cdsmd smd;
     private cdhba hba;
@@ -37,6 +38,14 @@ public class cdyhe {
 
     public void setYhflistC(List<cdyhf> yhflistC) {
         this.yhflistC = yhflistC;
+    }
+
+    public cduse getUse() {
+        return use;
+    }
+
+    public void setUse(cduse use) {
+        this.use = use;
     }
 
     public cdyhb getYhb() {

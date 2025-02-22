@@ -43,10 +43,13 @@ public class CdyhgServiceImpl implements CdyhgService {
         cdyhgExample e1 = new cdyhgExample();
         Criteria c = e1.createCriteria();
         if(pb.getOthersql()!=null) c.andYhg010Like("%"+pb.getOthersql()+"%");
-        if(pb.getOthersql3()!=null)c.andYhg004EqualTo(pb.getOthersql3());
+        if(pb.getOthersql3()!=null)c.andYhg007EqualTo(Integer.valueOf(pb.getOthersql3()));
+        if(pb.getOthersql4()!=null)c.andYhg008EqualTo(Integer.valueOf(pb.getOthersql4()));
+        if(pb.getOthersql5()!=null)c.andSql("(YHG007 IS NULL OR YHG007!='"+pb.getOthersql5()+"')");
+        if(pb.getOthersql6()!=null)c.andSql("(YHG008 IS NULL OR YHG008!='"+pb.getOthersql6()+"')");
         if(pb.getOthersql1()!=null)c.andYhg009EqualTo(pb.getOthersql1());
-        if(pb.getOthersql2()!=null)c.andYhg003IsNotNull();
-        e1.setOrderByClause("yhg003 desc,yhg001 desc");
+        if(pb.getOthersql2()!=null)c.andYhg002EqualTo(pb.getOthersql2());
+        e1.setOrderByClause("yhg002 desc,yhg003 desc,yhg001 desc");
         return queryByPage(pb,e1);
     }
 

@@ -78,29 +78,33 @@
                                 <tr>
                                     <th style="max-width:30px;">序号</th>
                                     <th>标题</th>
-                                    <th>发布方单位名称</th>
-                                    <th>发布人</th>
+                                    <th>创建人</th>
                                     <th>浏览量</th>
                                     <th>发布时间</th>
+                                    <th>状态</th>
                                     <th style="max-width:80px;">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody id="tablebody">
                                     <tr th:each="item,stat:${pageobj.resultList}">
-                                    <td th:text="${stat.index+1}"></td>
+                                        <td th:text="${stat.index+1}"></td>
                                         <td th:text="${item.yhg010}"></td>
-                                        <td th:text="${item.yhg002}"></td>
                                         <td th:text="${item.use.use002}"></td>
                                         <td th:text="${item.yhg005}"></td>
-                                        <td th:text="${#dates.format(item.yhg003,'yyyy-MM-dd')}"></td><td>
+                                        <td th:text="${#dates.format(item.yhg003,'yyyy-MM-dd')}"></td>
+                                        <td th:text="${item.yhg002=='A'?'保存':(item.yhg002=='B'?'发布':'下架')}"></td>
+                                        <td>
                                         <div class="btn-group btn-group-sm">
                                             <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#xqmode" th:onclick="toxq([[${item.toString()}]],[[${item.yhg006}]])">详情</a>
                                             <div class="ivu-divider-vertical"></div>
-                                            <th:block th:if="${item.yhg003==null}">
+                                            <th:block th:if="${item.yhg002=='A'}">
                                             <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]],[[${item.yhg006}]])" class="btn btn-table"
                                                data-bs-toggle="modal" data-bs-target="#editmode">编辑</a>
                                             <div class="ivu-divider-vertical"></div>
-                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhg001}]],[[${item.yhg010}]])">发布</a>
+                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhg001}]],[[${item.yhg010}]],'B')">发布</a>
+                                            </th:block>
+                                            <th:block th:if="${item.yhg002=='B'}">
+                                                <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#delmode"  th:onclick="xgzt([[${item.yhg001}]],[[${item.yhg010}]],'C')">下架</a>
                                             </th:block>
                                             <!--  <a href="javascript:void(0);" th:onclick="del([[${item.yhg001}]])" class="btn btn-table">删除</a>-->
                                         </div>
@@ -150,12 +154,6 @@
                             <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">标题</label>
                             <div class="col-10 col-sm-8 col-md-6 col-lg-4">
                                 <input type="text" class="form-control" id="t4" name="t4" placeholder="请输入标题"/>
-                            </div>
-                        </div>
-                        <div class="row col-auto" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">发布方名称</label>
-                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                <input type="text" class="form-control" id="t2" name="t2" placeholder="请输入发布方单位名称"/>
                             </div>
                         </div>
                         <div class="row col-auto" style="margin-top: 20px;">
@@ -289,11 +287,6 @@
         html+= '</div></div></div>';
         html+= '';
         html+= '<div class="row"><div class="col-md-5">';
-        html+= '<div class="form-group"><label class="layui-form-label">发布方单位名称：</label>';
-        html+= '<span class="jspan">'+item.yhg002+'</span>';
-        html+= '</div></div></div>';
-        html+= '';
-        html+= '<div class="row"><div class="col-md-5">';
         html+= '<div class="form-group"><label class="layui-form-label">浏览量：</label>';
         html+= '<span class="jspan">'+item.yhg005+'</span>';
         html+= '</div></div></div>';
@@ -336,7 +329,11 @@
                 success: function (res) {
                     var d = eval(res);
                     if(d.msg=="0"){
-                        layer.msg("发布成功");
+                        if(type=="B"){
+                            layer.msg("发布成功");
+                        }else{
+                            layer.msg("操作成功");
+                        }
                         setTimeout(function(){
                             location.reload();
                         },1000);
@@ -409,7 +406,6 @@
             load_index = layer.load(1);
             var formData = new FormData();
             formData.append("fid",$("#fid").val().trim());
-            formData.append("t2",$("#t2").val());
             // formData.append("t3",$("#t3").val());
             formData.append("t3", KE.html());
             formData.append("t4",$("#t4").val());
@@ -422,7 +418,7 @@
                 contentType: false, // 不设置内容类型
                 processData: false, // 不处理发送的数据
                 success: function (res) {
-                    var d = eval(res);
+                    var d = eval(res.d);
                     $("#fid").val(d.yhg001);
                     layer.close(load_index);
                     layer.msg("提交成功");

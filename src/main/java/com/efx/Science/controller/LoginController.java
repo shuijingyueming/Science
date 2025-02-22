@@ -236,13 +236,13 @@ public class LoginController extends BaseController {
      */
     @RequestMapping(value = "/updatePwd")
     public ModelAndView updatePwd() throws Exception {
-        ModelAndView mav = new ModelAndView();
-        response.setContentType("text/html;charset=utf-8");
         HttpSession session = request.getSession();
         if (session.getAttribute("user") == null) {
             SystemTZYM(response, "登录失效");
             return null;
         }
+        ModelAndView mav = new ModelAndView();
+        response.setContentType("text/html;charset=utf-8");
         Integer userid = Decrypt(session.getAttribute("user").toString());
         cduse useNow =useService.getByid(userid);
         String jiumm = request.getParameter("oldpwd").trim();
@@ -287,6 +287,15 @@ public class LoginController extends BaseController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/getallchose",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    public String getallchose(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap result = new HashMap();
+        List<cdyhb> list=yhbService.getAll(request.getParameter("flid"));
+        result.put("list",list);
+        return JSON.toJSONString(result);
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/getallcourse",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     public String getallcourse(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HashMap result = new HashMap();
@@ -313,10 +322,9 @@ public class LoginController extends BaseController {
         return JSON.toJSONString(result);
     }
 
-    //富文本框 上传图片
     @RequestMapping(value = "upload")
     @ResponseBody
-    public String upload(@RequestParam("imgFile") MultipartFile[] files, HttpServletRequest request) {
+    public String upload(@RequestParam("imgFile") MultipartFile[] files, HttpServletRequest request) throws Exception {
         JSONObject jb=new JSONObject();
         jb.put("error", 0);
         //文件保存目录路径
@@ -346,6 +354,7 @@ public class LoginController extends BaseController {
         }
         return jb.toJSONString();
     }
+    //富文本框 上传图片
 
 
     /**
@@ -353,7 +362,7 @@ public class LoginController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "/zhname",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
-    public boolean zskname(HttpServletRequest request,HttpServletResponse response){
+    public boolean zskname(HttpServletRequest request,HttpServletResponse response) throws Exception {
         Integer id=request.getParameter("id").isEmpty()?0:Integer.valueOf(request.getParameter("id"));
         cduse use=useService.selectByName(request.getParameter("name"),null,null);
         if((id==0 && use!=null)||(id!=0 && use!=null && id!=use.getUse001())){
@@ -368,7 +377,7 @@ public class LoginController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "/kcname",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
-    public boolean kcname(HttpServletRequest request,HttpServletResponse response){
+    public boolean kcname(HttpServletRequest request,HttpServletResponse response) throws Exception {
         Integer id=request.getParameter("id").isEmpty()?0:Integer.valueOf(request.getParameter("id"));
         cdhba item=hbaService.selectByName(null,request.getParameter("name"));
         if((id==0 && item!=null)||(id!=0 && item!=null && id!=item.getHba001())){

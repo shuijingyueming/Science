@@ -343,7 +343,7 @@
                             location.href = 'toHt/toHTindex';
                         }, 1500);
                     },
-                    error: function () { console.log('提交失败'); }
+                    error: function (e) { console.log(e);console.log('提交失败'); }
                 });
 
             }

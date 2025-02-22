@@ -4,6 +4,26 @@ import java.util.Date;
 
 public class cdyhg {
 
+    private cdsmd smd;
+
+    private cdyhb yhb;
+
+    public cdsmd getSmd() {
+        return smd;
+    }
+
+    public void setSmd(cdsmd smd) {
+        this.smd = smd;
+    }
+
+    public cdyhb getYhb() {
+        return yhb;
+    }
+
+    public void setYhb(cdyhb yhb) {
+        this.yhb = yhb;
+    }
+
     private cduse use;
 
     public cduse getUse() {

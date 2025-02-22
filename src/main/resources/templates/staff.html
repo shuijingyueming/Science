@@ -319,113 +319,8 @@
         form_submit("toHt/staff","post",params,"_self");
     }
 
-
-    function tosh(obj,obj1,cjname){
-        let item = null;
-        if(obj.indexOf("Hash")>0){
-            item = striongTOjsonString(obj);
-        }else{
-            item = jsStringTojsonString(obj);
-        }
-        let item1 = null;
-        if(obj1.indexOf("Hash")>0){
-            item1 = striongTOjsonString(obj1);
-        }else{
-            item1 = jsStringTojsonString(obj1);
-        }
-        $("#xqmode").find(".modal-body").empty();
-        let html="";
-        if($("#lx").val()=="B"){
-            html+= '<div class="row"><div class="col-md-5">';
-            html+= '<div class="form-group"><label class="layui-form-label">身份类别：</label>';
-            html+= '<span class="jspan">'+(item1.smd002=='A'?'机构':(item1.smd002=='B'?'个人':(item1.smd002=='C'?'专家':'')))+'</span>';
-            html+= '</div></div></div>';
-            html+= '';
-            html+= '<div class="row"><div class="col-md-5">';
-            html+= '<div class="form-group"><label class="layui-form-label">机构名称/个人单位：</label>';
-            html+= '<span class="jspan">'+item1.smd003+'</span>';
-            html+= '</div></div></div>';
-            html+= '';
-            html+= '<div class="row"><div class="col-md-5">';
-            html+= '<div class="form-group"><label class="layui-form-label">营业执照/身份证号：</label>';
-            html+= '<span class="jspan">'+item1.smd004+'</span>';
-            html+= '</div></div></div>';
-            html+= '<div class="row"><div class="col-md-5">';
-            html+= '<div class="form-group"><label class="layui-form-label">开户行：</label>';
-            html+= '<span class="jspan">'+item1.smd005+'</span>';
-            html+= '</div></div></div>';
-            html+= '<div class="row"><div class="col-md-5">';
-            html+= '<div class="form-group"><label class="layui-form-label">户名/银行卡号：</label>';
-            html+= '<span class="jspan">'+item1.smd006+'</span>';
-            html+= '</div></div></div>';
-            html+= '';
-            html+= '<div class="row"><div class="col-md-5">';
-            html+= '<div class="form-group"><label class="layui-form-label">账号/姓名：</label>';
-            html+= '<span class="jspan">'+item1.smd007+'</span>';
-            html+= '</div></div></div>';
-        }else{
-            html+= '<div class="row"><div class="col-md-5">';
-            html+= '<div class="form-group"><label class="layui-form-label">层级：</label>';
-            html+= '<span class="jspan">'+cjname+'</span>';
-            html+= '</div></div></div>';
-            html+= '';
-            html+= '<div class="row"><div class="col-md-5">';
-            html+= '<div class="form-group"><label class="layui-form-label">单位名称：</label>';
-            html+= '<span class="jspan">'+item1.yhb004+'</span>';
-            html+= '</div></div></div>';
-            html+= '';
-            html+= '<div class="row"><div class="col-md-5">';
-            html+= '<div class="form-group"><label class="layui-form-label">单位地址：</label>';
-            html+= '<span class="jspan">'+item1.yhb005+'</span>';
-            html+= '</div></div></div>';
-            html+= '<div class="row"><div class="col-md-5">';
-            html+= '<div class="form-group"><label class="layui-form-label">联系人：</label>';
-            html+= '<span class="jspan">'+item1.yhb006+'</span>';
-            html+= '</div></div></div>';
-            html+= '<div class="row"><div class="col-md-5">';
-            html+= '<div class="form-group"><label class="layui-form-label">联系电话：</label>';
-            html+= '<span class="jspan">'+item1.yhb007+'</span>';
-            html+= '</div></div></div>';
-            html+= '';
-        }
-        $("#shtg").attr("onclick","xgzt("+item.use001+","+item.use002+",'M')")
-        $("#shbh").attr("onclick","xgzt("+item.use001+","+item.use002+",'E')")
-        $("#xqmode").find(".modal-body").append(html);
-    }
-
     function xgzt(id,uname,type){
-        if(type=="E"){
-            var num = prompt("请输入驳回备注","");
-            if (num!="") {
-                load_index = layer.load(1);
-                var formData = new FormData();
-                formData.append("fid",id);
-                formData.append("uname",uname);
-                formData.append("type",type);
-                formData.append("t1",num);
-                $.ajax({
-                    url: 'toHt/xgztstaff', // 服务器端处理上传文件的URL
-                    type: 'POST',
-                    data: formData,
-                    dataType:'json',
-                    contentType: false, // 不设置内容类型
-                    processData: false, // 不处理发送的数据
-                    success: function (res) {
-                        var d = eval(res);
-                        if(d.msg=="0"){
-                            layer.msg("修改成功");
-                            setTimeout(function(){
-                                location.reload();
-                            },1000);
-                            layer.close(load_index);
-                        }
-                    },
-                    error: function () { console.log('提交失败'); }
-                });
-            }else{
-                xgzt(id,uname,type);
-            }
-        }else if (confirm("您确定修改吗?")) {
+       if (confirm("您确定修改吗?")) {
             load_index = layer.load(1);
             var formData = new FormData();
             formData.append("fid",id);
@@ -622,7 +517,7 @@
                             return $("#fid").val().trim();
                         }//要传递的数据
                     }
-                } },t4: { required : true, },t5: { required : true, },},
+                } },t4: { required : true, },t5: { required : true, isMobile1: true,},},
         messages: {},
         submitHandler: function(form) {
             load_index = layer.load(1);
@@ -642,7 +537,7 @@
                 processData: false, // 不处理发送的数据
                 success: function (res) {
                     var d = eval(res);
-                    $("#fid").val(d.use001);
+                    $("#fid").val(d.d.use001);
                     layer.close(load_index);
                     layer.msg("提交成功");
                 },
