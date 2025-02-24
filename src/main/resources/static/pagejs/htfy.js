@@ -49,6 +49,16 @@ function pdyes(zys, dqy) {
     $(".pagination").html(html);
 }
 
+//翻页
+function fanye(pageindex) {
+    var isnum=/^\d+$/.test(pageindex);
+    if(isnum)
+        usefanye(pageindex);
+    else{
+        alert("格式错误");
+    }
+}
+
 function getTime(timestamp, option){
     var date = new Date(timestamp)
     var year = date.getFullYear()

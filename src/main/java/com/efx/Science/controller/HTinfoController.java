@@ -630,7 +630,7 @@ public class HTinfoController extends BaseController {
         //导出模板
         if (request.getParameter("type") != null && request.getParameter("type").equals("E")) {
             String fpath = LoginController.class.getClass().getResource("/").getPath();
-            downloadLocal(fpath.substring(1,fpath.length())+"static/upload/level.xls", "层级导入模板.xls",response, request);
+            downloadLocal(fpath.substring(1,fpath.length())+"static/upload/level.xls", "街镇导入模板.xls",response, request);
             return null;
         }
         userid = Decrypt(session.getAttribute("user").toString());
@@ -671,7 +671,7 @@ public class HTinfoController extends BaseController {
             return null;
         }
         HashMap result = new HashMap();
-        addLog(getUse(request).getUse002(),"删除了层级名称为：【" + request.getParameter("uname") + "】的状态");
+        addLog(getUse(request).getUse002(),"删除了街镇名称为：【" + request.getParameter("uname") + "】的状态");
         if(yhbService.countBycjid(Integer.parseInt(request.getParameter("fid")))==0){
             yhaService.delete(Integer.parseInt(request.getParameter("fid")));
             result.put("msg","0");
@@ -698,7 +698,7 @@ public class HTinfoController extends BaseController {
             MultipartFile file = multipartRequest.getFile("file");
             InputStream in = file.getInputStream();
             ExcelExport.getByExcellevel(in, file.getOriginalFilename(),yhaService);
-            addLog(getUse(request).getUse002(),"导入了层级信息");
+            addLog(getUse(request).getUse002(),"导入了街镇信息");
         } catch (Exception e) {
             e.printStackTrace();
             return "B";
@@ -727,13 +727,13 @@ public class HTinfoController extends BaseController {
         item.setYha005(Float.valueOf(request.getParameter("t5")));
         item.setYha006(item.getYha004());
         if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()){
-            String log = "修改了名字为：【" + request.getParameter("t3") + "】的层级信息";
+            String log = "修改了名字为：【" + request.getParameter("t3") + "】的街镇信息";
             item.setYha001(Integer.valueOf((request.getParameter("fid"))));
             addLog(getUse(request).getUse002(),log);
             yhaService.update(item);
             result.put("msg","U");
         }else{
-            String log = "新增了名字为：【" + request.getParameter("t3")+ "】的层级信息";
+            String log = "新增了名字为：【" + request.getParameter("t3")+ "】的街镇信息";
             addLog(getUse(request).getUse002(),log);
             item = yhaService.insert(item);
             result.put("msg","I");
@@ -2000,7 +2000,7 @@ public class HTinfoController extends BaseController {
             return null;
         }
         HashMap result = new HashMap();
-        addLog(getUse(request).getUse002(),"删除了层级名称为：【" + request.getParameter("uname") + "】的状态");
+        addLog(getUse(request).getUse002(),"删除了街镇名称为：【" + request.getParameter("uname") + "】的状态");
         cdyhe yhe = yheService.getByid(Integer.valueOf(request.getParameter("fid")));
         cdsmd smd = smdService.getByid(yhe.getYhe003());
         cdyhb yhb = yhbService.getByid(yhe.getYhe002());

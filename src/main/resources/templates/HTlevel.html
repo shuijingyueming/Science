@@ -50,10 +50,10 @@
                                 <div class="col-auto">
                                     <div class="row">
                                         <label class="col-auto col-form-label"
-                                               style="padding-right:0;padding-left:10px;">名称</label>
+                                               style="padding-right:0;padding-left:10px;">街镇名称</label>
                                         <div class="col-auto">
                                             <input type="text" class="form-control" id="name" name="name" th:value="${pageobj.othersql}"
-                                                   placeholder="请输入名称"/>
+                                                   placeholder="请输入街镇名称"/>
                                         </div>
                                     </div>
                                 </div>
@@ -74,7 +74,7 @@
                                 <thead>
                                 <tr>
                                     <th style="max-width:30px;">序号</th>
-                                    <th>层级名称</th>
+                                    <th>街镇名称</th>
                                     <th>场次总量</th>
                                     <th>场次余量</th>
                                     <th>交通补贴费用</th>
@@ -125,9 +125,9 @@
                     <input type="hidden" id="fid" value=""/>
                     <div class="modal-body" style="min-height:580px;">
                         <div class="row col-auto" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">层级名称</label>
+                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">街镇名称</label>
                             <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                <input type="text" class="form-control" id="t2" name="t2" placeholder="请输入层级名称"/>
+                                <input type="text" class="form-control" id="t2" name="t2" placeholder="请输入街镇名称"/>
                             </div>
                         </div>
                         <div class="row col-auto" style="margin-top: 20px;">
@@ -412,7 +412,7 @@
                             location.reload();
                         },1000);
                     }else{
-                        layer.msg("该层级下还有选课方，无法删除");
+                        layer.msg("该街镇下还有选课方，无法删除");
                     }
                 },
                 error: function () { console.log('提交失败'); }
