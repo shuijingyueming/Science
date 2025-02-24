@@ -106,14 +106,6 @@
                         </div>
                     </div>
                     <ul class="pagination">
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <ul class="pagination">
                     </ul>
                 </div>
             </div>
@@ -413,12 +405,12 @@
                 processData: false, // 不处理发送的数据
                 success: function (res) {
                     var d = eval(res);
+                    layer.close(load_index);
                     if(d.msg=="0"){
                         layer.msg("删除成功");
                         setTimeout(function(){
                             location.reload();
                         },1000);
-                        layer.close(load_index);
                     }else{
                         layer.msg("该层级下还有选课方，无法删除");
                     }

@@ -30,11 +30,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <header class="card-header">
-                    <div class="card-title">
-                        <span class="col-auto" th:text="${zt=='E'?'驳回：'+bz:(zt=='P'?'审核中':(zt=='M'?'审核通过':''))}"></span>
-                    </div>
-                </header>
+                <header class="card-header"><div class="card-title">[[${item.yhb008=='E'?'您的申请已被驳回：'+item.yhb009:(item.yhb008=='P'?'已提交申请，请等待审核':(item.yhb008=='M'?'通过':''))}]]</div></header>
                 <div class="card-body">
                     <form id="uploadForm" enctype="multipart/form-data">
                         <input type="hidden" id="fid" th:value="${item.yhb001}"/>

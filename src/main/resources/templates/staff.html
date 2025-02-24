@@ -348,106 +348,6 @@
         }
     }
 
-    function drstaff(){
-        $('#file').click();
-    }
-
-    function daoru(file){
-        var fileTypes = [ ".xlsx",".xls" ];
-        var filePath = file.value;
-        // 当括号里面的值为0、空字符、false 、null 、undefined的时候就相当于false
-        if (filePath) {
-            var isNext = false;
-            var fileEnd = filePath.substring(filePath.indexOf("."));
-            for (var i = 0; i < fileTypes.length; i++) {
-                if (fileTypes[i] == fileEnd) {
-                    isNext = true;
-                    break;
-                }
-            }
-            if(isNext == true){
-                daoruwj();
-                return;
-            }else{
-                layer.alert('只允许上传以.xlsx和.xls结尾的文件');
-                file.value = "";
-                return;
-            }
-        } else {
-            layer.alert('请选择文件');
-        }
-    }
-
-    function daoruwj() {
-        var formData = new FormData();
-        formData.append("file", document.getElementById("file").files[0]);
-        var index = layer.load(1, {
-            content: "导入中",
-            shade: [0.1, 'black'], //0.1透明度的白色背景
-            success: function (layero) {
-                layero.find('.layui-layer-content').css({
-                    'padding-top': '39px',
-                    'width': '60px'
-                });
-            }
-        });
-        $.ajax({
-            url: 'toHt/drstaff',
-            type: 'POST',
-            data: formData,
-            //async: false,                      //async 设置为 false，则所有的请求均为同步请求，在没有返回值之前，同步请求将锁住浏览器
-            cache: false,                      // 不缓存
-            processData: false,                // jQuery不要去处理发送的数据
-            contentType: false,                // jQuery不要去设置Content-Type请求头
-            dataType: 'text',
-            success: function (data) {
-                if (data == 'A') {
-                    var params = [
-                        ["pages", $("#pages").val()],
-                        ["name", $("#name").val()],["phone", $("#phone").val()],["skid", $("#skid").val()]];
-                    // layer.msg("导入成功", {time: 1000}, function () {
-                    form_submit("toHt/staff", "post", params, "_self");
-                    // });
-                } else if (data == 'B') {
-                    // layer.msg("导入失败");
-                    $("#file1").val("");
-                } else {
-                    deleteCookie('tab_list');
-                    deleteCookie('left_menu_father');
-                    deleteCookie('left_menu_son');
-                    var error = "登录失效";
-                    window.parent.location = 'login?error=' + error;
-                }
-            },
-            error: function () { layer.close(index); }
-        });
-    }
-
-    function del(id){
-        if (confirm("您确定删除吗?")) {
-            load_index = layer.load(1);
-            var formData = new FormData();
-            formData.append("fid",id);
-            $.ajax({
-                url: 'toHt/delstaff', // 服务器端处理上传文件的URL
-                type: 'POST',
-                data: formData,
-                dataType:'json',
-                contentType: false, // 不设置内容类型
-                processData: false, // 不处理发送的数据
-                success: function (res) {
-                    var d = eval(res);
-                    layer.msg("删除成功");
-                    setTimeout(function(){
-                        location.reload();
-                    },1000);
-                    layer.close(load_index);
-                },
-                error: function () { console.log('提交失败'); }
-            });
-        }
-    }
-
     function czmm(id){
         if (confirm("您确定重置密码吗?")) {
             load_index = layer.load(1);
@@ -491,7 +391,9 @@
             $("#t2").val(josnobj.use002);
             $("#t4").val(josnobj.use004);
             $("#t5").val(josnobj.use005);
-            if(josnobj.use011!=null)$("#t11").val(josnobj.use011);
+            if(josnobj.use011!="null")$("#t11").val(josnobj.use011);
+            $('select[id=t11]').selectpicker('destroy');
+            $('select[id=t11]').selectpicker('render');
             $("#ftype").text("编辑");
         }else{
             $("#ftype").text("添加");
@@ -517,7 +419,21 @@
                             return $("#fid").val().trim();
                         }//要传递的数据
                     }
-                } },t4: { required : true, },t5: { required : true, isMobile1: true,},},
+                } },t4: { required : true, },t5: { required : true, isMobile1: true,
+                remote:{
+                    url: "zhphone", //后台处理程序
+                    type: "post",  //数据发送方式
+                    async : false,
+                    dataType: "json",       //接受数据格式
+                    data:{
+                        "phone":function(){
+                            return $("#t5").val().trim();
+                        },
+                        "id":function(){
+                            return $("#fid").val().trim();
+                        }//要传递的数据
+                    }
+                }},},
         messages: {},
         submitHandler: function(form) {
             load_index = layer.load(1);

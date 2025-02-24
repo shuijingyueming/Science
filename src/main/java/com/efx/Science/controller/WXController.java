@@ -67,7 +67,7 @@ public class WXController extends BaseController {
         if(encryptedData!=null&&code!=null&&phone==null) phone =  WeiCatJK.decrypt_new(encryptedData,code,iv);
         System.out.println(TIMEMIAO.format(new Date())+"phone----"+phone);
         if(phone!=null){
-            cduse item=useService.selectByphone(phone);
+            cduse item=useService.selectByphone(phone,null,null);
             if(item!=null){
                 item.setUse006(openid);
                 if(nickName!="")item.setUse007(nickName);
@@ -154,15 +154,79 @@ public class WXController extends BaseController {
     @RequestMapping(value = "/wxxgztyy", method = RequestMethod.POST)
     public String wxxgztyy(HttpServletRequest request) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
-        cdyhe item=yheService.getByid(Integer.valueOf(request.getParameter("id")));
-        item.setYhe007(request.getParameter("zt"));
-        item.setYhe030(request.getParameter("con"));
-        if(yheService.update(item)){
-            result.put("item", item);
-            result.put("msg", "1");
+        cdyhe yhe=yheService.getByid(Integer.valueOf(request.getParameter("id")));
+        yhe.setYhe007(request.getParameter("type"));
+        if(request.getParameter("type").equals("G")||request.getParameter("type").equals("H")){
+            cdsmd smd = smdService.getByid(yhe.getYhe003());
+            cdyhb yhb = yhbService.getByid(yhe.getYhe002());
+            cdyha yha = yhaService.getByid(yhb.getYhb002());
+            if(yha.getYha006()!=null&&yha.getYha006()>0&&yhb.getYhb015()!=null&&yhb.getYhb016()!=null&&yhb.getYhb015()<yhb.getYhb016()&&smd.getSmd013()<smd.getSmd009()){
+                yha.setYha006(yha.getYha006()-1);
+                yhb.setYhb012(yhb.getYhb012()+1);
+                yhb.setYhb013(yhb.getYhb013()+1);
+                yhb.setYhb014(yhb.getYhb014()+1);
+                yhb.setYhb015(yhb.getYhb015()+1);
+                smd.setSmd013(smd.getSmd013()+1);
+                smd.setSmd011(smd.getSmd011()+1);
+                smd.setSmd012(yhe.getYhe010()+1);
+                yhaService.update(yha);
+                yhbService.update(yhb);
+                smdService.update(smd);
+                cdyhd yhd=yhdService.serachObject(DATE.format(yhe.getYhe008()),yhe.getYhe004());
+                if(yhd!=null){
+                    if(yhe.getYhe041().equals("上午")){
+                        yhd.setYhd010(yhd.getYhd010()+1);
+                    }else if(yhe.getYhe041().equals("下午")){
+                        yhd.setYhd012(yhd.getYhd012()+1);
+                    }else if(yhe.getYhe041().equals("晚上")){
+                        yhd.setYhd014(yhd.getYhd014()+1);
+                    }
+                    yhdService.update(yhd);
+                }
+                yheService.update(yhe);
+                result.put("msg","1");
+            } else{
+                if(yha.getYha006()==null||yha.getYha006()==0){
+                    result.put("msg", "S1");
+                }else  if(yhb.getYhb015()==null||yhb.getYhb016()==null||yhb.getYhb015()==yhb.getYhb016()){
+                    result.put("msg", "S2");
+                }else{
+                    result.put("msg", "S3");
+                }
+            }
         }else{
-            result.put("msg", "0");
+            if((yhe.getYhe007().equals("G")||yhe.getYhe007().equals("H"))&&(request.getParameter("type").equals("M")||request.getParameter("type").equals("N"))){
+                cdsmd smd = smdService.getByid(yhe.getYhe003());
+                cdyhb yhb = yhbService.getByid(yhe.getYhe002());
+                cdyha yha = yhaService.getByid(yhb.getYhb002());
+                yha.setYha006(yha.getYha006()+1);
+                yhb.setYhb013(yhb.getYhb013()-1);
+                yhb.setYhb014(yhb.getYhb014()-1);
+                smd.setSmd011(smd.getSmd011()-1);
+                yhaService.update(yha);
+                yhbService.update(yhb);
+                smdService.update(smd);
+                cdyhd yhd=yhdService.serachObject(DATE.format(yhe.getYhe008()),yhe.getYhe004());
+                if(yhd!=null){
+                    if(yhe.getYhe041().equals("上午")){
+                        yhd.setYhd010(yhd.getYhd010()-1);
+                    }else if(yhe.getYhe041().equals("下午")){
+                        yhd.setYhd012(yhd.getYhd012()-1);
+                    }else if(yhe.getYhe041().equals("晚上")){
+                        yhd.setYhd014(yhd.getYhd014()-1);
+                    }
+                    yhdService.update(yhd);
+                }
+            }
+            if(request.getParameter("con")!=null){
+                yhe.setYhe030(request.getParameter("con"));
+            }else{
+                yhe.setYhe030("");
+            }
+            yheService.update(yhe);
+            result.put("msg","1");
         }
+        result.put("item",yhe);
         return JSON.toJSONString(result);
     }
 
@@ -185,15 +249,14 @@ public class WXController extends BaseController {
         item.setYhe003(hba.getHba022());
         cdsmd smd = smdService.getByid(item.getYhe003());
         cdyhb yhb = yhbService.getByid(item.getYhe002());
+        cdyha yha = yhaService.getByid(yhb.getYhb002());
         item.setYhe009(request.getParameter("t2"));
         if(!request.getParameter("t14").isEmpty())item.setYhe010(Integer.valueOf(request.getParameter("t14")));
-        yhb.setYhb015(yhb.getYhb015()+1);
-        smd.setSmd013(smd.getSmd013()+1);
         item.setYhe042(request.getParameter("t42"));
         item.setYhe043(request.getParameter("t43"));
         item.setYhe044(request.getParameter("t44"));
         item.setYhe045(request.getParameter("t45"));
-        if(yhb.getYhb015()<=yhb.getYhb016()&&smd.getSmd013()<=smd.getSmd009()) {
+        if(yha.getYha006()!=null&&yha.getYha006()>0&&yhb.getYhb015()!=null&&yhb.getYhb016()!=null&&yhb.getYhb015()<=yhb.getYhb016()&&smd.getSmd013()<=smd.getSmd009()) {
             yhb.setYhb012(yhb.getYhb012() + 1);
             if(item.getYhe010()!=null)item.setYhe011(item.getYhe010() < 10 ? hba.getHba027() :
                     (item.getYhe010() < 20 ? hba.getHba027() + hba.getHba028() * (item.getYhe010() - 10) :
@@ -211,25 +274,18 @@ public class WXController extends BaseController {
             } else {
                 item.setYhe007("A");
             }
-            yhb.setYhb015(yhb.getYhb015() + 1);
-            cdyhd yhd = yhdService.serachObject(request.getParameter("date"), item.getYhe004());
-            if (yhd != null) {
-                if (item.getYhe041().equals("上午")) {
-                    yhd.setYhd010(yhd.getYhd010() + 1);
-                } else if (item.getYhe041().equals("下午")) {
-                    yhd.setYhd012(yhd.getYhd012() + 1);
-                } else if (item.getYhe041().equals("晚上")) {
-                    yhd.setYhd014(yhd.getYhd014() + 1);
-                }
-                yhdService.update(yhd);
-            }
+            item.setYhe046(request.getParameter("lx"));
             item = yheService.insert(item);
-            yhbService.update(yhb);
-            smdService.update(smd);
             result.put("id", item.getYhe001());
             result.put("msg", "1");
         }else{
-            result.put("msg", "0");
+            if(yha.getYha006()==null||yha.getYha006()==0){
+                result.put("msg", "S1");
+            }else  if(yhb.getYhb015()==null||yhb.getYhb016()==null||yhb.getYhb015()==yhb.getYhb016()){
+                result.put("msg", "S2");
+            }else{
+                result.put("msg", "S3");
+            }
         }
         return JSON.toJSONString(result);
     }

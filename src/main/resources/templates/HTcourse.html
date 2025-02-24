@@ -96,7 +96,7 @@
                                                 <option value="A"  th:selected="${pageobj.othersql3=='A'?true:false}">待审核</option>
                                                 <option value="B"  th:selected="${pageobj.othersql3=='B'?true:false}">上架</option>
                                                 <option value="C"  th:selected="${pageobj.othersql3=='C'?true:false}">下架</option>
-                                                <option value="D"  th:selected="${pageobj.othersql3=='D'?true:false}">提交</option>
+                                                <option value="D"  th:selected="${pageobj.othersql3=='D'?true:false}">保存</option>
                                                 <option value="E"  th:selected="${pageobj.othersql3=='E'?true:false}">驳回</option>
                                             </select>
                                         </div>
@@ -144,7 +144,7 @@
                                     <td th:text="${item.hba004}"></td>
                                     <td th:text="${item.hba005}"></td>
                                     <td th:text="${item.hba006}"></td>
-                                    <td th:text="${item.hba026=='B'?'上架':(item.hba026=='C'?'下架':(item.hba026=='A'?'待审核':(item.hba026=='E'?'驳回':(item.hba026=='D'?'提交':''))))}"></td>
+                                    <td th:text="${item.hba026=='B'?'上架':(item.hba026=='C'?'下架':(item.hba026=='A'?'待审核':(item.hba026=='E'?'驳回':(item.hba026=='D'?'保存':''))))}"></td>
                                     <td>
                                         <div class="btn-group btn-group-sm">
                                             <a class="btn btn-table" data-bs-toggle="modal" data-bs-target="#xqmode" th:onclick="toxq([[${item.toString()}]],[[${item.hba019}]])">详情</a>
@@ -265,8 +265,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row col-auto" style="margin-top: 20px;">
-                            <div class="col-md-3" th:style="${session.umsg.jstype=='B'?'display: none':''}">
+                        <div class="row col-auto" style="margin-top: 20px;" th:style="${session.umsg.jstype=='B'?'display: none;':''}">
+                            <div class="col-md-3">
                                 <label class="col-auto col-form-label" style="padding-right:1px;padding-left:10px;">授课方</label>
                                 <div class="form-controls">
                                     <select id="t22" name="t22"  class="form-control selectpicker" data-live-search="true">
@@ -294,35 +294,35 @@
                         </div>
                         <div class="row" style="margin-top:20px;">
                             <div class="row col-xl-3 col-md-4 col-sm-6 col-12">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">课时时长</label>
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">课时时长</label>
                                 <div class="col-xl-8 col-md-7 col-sm-9">
                                     <input type="text" class="form-control" id="t4" name="t4" placeholder="请输入课时总时长"/>
                                 </div>
                             </div>
                             <div class="row col-xl-3 col-md-4 col-sm-6 col-12">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">每次课时</label>
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">每次课时</label>
                                 <div class="col-xl-8 col-md-7 col-sm-9">
                                     <input type="text" class="form-control" id="t5" name="t5" placeholder="请输入每次课时"/>
                                 </div>
                             </div>
                             <div class="row col-xl-3 col-md-4 col-sm-6 col-12">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">人数上限</label>
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">人数上限</label>
                                 <div class="col-xl-8 col-md-7 col-sm-9">
-                                    <input type="text" class="form-control" id="t8" name="t8" />
+                                    <input type="text" class="form-control" id="t8" name="t8" placeholder="请输入人数上限"/>
                                 </div>
                             </div>
                         </div>
                         <div class="row" style="margin-top:20px;">
                             <div class="row col-xl-3 col-md-4 col-sm-5 col-12">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">需要亲子</label>
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">需要亲子</label>
                                 <div class="form-check form-switch col-xl-6 col-md-5 col-sm-4 col-8" style="display: flex;align-items: center;justify-content: left;">
-                                    <div style="margin-top:3px;margin-left: -30px;">是</div>
+                                    <div style="margin-top:3px;margin-left: -30px;">否</div>
                                     <input class="form-check-input" style="margin-left: -10px;" type="checkbox" role="switch" id="t7">
-                                    <div style="margin-top:3px;margin-left: 40px;">否</div>
+                                    <div style="margin-top:3px;margin-left: 40px;">是</div>
                                 </div>
                             </div>
                             <div class="row col-xl-5 col-md-8 col-sm-7 col-12">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">附加材料费</label>
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">附加材料费</label>
                                 <div class="col-xl-8 col-md-7 col-sm-6 col-7">
                                     <input type="number" class="form-control" id="t12" name="t12" placeholder="请输入附加材料费"/>
                                 </div>
@@ -330,7 +330,7 @@
                         </div>
                         <div class="row" style="margin-top:20px;">
                             <div class="row col-xl-8 col-md-10 col-sm-11 col-12">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">附加费条件</label>
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">附加费条件</label>
                                 <div class="col-xl-10 col-md-9 col-sm-9 col-12">
                                     <textarea class="form-control" style="resize: none;" rows="3" id="t11" name="t11"></textarea>
                                 </div>
@@ -338,7 +338,7 @@
                         </div>
                         <div class="row" style="margin-top:20px;">
                             <div class="row col-xl-8 col-md-10 col-sm-11 col-12">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">人数建议</label>
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">人数建议</label>
                                 <div class="col-xl-10 col-md-9 col-sm-9 col-12">
                                     <textarea class="form-control" style="resize: none;" rows="3" id="t9" name="t9"></textarea>
                                 </div>
@@ -346,7 +346,7 @@
                         </div>
                         <div class="row" style="margin-top:20px;">
                             <div class="row col-xl-8 col-md-10 col-sm-11 col-12">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">场地要求</label>
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">场地要求</label>
                                 <div class="col-xl-10 col-md-9 col-sm-9 col-12">
                                     <textarea class="form-control" style="resize: none;" rows="3" id="t10" name="t10"></textarea>
                                 </div>
@@ -354,7 +354,7 @@
                         </div>
                         <div class="row" style="margin-top:20px;">
                             <div class="row col-xl-8 col-md-10 col-sm-11 col-12">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">送教地域限制</label>
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">送教地域限制</label>
                                 <div class="col-xl-10 col-md-9 col-sm-9 col-12">
                                     <textarea class="form-control" style="resize: none;" rows="3" id="t15" name="t15"></textarea>
                                 </div>
@@ -362,7 +362,7 @@
                         </div>
                         <div class="row" style="margin-top:20px;">
                             <div class="row col-xl-8 col-md-10 col-sm-11 col-12">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">送教时段限制</label>
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">送教时段限制</label>
                                 <div class="col-xl-10 col-md-9 col-sm-9 col-12">
                                     <textarea class="form-control" style="resize: none;" rows="3" id="t33" name="t33"></textarea>
                                 </div>
@@ -370,21 +370,21 @@
                         </div>
                         <div class="row" style="margin-top:20px;">
                             <div class="row col-xl-3 col-md-5 col-sm-6 col-12">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">志愿者人数</label>
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">志愿者人数</label>
                                 <div class="col-xl-7 col-md-7 col-sm-7 col-12">
-                                    <input type="number" class="form-control" id="t13" name="t13" placeholder="请输入志愿者人数"/>
+                                    <input type="number" min="0" class="form-control" id="t13" name="t13" placeholder="请输入志愿者人数"/>
                                 </div>
                             </div>
                             <div class="row col-xl-3 col-md-5 col-sm-6 col-12">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">补贴金额</label>
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">补贴金额</label>
                                 <div class="col-xl-8 col-md-7 col-sm-7 col-12">
-                                    <input type="number" class="form-control" id="t6" name="t6" placeholder="请输入志愿者补贴金额"/>
+                                    <input type="number" min="0" class="form-control" id="t6" name="t6" placeholder="请输入志愿者补贴金额"/>
                                 </div>
                             </div>
                         </div>
                         <div class="row" style="margin-top:20px;">
                             <div class="row col-xl-8 col-md-10 col-sm-11 col-12">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">对志愿者要求</label>
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">对志愿者要求</label>
                                 <div class="col-xl-10 col-md-8 col-sm-9 col-12">
                                     <textarea class="form-control" style="resize: none;" rows="3" id="t14" name="t14"></textarea>
                                 </div>
@@ -392,13 +392,13 @@
                         </div>
                         <div class="row" style="margin-top:20px;">
                             <div class="row col-xl-3 col-md-5 col-sm-6 col-12">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">联系人名称</label>
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">联系人名称</label>
                                 <div class="col-xl-7 col-md-5 col-sm-7 col-12">
                                     <input type="text" class="form-control" id="t16" name="t16" placeholder="请输入联系人名称"/>
                                 </div>
                             </div>
                             <div class="row col-xl-3 col-md-5 col-sm-6 col-12">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">联系手机号</label>
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">联系手机号</label>
                                 <div class="col-xl-7 col-md-5 col-sm-7 col-12">
                                     <input type="text" class="form-control" id="t17" name="t17" placeholder="请输入联系人手机号"/>
                                 </div>
@@ -406,13 +406,13 @@
                         </div>
                         <div class="row" style="margin-top:20px;">
                             <div class="row col-xl-3 col-md-5 col-sm-6 col-12">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">10人以下费用</label>
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">10人以下费用</label>
                                 <div class="col-xl-7 col-md-5 col-sm-6 col-12">
                                     <input type="number" class="form-control" id="t27" name="t27" min="0" placeholder="请输入课时费用10人以下"/>
                                 </div>
                             </div>
                             <div class="row col-xl-3 col-md-5 col-sm-6 col-12">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">11-20人费用</label>
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">11-20人费用</label>
                                 <div class="col-xl-7 col-md-5 col-sm-6 col-12">
                                     <input type="number" class="form-control" id="t28" name="t28" min="0" placeholder="请输入课时费用11-20人"/>
                                 </div>
@@ -420,13 +420,13 @@
                         </div>
                         <div class="row" style="margin-top:20px;">
                             <div class="row col-xl-3 col-md-5 col-sm-6 col-12">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">21-30人费用</label>
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">21-30人费用</label>
                                 <div class="col-xl-7 col-md-5 col-sm-6 col-12">
                                     <input type="number" class="form-control" id="t29" name="t29" min="0" placeholder="请输入课时费用21-30人"/>
                                 </div>
                             </div>
                             <div class="row col-xl-3 col-md-5 col-sm-6 col-12">
-                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">31-45人费用</label>
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:10px;">31-45人费用</label>
                                 <div class="col-xl-7 col-md-5 col-sm-6 col-12">
                                     <input type="number" class="form-control" id="t30" name="t30" min="0" placeholder="请输入课时费用31-45人"/>
                                 </div>
@@ -438,8 +438,7 @@
                                 <label for="t24" class="col-auto form-label">封面上传</label>
                                 <div class="col-xl-8 col-md-8 col-sm-6 col-6">
                                   <input class="form-control" type="file" id="t24" onchange="showpdtpgs()">
-                                  <img src="" id="shtp" onclick="$('#t24').click()" class="form-control"
-                                     style="width:100%;border:1px solid rgb(229, 229, 229);"/>
+                                  <img src="" id="shtp" onclick="$('#t24').click()" class="form-control" style="width:200px;border:none;"/>
                                 </div>
                             </div>
                             <div class="row col-xl-4 col-md-6 col-sm-12 col-12">
@@ -459,8 +458,7 @@
                             <div class="row col-xl-7 col-md-6 col-sm-12 col-12">
                                 <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">课程内容描述</label>
                                 <div class="col-xl-8 col-md-7 col-sm-8 col-12">
-                                    <textarea class="form-control" style="resize: none;width:430px;min-height:500px;height: 500px;" id="t19" name="t19"></textarea>
-                                    <div class="position-relative" id="upvadiofile" style="margin-top: 20px;padding-left: 8px;"></div>
+                                    <textarea class="form-control" style="resize: none;width:380px;min-height:500px;height: 500px;" id="t19" name="t19"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -775,8 +773,6 @@
         }else{
             type=="A"?flag=confirm("您确定提交审核吗"):(type=="C"?($("#jstype").val()=="A"?flag=confirm("您确定审核通过吗"):flag=confirm("您确定下架吗")):flag=confirm("您确定上架吗?"));
         }
-        console.log(num);
-        console.log(flag);
         if (num!=null||flag) {
             load_index = layer.load(1);
             var formData = new FormData();
@@ -800,7 +796,7 @@
                             if($("#jstype").val()=="A"){
                                 layer.msg("审核通过");
                             }else{
-                                layer.msg("下架成过");
+                                layer.msg("下架成功");
                             }
                         }else  if(type=="E"){
                             layer.msg("驳回成功");
@@ -815,11 +811,11 @@
                 },
                 error: function () { console.log('提交失败'); }
             });
-        }else{
+        }/*else{
             if(!confirm("您确定取消操作吗")){
                 xgzt(id,uname,type);
             }
-        }
+        }*/
     }
 
     function del(id){
@@ -985,7 +981,7 @@
                             return $("#fid").val().trim();
                         }//要传递的数据
                     }
-                }},t4: { required : true, },t5: { required : true, },t21: { required : true, },t22: { required : true, },t16: { required : true, },t17: { required : true, }},
+                }},t3: { required : true, },t4: { required : true, },t5: { required : true, },t6: { required : true, },t13: { required : true, },t21: { required : true, },t22: { required : true, },t16: { required : true, },t17: { required : true, }},
         messages: {},
         submitHandler: function(form) {
             load_index = layer.load(1);

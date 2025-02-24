@@ -672,8 +672,12 @@ public class HTinfoController extends BaseController {
         }
         HashMap result = new HashMap();
         addLog(getUse(request).getUse002(),"删除了层级名称为：【" + request.getParameter("uname") + "】的状态");
-        yhaService.delete(Integer.parseInt(request.getParameter("fid")));
-        result.put("msg","D");
+        if(yhbService.countBycjid(Integer.parseInt(request.getParameter("fid")))==0){
+            yhaService.delete(Integer.parseInt(request.getParameter("fid")));
+            result.put("msg","0");
+        }else{
+            result.put("msg","1");
+        }
         return JSON.toJSONString(result);
     }
 
@@ -815,8 +819,6 @@ public class HTinfoController extends BaseController {
             mav.setViewName("HTchose");
         }else{
             mav.addObject("item", yhbService.getByid(user.getUse011()));
-            mav.addObject("zt", user.getUse013());
-            mav.addObject("bz", user.getUse014());
             mav.setViewName("HTchosexq");
         }
         return mav;
@@ -845,8 +847,8 @@ public class HTinfoController extends BaseController {
         item.setYhb005(request.getParameter("t5"));
         item.setYhb006(request.getParameter("t6"));
         item.setYhb007(request.getParameter("t7"));
-        item.setYhb016(Integer.valueOf(request.getParameter("t16")));
-        item.setYhb017(Float.valueOf(request.getParameter("t16")));
+        if(!request.getParameter("t16").isEmpty())item.setYhb016(Integer.valueOf(request.getParameter("t16")));
+        if(!request.getParameter("t17").isEmpty())item.setYhb017(Float.valueOf(request.getParameter("t17")));
         if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()){
             String log = "修改了名字为：【" + request.getParameter("t1") + "】的用户信息";
             item.setYhb001(Integer.valueOf((request.getParameter("fid"))));
@@ -863,13 +865,6 @@ public class HTinfoController extends BaseController {
             addLog(getUse(request).getUse002(),log);
             item = yhbService.insert(item);
             result.put("msg", "I");
-        }
-        if(request.getParameter("zt")!=null){
-            cduse use=new cduse();
-            use.setUse001(Decrypt(session.getAttribute("user").toString()));
-            use.setUse013("P");
-            use.setUse014("");
-            useService.update(use);
         }
         result.put("d",item);
         return JSON.toJSONString(result);
@@ -1832,10 +1827,9 @@ public class HTinfoController extends BaseController {
         HashMap result = new HashMap();
         cdsmd item = new cdsmd();
         //修改
-        if(getUse(request).getUse009().equals("A")){
-            if(!request.getParameter("t9").isEmpty())item.setSmd009(Integer.valueOf(request.getParameter("t9")));
-            if(!request.getParameter("t10").isEmpty())item.setSmd010(Integer.valueOf(request.getParameter("t10")));
-        }else{
+        if(!request.getParameter("t9").isEmpty())item.setSmd009(Integer.valueOf(request.getParameter("t9")));
+        if(!request.getParameter("t10").isEmpty())item.setSmd010(Integer.valueOf(request.getParameter("t10")));
+        if(!getUse(request).getUse009().equals("A")){
             item.setSmd002(request.getParameter("t2"));
             item.setSmd003(request.getParameter("t3"));
             item.setSmd004(request.getParameter("t4"));
@@ -1854,6 +1848,18 @@ public class HTinfoController extends BaseController {
             }
             item.setSmd014("P");
             item.setSmd015("");
+            /*cduse use=getUse(request);
+            user user = new user();
+            user.setUname(use.getUse002());
+            user.setJstype(use.getUse009());
+            if(use.getUse009().equals("B")){
+                cdsmd smd = smdService.getByid(use.getUse011());
+                user.setJsqx(smd.getSmd014());
+            }
+            if (use.getUse002().equals("A")) user.setJs("平台管理员");
+            else if (use.getUse002().equals("B")) user.setJs("授课方管理员");
+            else if (use.getUse002().equals("C")) user.setJs("选课方管理员");
+            session.setAttribute("umsg", user);*/
         }
         if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()){
             String log = "修改了名字为：【" + request.getParameter("t3") + "】的授课方信息";
@@ -1956,6 +1962,9 @@ public class HTinfoController extends BaseController {
             if (request.getParameter("ztype") != null && !request.getParameter("ztype").isEmpty()) {
                 pb.setOthersql2(request.getParameter("ztype"));
             }
+            if (request.getParameter("fzt") != null && !request.getParameter("fzt").isEmpty()) {
+                pb.setOthersql7(request.getParameter("fzt"));
+            }
             mav.addObject("fhlx", request.getParameter("fhlx"));
         }
         pb.setOthersql3(user.getUse009());
@@ -2026,10 +2035,16 @@ public class HTinfoController extends BaseController {
             cdsmd smd = smdService.getByid(yhe.getYhe003());
             cdyhb yhb = yhbService.getByid(yhe.getYhe002());
             cdyha yha = yhaService.getByid(yhb.getYhb002());
-            if(yha.getYha006()<yha.getYha004()&&yhb.getYhb015()<yhb.getYhb016()&&smd.getSmd013()<smd.getSmd009()){
+            if(yha.getYha006()!=null&&yha.getYha006()>0&&yhb.getYhb015()!=null&&yhb.getYhb016()!=null&&yhb.getYhb015()<yhb.getYhb016()&&smd.getSmd013()<smd.getSmd009()){
                 yha.setYha006(yha.getYha006()-1);
+                yhb.setYhb012(yhb.getYhb012()+1);
+                yhb.setYhb013(yhb.getYhb013()+1);
+                yhb.setYhb014(yhb.getYhb014()+1);
                 yhb.setYhb015(yhb.getYhb015()+1);
                 smd.setSmd013(smd.getSmd013()+1);
+                smd.setSmd011(smd.getSmd011()+1);
+                smd.setSmd012(yhe.getYhe010()+1);
+                yhaService.update(yha);
                 yhbService.update(yhb);
                 smdService.update(smd);
                 cdyhd yhd=yhdService.serachObject(DATE.format(yhe.getYhe008()),yhe.getYhe004());
@@ -2045,24 +2060,48 @@ public class HTinfoController extends BaseController {
                 }
                 yheService.update(yhe);
                 result.put("msg","0");
-            }else{
-                result.put("msg","1");
+            } else{
+                if(yha.getYha006()!=null&&yha.getYha006()>0){
+                    result.put("msg", "S1");
+                }else  if(yhb.getYhb015()!=null&&yhb.getYhb016()!=null&&yhb.getYhb015()<yhb.getYhb016()){
+                    result.put("msg", "S2");
+                }else{
+                    result.put("msg", "S3");
+                }
             }
         }else{
-            if(request.getParameter("type").equals("C")||request.getParameter("type").equals("D")||request.getParameter("type").equals("O")||request.getParameter("type").equals("P")){
+            if((yhe.getYhe007().equals("G")||yhe.getYhe007().equals("H"))&&(request.getParameter("type").equals("M")||request.getParameter("type").equals("N"))){
                 cdsmd smd = smdService.getByid(yhe.getYhe003());
                 cdyhb yhb = yhbService.getByid(yhe.getYhe002());
                 cdyha yha = yhaService.getByid(yhb.getYhb002());
                 yha.setYha006(yha.getYha006()+1);
-                yhb.setYhb015(yhb.getYhb015()-1);
-                smd.setSmd013(smd.getSmd013()-1);
+                yhb.setYhb013(yhb.getYhb013()-1);
+                yhb.setYhb014(yhb.getYhb014()-1);
+                smd.setSmd011(smd.getSmd011()-1);
+                yhaService.update(yha);
                 yhbService.update(yhb);
                 smdService.update(smd);
+                cdyhd yhd=yhdService.serachObject(DATE.format(yhe.getYhe008()),yhe.getYhe004());
+                if(yhd!=null){
+                    if(yhe.getYhe041().equals("上午")){
+                        yhd.setYhd010(yhd.getYhd010()-1);
+                    }else if(yhe.getYhe041().equals("下午")){
+                        yhd.setYhd012(yhd.getYhd012()-1);
+                    }else if(yhe.getYhe041().equals("晚上")){
+                        yhd.setYhd014(yhd.getYhd014()-1);
+                    }
+                    yhdService.update(yhd);
+                }
             }
             if(request.getParameter("t1")!=null){
                 yhe.setYhe030(request.getParameter("t1"));
             }else{
                 yhe.setYhe030("");
+            }
+            if(request.getParameter("t2")!=null){
+                yhe.setYhe031(request.getParameter("t2"));
+            }else{
+                yhe.setYhe031("");
             }
             yheService.update(yhe);
             result.put("msg","0");
@@ -2097,7 +2136,7 @@ public class HTinfoController extends BaseController {
         cdsmd smd = smdService.getByid(item.getYhe003());
         cdyhb yhb = yhbService.getByid(item.getYhe002());
         cdyha yha = yhaService.getByid(yhb.getYhb002());
-        if(yha.getYha006()<yha.getYha004()&&yhb.getYhb015()<yhb.getYhb016()&&smd.getSmd013()<smd.getSmd009()){
+        if(yha.getYha006()!=null&&yha.getYha006()>0&&yhb.getYhb015()!=null&&yhb.getYhb016()!=null&&yhb.getYhb015()<yhb.getYhb016()&&smd.getSmd013()<smd.getSmd009()){
             item.setYhe006(smd.getSmd002());
             if(request.getParameter("lx").equals("B")){
                 item.setYhe007("B");
@@ -2129,6 +2168,7 @@ public class HTinfoController extends BaseController {
                 item.setYhe001(Integer.valueOf(request.getParameter("fid")));
                 yheService.update(item);
             }else{
+                item.setYhe046(request.getParameter("lx"));
                 item = yheService.insert(item);
             }
             Date date = new Date();
@@ -2144,6 +2184,7 @@ public class HTinfoController extends BaseController {
                         yhf.setYhf003("D");
                         yhf.setYhf004(filename);
                         yhf.setYhf005("x"+item.getYhe002()+"/"+sdf2.format(date));
+                        yhf.setYhf006(request.getParameter("lx"));
                         uploadpic(yhf.getYhf005()+"/"+yhf.getYhf004(),t1.get(i),null);
                         yhf.setYhf007(use.getUse001());
                         yhf.setYhf008(new Date());
@@ -2171,8 +2212,15 @@ public class HTinfoController extends BaseController {
             result.put("msg", "I");
             result.put("d",item);
             result.put("list",list);
-        }else{
-            result.put("msg", "S");
+        }
+        else{
+            if(yha.getYha006()!=null&&yha.getYha006()==0){
+                result.put("msg", "S1");
+            }else  if(yhb.getYhb015()==null||yhb.getYhb016()==null||yhb.getYhb015()==yhb.getYhb016()){
+                result.put("msg", "S2");
+            }else{
+                result.put("msg", "S3");
+            }
         }
 
         return JSON.toJSONString(result);
@@ -2252,6 +2300,7 @@ public class HTinfoController extends BaseController {
                     String filename =yhf.getYhf003()+ sdf.format(date)+i+files.get(i).getOriginalFilename().substring(files.get(i).getOriginalFilename().lastIndexOf("."));
                     yhf.setYhf004(filename);
                     yhf.setYhf005("x"+item.getYhe002()+"/"+sdf2.format(date));
+                    yhf.setYhf006(request.getParameter("lx"));
                     uploadpic(yhf.getYhf005()+"/"+yhf.getYhf004(),files.get(i),null);
                     yhf.setYhf007(use.getUse001());
                     yhf.setYhf008(new Date());
@@ -2269,6 +2318,7 @@ public class HTinfoController extends BaseController {
                     String filename =yhf.getYhf003()+ sdf.format(date)+i+files1.get(i).getOriginalFilename().substring(files1.get(i).getOriginalFilename().lastIndexOf("."));
                     yhf.setYhf004(filename);
                     yhf.setYhf005("x"+item.getYhe002()+"/"+sdf2.format(date));
+                    yhf.setYhf006(request.getParameter("lx"));
                     uploadpic(yhf.getYhf005()+"/"+yhf.getYhf004(),files1.get(i),null);
                     yhf.setYhf007(use.getUse001());
                     yhf.setYhf008(new Date());
@@ -2286,6 +2336,7 @@ public class HTinfoController extends BaseController {
                     String filename =yhf.getYhf003()+ sdf.format(date)+i+files2.get(i).getOriginalFilename().substring(files2.get(i).getOriginalFilename().lastIndexOf("."));
                     yhf.setYhf004(filename);
                     yhf.setYhf005("x"+item.getYhe002()+"/"+sdf2.format(date));
+                    yhf.setYhf006(request.getParameter("lx"));
                     uploadpic(yhf.getYhf005()+"/"+yhf.getYhf004(),files2.get(i),null);
                     yhf.setYhf007(use.getUse001());
                     yhf.setYhf008(new Date());
@@ -2314,9 +2365,15 @@ public class HTinfoController extends BaseController {
 //        String log = "修改了名字为：【" + request.getParameter("t1") + "】的课程预约信息";
 
 //        addLog(getUse(request).getUse002(),log);
+        List<cdyhf> listA=yhfService.getAll(String.valueOf(item.getYhe001()),"A");
+        List<cdyhf> listB=yhfService.getAll(String.valueOf(item.getYhe001()),"B");
+        List<cdyhf> listC=yhfService.getAll(String.valueOf(item.getYhe001()),"C");
         yheService.update(item);
         result.put("msg", "U");
         result.put("d",item);
+        result.put("listA",listA);
+        result.put("listB",listB);
+        result.put("listC",listC);
         return JSON.toJSONString(result);
     }
 

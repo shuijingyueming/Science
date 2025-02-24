@@ -31,6 +31,7 @@ public interface CdyheService extends IService<cdyhe> {
     Integer countBylsid(int fid);
 
     void updatebytime();
+    void updatebytime1();
 
     Integer countByfwcc(Integer jgid, Integer xkid, String start, String end) throws ParseException;
 

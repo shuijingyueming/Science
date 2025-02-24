@@ -31,7 +31,7 @@
 <aside class="lyear-layout-sidebar">
     <!-- logo -->
     <div id="logo" class="sidebar-header">
-        <img src="images/logo-sidebar.png" title="LightYear" alt="LightYear" />
+        <img src="images/logo-sidebar.png" title="LightYear" alt="LightYear" style="width:150px;margin:10px;"/>
     </div>
     <div class="lyear-layout-sidebar-info lyear-scroll">
         <nav class="sidebar-main">
@@ -97,11 +97,19 @@
                         <ul class="nav nav-subnav">
                             <li><a class="multitabs" href="toHt/toselection?ztype=A">预约待确认</a></li>
                             <li><a class="multitabs" href="toHt/toselection?ztype=B">退回</a></li>
-                            <li><a class="multitabs" href="toHt/toselection?ztype=C">已接受</a></li>
-                            <li><a class="multitabs" href="toHt/toselection?ztype=E">终止待确认</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=C">预约成功</a></li>
                             <li><a class="multitabs" href="toHt/toselection?ztype=F">待评价</a></li>
-                            <li><a class="multitabs" href="toHt/toselection?ztype=G">结束</a></li>
-                            <li><a class="multitabs" href="toHt/toselection?ztype=H">终止</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=G">授课结束</a></li>
+                            <li class="nav-item nav-item-has-subnav">
+                                <a href="javascript:void(0)">
+                                    <i class="mdi mdi-stove"></i> <span>取消管理</span>
+                                </a>
+                                <ul class="nav nav-subnav">
+                                    <li><a class="multitabs" href="toHt/toselection?ztype=E">取消待确认</a></li>
+                                    <li><a class="multitabs" href="toHt/toselection?ztype=D">取消驳回</a></li>
+                                    <li><a class="multitabs" href="toHt/toselection?ztype=H">取消记录</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item nav-item-has-subnav">
@@ -164,11 +172,19 @@
                             <ul class="nav nav-subnav">
                                 <li><a class="multitabs" href="toHt/toselection?ztype=A">预约待确认</a></li>
                                 <li><a class="multitabs" href="toHt/toselection?ztype=B">退回</a></li>
-                                <li><a class="multitabs" href="toHt/toselection?ztype=C">已接受</a></li>
-                                <li><a class="multitabs" href="toHt/toselection?ztype=E">终止待确认</a></li>
+                                <li><a class="multitabs" href="toHt/toselection?ztype=C">预约成功</a></li>
                                 <li><a class="multitabs" href="toHt/toselection?ztype=F">待评价</a></li>
-                                <li><a class="multitabs" href="toHt/toselection?ztype=G">结束</a></li>
-                                <li><a class="multitabs" href="toHt/toselection?ztype=H">终止</a></li>
+                                <li><a class="multitabs" href="toHt/toselection?ztype=G">授课结束</a></li>
+                                <li class="nav-item nav-item-has-subnav">
+                                    <a href="javascript:void(0)">
+                                        <i class="mdi mdi-stove"></i> <span>取消管理</span>
+                                    </a>
+                                    <ul class="nav nav-subnav">
+                                <li><a class="multitabs" href="toHt/toselection?ztype=E">取消待确认</a></li>
+                                <li><a class="multitabs" href="toHt/toselection?ztype=D">取消驳回</a></li>
+                                <li><a class="multitabs" href="toHt/toselection?ztype=H">取消记录</a></li>
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
                         <li class="nav-item nav-item-has-subnav">
@@ -210,11 +226,19 @@
                         <ul class="nav nav-subnav">
                             <li><a class="multitabs" href="toHt/toselection?ztype=A">预约待确认</a></li>
                             <li><a class="multitabs" href="toHt/toselection?ztype=B">退回</a></li>
-                            <li><a class="multitabs" href="toHt/toselection?ztype=C">已接受</a></li>
-                            <li><a class="multitabs" href="toHt/toselection?ztype=E">终止待确认</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=C">预约成功</a></li>
                             <li><a class="multitabs" href="toHt/toselection?ztype=F">待评价</a></li>
-                            <li><a class="multitabs" href="toHt/toselection?ztype=G">结束</a></li>
-                            <li><a class="multitabs" href="toHt/toselection?ztype=H">终止</a></li>
+                            <li><a class="multitabs" href="toHt/toselection?ztype=G">授课结束</a></li>
+                            <li class="nav-item nav-item-has-subnav">
+                                <a href="javascript:void(0)">
+                                    <i class="mdi mdi-stove"></i> <span>取消管理</span>
+                                </a>
+                                <ul class="nav nav-subnav">
+                                    <li><a class="multitabs" href="toHt/toselection?ztype=E">取消待确认</a></li>
+                                    <li><a class="multitabs" href="toHt/toselection?ztype=D">取消驳回</a></li>
+                                    <li><a class="multitabs" href="toHt/toselection?ztype=H">取消记录</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item nav-item-has-subnav">
@@ -229,12 +253,12 @@
                 </th:block>
             </ul>
         </nav>
-        <div class="sidebar-footer position-absolute bottom-0">
+       <!-- <div class="sidebar-footer position-absolute bottom-0">
             <p class="copyright">
                 <span>Copyright &copy; 2024. </span>
                 <a target="_blank" href="http://www.nbefx.com">快乐代码</a>
             </p>
-        </div>
+        </div>-->
     </div>
 
 </aside>

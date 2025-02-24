@@ -35,7 +35,6 @@ public class CduseServiceImpl implements CduseService {
         Criteria c = cx.createCriteria();
         c.andUse002EqualTo(name);
         c.andUse003EqualTo(pwd);
-        c.andUse013NotEqualTo("N");
         List<cduse> uselist = useMapper.selectByExample(cx);
         return uselist.size() > 0 ? uselist.get(0) : null;
     }
@@ -90,10 +89,12 @@ public class CduseServiceImpl implements CduseService {
     }
 
     @Override
-    public cduse selectByphone(String phone) {
+    public cduse selectByphone(String phone, String type, Integer id) {
         cduseExample cx = new cduseExample();
         Criteria c = cx.createCriteria();
         c.andUse005EqualTo(phone);
+        if (type != null)c.andUse009EqualTo(type);
+        if (id != null) c.andUse011EqualTo(id);
         List<cduse> uselist = useMapper.selectByExample(cx);
         return uselist.size() > 0 ? uselist.get(0) : null;
     }

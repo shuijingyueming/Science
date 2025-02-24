@@ -106,6 +106,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
                         long tomorrowzero = calendar.getTimeInMillis();
                         long tomorrowzeroSeconds = (tomorrowzero- current);
                         yheService.updatebytime();
+                        yheService.updatebytime1();
                         //按天算+早上0：00,睡眠毫秒数
                         Thread.sleep(tomorrowzeroSeconds);
                     } catch (Exception e) { }

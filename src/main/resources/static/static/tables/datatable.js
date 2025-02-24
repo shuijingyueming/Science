@@ -49,7 +49,7 @@ $(document).ready(function () {
                 }
             }:undefined,
             $("#jstype").val()=="A"?{
-                text: '导入', action: function (e, dt, node, config) {
+                text: '导入层级', action: function (e, dt, node, config) {
                     drlevel();
                 }
             }:undefined,

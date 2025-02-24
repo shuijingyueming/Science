@@ -169,7 +169,7 @@ public class LoginController extends BaseController {
             map.put("msg", "验证码错误");
         }else{*/
             cduse use = useService.getLogin(name,pwd);
-            if(use!=null){
+            if(use!=null&&!use.getUse013().equals("N")){
                // session.invalidate();//session失效
                 // 会话重建
                 PubMessage.dlmap.remove(name);
@@ -193,7 +193,11 @@ public class LoginController extends BaseController {
                 map.put("res", "Y");
             }else{
                 map.put("res", "N");
-                map.put("msg", "用户名或密码错误");
+                if(use!=null){
+                    map.put("msg", "该用户已被封号，请联系管理员");
+                }else{
+                    map.put("msg", "用户名或密码错误");
+                }
             }
 //        }
         response.getWriter().print(new JSONObject(map));
@@ -365,6 +369,18 @@ public class LoginController extends BaseController {
     public boolean zskname(HttpServletRequest request,HttpServletResponse response) throws Exception {
         Integer id=request.getParameter("id").isEmpty()?0:Integer.valueOf(request.getParameter("id"));
         cduse use=useService.selectByName(request.getParameter("name"),null,null);
+        if((id==0 && use!=null)||(id!=0 && use!=null && id!=use.getUse001())){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/zhphone",produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    public boolean zhphone(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        Integer id=request.getParameter("id").isEmpty()?0:Integer.valueOf(request.getParameter("id"));
+        cduse use=useService.selectByphone(request.getParameter("phone"),null,null);
         if((id==0 && use!=null)||(id!=0 && use!=null && id!=use.getUse001())){
             return false;
         }else{

@@ -3,6 +3,7 @@ package com.efx.Science.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.efx.Science.model.PageBean;
 import com.efx.Science.model.cdyhb;
+import org.apache.poi.ss.formula.functions.Index;
 
 import java.util.List;
 
@@ -30,4 +31,6 @@ public interface CdyhbService extends IService<cdyhb> {
     List<cdyhb> getAll(String cjid);
 
     Integer countByExample();
+
+    int countBycjid(Integer fid);
 }

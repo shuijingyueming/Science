@@ -156,10 +156,12 @@
                                 <input type="text" class="form-control" id="t4" name="t4" placeholder="请输入标题"/>
                             </div>
                         </div>
-                        <div class="row col-auto" style="margin-top: 20px;">
-                            <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">信息内容</label>
-                            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                                <textarea class="form-control" style="resize: none;width:350px;height:500px;" rows="3" id="t3" name="t3"></textarea>
+                        <div class="row" style="margin-top:20px;">
+                            <div class="row col-xl-7 col-md-6 col-sm-12 col-12">
+                                <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">信息内容</label>
+                                <div class="col-xl-8 col-md-7 col-sm-8 col-12">
+                                    <textarea class="form-control" style="resize: none;width:380px;min-height:500px;height: 500px;" id="t3" name="t3"></textarea>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -400,7 +402,7 @@
             $(element).parent("div").parent("div").find("label").addClass("col-12");
             // $(element).parent("div").parent("div").find("label").attr("style","margin-left:5px;");
         },
-        rules : {t2: { required : true, },t6: { required : true, },t10: { required : true, },},
+        rules : {t4: { required : true, },},
         messages: {},
         submitHandler: function(form) {
             load_index = layer.load(1);

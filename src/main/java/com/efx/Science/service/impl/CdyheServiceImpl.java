@@ -45,6 +45,7 @@ public class CdyheServiceImpl implements CdyheService {
         cdyheExample e1 = new cdyheExample();
         Criteria c = e1.createCriteria();
 //        if(pb.getOthersql()!=null) c.andYhe003Like("%"+pb.getOthersql()+"%");
+        if(pb.getOthersql7()!=null)  c.andYhe046EqualTo(pb.getOthersql7());
         if(pb.getOthersql5()!=null) c.andYhe003EqualTo(Integer.valueOf(pb.getOthersql5()));
         if(pb.getOthersql6()!=null)  c.andYhe002EqualTo(Integer.valueOf(pb.getOthersql6()));
         if(pb.getOthersql2()!=null){
@@ -52,6 +53,8 @@ public class CdyheServiceImpl implements CdyheService {
                 c.andSql("(yhe007='A' or yhe007='B')");
             }else if(pb.getOthersql2().equals("B")){
                 c.andSql("(yhe007='C' or yhe007='D')");
+            }else if(pb.getOthersql2().equals("D")){
+                c.andSql("(yhe007='S' or yhe007='T')");
             }else if(pb.getOthersql2().equals("C")){
                 c.andSql("(yhe007='G' or yhe007='H')");
             }else if(pb.getOthersql2().equals("E")){
@@ -130,6 +133,17 @@ public class CdyheServiceImpl implements CdyheService {
         Criteria c = e1.createCriteria();
         c.andSql("(Yhe007='G' or Yhe007='H')");
         c.andSql("(DATEDIFF(CURDATE(),yhe008)>=0)");
+        yheMapper.updateByExampleSelective(yhe,e1);
+    }
+
+    @Override
+    public void updatebytime1() {
+        cdyhe yhe = new cdyhe();
+        yhe.setYhe007("E");
+        cdyheExample e1 = new cdyheExample();
+        Criteria c = e1.createCriteria();
+        c.andSql("(Yhe007='F')");
+        c.andSql("(DATEDIFF(CURDATE(),yhe008)>=28)");
         yheMapper.updateByExampleSelective(yhe,e1);
     }
 

@@ -175,7 +175,7 @@
     <div class="col-md-6 col-lg-7 col-xl-8 d-none d-md-block" style="background-image: url(images/login-bg-1.jpg); background-size: cover;">
         <div class="d-flex vh-100">
             <div class="p-5 align-self-end">
-                <img src="images/logo-sidebar.png" alt="...">
+                <img style="height:100px;" src="images/logo-sidebar.png" alt="...">
                 <br><br><br>
                 <p class="text-dark">基于Bootstrap v5.1.3的技术支持。</p>
             </div>
@@ -188,7 +188,7 @@
         </div>
         <div class="p-5">
             <div class="text-center">
-                <img alt="light year admin" src="images/logo-sidebar.png">
+                <img style="height:60px;" alt="light year admin" src="images/logo-sidebar.png">
             </div>
             <p class="text-center text-muted"><small>请使用您的账号登录系统</small></p>
             <form method="post" class="signin-form needs-validation" novalidate>
@@ -310,7 +310,21 @@
                                 return "";
                             }//要传递的数据
                         }
-                    }},p2: { required : true,isPass1: true },z4: { required : true, },z5: { required : true, isMobile1: true,},t2: { required : true, },t10: { required : true, },t24: { required : true, },t11: { required : true, },t4: { required : true, },t5: { required : true, },},
+                    }},p2: { required : true,isPass1: true },z4: { required : true, },z5: { required : true, isMobile1: true,
+                remote:{
+                    url: "zhphone", //后台处理程序
+                    type: "post",  //数据发送方式
+                    async : false,
+                    dataType: "json",       //接受数据格式
+                    data:{
+                        "phone":function(){
+                            return $("#z5").val().trim();
+                        },
+                        "id":function(){
+                            return "";
+                        }//要传递的数据
+                    }
+                }},t2: { required : true, },t10: { required : true, },t24: { required : true, },t11: { required : true, },t4: { required : true, },t5: { required : true, },},
             messages: {},
             submitHandler: function(form) {
                 var formData = new FormData();

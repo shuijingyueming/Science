@@ -53,6 +53,7 @@ public class ExcelExport {
 		String name="";
 		String num="";
 		String fee="";
+		String yfee="";
 		cdyha item = new cdyha();
 		for (int row_num = 1; row_num < sheet.getPhysicalNumberOfRows(); row_num++) {
 			row = sheet.getRow(row_num);
@@ -60,6 +61,7 @@ public class ExcelExport {
 				name = getValue(row.getCell(0)).replaceAll(" ", "");
 				num = getValue(row.getCell(1)).replaceAll(" ", "");
 				fee = getValue(row.getCell(2)).replaceAll(" ", "");
+				yfee = getValue(row.getCell(3)).replaceAll(" ", "");
 				if (!name.isEmpty()) {
 					item=yhaService.selectByName(name);
 					if(item==null){
@@ -67,11 +69,12 @@ public class ExcelExport {
 						item.setYha002(name);
 						if(!num.isEmpty())item.setYha004(Integer.valueOf(num));
 						if(!fee.isEmpty())item.setYha005(Float.valueOf(fee));
-						item.setYha006(item.getYha004());
+						item.setYha006(yfee.isEmpty()?item.getYha004(): Integer.valueOf(yfee));
 						item = yhaService.insert(item);
 					}else{
 						if(!num.isEmpty())item.setYha004(Integer.valueOf(num));
 						if(!fee.isEmpty())item.setYha005(Float.valueOf(fee));
+						item.setYha006(yfee.isEmpty()?item.getYha004(): Integer.valueOf(yfee));
 						yhaService.update(item);
 					}
 				}

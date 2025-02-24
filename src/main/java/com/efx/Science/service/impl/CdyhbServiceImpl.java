@@ -10,6 +10,7 @@ import com.efx.Science.model.cdyhbExample;
 import com.efx.Science.model.cdyhbExample.Criteria;
 import com.efx.Science.service.CdyhbService;
 import org.apache.ibatis.session.RowBounds;
+import org.apache.poi.ss.formula.functions.Index;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -85,6 +86,14 @@ public class CdyhbServiceImpl implements CdyhbService {
     @Override
     public Integer countByExample() {
         return Math.toIntExact(yhbMapper.countByExample(null));
+    }
+
+    @Override
+    public int countBycjid(Integer cjid) {
+        cdyhbExample e1 = new cdyhbExample();
+        Criteria c = e1.createCriteria();
+        if(cjid!=null)c.andYhb002EqualTo(cjid);
+        return (int) yhbMapper.countByExample(e1);
     }
 
 
