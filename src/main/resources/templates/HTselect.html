@@ -171,6 +171,7 @@
                 </div>
                 <form id="uploadForm" enctype="multipart/form-data">
                     <input type="hidden" id="fid" value=""/>
+                    <input type="hidden" class="form-control" id="t2" name="t2" placeholder="请输入机构名称"/>
                    <!-- <div class="modal-body" style="min-height:580px;">
                         <div class="row col-auto" style="margin-top: 20px;">
                             <label class="col-auto col-form-label" style="padding-right:20px;padding-left:20px;">身份类别</label>
@@ -545,13 +546,14 @@
                     $(this).prop("checked",false);
                 }
             });
-            $("#t2").val(josnobj.smd003);
+
             $("#t4").val(josnobj.smd004);
             $("#t5").val(josnobj.smd005);
             $("#t6").val(josnobj.smd006);
             $("#t10").val(josnobj.smd017);
             $("#t11").val(josnobj.smd01);
             $("#t7").val(josnobj.smd007);*/
+            $("#t2").val(josnobj.smd003);
             $("#t9").val(josnobj.smd009);
             $("#t10").val(josnobj.smd010);
             $("#ftype").text("编辑");
@@ -572,8 +574,9 @@
             load_index = layer.load(1);
             var formData = new FormData();
             formData.append("fid",$("#fid").val().trim());
-          /*  formData.append("t2",$("input[name='t3']:checked").val());
             formData.append("t3",$("#t2").val());
+          /*  formData.append("t2",$("input[name='t3']:checked").val());
+
             formData.append("t4",$("#t4").val());
             formData.append("t5",$("#t5").val());
             formData.append("t6",$("#t6").val());

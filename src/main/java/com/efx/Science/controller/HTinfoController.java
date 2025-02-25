@@ -727,13 +727,13 @@ public class HTinfoController extends BaseController {
         item.setYha005(Float.valueOf(request.getParameter("t5")));
         item.setYha006(item.getYha004());
         if(request.getParameter("fid")!=null&&!request.getParameter("fid").isEmpty()){
-            String log = "修改了名字为：【" + request.getParameter("t3") + "】的街镇信息";
+            String log = "修改了名字为：【" + request.getParameter("t2") + "】的街镇信息";
             item.setYha001(Integer.valueOf((request.getParameter("fid"))));
             addLog(getUse(request).getUse002(),log);
             yhaService.update(item);
             result.put("msg","U");
         }else{
-            String log = "新增了名字为：【" + request.getParameter("t3")+ "】的街镇信息";
+            String log = "新增了名字为：【" + request.getParameter("t2")+ "】的街镇信息";
             addLog(getUse(request).getUse002(),log);
             item = yhaService.insert(item);
             result.put("msg","I");
@@ -1965,6 +1965,12 @@ public class HTinfoController extends BaseController {
             if (request.getParameter("fzt") != null && !request.getParameter("fzt").isEmpty()) {
                 pb.setOthersql7(request.getParameter("fzt"));
             }
+            if (request.getParameter("start") != null && !request.getParameter("start").isEmpty()) {
+                pb.setOthersql8(request.getParameter("start"));
+            }
+            if (request.getParameter("end") != null && !request.getParameter("end").isEmpty()) {
+                pb.setOthersql9(request.getParameter("end"));
+            }
             mav.addObject("fhlx", request.getParameter("fhlx"));
         }
         pb.setOthersql3(user.getUse009());
@@ -2470,7 +2476,7 @@ public class HTinfoController extends BaseController {
             }else{
                 item.setYhg008(use.getUse011());
             }
-            String log = "新增了标题为：【" + request.getParameter("t2")+ "】的消息信息";
+            String log = "新增了标题为：【" + request.getParameter("t4")+ "】的消息信息";
             item.setYhg001(UUID.randomUUID().toString().replace("-",""));
             item.setYhg005(0);
             item.setYhg002("A");

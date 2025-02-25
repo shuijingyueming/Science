@@ -18,7 +18,7 @@ import java.util.List;
 public interface CdyheService extends IService<cdyhe> {
     cdyhe getByid(Integer id);
 
-    PageBean selectPageBean(PageBean pb);
+    PageBean selectPageBean(PageBean pb) throws ParseException;
 
     boolean update(cdyhe yhe);
 

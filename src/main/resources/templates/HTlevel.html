@@ -94,9 +94,9 @@
                                             <a href="javascript:void(0);" th:onclick="edit([[${item.toString()}]])" class="btn btn-table"
                                                data-bs-toggle="modal" data-bs-target="#editmode">编辑</a>
                                             <div class="ivu-divider-vertical"></div>
-                                            <a href="javascript:void(0);" th:onclick="del([[${item.yha001}]])" class="btn btn-table">删除</a>
+                                            <a href="javascript:void(0);" th:onclick="del([[${item.yha001}]],[[${item.yha002}]])" class="btn btn-table">删除</a>
                                             <a href="javascript:void(0);" th:onclick="drchose([[${item.yha001}]])" class="btn btn-table">导入选课方</a>
-                                    </th:block>
+                                        </th:block>
                                             <a href="javascript:void(0);" th:onclick="toyyjl([[${item.yha001}]])" class="btn btn-table">选课情况</a>
                                         </div>
                                     </td>
@@ -391,10 +391,11 @@
         });
     }
 
-    function del(id){
+    function del(id,uname){
         if (confirm("您确定删除吗?")) {
             load_index = layer.load(1);
             var formData = new FormData();
+            formData.append("uname",uname);
             formData.append("fid",id);
             $.ajax({
                 url: 'toHt/dellevel', // 服务器端处理上传文件的URL

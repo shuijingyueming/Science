@@ -92,20 +92,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!--<div class="col-auto">
-                                    <div class="row">
-                                        <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">名称</label>
-                                        <div class="col-auto">
-                                            <input type="text" class="form-control" id="name" name="name" th:value="${pageobj.othersql}" placeholder="请输入名称"/>
-                                        </div>
-                                    </div>
-                                </div>-->
                                 <div class="col-auto" th:style="${session.umsg.jstype=='B'?'display: none':''}">
                                     <div class="row">
                                         <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">授课方名称</label>
                                         <div class="col-auto">
                                             <select id="skid" name="skid"  class="form-control selectpicker" data-live-search="true">
-                                                <option value="" selected>请选择</option>
+                                                <option value="" selected></option>
                                                 <th:block th:each="item,stat:${smdlist}">
                                                     <option th:value="${item.smd001}"  th:selected="${pageobj.othersql5==#strings.toString(item.smd001)?true:false}">[[${item.smd003}]]</option>
                                                 </th:block>
@@ -131,7 +123,7 @@
                                         <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">选课方名称</label>
                                         <div class="col-auto">
                                             <select id="xkid" name="xkid"  class="form-control selectpicker" data-live-search="true">
-                                                <option value="" selected>请选择</option>
+                                                <option value="" selected></option>
                                                 <th:block th:each="item,stat:${yhblist}">
                                                     <option th:value="${item.yhb001}"  th:selected="${pageobj.othersql6==#strings.toString(item.yhb001)?true:false}">[[${item.yhb004}]]</option>
                                                 </th:block>
@@ -139,8 +131,26 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-auto">
+                                    <div class="row">
+                                        <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">开始时间</label>
+                                        <div class="col-auto">
+                                            <input type="date" class="form-control" id="start" name="start" th:value="${pageobj.othersql8}"
+                                                   placeholder="请输入开始时间"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="row">
+                                        <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">结束时间</label>
+                                        <div class="col-auto">
+                                            <input type="date" class="form-control" id="end" name="end" th:value="${pageobj.othersql9}"
+                                                   placeholder="请输入结束时间"/>
+                                        </div>
+                                    </div>
+                                </div>
                                 <!--button-->
-                                <div class="col-auto" th:style="${session.umsg.jstype=='B'&&fhlx!=null&&#strings.indexOf(fhlx,'XK')>=0?'display: none':''}">
+                                <div class="col-auto">
                                     <button type="submit" class="btn btn-primary me-1">搜索</button>
                                 </div>
                             </div>
@@ -1236,12 +1246,40 @@
         form_submit("toHt/tochose","post",params,"_self");
     }
 
-    pdyes($("#pages").val(), $("#counts").val());
+    $(document).ready(function () {
+        pdyes($("#pages").val(), $("#counts").val());
+        $('#start').on('change', function () {
+            var startTime =$("#start").val();
+            if(startTime==""&&startTime==undefined) return;
+            var endTime =$("#end").val();
+            if(endTime==""&&endTime==undefined) return;
+            var start=new Date(startTime.replace("-", "/").replace("-", "/"));
+            var end=new Date(endTime.replace("-", "/").replace("-", "/"));
+            if(end<start){
+                $("#start").val("");
+                return;
+            } return;
+        })
+        $('#end').on('change', function () {
+            var startTime =$("#start").val();
+            if(startTime==""&&startTime==undefined) return;
+            var endTime =$("#end").val();
+            if(endTime==""&&endTime==undefined) return;
+            var start=new Date(startTime.replace("-", "/").replace("-", "/"));
+            var end=new Date(endTime.replace("-", "/").replace("-", "/"));
+            if(end<start){
+                $("#start").val("");
+                return;
+            } return;
+        })
+    })
     //翻页
     function usefanye(pageindex){
         var params = [
             ["pages",pageindex],["flid",$.trim($("#flid").val())],["ztype",$.trim($("#ztype").val())],["fzt",$.trim($("#fzt").val())],
-            ["skid",$.trim($("#skid").val())],["xkid",$.trim($("#xkid").val())]];
+            ["skid",$.trim($("#skid").val())],["xkid",$.trim($("#xkid").val())],
+            ["start",$.trim($("#start").val())],
+            ["end",$.trim($("#end").val())]];
         form_submit("toHt/toselection","post",params,"_self");
     }
 
@@ -1250,7 +1288,9 @@
             ["type","DC"],
             ["pages",$("#pages").val()],
             ["flid",$.trim($("#flid").val())],["ztype",$.trim($("#ztype").val())],["fzt",$.trim($("#fzt").val())],
-            ["skid",$.trim($("#skid").val())],["xkid",$.trim($("#xkid").val())]];
+            ["skid",$.trim($("#skid").val())],["xkid",$.trim($("#xkid").val())],
+            ["start",$.trim($("#start").val())],
+            ["end",$.trim($("#end").val())]];
         form_submit("toHt/toselection","post",params,"_blank");
     }
 
@@ -1419,7 +1459,7 @@
         html+= '</div>';
         html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
         html+= '<label class="layui-form-label">预约日期备注：</label>';
-        html+= '<span class="jspan">'+item.yhe042+'</span>';
+        html+= '<span class="jspan">'+(item.yhe042!="null"?item.yhe042:'')+'</span>';
         html+= '</div>';
         html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
         html+= '<label class="layui-form-label">活动人数：</label>';
@@ -1427,7 +1467,7 @@
         html+= '</div>';
         html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
         html+= '<label class="layui-form-label">其他要求：</label>';
-        html+= '<span class="jspan">'+item.yhe043+'</span>';
+        html+= '<span class="jspan">'+(item.yhe043!="null"?item.yhe043:'')+'</span>';
         html+= '</div>';
         if($("#jstype").val()=="C"){
             html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
@@ -1441,11 +1481,11 @@
         }else{
             html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
             html+= '<label class="layui-form-label">联系人：</label>';
-            html+= '<span class="jspan">'+(item.yhe044!=null&&item.yhe044!=""?item.yhe044:item2.yhb006)+'</span>';
+            html+= '<span class="jspan">'+(item.yhe044!="null"&&item.yhe044!=""?item.yhe044:item2.yhb006)+'</span>';
             html+= '</div>';
             html+= '<div class="row"><div class="form-group col-xl-3 col-md-4 col-sm-6">';
             html+= '<label class="layui-form-label">联系人电话：</label>';
-            html+= '<span class="jspan">'+(item.yhe045!=null&&item.yhe045!=""?item.yhe045:item2.yhb007)+'</span>';
+            html+= '<span class="jspan">'+(item.yhe045!="null"&&item.yhe045!=""?item.yhe045:item2.yhb007)+'</span>';
             html+= '</div>';
         }
         if(listD.length>0){

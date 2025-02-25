@@ -66,9 +66,10 @@
                                                    placeholder="请输入开始时间"/>
                                         </div>
                                     </div>
-                                </div><div class="col-auto">
+                                </div>
+                                <div class="col-auto">
                                 <div class="row">
-                                    <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">>结束时间</label>
+                                    <label class="col-auto col-form-label" style="padding-right:0;padding-left:10px;">结束时间</label>
                                     <div class="col-auto">
                                         <input type="date" class="form-control" id="end" name="end" th:value="${pageobj.othersql1}"
                                                placeholder="请输入结束时间"/>
@@ -163,8 +164,6 @@
     function gobackpage(){
         window.history.back();
     }
-
-    pdyes($("#pages").val(), $("#counts").val());
 
     $(document).ready(function () {
         pdyes($("#pages").val(), $("#counts").val());

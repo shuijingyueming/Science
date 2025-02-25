@@ -41,10 +41,12 @@ public class CdyheServiceImpl implements CdyheService {
     }
 
     @Override
-    public PageBean selectPageBean(PageBean pb) {
+    public PageBean selectPageBean(PageBean pb) throws ParseException {
         cdyheExample e1 = new cdyheExample();
         Criteria c = e1.createCriteria();
 //        if(pb.getOthersql()!=null) c.andYhe003Like("%"+pb.getOthersql()+"%");
+        if(pb.getOthersql8()!=null)c.andYhe008GreaterThanOrEqualTo(sdf.parse(pb.getOthersql8()+" 00:00:00"));
+        if(pb.getOthersql9()!=null)c.andYhe008LessThanOrEqualTo(sdf.parse(pb.getOthersql9()+" 23:59:59"));
         if(pb.getOthersql7()!=null)  c.andYhe046EqualTo(pb.getOthersql7());
         if(pb.getOthersql5()!=null) c.andYhe003EqualTo(Integer.valueOf(pb.getOthersql5()));
         if(pb.getOthersql6()!=null)  c.andYhe002EqualTo(Integer.valueOf(pb.getOthersql6()));

@@ -10,7 +10,7 @@ document.addEventListener("error", function (e) {
 var dqys = 0;
 
 //判断页数 zys：总页数  dqy：当前页
-function pdyes(zys, dqy) {
+function pdyes(dqy,zys ) {
     var html='';
     dqy = parseInt(dqy);
     zys = parseInt(zys);
